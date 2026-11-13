@@ -116,6 +116,8 @@ public partial class SettingsWindow : Window
         CaptureBarBottomRadio.IsChecked = docked && settings.CaptureBarPosition == Dock.Bottom;
         CaptureBarFloatRadio.IsChecked = settings.CaptureBarFloating;
         AutoUpdateCheckBox.IsChecked = settings.CheckForUpdates;
+        UpdateIntervalSlider.Value = Math.Min(settings.UpdateCheckHours, UpdateIntervalSlider.Maximum);
+        ShowUpdateInterval();
         MagnifierBox.IsChecked = settings.ShowMagnifier;
 
         _snipFolder = settings.SnipSaveFolder;
@@ -175,6 +177,19 @@ public partial class SettingsWindow : Window
                 combo.SelectedItem = item;
             }
         }
+    }
+
+    private void UpdateInterval_Changed(object sender, RoutedPropertyChangedEventArgs<double> e) => ShowUpdateInterval();
+
+    private void ShowUpdateInterval()
+    {
+        if (UpdateIntervalText == null)
+        {
+            return;
+        }
+
+        int hours = (int)UpdateIntervalSlider.Value;
+        UpdateIntervalText.Text = hours == 1 ? Strings.Settings_EveryHour : string.Format(Strings.Settings_EveryHours, hours);
     }
 
     private static int SelectedValue(ComboBox combo, int fallback) =>
@@ -486,6 +501,7 @@ public partial class SettingsWindow : Window
                 : Dock.Left;
         }
         _settings.CheckForUpdates = AutoUpdateCheckBox.IsChecked == true;
+        _settings.UpdateCheckHours = (int)UpdateIntervalSlider.Value;
         _settings.ShowMagnifier = MagnifierBox.IsChecked == true;
         StopListening();
         _settings.SnipHotkey = _hotkeys["Snip"];

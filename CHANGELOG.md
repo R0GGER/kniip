@@ -4,6 +4,10 @@ All notable changes to kniip are listed in this file. The newest version is at t
 
 ## 2.5.1 - 2026-11-13
 
+### Added
+
+- Under **Settings > Update**, the new dropdown next to the automatic check sets how often kniip looks for new versions in the background, from every hour to every 24 hours. The default stays every 24 hours. The first check still runs shortly after kniip starts.
+
 ### Fixed
 
 - **Open kniip** in the system tray menu opened the image history when the editor had no tabs. It now always opens the editor, with an empty canvas if there are no tabs.

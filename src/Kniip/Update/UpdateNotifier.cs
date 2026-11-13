@@ -10,17 +10,19 @@ namespace Kniip.Update;
 public sealed class UpdateNotifier
 {
     private static readonly TimeSpan FirstCheckDelay = TimeSpan.FromSeconds(10);
-    private static readonly TimeSpan CheckInterval = TimeSpan.FromHours(24);
 
     private readonly DispatcherTimer _timer = new();
+    private TimeSpan _checkInterval = TimeSpan.FromHours(24);
     private bool _enabled;
+    private bool _firstCheckDone;
     private bool _checking;
 
     public UpdateNotifier()
     {
         _timer.Tick += async (_, _) =>
         {
-            _timer.Interval = CheckInterval;
+            _firstCheckDone = true;
+            _timer.Interval = _checkInterval;
             await CheckAsync();
         };
     }
@@ -33,23 +35,32 @@ public sealed class UpdateNotifier
     /// <summary>Wordt op de UI-thread afgevuurd als <see cref="Available"/> verandert.</summary>
     public event EventHandler? AvailabilityChanged;
 
-    public void Apply(bool enabled)
+    public void Apply(bool enabled, TimeSpan checkInterval)
     {
-        if (enabled == _enabled)
+        if (enabled == _enabled && checkInterval == _checkInterval)
         {
             return;
         }
 
+        bool wasEnabled = _enabled;
         _enabled = enabled;
-        _timer.Stop();
-        if (enabled)
+        _checkInterval = checkInterval;
+        if (!enabled)
         {
+            _timer.Stop();
+            Report(null);
+        }
+        else if (!wasEnabled)
+        {
+            _firstCheckDone = false;
+            _timer.Stop();
             _timer.Interval = FirstCheckDelay;
             _timer.Start();
         }
-        else
+        else if (_firstCheckDone)
         {
-            Report(null);
+            // Een nieuw Interval herstart een lopende DispatcherTimer.
+            _timer.Interval = checkInterval;
         }
     }
 

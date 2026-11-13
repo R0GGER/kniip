@@ -308,7 +308,7 @@
   <data name="Settings_AskEveryTime" xml:space="preserve"><value>Elke keer vragen</value></data>
   <data name="Settings_AskSnipTip" xml:space="preserve"><value>Elke keer vragen waar het knipsel wordt opgeslagen</value></data>
   <data name="Settings_AskVideoTip" xml:space="preserve"><value>Elke keer vragen waar de screencast wordt opgeslagen</value></data>
-  <data name="Settings_AutoCheck" xml:space="preserve"><value>Automatisch controleren op nieuwe versies (bij starten en dagelijks)</value></data>
+  <data name="Settings_AutoCheck" xml:space="preserve"><value>Automatisch controleren op nieuwe versies</value></data>
   <data name="Settings_Autostart" xml:space="preserve"><value>kniip starten met Windows</value></data>
   <data name="Settings_CheckAgain" xml:space="preserve"><value>Opnieuw controleren</value></data>
   <data name="Settings_CheckingUpdates" xml:space="preserve"><value>Controleren op updates...</value></data>
@@ -322,6 +322,8 @@
   <data name="Settings_DefaultsFilled" xml:space="preserve"><value>Standaardwaarden ingevuld; klik op Opslaan om ze te bewaren.</value></data>
   <data name="Settings_DefaultsTip" xml:space="preserve"><value>Instellingen, toolstijlen, werkbalk en laatst gebruikte mappen terugzetten; pas bij Opslaan worden ze bewaard</value></data>
   <data name="Settings_DoNothing" xml:space="preserve"><value>Niets doen (openen via systeemvak of &apos;Openen met&apos;)</value></data>
+  <data name="Settings_EveryHour" xml:space="preserve"><value>Elk uur</value></data>
+  <data name="Settings_EveryHours" xml:space="preserve"><value>Elke {0} uur</value></data>
   <data name="Settings_Example" xml:space="preserve"><value>Voorbeeld: </value></data>
   <data name="Settings_Fps" xml:space="preserve"><value>{0} beelden/s</value></data>
   <data name="Settings_FromClipboard" xml:space="preserve"><value>Vanaf klembord</value></data>
@@ -410,6 +412,7 @@
   <data name="Settings_UpdateConfirmTitle" xml:space="preserve"><value>kniip bijwerken</value></data>
   <data name="Settings_UpdateDownloadFailed" xml:space="preserve"><value>De update kon niet worden gedownload.&#xA;&#xA;{0}</value></data>
   <data name="Settings_UpdateDownloading" xml:space="preserve"><value>Versie {0} downloaden...</value></data>
+  <data name="Settings_UpdateIntervalTip" xml:space="preserve"><value>De eerste controle volgt kort na het starten van kniip, daarna met deze tussenpoos.</value></data>
   <data name="Settings_UpdateNoInstaller" xml:space="preserve"><value>Versie {0} is beschikbaar, maar zonder installer. Download die via de releasepagina.</value></data>
   <data name="Settings_UpdateNotInstalled" xml:space="preserve"><value>Deze kniip is niet via de installer gestart; de nieuwe versie wordt geïnstalleerd in {0}.</value></data>
   <data name="Settings_UpdateTestBuild" xml:space="preserve"><value>Versie {0} is beschikbaar. Deze testversie werkt zichzelf niet bij; de installer zou de gewone kniip overschrijven.</value></data>

@@ -308,7 +308,7 @@
   <data name="Settings_AskEveryTime" xml:space="preserve"><value>Ask every time</value></data>
   <data name="Settings_AskSnipTip" xml:space="preserve"><value>Ask every time where to save the snip</value></data>
   <data name="Settings_AskVideoTip" xml:space="preserve"><value>Ask every time where to save the screencast</value></data>
-  <data name="Settings_AutoCheck" xml:space="preserve"><value>Automatically check for new versions (at startup and daily)</value></data>
+  <data name="Settings_AutoCheck" xml:space="preserve"><value>Automatically check for new versions</value></data>
   <data name="Settings_Autostart" xml:space="preserve"><value>Start kniip with Windows</value></data>
   <data name="Settings_CheckAgain" xml:space="preserve"><value>Check again</value></data>
   <data name="Settings_CheckingUpdates" xml:space="preserve"><value>Checking for updates...</value></data>
@@ -322,6 +322,8 @@
   <data name="Settings_DefaultsFilled" xml:space="preserve"><value>Defaults filled in; click Save to keep them.</value></data>
   <data name="Settings_DefaultsTip" xml:space="preserve"><value>Reset settings, tool styles, toolbar and recently used folders; they are only kept when you click Save</value></data>
   <data name="Settings_DoNothing" xml:space="preserve"><value>Do nothing (open via the system tray or &apos;Open with&apos;)</value></data>
+  <data name="Settings_EveryHour" xml:space="preserve"><value>Every hour</value></data>
+  <data name="Settings_EveryHours" xml:space="preserve"><value>Every {0} hours</value></data>
   <data name="Settings_Example" xml:space="preserve"><value>Example: </value></data>
   <data name="Settings_Fps" xml:space="preserve"><value>{0} frames/s</value></data>
   <data name="Settings_FromClipboard" xml:space="preserve"><value>From clipboard</value></data>
@@ -410,6 +412,7 @@
   <data name="Settings_UpdateConfirmTitle" xml:space="preserve"><value>Update kniip</value></data>
   <data name="Settings_UpdateDownloadFailed" xml:space="preserve"><value>The update could not be downloaded.&#xA;&#xA;{0}</value></data>
   <data name="Settings_UpdateDownloading" xml:space="preserve"><value>Downloading version {0}...</value></data>
+  <data name="Settings_UpdateIntervalTip" xml:space="preserve"><value>The first check runs shortly after kniip starts, then at this interval.</value></data>
   <data name="Settings_UpdateNoInstaller" xml:space="preserve"><value>Version {0} is available, but without an installer. Download it from the release page.</value></data>
   <data name="Settings_UpdateNotInstalled" xml:space="preserve"><value>This kniip wasn&apos;t started from the installer; the new version will be installed in {0}.</value></data>
   <data name="Settings_UpdateTestBuild" xml:space="preserve"><value>Version {0} is available. This test build doesn&apos;t update itself; the installer would overwrite the regular kniip.</value></data>

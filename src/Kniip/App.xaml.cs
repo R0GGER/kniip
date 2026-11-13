@@ -135,7 +135,7 @@ public partial class App : Application
         HotkeyHook = new GlobalHotkeyHook(Dispatcher);
         ApplyHotkeys();
         Updates.AvailabilityChanged += (_, _) => _tray?.SetUpdateAvailable(Updates.Available?.Tag);
-        Updates.Apply(Settings.CheckForUpdates);
+        Updates.Apply(Settings.CheckForUpdates, TimeSpan.FromHours(Settings.UpdateCheckHours));
 
         _singleInstance.StartServer(received => Dispatcher.BeginInvoke(() => HandleArguments(received, false)));
         HandleArguments(args, true);
@@ -635,7 +635,7 @@ public partial class App : Application
         ThemeManager.Apply(Settings.ColorMode);
         Capture.ApplySettings(Settings);
         ApplyHotkeys();
-        Updates.Apply(Settings.CheckForUpdates);
+        Updates.Apply(Settings.CheckForUpdates, TimeSpan.FromHours(Settings.UpdateCheckHours));
     }
 
     private static void BringToFront(Window window)

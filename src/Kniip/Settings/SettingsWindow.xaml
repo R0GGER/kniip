@@ -310,7 +310,35 @@
                 <StackPanel Style="{StaticResource TabPage}">
                     <TextBlock Text="Update" Style="{StaticResource CardTitle}" />
                     <TextBlock x:Name="CurrentVersionText" Margin="0,0,0,2" />
-                    <CheckBox x:Name="AutoUpdateCheckBox" Content="{x:Static res:Strings.Settings_AutoCheck}" />
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="AutoUpdateCheckBox" Content="{x:Static res:Strings.Settings_AutoCheck}" VerticalAlignment="Center" />
+                        <Grid Margin="8,0,0,0" VerticalAlignment="Center" IsEnabled="{Binding IsChecked, ElementName=AutoUpdateCheckBox}">
+                            <ToggleButton x:Name="UpdateIntervalToggle" Style="{StaticResource FlatButton}" Padding="8,3" MinWidth="0" MinHeight="26"
+                                          BorderBrush="{DynamicResource ControlBorderBrush}" Background="{DynamicResource ControlBrush}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="UpdateIntervalText" FontSize="12" VerticalAlignment="Center" />
+                                    <TextBlock Text="&#xE70D;" Style="{StaticResource IconText}" FontSize="8" Margin="6,1,0,0"
+                                               Foreground="{DynamicResource SubtleTextBrush}" />
+                                </StackPanel>
+                            </ToggleButton>
+                            <Popup PlacementTarget="{Binding ElementName=UpdateIntervalToggle}" Placement="Bottom" StaysOpen="False"
+                                   AllowsTransparency="True" PopupAnimation="Fade"
+                                   IsOpen="{Binding IsChecked, ElementName=UpdateIntervalToggle, Mode=TwoWay}">
+                                <Border Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource ControlStrongBorderBrush}" BorderThickness="1"
+                                        CornerRadius="6" Padding="12,10" Margin="0,4,10,10">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.18" />
+                                    </Border.Effect>
+                                    <StackPanel>
+                                        <Slider x:Name="UpdateIntervalSlider" Width="200" Minimum="1" Maximum="24" IsSnapToTickEnabled="True" TickFrequency="1"
+                                                ValueChanged="UpdateInterval_Changed" />
+                                        <TextBlock Text="{x:Static res:Strings.Settings_UpdateIntervalTip}" FontSize="11" Width="200" TextWrapping="Wrap"
+                                                   Margin="0,6,0,0" Foreground="{DynamicResource SubtleTextBrush}" />
+                                    </StackPanel>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </StackPanel>
                     <TextBlock x:Name="UpdateStatus" Style="{StaticResource Hint}" Margin="0,0,0,8" />
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <Button x:Name="UpdateButton" Style="{StaticResource AccentButton}" Click="Update_Click" Margin="0,0,6,0"

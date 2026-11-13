@@ -178,8 +178,17 @@ public sealed class AppSettings
     /// <summary>Zipline-server waar Uploaden naartoe gaat; leeg betekent geen uploadknop.</summary>
     public UploaderConfig? Uploader { get; set; }
 
-    /// <summary>Bij het starten en daarna dagelijks op de achtergrond kijken of er een nieuwere versie is.</summary>
+    /// <summary>Bij het starten en daarna elke UpdateCheckHours op de achtergrond kijken of er een nieuwere versie is.</summary>
     public bool CheckForUpdates { get; set; } = true;
+
+    private int _updateCheckHours = 24;
+
+    /// <summary>Uren tussen twee achtergrondcontroles (1-24); de GitHub-API staat zonder aanmelding 60 aanvragen per uur per IP-adres toe.</summary>
+    public int UpdateCheckHours
+    {
+        get => _updateCheckHours;
+        set => _updateCheckHours = Math.Clamp(value, 1, 24);
+    }
 
     /// <summary>Vergrootglas met kruisdraad en coördinaten tonen bij het kiezen van een gebied (knipsel en screencast).</summary>
     public bool ShowMagnifier { get; set; } = true;
