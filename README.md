@@ -1,30 +1,20 @@
-<p align="center">
-  <img src="images/kniip_logo.svg" alt="kniip logo" width="160">
-</p>
+![kniip logo](images/kniip_logo.svg)
 
-<h1 align="center">kniip</h1>
+# kniip
 
-<p align="center">
-  <b>kniip</b> is a full-featured annotation editor for Windows. Capture something on your screen, make it clear with annotations and share it as an image, video, GIF or link.
-</p>
+**kniip** is a full-featured annotation editor for Windows. Capture something on your screen, make it clear with annotations and share it as an image, video, GIF or link.
 
-<p align="center">
-  <a href="https://github.com/R0GGER/kniip/releases/latest"><strong>Download: kniip</strong></a>
-</p>
-
-<p align="center">
-  <b>English</b> · <a href="README_NL.md">Nederlands</a>
-</p>
+**[Download: kniip](https://github.com/R0GGER/kniip/releases/latest)**
 
 ---
 
-kniip is an annotation editor that works alongside the Windows Snipping Tool. Take a screenshot, add arrows, text, highlights, steps, emoji or blur, and save, copy or upload the result. kniip can also record your screen and export the recording as a video or GIF.
+**English** · [Nederlands](README_NL.md)
 
-kniip started as a Dutch initiative, and its name gives that away: it comes from the Dutch *knip* and *knippen*, meaning "cut" and "cutting", which suits a tool built around snipping your screen. The original Dutch version of this page is in [README_NL.md](README_NL.md).
+**kniip** is an annotation editor that works alongside the Windows Snipping Tool. Take a screenshot, add arrows, text, highlights, steps, emoji or blur, and save, copy or upload the result. kniip can also record your screen and export the recording as a video or GIF.
 
-<p align="center">
-  <a href="images/kniip.png"><img src="images/kniip.png" alt="Screenshot of the kniip editor" width="720"></a>
-</p>
+**kniip** started as a Dutch initiative, and its name gives that away: it comes from the Dutch *knip* and *knippen*, meaning "cut" and "cutting", which suits a tool built around snipping your screen. The original Dutch version of this page is in [README_NL.md](README_NL.md).
+
+![Screenshot of the kniip editor](images/kniip.png)
 
 ## What can kniip do?
 
@@ -35,8 +25,8 @@ kniip started as a Dutch initiative, and its name gives that away: it comes from
 - **Share.** Save, copy to the clipboard, print, or upload and share the link right away.
 - **History.** Find earlier snips and uploads again, with thumbnails and search.
 - **Your toolbar.** Choose one or two toolbars, drag buttons around and hide what you don't use.
-- **Always up to date.** kniip tells you when a new version is available and updates itself with one click.
-- **English and Dutch.** kniip follows the Windows display language, or you choose the language under **Settings > System > Language**.
+- **Always up to date.** **kniip** tells you when a new version is available and updates itself with one click.
+- **English and Dutch.** **kniip** follows the Windows display language, or you choose the language under **Settings > System > Language**.
 
 ## Download
 
@@ -66,9 +56,9 @@ A separate .NET installation is not needed; the installer contains everything kn
 
 ### Uninstall
 
-Uninstall kniip via **Settings > Apps > Installed apps**. Autostart and the 'Open with' registration are cleaned up as well.
+Uninstall **kniip** via **Settings > Apps > Installed apps**. Autostart and the 'Open with' registration are cleaned up as well.
 
-If you only ran `Kniip.exe` and never used the installer, kniip may still be listed under **Settings > Apps > Startup**. That entry points to the folder where the exe was at the time. Turning off the switch there doesn't hide kniip: Windows keeps the entry and only sets it to off.
+If you only ran `Kniip.exe` and never used the installer, **kniip** may still be listed under **Settings > Apps > Startup**. That entry points to the folder where the exe was at the time. Turning off the switch there doesn't hide **kniip**: Windows keeps the entry and only sets it to off.
 
 `tools\remove-autostart.cmd` removes the entry. Double-click the file, or run:
 
@@ -76,7 +66,7 @@ If you only ran `Kniip.exe` and never used the installer, kniip may still be lis
 powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\remove-autostart.ps1
 ```
 
-The script applies to the signed-in user. The path of the exe doesn't matter and the file no longer needs to exist. No administrator rights are needed. Every Windows account has its own startup list, so run it in the account in which kniip was started. If the entry is still visible afterwards, sign out and back in once.
+The script applies to the signed-in user. The path of the exe doesn't matter and the file no longer needs to exist. No administrator rights are needed. Every Windows account has its own startup list, so run it in the account in which **kniip** was started. If the entry is still visible afterwards, sign out and back in once.
 
 ## Build it yourself
 
@@ -124,14 +114,14 @@ You can also build locally with `.\build.ps1 -Version <version>`.
 
 ### Updating from within kniip
 
-Under **Settings > Update**, kniip uses the GitHub API to check for a newer release and shows the changelog of all newer versions. **Update** downloads the installer, closes kniip, installs silently and restarts kniip. Previously chosen integrations are kept.
+Under **Settings > Update**, **kniip** uses the GitHub API to check for a newer release and shows the changelog of all newer versions. **Update** downloads the installer, closes **kniip**, installs silently and restarts **kniip**. Previously chosen integrations are kept.
 
-kniip also checks by itself at startup and then every 24 hours. If there's a newer version, a dot appears on the kniip icon in the system tray, on the **Settings** button in the editor and on the **Update** tab. Hover over the icon in the system tray to see which version is ready. Turn this off with **Automatically check for new versions** in that tab.
+**kniip** also checks by itself at startup and then every 24 hours. If there's a newer version, a dot appears on the **kniip** icon in the system tray, on the **Settings** button in the editor and on the **Update** tab. Hover over the icon in the system tray to see which version is ready. Turn this off with **Automatically check for new versions** in that tab.
 
 ## License
 
 Copyright © 2026 Rogier Meijer
 
-kniip is free software: you can redistribute it and/or modify it under the terms of the [GNU General Public License](LICENSE) as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. kniip is distributed without any warranty; see the [license](LICENSE) for details.
+**kniip** is free software: you can redistribute it and/or modify it under the terms of the [GNU General Public License](LICENSE) as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. kniip is distributed without any warranty; see the [license](LICENSE) for details.
 
-kniip uses [Markdig](https://github.com/xoofx/markdig) (BSD-2-Clause), [ScreenRecorderLib](https://github.com/sskodje/ScreenRecorderLib) (MIT) and [Twemoji](https://github.com/jdecked/twemoji) (CC-BY 4.0). See [`NOTICE.txt`](src/Kniip/Assets/Emoji/NOTICE.txt) for the origin of the emoji.
+**kniip** uses [Markdig](https://github.com/xoofx/markdig) (BSD-2-Clause), [ScreenRecorderLib](https://github.com/sskodje/ScreenRecorderLib) (MIT) and [Twemoji](https://github.com/jdecked/twemoji) (CC-BY 4.0). See [`NOTICE.txt`](src/Kniip/Assets/Emoji/NOTICE.txt) for the origin of the emoji.
