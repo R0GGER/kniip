@@ -1,11 +1,17 @@
-# Bouwt kniip bij het pushen van een tag v<versie> en commit de installer en testexe naar public/
-# op de standaardbranch.
+# Bouwt kniip bij het pushen van een tag v<versie> of handmatig via "Run workflow", en commit de
+# installer en testexe naar public/ op de standaardbranch.
 name: Release
 
 on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Versie, bijvoorbeeld 2.3.3"
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -24,7 +30,7 @@ jobs:
       DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
 
     steps:
-      - name: Checkout tag
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -38,8 +44,12 @@ jobs:
         run: choco install innosetup -y --no-progress
 
       - name: Build
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
         run: |
-          $version = "$env:GITHUB_REF_NAME".TrimStart('v')
+          $version = if ($env:INPUT_VERSION) { $env:INPUT_VERSION } else { "$env:GITHUB_REF_NAME" }
+          $version = $version.Trim().TrimStart('v')
+          if ($version -notmatch '^\d+\.\d+\.\d+$') { throw "Ongeldige versie: $version" }
           "VERSION=$version" >> $env:GITHUB_ENV
           ./build.ps1 -Version $version
           $setup = "public/Kniip-Setup-$version.exe"

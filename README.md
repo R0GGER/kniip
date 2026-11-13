@@ -106,7 +106,7 @@ Draaien beide versies tegelijk, dan reageren ze allebei op dezelfde sneltoetsen 
 
 ## Een nieuwe versie publiceren
 
-1. Push een tag naar GitHub: `git tag v<versie>` en daarna `git push origin v<versie>`. De workflow [Release](.github/workflows/release.yml) bouwt de installer en testversie en commit ze naar `public/` op de standaardbranch. Lokaal bouwen kan ook met `.\build.ps1 -Version <versie>`.
+1. Push een tag naar GitHub: `git tag v<versie>` en daarna `git push origin v<versie>`. Of start op GitHub onder **Actions > Release > Run workflow** handmatig een build en vul de versie in. De workflow [Release](.github/workflows/release.yml) bouwt de installer en testversie en commit ze naar `public/` op de standaardbranch. Lokaal bouwen kan ook met `.\build.ps1 -Version <versie>`.
 2. Maak op [git.hibbit.net](https://git.hibbit.net/rogier/kniip/releases) een release met tag `v<versie>` en voeg `public\Kniip-Setup-<versie>.exe` toe als bijlage.
 3. Schrijf de wijzigingen in markdown in de beschrijving van de release. kniip toont die als changelog onder **Instellingen > Update**.
 4. Vervang de versie en de link in de tabel onder [Downloaden](#downloaden) door de nieuwe versie.
