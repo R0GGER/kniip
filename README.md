@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://git.hibbit.net/rogier/kniip/releases"><strong>Download: kniip</strong></a>
+  <a href="https://github.com/R0GGER/kniip/releases/latest"><strong>Download: kniip</strong></a>
 </p>
 
 ---
@@ -35,9 +35,9 @@ kniip is een annotatie-editor die naast het Windows Knipprogramma werkt. Maak ee
 
 | Versie | Installer |
 | ------ | --------- |
-| 2.3.3 | [Kniip-Setup-2.3.3.exe](https://git.hibbit.net/rogier/kniip/releases/download/2.3.2/Kniip-Setup-2.3.3.exe) |
+| 2.3.3 | [Kniip-Setup-2.3.3.exe](https://github.com/R0GGER/kniip/releases/download/2.3.3/Kniip-Setup-2.3.3.exe) |
 
-Oudere versies vind je bij [alle releases](https://git.hibbit.net/rogier/kniip/releases).
+Oudere versies vind je bij [alle releases](https://github.com/R0GGER/kniip/releases).
 
 ## Installeren
 
@@ -106,10 +106,14 @@ Draaien beide versies tegelijk, dan reageren ze allebei op dezelfde sneltoetsen 
 
 ## Een nieuwe versie publiceren
 
-1. Push een tag naar GitHub: `git tag v<versie>` en daarna `git push origin v<versie>`. Of start op GitHub onder **Actions > Release > Run workflow** handmatig een build en vul de versie in. De workflow [Release](.github/workflows/release.yml) bouwt de installer en testversie en commit ze naar `public/` op de standaardbranch. Lokaal bouwen kan ook met `.\build.ps1 -Version <versie>`.
-2. Maak op [git.hibbit.net](https://git.hibbit.net/rogier/kniip/releases) een release met tag `v<versie>` en voeg `public\Kniip-Setup-<versie>.exe` toe als bijlage.
-3. Schrijf de wijzigingen in markdown in de beschrijving van de release. kniip toont die als changelog onder **Instellingen > Update**.
-4. Vervang de versie en de link in de tabel onder [Downloaden](#downloaden) door de nieuwe versie.
+1. Schrijf de wijzigingen bovenaan [CHANGELOG.md](CHANGELOG.md) onder een nieuwe kop `## <versie> - <datum>`, bijvoorbeeld `## 2.3.4 - 2026-11-13`.
+2. Commit en push naar `master`.
+3. Start op GitHub **Actions > Release > Run workflow** en vul de versie in, zonder `v`. Vink **dry_run** aan om eerst een proefrun te doen; de samenvatting van de run toont dan de releasetekst en de wijziging in de README, zonder iets te committen.
+4. De workflow [Release](.github/workflows/release.yml) bouwt de installer en testversie naar `public/`, zet de downloadregel onder [Downloaden](#downloaden) op de nieuwe versie, commit beide naar `master` en maakt een draft-release met de versie als tag en titel, de changelogsectie als beschrijving en `Kniip-Setup-<versie>.exe` als bijlage.
+5. Controleer de draft op [GitHub](https://github.com/R0GGER/kniip/releases) en klik **Publish release**. Pas dan bestaat de tag en werkt de downloadlink.
+6. Pull daarna lokaal, want de workflow heeft een commit op `master` gezet.
+
+Lokaal bouwen kan ook met `.\build.ps1 -Version <versie>`.
 
 ### Updaten vanuit kniip
 

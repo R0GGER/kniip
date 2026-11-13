@@ -1,17 +1,21 @@
-# Bouwt kniip bij het pushen van een tag v<versie> of handmatig via "Run workflow", en commit de
-# installer en testexe naar public/ op de standaardbranch.
+# Start handmatig via Actions > Release > Run workflow met een versienummer. Neemt de sectie van die versie
+# uit CHANGELOG.md, bouwt de installer en testexe naar public/, zet de downloadregel in README.md op de
+# nieuwe versie, commit dat naar de standaardbranch en maakt een draft-release met de installer als bijlage.
+# Met dry_run gebeurt alles behalve de commit en de draft; het resultaat staat in de samenvatting van de run.
 name: Release
 
 on:
-  push:
-    tags:
-      - "v*"
   workflow_dispatch:
     inputs:
       version:
-        description: "Versie, bijvoorbeeld 2.3.3"
+        description: "Versie, bijvoorbeeld 2.3.4"
         required: true
         type: string
+      dry_run:
+        description: "Proefrun: niets committen en geen draft maken"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -21,19 +25,58 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  release:
     runs-on: windows-latest
     defaults:
       run:
         shell: pwsh
     env:
       DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+      DRY_RUN: ${{ inputs.dry_run }}
+      GH_TOKEN: ${{ github.token }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.repository.default_branch }}
           fetch-depth: 0
+
+      - name: Changelog section
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          $dryRun = $env:DRY_RUN -eq 'true'
+          function Stop-OrWarn([string]$message) {
+              if ($dryRun) { Write-Host "::warning::$message" } else { throw $message }
+          }
+
+          $version = $env:INPUT_VERSION.Trim().TrimStart('v')
+          if ($version -notmatch '^\d+\.\d+\.\d+$') { throw "Ongeldige versie: '$version'. Gebruik de vorm 2.3.4." }
+
+          $lines = Get-Content CHANGELOG.md -Encoding utf8
+          $headers = @(for ($i = 0; $i -lt $lines.Count; $i++) { if ($lines[$i] -match '^## ') { $i } })
+          $escaped = [regex]::Escape($version)
+          $start = $headers | Where-Object { $lines[$_] -match "^## $escaped( |$)" } | Select-Object -First 1
+          if ($null -eq $start) { throw "CHANGELOG.md heeft geen sectie '## $version'." }
+          if ($start -ne $headers[0]) { Stop-OrWarn "De sectie '## $version' staat niet bovenaan CHANGELOG.md." }
+
+          $next = $headers | Where-Object { $_ -gt $start } | Select-Object -First 1
+          $end = if ($null -ne $next) { $next - 1 } else { $lines.Count - 1 }
+          $notes = if ($end -gt $start) { ($lines[($start + 1)..$end] -join "`n").Trim() } else { "" }
+          if (-not $notes) { throw "De sectie '## $version' in CHANGELOG.md is leeg." }
+
+          gh release view $version --repo $env:GITHUB_REPOSITORY *> $null
+          if ($LASTEXITCODE -eq 0) { Stop-OrWarn "Er bestaat al een release '$version'." }
+          git ls-remote --exit-code --tags origin "refs/tags/$version" *> $null
+          if ($LASTEXITCODE -eq 0) { Stop-OrWarn "Er bestaat al een tag '$version'." }
+
+          $notesFile = Join-Path $env:RUNNER_TEMP "notes.md"
+          [IO.File]::WriteAllText($notesFile, $notes, [Text.UTF8Encoding]::new($false))
+          "VERSION=$version" >> $env:GITHUB_ENV
+          "NOTES_FILE=$notesFile" >> $env:GITHUB_ENV
+          Write-Host $notes
+          exit 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -44,37 +87,70 @@ jobs:
         run: choco install innosetup -y --no-progress
 
       - name: Build
-        env:
-          INPUT_VERSION: ${{ inputs.version }}
         run: |
-          $version = if ($env:INPUT_VERSION) { $env:INPUT_VERSION } else { "$env:GITHUB_REF_NAME" }
-          $version = $version.Trim().TrimStart('v')
-          if ($version -notmatch '^\d+\.\d+\.\d+$') { throw "Ongeldige versie: $version" }
-          "VERSION=$version" >> $env:GITHUB_ENV
-          ./build.ps1 -Version $version
-          $setup = "public/Kniip-Setup-$version.exe"
+          ./build.ps1 -Version $env:VERSION
+          $setup = "public/Kniip-Setup-$env:VERSION.exe"
           if (-not (Test-Path $setup)) { throw "Installer niet gevonden: $setup" }
-          Get-ChildItem public | Format-Table Name, @{ n = "MB"; e = { [math]::Round($_.Length / 1MB, 1) } }
 
-      - name: Commit public/ to default branch
+      - name: README
         run: |
-          $staging = Join-Path $env:RUNNER_TEMP "public"
-          New-Item -ItemType Directory -Path $staging -Force | Out-Null
-          Copy-Item public/*.exe $staging
-          Remove-Item public -Recurse -Force
-          git reset --hard
+          $path = (Resolve-Path README.md).Path
+          $readme = [IO.File]::ReadAllText($path)
+          $pattern = '(?m)^\| \d+\.\d+\.\d+ \| \[Kniip-Setup-[^\r\n]*'
+          $found = [regex]::Matches($readme, $pattern).Count
+          if ($found -ne 1) { throw "Verwacht precies één downloadregel in README.md, gevonden: $found." }
+          $v = $env:VERSION
+          $row = "| $v | [Kniip-Setup-$v.exe](https://github.com/$env:GITHUB_REPOSITORY/releases/download/$v/Kniip-Setup-$v.exe) |"
+          $readme = [regex]::Replace($readme, $pattern, { param($m) $row })
+          [IO.File]::WriteAllText($path, $readme, [Text.UTF8Encoding]::new($false))
+          git --no-pager diff README.md
 
-          git fetch origin $env:DEFAULT_BRANCH
-          git checkout -B $env:DEFAULT_BRANCH "origin/$env:DEFAULT_BRANCH"
+      - name: Dry run summary
+        if: ${{ inputs.dry_run }}
+        run: |
+          $files = Get-ChildItem public -File | ForEach-Object { "| $($_.Name) | $([math]::Round($_.Length / 1MB, 1)) MB |" }
+          @(
+              "## Proefrun $env:VERSION"
+              ""
+              "Er is niets gecommit en er is geen draft gemaakt."
+              ""
+              "### Omschrijving van de release"
+              ""
+              (Get-Content $env:NOTES_FILE -Raw -Encoding utf8)
+              ""
+              "### Wijziging in README.md"
+              ""
+              '```diff'
+              (git --no-pager diff README.md | Out-String).Trim()
+              '```'
+              ""
+              "### public/"
+              ""
+              "| Bestand | Grootte |"
+              "| --- | --- |"
+              $files
+          ) | Out-File $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
 
-          if (Test-Path public) { Remove-Item public -Recurse -Force }
-          New-Item -ItemType Directory -Path public | Out-Null
-          Copy-Item (Join-Path $staging "*.exe") public
-
+      - name: Commit public/ and README
+        if: ${{ !inputs.dry_run }}
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A public
-          git diff --cached --quiet
-          if ($LASTEXITCODE -eq 0) { Write-Host "Geen wijzigingen in public/."; exit 0 }
-          git commit -m "Build $env:VERSION [skip ci]"
-          git push origin $env:DEFAULT_BRANCH
+          git add -A public README.md
+          git commit -m "Release $env:VERSION [skip ci]"
+          if ($LASTEXITCODE -ne 0) { throw "Commit is mislukt." }
+          git push origin "HEAD:$env:DEFAULT_BRANCH"
+          if ($LASTEXITCODE -ne 0) { throw "Push is mislukt." }
+          "RELEASE_SHA=$(git rev-parse HEAD)" >> $env:GITHUB_ENV
+
+      - name: Draft release
+        if: ${{ !inputs.dry_run }}
+        run: |
+          $url = gh release create $env:VERSION "public/Kniip-Setup-$env:VERSION.exe" `
+              --repo $env:GITHUB_REPOSITORY `
+              --draft `
+              --title $env:VERSION `
+              --notes-file $env:NOTES_FILE `
+              --target $env:RELEASE_SHA
+          if ($LASTEXITCODE -ne 0) { throw "Draft-release maken is mislukt." }
+          "Draft-release: $url" | Tee-Object -FilePath $env:GITHUB_STEP_SUMMARY -Append
