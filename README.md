@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=".fiiles/kniip_logo.svg" alt="kniip-logo" width="160">
+  <img src="images/kniip_logo.svg" alt="kniip-logo" width="160">
 </p>
 
 <h1 align="center">kniip</h1>
@@ -17,7 +17,7 @@
 kniip is een annotatie-editor die naast het Windows Knipprogramma werkt. Maak een schermafbeelding, voeg pijlen, tekst, markeringen, stappen, emoji of vervaging toe en sla het resultaat op, kopieer het of upload het. kniip kan ook schermopnames maken en die exporteren als video of GIF.
 
 <p align="center">
-  <a href="screenshot/kniip.png"><img src="screenshot/kniip.png" alt="Screenshot van de kniip-editor" width="720"></a>
+  <a href="images/kniip.png"><img src="images/kniip.png" alt="Screenshot van de kniip-editor" width="720"></a>
 </p>
 
 ## Wat kan kniip?
@@ -35,7 +35,7 @@ kniip is een annotatie-editor die naast het Windows Knipprogramma werkt. Maak ee
 
 | Versie | Installer |
 | ------ | --------- |
-| 2.3.2 | [Kniip-Setup-2.3.2.exe](https://git.hibbit.net/rogier/kniip/releases/download/2.3.2/Kniip-Setup-2.3.2.exe) |
+| 2.3.3 | [Kniip-Setup-2.3.3.exe](https://git.hibbit.net/rogier/kniip/releases/download/2.3.2/Kniip-Setup-2.3.3.exe) |
 
 Oudere versies vind je bij [alle releases](https://git.hibbit.net/rogier/kniip/releases).
 
