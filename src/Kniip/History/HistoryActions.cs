@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows;
 using Kniip.Editor;
 using Kniip.Infrastructure;
+using Kniip.Resources;
 
 namespace Kniip.History;
 
@@ -22,14 +23,14 @@ public static class HistoryActions
         bool image = file && entry.Kind == HistoryKind.Snip;
         return new HistoryCommand?[]
         {
-            new("Openen", "\uE8E5", file || url, () => Open(entry)),
-            new("Openen in de editor", "\uE70F", image, () => App.Instance.OpenFile(entry.FilePath!)),
-            new("Link openen", "\uE774", url, () => Launch(entry.Url!)),
+            new(Strings.History_Open, "\uE8E5", file || url, () => Open(entry)),
+            new(Strings.History_OpenInEditor, "\uE70F", image, () => App.Instance.OpenFile(entry.FilePath!)),
+            new(Strings.History_OpenLink, "\uE774", url, () => Launch(entry.Url!)),
             null,
-            new("Link kopiëren", "\uE71B", url, () => Copy(entry.Url!)),
-            new("Afbeelding kopiëren", "\uE8C8", image, () => CopyImage(entry.FilePath!)),
-            new("Pad kopiëren", "\uE8C8", file, () => Copy(entry.FilePath!)),
-            new("Tonen in map", "\uE838", file, () => ShowInFolder(entry.FilePath!))
+            new(Strings.History_CopyLink, "\uE71B", url, () => Copy(entry.Url!)),
+            new(Strings.History_CopyImage, "\uE8C8", image, () => CopyImage(entry.FilePath!)),
+            new(Strings.History_CopyPath, "\uE8C8", file, () => Copy(entry.FilePath!)),
+            new(Strings.History_ShowInFolder, "\uE838", file, () => ShowInFolder(entry.FilePath!))
         };
     }
 
@@ -46,7 +47,7 @@ public static class HistoryActions
         }
         else
         {
-            MessageBox.Show($"Het bestand bestaat niet meer:\n{entry.FilePath}", "kniip", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(string.Format(Strings.History_FileMissing, entry.FilePath), "kniip", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 
@@ -81,12 +82,12 @@ public static class HistoryActions
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Kan '{Path.GetFileName(path)}' niet kopiëren.\n\n{ex.Message}", "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(string.Format(Strings.History_CannotCopy, Path.GetFileName(path), ex.Message), "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
 
     private static void ClipboardBusy() =>
-        MessageBox.Show("Kopiëren is mislukt: het klembord is bezet. Probeer het opnieuw.", "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
+        MessageBox.Show(Strings.Common_CopyFailedBusyLong, "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
 
     private static void Run(Action action)
     {
@@ -96,7 +97,7 @@ public static class HistoryActions
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Openen is mislukt.\n\n{ex.Message}", "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(string.Format(Strings.History_OpenFailed, ex.Message), "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Windows;
 using Kniip.Settings;
+using Kniip.Resources;
 
 namespace Kniip.Editor;
 
@@ -11,8 +12,8 @@ public partial class CloseEditorDialog : Window
         InitializeComponent();
         Infrastructure.ThemeManager.Attach(this);
         MessageText.Text = tabCount == 1
-            ? "Er is 1 tabblad open. Wat wil je doen?"
-            : $"Er zijn {tabCount} tabbladen open. Wat wil je doen?";
+            ? Strings.CloseDialog_OneTab
+            : string.Format(Strings.CloseDialog_ManyTabs, tabCount);
     }
 
     /// <summary>CloseAll of KeepTabs; alleen geldig als ShowDialog true teruggeeft.</summary>

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Rectangle = System.Drawing.Rectangle;
+using Kniip.Resources;
 
 namespace Kniip.Recording;
 
@@ -57,7 +58,7 @@ public partial class RecordingToolbar : Window
         SystemAudioToggle.Visibility = Show(state is ToolbarState.Ready or ToolbarState.Countdown);
         MicrophoneToggle.Visibility = SystemAudioToggle.Visibility;
         RecordButton.Visibility = Show(state is ToolbarState.Ready or ToolbarState.Countdown);
-        RecordButton.ToolTip = state == ToolbarState.Countdown ? "Nu meteen starten" : "Opname starten";
+        RecordButton.ToolTip = state == ToolbarState.Countdown ? Strings.Recording_StartNow : Strings.Recording_Start;
         PauseButton.Visibility = Show(active);
         StopButton.Visibility = Show(active);
         TimePanel.Visibility = Show(active || state == ToolbarState.Finishing);
@@ -65,13 +66,13 @@ public partial class RecordingToolbar : Window
         CancelButton.Visibility = Show(state != ToolbarState.Finishing);
 
         PauseIcon.Text = state == ToolbarState.Paused ? "\uE768" : "\uE769";
-        PauseButton.ToolTip = state == ToolbarState.Paused ? "Hervatten" : "Pauzeren";
+        PauseButton.ToolTip = state == ToolbarState.Paused ? Strings.Recording_Resume : Strings.Recording_Pause;
         RecordDot.Opacity = state == ToolbarState.Recording ? 1 : 0.35;
 
         if (state == ToolbarState.Ready)
         {
             RecordButtonDot.Visibility = Visibility.Visible;
-            RecordButtonText.Text = "Opnemen";
+            RecordButtonText.Text = Strings.Recording_Record;
         }
 
         if (state == ToolbarState.Recording)
@@ -90,7 +91,7 @@ public partial class RecordingToolbar : Window
     internal void SetCountdown(int seconds)
     {
         RecordButtonDot.Visibility = Visibility.Collapsed;
-        RecordButtonText.Text = $"Start over {seconds}...";
+        RecordButtonText.Text = string.Format(Strings.Recording_StartsIn, seconds);
     }
 
     private static Visibility Show(bool visible) => visible ? Visibility.Visible : Visibility.Collapsed;

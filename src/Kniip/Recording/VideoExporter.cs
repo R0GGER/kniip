@@ -6,6 +6,7 @@ using Windows.Media.Editing;
 using Windows.Media.MediaProperties;
 using Windows.Media.Transcoding;
 using Windows.Storage;
+using Kniip.Resources;
 
 namespace Kniip.Recording;
 
@@ -51,7 +52,7 @@ internal static class VideoExporter
                 .AsTask(cancellationToken, percent);
             if (result != TranscodeFailureReason.None)
             {
-                throw new InvalidOperationException($"Windows kon de video niet opslaan ({result}).");
+                throw new InvalidOperationException(string.Format(Strings.Video_SaveFailed, result));
             }
         }
         catch

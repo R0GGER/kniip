@@ -1,130 +1,137 @@
 <p align="center">
-  <img src="images/kniip_logo.svg" alt="kniip-logo" width="160">
+  <img src="images/kniip_logo.svg" alt="kniip logo" width="160">
 </p>
 
 <h1 align="center">kniip</h1>
 
 <p align="center">
-  <b>kniip</b> is een uitgebreide annotatie-editor voor Windows. Leg iets op je scherm vast, maak het duidelijk met annotaties en deel het als afbeelding, video, GIF of link.
+  <b>kniip</b> is a full-featured annotation editor for Windows. Capture something on your screen, make it clear with annotations and share it as an image, video, GIF or link.
 </p>
 
 <p align="center">
   <a href="https://github.com/R0GGER/kniip/releases/latest"><strong>Download: kniip</strong></a>
 </p>
 
----
-
-kniip is een annotatie-editor die naast het Windows Knipprogramma werkt. Maak een schermafbeelding, voeg pijlen, tekst, markeringen, stappen, emoji of vervaging toe en sla het resultaat op, kopieer het of upload het. kniip kan ook schermopnames maken en die exporteren als video of GIF.
-
 <p align="center">
-  <a href="images/kniip.png"><img src="images/kniip.png" alt="Screenshot van de kniip-editor" width="720"></a>
+  <b>English</b> · <a href="README_NL.md">Nederlands</a>
 </p>
 
-## Wat kan kniip?
+---
 
-- **Knippen tot op de pixel.** Rechthoek of venster, met een vergrootglas voor precieze hoeken en een instelbare vertraging om eerst een menu of tooltip te openen.
-- **Aantekenen.** Pijlen en lijnen die je kunt buigen, tekst, vormen, genummerde stappen, markeerstift, emoji en vervaging.
-- **Tabbladen.** Elk knipsel opent als tabblad in één editorvenster. Bij het sluiten kies je of de tabbladen dicht gaan of bewaard blijven.
-- **Screencasts.** Neem een deel van je scherm op en exporteer als video of GIF.
-- **Delen.** Opslaan, kopiëren naar het klembord, printen of uploaden en de link meteen delen.
-- **Geschiedenis.** Vind eerdere knipsels en uploads terug, met miniaturen en zoeken.
-- **Jouw werkbalk.** Kies een of twee werkbalken, versleep knoppen en verberg wat je niet gebruikt.
-- **Altijd bij.** kniip meldt zelf wanneer er een nieuwe versie is en werkt zichzelf bij met een klik.
+kniip is an annotation editor that works alongside the Windows Snipping Tool. Take a screenshot, add arrows, text, highlights, steps, emoji or blur, and save, copy or upload the result. kniip can also record your screen and export the recording as a video or GIF.
 
-## Downloaden
+kniip started as a Dutch initiative, and its name gives that away: it comes from the Dutch *knip* and *knippen*, meaning "cut" and "cutting", which suits a tool built around snipping your screen. The original Dutch version of this page is in [README_NL.md](README_NL.md).
 
-| Versie | Installer |
-| ------ | --------- |
+<p align="center">
+  <a href="images/kniip.png"><img src="images/kniip.png" alt="Screenshot of the kniip editor" width="720"></a>
+</p>
+
+## What can kniip do?
+
+- **Pixel-perfect snips.** Rectangle or window, with a magnifier for precise corners and an adjustable delay so you can open a menu or tooltip first.
+- **Annotate.** Arrows and lines you can bend, text, shapes, numbered steps, highlighter, emoji and blur.
+- **Tabs.** Every snip opens as a tab in one editor window. When closing, you choose whether the tabs close or are kept.
+- **Screencasts.** Record part of your screen and export it as a video or GIF.
+- **Share.** Save, copy to the clipboard, print, or upload and share the link right away.
+- **History.** Find earlier snips and uploads again, with thumbnails and search.
+- **Your toolbar.** Choose one or two toolbars, drag buttons around and hide what you don't use.
+- **Always up to date.** kniip tells you when a new version is available and updates itself with one click.
+- **English and Dutch.** kniip follows the Windows display language, or you choose the language under **Settings > System > Language**.
+
+## Download
+
+| Version | Installer |
+| ------- | --------- |
 | 2.3.4 | [Kniip-Setup-2.3.4.exe](https://github.com/R0GGER/kniip/releases/download/2.3.4/Kniip-Setup-2.3.4.exe) |
 
-Oudere versies vind je bij [alle releases](https://github.com/R0GGER/kniip/releases).
+Older versions are available under [all releases](https://github.com/R0GGER/kniip/releases).
 
-## Installeren
+## Install
 
-1. Download `Kniip-Setup-<versie>.exe` via een van de links hierboven.
-2. Start de installer. Beheerdersrechten zijn niet nodig: kniip wordt per gebruiker geïnstalleerd in `%LOCALAPPDATA%\Programs\Kniip`.
-3. Kies tijdens de installatie welke integraties je wilt:
-   - **kniip starten met Windows** (aanbevolen): kniip draait dan op de achtergrond in het systeemvak.
-   - **kniip tonen in 'Openen met'** voor afbeeldingen (`.png`, `.jpg`, `.jpeg`, `.bmp`, `.gif`), ook vanuit het Knipprogramma.
-   - **Snelkoppeling op het bureaublad**.
+1. Download `Kniip-Setup-<version>.exe` via one of the links above.
+2. Run the installer. No administrator rights are needed: kniip is installed per user in `%LOCALAPPDATA%\Programs\Kniip`.
+3. During installation, choose which integrations you want:
+   - **Start kniip with Windows** (recommended): kniip then runs in the background in the system tray.
+   - **Show kniip in 'Open with'** for images (`.png`, `.jpg`, `.jpeg`, `.bmp`, `.gif`), also from the Snipping Tool.
+   - **Desktop shortcut**.
 
-Beide integraties kun je later ook in- of uitschakelen via de instellingen van kniip.
+You can also turn both integrations on or off later in the kniip settings.
 
-Een losse .NET-installatie is niet nodig; de installer bevat alles wat kniip nodig heeft.
+A separate .NET installation is not needed; the installer contains everything kniip needs.
 
-### Systeemeisen
+### System requirements
 
-- Windows 10 (versie 1809 of nieuwer) of Windows 11
-- 64-bits (x64)
+- Windows 10 (version 1809 or newer) or Windows 11
+- 64-bit (x64)
 
-### Verwijderen
+### Uninstall
 
-Verwijder kniip via **Instellingen > Apps > Geïnstalleerde apps**. Autostart en de 'Openen met'-registratie worden daarbij ook opgeruimd.
+Uninstall kniip via **Settings > Apps > Installed apps**. Autostart and the 'Open with' registration are cleaned up as well.
 
-Heb je alleen `Kniip.exe` gestart en geen installer gebruikt, dan staat kniip mogelijk nog bij **Instellingen > Apps > Opstarten**. Die regel wijst naar de map waar de exe toen stond. De schakelaar daar uitzetten verbergt kniip niet: Windows bewaart de regel en zet hem alleen op uit.
+If you only ran `Kniip.exe` and never used the installer, kniip may still be listed under **Settings > Apps > Startup**. That entry points to the folder where the exe was at the time. Turning off the switch there doesn't hide kniip: Windows keeps the entry and only sets it to off.
 
-`tools\remove-autostart.cmd` haalt de regel weg. Dubbelklik het bestand, of voer uit:
+`tools\remove-autostart.cmd` removes the entry. Double-click the file, or run:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\remove-autostart.ps1
 ```
 
-Het script geldt voor de aangemelde gebruiker. Het pad van de exe maakt niet uit en het bestand hoeft er niet meer te staan. Beheerdersrechten zijn niet nodig. Elke Windows-account heeft een eigen opstartlijst, dus draai het in de account waarin kniip een keer is gestart. Blijft de vermelding daarna zichtbaar, log dan een keer uit en weer in.
+The script applies to the signed-in user. The path of the exe doesn't matter and the file no longer needs to exist. No administrator rights are needed. Every Windows account has its own startup list, so run it in the account in which kniip was started. If the entry is still visible afterwards, sign out and back in once.
 
-## Zelf bouwen
+## Build it yourself
 
-Vereisten:
+Requirements:
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- [Inno Setup 6](https://jrsoftware.org/isinfo.php) (optioneel, alleen nodig voor de installer): `winget install JRSoftware.InnoSetup`
+- [Inno Setup 6](https://jrsoftware.org/isinfo.php) (optional, only needed for the installer): `winget install JRSoftware.InnoSetup`
 
-Bouwen:
-
-```powershell
-.\build.ps1                  # versie 2.3.2
-.\build.ps1 -Version 1.2.0   # andere versie
-```
-
-Het script levert op (oudere versies in `public\` worden eerst verwijderd):
-
-- `public\Kniip-Setup-<versie>.exe`: de installer (alleen als Inno Setup 6 gevonden is)
-- `public\KniipTest-<versie>.exe`: testversie (overslaan met `-SkipTest`)
-- `obj\publish\Kniip.exe`: zelfstandige exe, draait zonder installatie
-
-### Testversie
-
-De testversie draait naast de geïnstalleerde kniip en raakt die niet aan. Hij gebruikt overal `KniipTest` in plaats van `Kniip`: de autostartregel, de 'Openen met'-registratie (`KniipTest.Image`), de instellingenmap `%APPDATA%\KniipTest` en de single-instance-mutex. Bij de eerste start kopieert hij de instellingen van de gewone kniip. Zichzelf bijwerken doet hij niet, want de installer zou de gewone kniip overschrijven.
-
-Opruimen hoeft alleen als je in de testversie autostart of 'Openen met' hebt aangezet:
+Build:
 
 ```powershell
-.\public\KniipTest-<versie>.exe --unregister
-Remove-Item "$env:APPDATA\KniipTest" -Recurse   # optioneel: instellingen van de testversie
+.\build.ps1                  # version 2.5.0
+.\build.ps1 -Version 1.2.0   # another version
 ```
 
-Draaien beide versies tegelijk, dan reageren ze allebei op dezelfde sneltoetsen en knipsels. Sluit de gewone kniip tijdens het testen, of kies in de testversie andere sneltoetsen.
+The script produces (older versions in `public\` are removed first):
 
-## Een nieuwe versie publiceren
+- `public\Kniip-Setup-<version>.exe`: the installer (only if Inno Setup 6 is found)
+- `public\KniipTest-<version>.exe`: test build (skip with `-SkipTest`)
+- `obj\publish\Kniip.exe`: standalone exe, runs without installation
 
-1. Schrijf de wijzigingen bovenaan [CHANGELOG.md](CHANGELOG.md) onder een nieuwe kop `## <versie> - <datum>`, bijvoorbeeld `## 2.3.4 - 2026-11-13`.
-2. Commit en push naar `master`.
-3. Start op GitHub **Actions > Release > Run workflow** en vul de versie in, zonder `v`. Vink **dry_run** aan om eerst een proefrun te doen; de samenvatting van de run toont dan de releasetekst en de wijziging in de README, zonder iets te committen.
-4. De workflow [Release](.github/workflows/release.yml) bouwt de installer en testversie naar `public/`, zet de downloadregel onder [Downloaden](#downloaden) op de nieuwe versie, commit beide naar `master` en maakt een draft-release met de versie als tag en titel, de changelogsectie als beschrijving en `Kniip-Setup-<versie>.exe` als bijlage.
-5. Controleer de draft op [GitHub](https://github.com/R0GGER/kniip/releases) en klik **Publish release**. Pas dan bestaat de tag en werkt de downloadlink.
-6. Pull daarna lokaal, want de workflow heeft een commit op `master` gezet.
+### Test build
 
-Lokaal bouwen kan ook met `.\build.ps1 -Version <versie>`.
+The test build runs alongside the installed kniip and doesn't touch it. It uses `KniipTest` instead of `Kniip` everywhere: the autostart entry, the 'Open with' registration (`KniipTest.Image`), the settings folder `%APPDATA%\KniipTest` and the single-instance mutex. On first start it copies the settings of the regular kniip. It doesn't update itself, because the installer would overwrite the regular kniip.
 
-### Updaten vanuit kniip
+You only need to clean up if you turned on autostart or 'Open with' in the test build:
 
-Onder **Instellingen > Update** controleert kniip via de API van GitHub of er een nieuwere release is en toont de changelog van alle nieuwere versies. **Updaten** downloadt de installer, sluit kniip, installeert stil en start kniip opnieuw. De eerder gekozen integraties blijven behouden.
+```powershell
+.\public\KniipTest-<version>.exe --unregister
+Remove-Item "$env:APPDATA\KniipTest" -Recurse   # optional: settings of the test build
+```
 
-kniip controleert ook zelf bij het starten en daarna elke 24 uur. Is er een nieuwere versie, dan staat er een blauwe stip op het kniip-icoon in het systeemvak, op de knop **Instellingen** in de editor en op de tab **Update**. Wijs het icoon in het systeemvak aan om te zien welke versie er klaarstaat. Dit zet je uit met **Automatisch controleren op nieuwe versies** in die tab.
+If both versions run at the same time, they both respond to the same keyboard shortcuts and snips. Close the regular kniip while testing, or choose different shortcuts in the test build.
 
-## Licentie
+## Publishing a new version
+
+1. Write the changes at the top of [CHANGELOG.md](CHANGELOG.md) under a new heading `## <version> - <date>`, for example `## 2.3.4 - 2026-11-13`.
+2. Commit and push to `master`.
+3. On GitHub, start **Actions > Release > Run workflow** and enter the version, without `v`. Check **dry_run** to do a trial run first; the run summary then shows the release text and the README changes, without committing anything.
+4. The [Release](.github/workflows/release.yml) workflow builds the installer and test build to `public/`, sets the download line under [Download](#download) in `README.md` and `README_NL.md` to the new version, commits both to `master` and creates a draft release with the version as tag and title, the changelog section as description and `Kniip-Setup-<version>.exe` attached.
+5. Check the draft on [GitHub](https://github.com/R0GGER/kniip/releases) and click **Publish release**. Only then does the tag exist and does the download link work.
+6. Pull locally afterwards, because the workflow has pushed a commit to `master`.
+
+You can also build locally with `.\build.ps1 -Version <version>`.
+
+### Updating from within kniip
+
+Under **Settings > Update**, kniip uses the GitHub API to check for a newer release and shows the changelog of all newer versions. **Update** downloads the installer, closes kniip, installs silently and restarts kniip. Previously chosen integrations are kept.
+
+kniip also checks by itself at startup and then every 24 hours. If there's a newer version, a dot appears on the kniip icon in the system tray, on the **Settings** button in the editor and on the **Update** tab. Hover over the icon in the system tray to see which version is ready. Turn this off with **Automatically check for new versions** in that tab.
+
+## License
 
 Copyright © 2026 Rogier Meijer
 
-kniip is vrije software: je mag het verspreiden en aanpassen onder de voorwaarden van de [GNU General Public License](LICENSE), versie 3 of (naar keuze) een latere versie, zoals gepubliceerd door de Free Software Foundation. kniip wordt verspreid zonder enige garantie; zie de [licentie](LICENSE) voor de details.
+kniip is free software: you can redistribute it and/or modify it under the terms of the [GNU General Public License](LICENSE) as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. kniip is distributed without any warranty; see the [license](LICENSE) for details.
 
-kniip gebruikt [Markdig](https://github.com/xoofx/markdig) (BSD-2-Clause), [ScreenRecorderLib](https://github.com/sskodje/ScreenRecorderLib) (MIT) en [Twemoji](https://github.com/jdecked/twemoji) (CC-BY 4.0). Zie [`NOTICE.txt`](src/Kniip/Assets/Emoji/NOTICE.txt) voor de herkomst van de emoji.
+kniip uses [Markdig](https://github.com/xoofx/markdig) (BSD-2-Clause), [ScreenRecorderLib](https://github.com/sskodje/ScreenRecorderLib) (MIT) and [Twemoji](https://github.com/jdecked/twemoji) (CC-BY 4.0). See [`NOTICE.txt`](src/Kniip/Assets/Emoji/NOTICE.txt) for the origin of the emoji.

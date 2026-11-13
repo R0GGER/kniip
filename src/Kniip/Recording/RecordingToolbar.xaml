@@ -1,7 +1,8 @@
 <Window x:Class="Kniip.Recording.RecordingToolbar"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="kniip opname" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        xmlns:res="clr-namespace:Kniip.Resources"
+        Title="{x:Static res:Strings.Recording_Title}" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         ResizeMode="NoResize" SizeToContent="WidthAndHeight" ShowInTaskbar="False" Topmost="True"
         FontFamily="Segoe UI" FontSize="13" Foreground="{DynamicResource InkBrush}">
     <Window.Resources>
@@ -37,38 +38,38 @@
             </StackPanel>
 
             <ToggleButton x:Name="SystemAudioToggle" Style="{StaticResource MiniToggle}" Height="34" MinWidth="34"
-                          ToolTip="Systeemgeluid opnemen">
+                          ToolTip="{x:Static res:Strings.Recording_SystemAudio}">
                 <TextBlock Text="&#xE767;" Style="{StaticResource IconText}" />
             </ToggleButton>
             <ToggleButton x:Name="MicrophoneToggle" Style="{StaticResource MiniToggle}" Height="34" MinWidth="34"
-                          ToolTip="Microfoon opnemen">
+                          ToolTip="{x:Static res:Strings.Recording_Microphone}">
                 <TextBlock Text="&#xE720;" Style="{StaticResource IconText}" />
             </ToggleButton>
 
             <Button x:Name="RecordButton" Style="{StaticResource RecordStyle}" Click="Record_Click"
-                    ToolTip="Opname starten" MinWidth="104">
+                    ToolTip="{x:Static res:Strings.Recording_Start}" MinWidth="104">
                 <StackPanel Orientation="Horizontal">
                     <Ellipse x:Name="RecordButtonDot" Width="10" Height="10" Fill="White" Margin="0,0,7,0" VerticalAlignment="Center" />
-                    <TextBlock x:Name="RecordButtonText" Text="Opnemen" VerticalAlignment="Center" />
+                    <TextBlock x:Name="RecordButtonText" Text="{x:Static res:Strings.Recording_Record}" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
 
             <Button x:Name="PauseButton" Style="{StaticResource FlatButton}" Click="Pause_Click" Visibility="Collapsed"
-                    ToolTip="Pauzeren">
+                    ToolTip="{x:Static res:Strings.Recording_Pause}">
                 <TextBlock x:Name="PauseIcon" Text="&#xE769;" Style="{StaticResource IconText}" />
             </Button>
             <Button x:Name="StopButton" Style="{StaticResource RecordStyle}" Click="Stop_Click" Visibility="Collapsed"
-                    ToolTip="Opname stoppen">
+                    ToolTip="{x:Static res:Strings.Recording_Stop}">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="10" Height="10" Fill="White" RadiusX="1.5" RadiusY="1.5" Margin="0,0,7,0" VerticalAlignment="Center" />
-                    <TextBlock Text="Stoppen" VerticalAlignment="Center" />
+                    <TextBlock Text="{x:Static res:Strings.Recording_StopShort}" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
 
-            <TextBlock x:Name="BusyText" Text="Opname afronden..." VerticalAlignment="Center" Margin="8,0" Visibility="Collapsed"
+            <TextBlock x:Name="BusyText" Text="{x:Static res:Strings.Recording_Finishing}" VerticalAlignment="Center" Margin="8,0" Visibility="Collapsed"
                        Foreground="{DynamicResource SubtleTextBrush}" />
 
-            <Button x:Name="CancelButton" Style="{StaticResource FlatButton}" Click="Cancel_Click" ToolTip="Annuleren (opname weggooien)">
+            <Button x:Name="CancelButton" Style="{StaticResource FlatButton}" Click="Cancel_Click" ToolTip="{x:Static res:Strings.Recording_CancelTip}">
                 <TextBlock Text="&#xE711;" Style="{StaticResource IconText}" FontSize="14" />
             </Button>
         </StackPanel>

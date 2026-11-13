@@ -67,8 +67,19 @@ public enum ColorMode
     System
 }
 
+public enum AppLanguage
+{
+    /// <summary>Nederlands als de Windows-weergavetaal Nederlands is, anders Engels.</summary>
+    System,
+    Dutch,
+    English
+}
+
 public sealed class AppSettings
 {
+    /// <summary>Taal van kniip; een wijziging werkt pas na opnieuw starten.</summary>
+    public AppLanguage Language { get; set; } = AppLanguage.System;
+
     public bool WatchClipboard { get; set; } = true;
     public bool WatchScreenshotsFolder { get; set; } = true;
     public bool OnlyFromSnippingTool { get; set; } = true;

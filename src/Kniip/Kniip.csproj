@@ -17,12 +17,13 @@
     <ApplicationIcon>AppIcon.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Product>kniip</Product>
-    <Description>Annotatie-editor naast het Windows Knipprogramma</Description>
-    <Version>2.3.4</Version>
+    <Description>Annotation editor alongside the Windows Snipping Tool</Description>
+    <Version>2.5.0</Version>
     <Authors>Rogier Meijer</Authors>
     <Copyright>Copyright © 2026 Rogier Meijer</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <SatelliteResourceLanguages>nl;en</SatelliteResourceLanguages>
+    <NeutralLanguage>en</NeutralLanguage>
     <!-- WPF regelt DPI via app.manifest; de WinForms-analyzer is hier niet van toepassing. -->
     <NoWarn>$(NoWarn);WFAC010</NoWarn>
     <!-- Geen .pdb/.xml van ScreenRecorderLib (15 MB) naast de exe. -->
@@ -39,6 +40,24 @@
     <Resource Include="AppIcon.ico" />
     <Resource Include="TrayIcon.ico" />
     <Resource Include="Assets\Emoji\emoji.json;Assets\Emoji\twemoji-64.png" />
+  </ItemGroup>
+
+  <!-- Teksten: Strings.resx is Engels (ook de terugval), Strings.nl.resx Nederlands; de klasse Kniip.Resources.Strings wordt bij het bouwen gegenereerd. -->
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings.resx">
+      <StronglyTypedFileName>$(IntermediateOutputPath)Strings.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Kniip.Resources</StronglyTypedNamespace>
+      <StronglyTypedClassName>Strings</StronglyTypedClassName>
+      <PublicClass>true</PublicClass>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <!-- XAML gebruikt Strings via x:Static; de klasse moet er dus al zijn vóór de eerste XAML-compilatie. -->
+  <!-- De tijdelijke WPF-assembly (*_wpftmp) draait zelf geen ResGen en krijgt het gegenereerde bestand hier mee. -->
+  <Target Name="GenerateStringsBeforeMarkup" BeforeTargets="MarkupCompilePass1" DependsOnTargets="PrepareResourceNames;ResGen" />
+  <ItemGroup Condition="$(MSBuildProjectName.EndsWith('_wpftmp'))">
+    <Compile Include="$(IntermediateOutputPath)Strings.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

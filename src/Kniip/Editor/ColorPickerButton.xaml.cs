@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Kniip.Resources;
 
 namespace Kniip.Editor;
 
@@ -70,7 +71,7 @@ public partial class ColorPickerButton : UserControl
                 Padding = new Thickness(3),
                 Margin = new Thickness(1),
                 Content = visual,
-                ToolTip = color.A == 0 ? "Geen (transparant)" : $"#{color.R:X2}{color.G:X2}{color.B:X2}"
+                ToolTip = color.A == 0 ? Strings.Background_None : $"#{color.R:X2}{color.G:X2}{color.B:X2}"
             };
             Color captured = color;
             button.Click += (_, _) => Pick(captured);

@@ -1,6 +1,7 @@
 <UserControl x:Class="Kniip.Editor.EditorView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="clr-namespace:Kniip.Resources"
              xmlns:local="clr-namespace:Kniip.Editor"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              Background="{DynamicResource WindowBrush}" Foreground="{DynamicResource InkBrush}"
@@ -43,7 +44,7 @@
                 <DataTrigger Binding="{Binding}" Value="0">
                     <Setter TargetName="Dot" Property="Visibility" Value="Collapsed" />
                     <Setter TargetName="NoneLine" Property="Visibility" Value="Visible" />
-                    <Setter TargetName="Label" Property="Text" Value="Geen" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Common_None}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="{x:Null}">
                     <Setter TargetName="Label" Property="Visibility" Value="Collapsed" />
@@ -56,18 +57,18 @@
             <StackPanel Orientation="Horizontal">
                 <Line x:Name="Sample" X1="1" Y1="8" X2="35" Y2="8" Width="36" Height="16" Stroke="{DynamicResource InkBrush}"
                       StrokeThickness="2" VerticalAlignment="Center" />
-                <TextBlock x:Name="Label" Text="Doorgetrokken" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="12" />
+                <TextBlock x:Name="Label" Text="{x:Static res:Strings.Dash_Solid}" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="12" />
             </StackPanel>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:LineDash.Dash}">
                     <Setter TargetName="Sample" Property="StrokeDashArray" Value="3 2" />
-                    <Setter TargetName="Label" Property="Text" Value="Gestreept" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Dash_Dashed}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:LineDash.Dot}">
                     <Setter TargetName="Sample" Property="StrokeDashArray" Value="0 2" />
                     <Setter TargetName="Sample" Property="StrokeDashCap" Value="Round" />
                     <Setter TargetName="Sample" Property="X1" Value="2" />
-                    <Setter TargetName="Label" Property="Text" Value="Gestippeld" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Dash_Dotted}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="{x:Null}">
                     <Setter TargetName="Label" Property="Visibility" Value="Collapsed" />
@@ -89,7 +90,7 @@
             </StackPanel>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding}" Value="0">
-                    <Setter TargetName="Label" Property="Text" Value="Recht" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Corner_Square}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="{x:Null}">
                     <Setter TargetName="Label" Property="Visibility" Value="Collapsed" />
@@ -150,11 +151,11 @@
             <StackPanel Orientation="Horizontal">
                 <Path Data="{Binding Converter={StaticResource CursorIcon}}" Fill="{DynamicResource ControlBrush}" Stroke="{DynamicResource InkBrush}"
                       StrokeThickness="1" StrokeLineJoin="Round" Stretch="Uniform" Width="16" Height="18" VerticalAlignment="Center" />
-                <TextBlock x:Name="Label" Text="Pijl" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="12" />
+                <TextBlock x:Name="Label" Text="{x:Static res:Strings.Common_Arrow}" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="12" />
             </StackPanel>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:CursorKind.Click}">
-                    <Setter TargetName="Label" Property="Text" Value="Pijl met klik" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Cursor_ArrowClick}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:CursorKind.Hand}">
                     <Setter TargetName="Label" Property="Text" Value="Hand" />
@@ -170,24 +171,24 @@
             <StackPanel Orientation="Horizontal">
                 <Path x:Name="Icon" Data="M2.5,3.5 H17.5 V14.5 H2.5 Z" Stroke="{DynamicResource InkBrush}" StrokeThickness="1.3" StrokeLineJoin="Round"
                       Width="20" Height="18" VerticalAlignment="Center" />
-                <TextBlock x:Name="Label" Text="Kader" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="12" />
+                <TextBlock x:Name="Label" Text="{x:Static res:Strings.TextShape_Box}" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="12" />
             </StackPanel>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:TextShape.None}">
                     <Setter TargetName="Icon" Property="Data" Value="M5,4 H15 M10,4 V15" />
-                    <Setter TargetName="Label" Property="Text" Value="Geen kader" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.TextShape_None}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:TextShape.Balloon}">
                     <Setter TargetName="Icon" Property="Data" Value="M4,2.5 H16 Q17.5,2.5 17.5,4 V11 Q17.5,12.5 16,12.5 H9 L4.5,16.5 L6,12.5 H4 Q2.5,12.5 2.5,11 V4 Q2.5,2.5 4,2.5 Z" />
-                    <Setter TargetName="Label" Property="Text" Value="Ballon" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Common_Balloon}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:TextShape.Oval}">
                     <Setter TargetName="Icon" Property="Data" Value="M10,2 C14.7,2 18,4.5 18,7.5 C18,10.5 14.7,13 10,13 C9,13 8.1,12.9 7.3,12.7 L3.8,16.5 L4.8,12 C3,11 2,9.4 2,7.5 C2,4.5 5.3,2 10,2 Z" />
-                    <Setter TargetName="Label" Property="Text" Value="Ovale ballon" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.TextShape_OvalBalloon}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:TextShape.Cloud}">
                     <Setter TargetName="Icon" Property="Data" Value="M6.5,12 A2.8,2.8 0 0 1 4.2,6.8 A3.3,3.3 0 0 1 9.2,3.6 A3.3,3.3 0 0 1 15,4.8 A2.8,2.8 0 0 1 16.2,10.5 A2.8,2.8 0 0 1 12,12.2 A3,3 0 0 1 6.5,12 Z M3.8,14.6 a1.2,1.2 0 1 0 2.4,0 a1.2,1.2 0 1 0 -2.4,0 Z M1.8,17 a0.7,0.7 0 1 0 1.4,0 a0.7,0.7 0 1 0 -1.4,0 Z" />
-                    <Setter TargetName="Label" Property="Text" Value="Wolk" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Common_Cloud}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="{x:Null}">
                     <Setter TargetName="Label" Property="Visibility" Value="Collapsed" />
@@ -200,38 +201,38 @@
             <StackPanel Orientation="Horizontal">
                 <Path Data="{Binding Converter={StaticResource ShapeIcon}}" Stroke="{DynamicResource InkBrush}" StrokeThickness="1.2"
                       StrokeLineJoin="Round" Stretch="Uniform" Width="16" Height="16" Margin="2,1" VerticalAlignment="Center" />
-                <TextBlock x:Name="Label" Text="Driehoek" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="12" />
+                <TextBlock x:Name="Label" Text="{x:Static res:Strings.Shape_Triangle}" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="12" />
             </StackPanel>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:ShapeKind.BlockArrow}">
-                    <Setter TargetName="Label" Property="Text" Value="Pijl" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Common_Arrow}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:ShapeKind.Star}">
-                    <Setter TargetName="Label" Property="Text" Value="Ster" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Shape_Star}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:ShapeKind.Cloud}">
-                    <Setter TargetName="Label" Property="Text" Value="Wolk" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Common_Cloud}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:ShapeKind.Balloon}">
-                    <Setter TargetName="Label" Property="Text" Value="Ballon" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Common_Balloon}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:ShapeKind.Heart}">
-                    <Setter TargetName="Label" Property="Text" Value="Hart" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Shape_Heart}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:ShapeKind.Moon}">
-                    <Setter TargetName="Label" Property="Text" Value="Maan" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Shape_Moon}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:ShapeKind.Drop}">
-                    <Setter TargetName="Label" Property="Text" Value="Druppel" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Shape_Drop}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:ShapeKind.Egg}">
-                    <Setter TargetName="Label" Property="Text" Value="Ei" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Shape_Egg}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:ShapeKind.Lightning}">
-                    <Setter TargetName="Label" Property="Text" Value="Bliksemschicht" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Shape_Lightning}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:ShapeKind.Spiral}">
-                    <Setter TargetName="Label" Property="Text" Value="Spiraal" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Shape_Spiral}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="{x:Null}">
                     <Setter TargetName="Label" Property="Visibility" Value="Collapsed" />
@@ -272,13 +273,13 @@
                         </Ellipse.OpacityMask>
                     </Ellipse>
                 </Grid>
-                <TextBlock x:Name="Label" Text="Pixeleren" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="12" />
+                <TextBlock x:Name="Label" Text="{x:Static res:Strings.Blur_Pixelate}" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="12" />
             </StackPanel>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:BlurMode.Blur}">
                     <Setter TargetName="PixelIcon" Property="Visibility" Value="Collapsed" />
                     <Setter TargetName="BlurIcon" Property="Visibility" Value="Visible" />
-                    <Setter TargetName="Label" Property="Text" Value="Vervagen" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Blur_Blur}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ComboBoxItem}}" Value="{x:Null}">
                     <Setter TargetName="Label" Property="Visibility" Value="Collapsed" />
@@ -303,12 +304,12 @@
                             Background="{StaticResource CheckerIcon}" />
                     <TextBlock x:Name="ImageIcon" Text="&#xE91B;" Style="{StaticResource IconText}" FontSize="15" Visibility="Collapsed" />
                 </Grid>
-                <TextBlock x:Name="Label" Text="Geen (transparant)" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="12" />
+                <TextBlock x:Name="Label" Text="{x:Static res:Strings.Background_None}" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="12" />
             </StackPanel>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:BackgroundKind.Color}">
                     <Setter TargetName="Swatch" Property="Background" Value="{DynamicResource AccentBrush}" />
-                    <Setter TargetName="Label" Property="Text" Value="Kleur" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Common_Color}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:BackgroundKind.Gradient}">
                     <Setter TargetName="Swatch" Property="Background">
@@ -319,12 +320,12 @@
                             </LinearGradientBrush>
                         </Setter.Value>
                     </Setter>
-                    <Setter TargetName="Label" Property="Text" Value="Verloop" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Background_Gradient}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}" Value="{x:Static local:BackgroundKind.Image}">
                     <Setter TargetName="Swatch" Property="Visibility" Value="Collapsed" />
                     <Setter TargetName="ImageIcon" Property="Visibility" Value="Visible" />
-                    <Setter TargetName="Label" Property="Text" Value="Afbeelding" />
+                    <Setter TargetName="Label" Property="Text" Value="{x:Static res:Strings.Common_Image}" />
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
@@ -356,72 +357,72 @@
                 <ContextMenu x:Name="ToolbarMenu" />
             </Border.ContextMenu>
             <local:ToolbarPanel x:Name="ToolbarItems" OrderChanged="ToolbarItems_OrderChanged">
-                <RadioButton GroupName="Tools" Tag="Select" local:ToolbarPanel.ItemId="Select" local:ToolbarPanel.Title="Selecteren"
-                             Style="{StaticResource ToolToggle}" ToolTip="Selecteren en verplaatsen (V)" Checked="Tool_Checked">
+                <RadioButton GroupName="Tools" Tag="Select" local:ToolbarPanel.ItemId="Select" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Select}"
+                             Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_SelectTip}" Checked="Tool_Checked">
                     <Path Style="{StaticResource IconPath}" Data="M5,2.5 L5,16.5 L8.6,13.2 L11,18.4 L13.3,17.4 L11,12.3 L15.8,12.3 Z" />
                 </RadioButton>
                 <local:ToolbarSeparator local:ToolbarPanel.ItemId="Sep1" />
-                <RadioButton GroupName="Tools" Tag="Rectangle" local:ToolbarPanel.ItemId="Rectangle" local:ToolbarPanel.Title="Rechthoek"
-                             Style="{StaticResource ToolToggle}" ToolTip="Rechthoek (R) - Shift voor vierkant" Checked="Tool_Checked">
+                <RadioButton GroupName="Tools" Tag="Rectangle" local:ToolbarPanel.ItemId="Rectangle" local:ToolbarPanel.Title="{x:Static res:Strings.Common_Rectangle}"
+                             Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_RectangleTip}" Checked="Tool_Checked">
                     <Path Style="{StaticResource IconPath}" Data="M3,5 H17 V15 H3 Z" />
                 </RadioButton>
-                <RadioButton GroupName="Tools" Tag="Ellipse" local:ToolbarPanel.ItemId="Ellipse" local:ToolbarPanel.Title="Ellips"
-                             Style="{StaticResource ToolToggle}" ToolTip="Ellips (E) - Shift voor cirkel" Checked="Tool_Checked">
+                <RadioButton GroupName="Tools" Tag="Ellipse" local:ToolbarPanel.ItemId="Ellipse" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Ellipse}"
+                             Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_EllipseTip}" Checked="Tool_Checked">
                     <Path Style="{StaticResource IconPath}">
                         <Path.Data>
                             <EllipseGeometry Center="10,10" RadiusX="7.5" RadiusY="5.5" />
                         </Path.Data>
                     </Path>
                 </RadioButton>
-                <RadioButton GroupName="Tools" Tag="Shape" local:ToolbarPanel.ItemId="Shape" local:ToolbarPanel.Title="Vormen"
-                             Style="{StaticResource ToolToggle}" ToolTip="Vormen (F) - Shift voor gelijke breedte en hoogte" Checked="Tool_Checked">
+                <RadioButton GroupName="Tools" Tag="Shape" local:ToolbarPanel.ItemId="Shape" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Shapes}"
+                             Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_ShapesTip}" Checked="Tool_Checked">
                     <Path x:Name="ShapeToolIcon" Style="{StaticResource IconPath}" Stretch="Uniform" Width="15" Height="15" Margin="2.5" />
                 </RadioButton>
-                <RadioButton GroupName="Tools" Tag="Line" local:ToolbarPanel.ItemId="Line" local:ToolbarPanel.Title="Lijn"
-                             Style="{StaticResource ToolToggle}" ToolTip="Lijn (L) - Shift voor hoeken van 45°" Checked="Tool_Checked">
+                <RadioButton GroupName="Tools" Tag="Line" local:ToolbarPanel.ItemId="Line" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Line}"
+                             Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_LineTip}" Checked="Tool_Checked">
                     <Path Style="{StaticResource IconPath}" Data="M4,16 L16,4" />
                 </RadioButton>
-                <RadioButton GroupName="Tools" Tag="Arrow" local:ToolbarPanel.ItemId="Arrow" local:ToolbarPanel.Title="Pijl"
-                             Style="{StaticResource ToolToggle}" ToolTip="Pijl (A) - Shift voor hoeken van 45°" Checked="Tool_Checked">
+                <RadioButton GroupName="Tools" Tag="Arrow" local:ToolbarPanel.ItemId="Arrow" local:ToolbarPanel.Title="{x:Static res:Strings.Common_Arrow}"
+                             Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_ArrowTip}" Checked="Tool_Checked">
                     <Path Style="{StaticResource IconPath}" Data="M4,16 L15.5,4.5 M9,4.5 H15.5 V11" />
                 </RadioButton>
-                <RadioButton GroupName="Tools" Tag="Text" local:ToolbarPanel.ItemId="Text" local:ToolbarPanel.Title="Tekst"
-                             Style="{StaticResource ToolToggle}" ToolTip="Tekst in kader (T)" Checked="Tool_Checked">
+                <RadioButton GroupName="Tools" Tag="Text" local:ToolbarPanel.ItemId="Text" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Text}"
+                             Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_TextTip}" Checked="Tool_Checked">
                     <Grid Width="20" Height="20">
                         <Path Style="{StaticResource IconPath}" Data="M2.5,4 H17.5 V16 H2.5 Z" />
                         <TextBlock Text="T" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,1" />
                     </Grid>
                 </RadioButton>
-                <RadioButton GroupName="Tools" Tag="Step" local:ToolbarPanel.ItemId="Step" local:ToolbarPanel.Title="Stappen"
-                             Style="{StaticResource ToolToggle}" ToolTip="Stappen 1, 2, 3 / a, b, c (S)" Checked="Tool_Checked">
+                <RadioButton GroupName="Tools" Tag="Step" local:ToolbarPanel.ItemId="Step" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Steps}"
+                             Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_StepsTip}" Checked="Tool_Checked">
                     <Grid Width="20" Height="20">
                         <Ellipse Width="17" Height="17" Fill="#E81123" />
                         <TextBlock Text="1" Foreground="White" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Grid>
                 </RadioButton>
                 <RadioButton GroupName="Tools" Tag="Cursor" local:ToolbarPanel.ItemId="Cursor" local:ToolbarPanel.Title="Cursor"
-                             Style="{StaticResource ToolToggle}" ToolTip="Cursor plaatsen (C)" Checked="Tool_Checked">
+                             Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_CursorTip}" Checked="Tool_Checked">
                     <Path Style="{StaticResource IconPath}" Fill="{DynamicResource ControlBrush}"
                           Data="M7,4 L7,16 L9.8,13.4 L11.7,17.6 L13.6,16.8 L11.8,12.6 L15.4,12.6 Z M4,4 L2.5,2.5 M7,1 L7,0 M4,7 L2,7" />
                 </RadioButton>
                 <RadioButton GroupName="Tools" Tag="Emoji" local:ToolbarPanel.ItemId="Emoji" local:ToolbarPanel.Title="Emoji"
-                             Style="{StaticResource ToolToggle}" ToolTip="Emoji plaatsen (J)" Checked="Tool_Checked">
+                             Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_EmojiTip}" Checked="Tool_Checked">
                     <TextBlock Text="&#xE76E;" Style="{StaticResource IconText}" />
                 </RadioButton>
-                <RadioButton GroupName="Tools" Tag="Highlight" local:ToolbarPanel.ItemId="Highlight" local:ToolbarPanel.Title="Markeerstift"
-                             Style="{StaticResource ToolToggle}" ToolTip="Markeerstift (H) - rechte horizontale streep, Shift wisselt" Checked="Tool_Checked">
+                <RadioButton GroupName="Tools" Tag="Highlight" local:ToolbarPanel.ItemId="Highlight" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Highlighter}"
+                             Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_HighlighterTip}" Checked="Tool_Checked">
                     <Grid Width="20" Height="20">
                         <Rectangle Width="17" Height="7" Fill="#A0FFE600" VerticalAlignment="Center" />
                         <Path Style="{StaticResource IconPath}" Data="M2,10 H18" StrokeThickness="1" Stroke="#B39C00" Opacity="0.6" />
                     </Grid>
                 </RadioButton>
-                <RadioButton GroupName="Tools" Tag="Blur" local:ToolbarPanel.ItemId="Blur" local:ToolbarPanel.Title="Vervagen / pixeleren"
-                             Style="{StaticResource ToolToggle}" ToolTip="Vervagen / pixeleren (B)" Checked="Tool_Checked">
+                <RadioButton GroupName="Tools" Tag="Blur" local:ToolbarPanel.ItemId="Blur" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Blur}"
+                             Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_BlurTip}" Checked="Tool_Checked">
                     <Path Style="{StaticResource IconPath}" Fill="{DynamicResource InkBrush}" StrokeThickness="0"
                           Data="M3,3 h4.5 v4.5 h-4.5 z M12.5,3 h4.5 v4.5 h-4.5 z M7.75,7.75 h4.5 v4.5 h-4.5 z M3,12.5 h4.5 v4.5 h-4.5 z M12.5,12.5 h4.5 v4.5 h-4.5 z" />
                 </RadioButton>
-                <RadioButton GroupName="Tools" Tag="Eraser" local:ToolbarPanel.ItemId="Eraser" local:ToolbarPanel.Title="Gum"
-                             Style="{StaticResource ToolToggle}" ToolTip="Gum (G) - smart-gum haalt aaneengesloten dezelfde kleur weg; kies in de balk eronder voor vrije hand" Checked="Tool_Checked">
+                <RadioButton GroupName="Tools" Tag="Eraser" local:ToolbarPanel.ItemId="Eraser" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Eraser}"
+                             Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_EraserTip}" Checked="Tool_Checked">
                     <Grid Width="20" Height="20">
                         <TextBlock Text="&#xE75C;" Style="{StaticResource IconText}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         <Path Fill="{DynamicResource AccentTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Top"
@@ -429,22 +430,22 @@
                     </Grid>
                 </RadioButton>
                 <local:ToolbarSeparator local:ToolbarPanel.ItemId="Sep2" />
-                <RadioButton GroupName="Tools" Tag="Crop" local:ToolbarPanel.ItemId="Crop" local:ToolbarPanel.Title="Bijsnijden"
-                             Style="{StaticResource ToolToggle}" ToolTip="Bijsnijden (X)" Checked="Tool_Checked">
+                <RadioButton GroupName="Tools" Tag="Crop" local:ToolbarPanel.ItemId="Crop" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Crop}"
+                             Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_CropTip}" Checked="Tool_Checked">
                     <TextBlock Text="&#xE7A8;" Style="{StaticResource IconText}" />
                 </RadioButton>
 
                 <local:ToolbarSpacer local:ToolbarPanel.ItemId="Spacer" />
 
-                <Button local:ToolbarPanel.ItemId="New" local:ToolbarPanel.Title="Nieuw knipsel"
-                        Style="{StaticResource ProminentButton}" ToolTip="Nieuw knipsel maken; dat opent in een nieuw tabblad (Ctrl+N)" Click="NewSnip_Click">
+                <Button local:ToolbarPanel.ItemId="New" local:ToolbarPanel.Title="{x:Static res:Strings.Common_NewSnip}"
+                        Style="{StaticResource ProminentButton}" ToolTip="{x:Static res:Strings.Tool_NewTip}" Click="NewSnip_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE722;" Style="{StaticResource IconText}" />
-                        <TextBlock x:Name="NewLabel" Text="Nieuw" FontSize="12" VerticalAlignment="Center" Margin="6,0,0,0" />
+                        <TextBlock x:Name="NewLabel" Text="{x:Static res:Strings.Tool_New}" FontSize="12" VerticalAlignment="Center" Margin="6,0,0,0" />
                     </StackPanel>
                 </Button>
                 <Button local:ToolbarPanel.ItemId="Screencast" local:ToolbarPanel.Title="Screencast"
-                        Style="{StaticResource ProminentButton}" ToolTip="Screencast opnemen als MP4 of GIF" Click="Screencast_Click">
+                        Style="{StaticResource ProminentButton}" ToolTip="{x:Static res:Strings.Tool_ScreencastTip}" Click="Screencast_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE714;" Style="{StaticResource IconText}" />
                         <TextBlock x:Name="ScreencastLabel" Text="Screencast" FontSize="12" VerticalAlignment="Center" Margin="6,0,0,0" />
@@ -452,7 +453,7 @@
                 </Button>
                 <Button x:Name="OcrButton" local:ToolbarPanel.ItemId="OcrSnip" local:ToolbarPanel.Title="OCR"
                         Style="{StaticResource ProminentButton}" Click="Ocr_Click"
-                        ToolTip="OCR: sleep een rechthoek op het scherm en kopieer de tekst daarin. Ctrl+Shift+T leest de tekst van dit knipsel.">
+                        ToolTip="{x:Static res:Strings.Tool_OcrTip}">
                     <StackPanel Orientation="Horizontal">
                         <Path Style="{StaticResource IconPath}" StrokeThickness="1.2"
                               Data="M3,7 V5.5 A2.5,2.5 0 0 1 5.5,3 H7 M13,3 H14.5 A2.5,2.5 0 0 1 17,5.5 V7 M17,13 V14.5 A2.5,2.5 0 0 1 14.5,17 H13 M7,17 H5.5 A2.5,2.5 0 0 1 3,14.5 V13 M7,7.5 H13 M7,10 H13 M7,12.5 H10.5" />
@@ -463,56 +464,56 @@
                 <!-- Wat tussen de twee spacers staat, komt in het midden van de werkbalk -->
                 <local:ToolbarSpacer local:ToolbarPanel.ItemId="Spacer2" />
 
-                <Button local:ToolbarPanel.ItemId="Clear" local:ToolbarPanel.Title="Wissen"
-                        Style="{StaticResource FlatButton}" ToolTip="Knipsel weggooien en opnieuw beginnen met een leeg canvas (Ctrl+Delete)" Click="Clear_Click">
+                <Button local:ToolbarPanel.ItemId="Clear" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Clear}"
+                        Style="{StaticResource FlatButton}" ToolTip="{x:Static res:Strings.Tool_ClearTip}" Click="Clear_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE894;" Style="{StaticResource IconText}" />
-                        <TextBlock x:Name="ClearLabel" Text="Wissen" FontSize="12" VerticalAlignment="Center" Margin="6,0,0,0" />
+                        <TextBlock x:Name="ClearLabel" Text="{x:Static res:Strings.Tool_Clear}" FontSize="12" VerticalAlignment="Center" Margin="6,0,0,0" />
                     </StackPanel>
                 </Button>
                 <local:ToolbarSeparator local:ToolbarPanel.ItemId="Sep3" />
-                <Button x:Name="UndoButton" local:ToolbarPanel.ItemId="Undo" local:ToolbarPanel.Title="Ongedaan maken"
-                        Style="{StaticResource FlatButton}" ToolTip="Ongedaan maken (Ctrl+Z)" Click="Undo_Click">
+                <Button x:Name="UndoButton" local:ToolbarPanel.ItemId="Undo" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Undo}"
+                        Style="{StaticResource FlatButton}" ToolTip="{x:Static res:Strings.Tool_UndoTip}" Click="Undo_Click">
                     <TextBlock Text="&#xE7A7;" Style="{StaticResource IconText}" />
                 </Button>
-                <Button x:Name="RedoButton" local:ToolbarPanel.ItemId="Redo" local:ToolbarPanel.Title="Opnieuw"
-                        Style="{StaticResource FlatButton}" ToolTip="Opnieuw (Ctrl+Y)" Click="Redo_Click">
+                <Button x:Name="RedoButton" local:ToolbarPanel.ItemId="Redo" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Redo}"
+                        Style="{StaticResource FlatButton}" ToolTip="{x:Static res:Strings.Tool_RedoTip}" Click="Redo_Click">
                     <TextBlock Text="&#xE7A6;" Style="{StaticResource IconText}" />
                 </Button>
-                <Button x:Name="DeleteButton" local:ToolbarPanel.ItemId="Delete" local:ToolbarPanel.Title="Verwijderen"
-                        Style="{StaticResource FlatButton}" ToolTip="Geselecteerd object verwijderen (Delete)" Click="Delete_Click">
+                <Button x:Name="DeleteButton" local:ToolbarPanel.ItemId="Delete" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Delete}"
+                        Style="{StaticResource FlatButton}" ToolTip="{x:Static res:Strings.Tool_DeleteTip}" Click="Delete_Click">
                     <TextBlock Text="&#xE74D;" Style="{StaticResource IconText}" />
                 </Button>
                 <local:ToolbarSeparator local:ToolbarPanel.ItemId="Sep4" />
-                <ToggleButton x:Name="RulersToggle" local:ToolbarPanel.ItemId="Rulers" local:ToolbarPanel.Title="Linialen"
-                              Style="{StaticResource ToolToggle}" ToolTip="Linialen en hulplijnen (Ctrl+R) - sleep vanuit een liniaal voor een hulplijn"
+                <ToggleButton x:Name="RulersToggle" local:ToolbarPanel.ItemId="Rulers" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Rulers}"
+                              Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_RulersTip}"
                               Click="Rulers_Click">
                     <Path Style="{StaticResource IconPath}"
                           Data="M2.5,6.5 H17.5 V13.5 H2.5 Z M5,6.5 V9 M7.5,6.5 V10.5 M10,6.5 V9 M12.5,6.5 V10.5 M15,6.5 V9" />
                 </ToggleButton>
-                <Button local:ToolbarPanel.ItemId="ZoomOut" local:ToolbarPanel.Title="Uitzoomen"
-                        Style="{StaticResource FlatButton}" ToolTip="Uitzoomen (Ctrl+-)" Click="ZoomOut_Click">
+                <Button local:ToolbarPanel.ItemId="ZoomOut" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_ZoomOut}"
+                        Style="{StaticResource FlatButton}" ToolTip="{x:Static res:Strings.Tool_ZoomOutTip}" Click="ZoomOut_Click">
                     <TextBlock Text="&#xE71F;" Style="{StaticResource IconText}" />
                 </Button>
-                <Button x:Name="ZoomButton" local:ToolbarPanel.ItemId="Zoom" local:ToolbarPanel.Title="Zoompercentage"
-                        Style="{StaticResource FlatButton}" ToolTip="Passend maken (Ctrl+0) / werkelijke grootte (Ctrl+1)" Click="ZoomReset_Click" MinWidth="56">
+                <Button x:Name="ZoomButton" local:ToolbarPanel.ItemId="Zoom" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Zoom}"
+                        Style="{StaticResource FlatButton}" ToolTip="{x:Static res:Strings.Tool_ZoomTip}" Click="ZoomReset_Click" MinWidth="56">
                     <TextBlock x:Name="ZoomText" Text="100%" FontSize="12" />
                 </Button>
-                <Button local:ToolbarPanel.ItemId="ZoomIn" local:ToolbarPanel.Title="Inzoomen"
-                        Style="{StaticResource FlatButton}" ToolTip="Inzoomen (Ctrl++)" Click="ZoomIn_Click">
+                <Button local:ToolbarPanel.ItemId="ZoomIn" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_ZoomIn}"
+                        Style="{StaticResource FlatButton}" ToolTip="{x:Static res:Strings.Tool_ZoomInTip}" Click="ZoomIn_Click">
                     <TextBlock Text="&#xE8A3;" Style="{StaticResource IconText}" />
                 </Button>
                 <local:ToolbarSeparator local:ToolbarPanel.ItemId="Sep5" />
-                <Button x:Name="FoldersButton" local:ToolbarPanel.ItemId="Folders" local:ToolbarPanel.Title="Mappen openen"
-                        Style="{StaticResource FlatButton}" ToolTip="Screenshot- of screencastmap openen" Click="Folders_Click">
+                <Button x:Name="FoldersButton" local:ToolbarPanel.ItemId="Folders" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Folders}"
+                        Style="{StaticResource FlatButton}" ToolTip="{x:Static res:Strings.Tool_FoldersTip}" Click="Folders_Click">
                     <TextBlock Text="&#xE8B7;" Style="{StaticResource IconText}" />
                 </Button>
-                <Button local:ToolbarPanel.ItemId="Print" local:ToolbarPanel.Title="Printen"
-                        Style="{StaticResource FlatButton}" ToolTip="Printen (Ctrl+P)" Click="Print_Click">
+                <Button local:ToolbarPanel.ItemId="Print" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Print}"
+                        Style="{StaticResource FlatButton}" ToolTip="{x:Static res:Strings.Tool_PrintTip}" Click="Print_Click">
                     <TextBlock Text="&#xE749;" Style="{StaticResource IconText}" />
                 </Button>
-                <Button x:Name="SettingsButton" local:ToolbarPanel.ItemId="Settings" local:ToolbarPanel.Title="Instellingen"
-                        Style="{StaticResource FlatButton}" ToolTip="Instellingen" Click="Settings_Click">
+                <Button x:Name="SettingsButton" local:ToolbarPanel.ItemId="Settings" local:ToolbarPanel.Title="{x:Static res:Strings.Common_Settings}"
+                        Style="{StaticResource FlatButton}" ToolTip="{x:Static res:Strings.Common_Settings}" Click="Settings_Click">
                     <Grid>
                         <TextBlock Text="&#xE713;" Style="{StaticResource IconText}" />
                         <Ellipse x:Name="SettingsBadge" Width="8" Height="8" Fill="{DynamicResource AccentBrush}" Stroke="{DynamicResource ToolbarBrush}"
@@ -520,28 +521,28 @@
                                  IsHitTestVisible="False" Visibility="Collapsed" />
                     </Grid>
                 </Button>
-                <Button x:Name="SaveButton" local:ToolbarPanel.ItemId="Save" local:ToolbarPanel.Title="Opslaan"
-                        Style="{StaticResource SecondaryButton}" ToolTip="Opslaan (Ctrl+S); Shift+klik of Ctrl+Shift+S = opslaan als; het pijltje toont meer opties" Click="Save_Click">
+                <Button x:Name="SaveButton" local:ToolbarPanel.ItemId="Save" local:ToolbarPanel.Title="{x:Static res:Strings.Common_Save}"
+                        Style="{StaticResource SecondaryButton}" ToolTip="{x:Static res:Strings.Tool_SaveTip}" Click="Save_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE74E;" Style="{StaticResource IconText}" FontSize="14" />
-                        <TextBlock x:Name="SaveLabel" Text="Opslaan" Margin="6,0,0,0" />
+                        <TextBlock x:Name="SaveLabel" Text="{x:Static res:Strings.Common_Save}" Margin="6,0,0,0" />
                         <TextBlock x:Name="SaveMenuChevron" Text="&#xE70D;" Style="{StaticResource IconText}" FontSize="9"
                                    Background="Transparent" Padding="4,2,0,2" Margin="2,0,0,0"
-                                   ToolTip="Meer opslagopties" PreviewMouseLeftButtonDown="SaveMenu_MouseDown" />
+                                   ToolTip="{x:Static res:Strings.Common_MoreSaveOptions}" PreviewMouseLeftButtonDown="SaveMenu_MouseDown" />
                     </StackPanel>
                 </Button>
-                <Button x:Name="UploadButton" local:ToolbarPanel.ItemId="Upload" local:ToolbarPanel.Title="Uploaden"
-                        Style="{StaticResource SecondaryButton}" ToolTip="Uploaden en de link kopiëren (Ctrl+U)" Click="Upload_Click" Margin="4,0,0,0">
+                <Button x:Name="UploadButton" local:ToolbarPanel.ItemId="Upload" local:ToolbarPanel.Title="{x:Static res:Strings.Common_Upload}"
+                        Style="{StaticResource SecondaryButton}" ToolTip="{x:Static res:Strings.Tool_UploadTip}" Click="Upload_Click" Margin="4,0,0,0">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE898;" Style="{StaticResource IconText}" FontSize="14" />
-                        <TextBlock x:Name="UploadLabel" Text="Uploaden" Margin="6,0,0,0" />
+                        <TextBlock x:Name="UploadLabel" Text="{x:Static res:Strings.Common_Upload}" Margin="6,0,0,0" />
                     </StackPanel>
                 </Button>
-                <Button local:ToolbarPanel.ItemId="Copy" local:ToolbarPanel.Title="Kopiëren"
-                        Style="{StaticResource AccentButton}" ToolTip="Kopiëren naar klembord (Ctrl+C)" Click="Copy_Click" Margin="4,0,0,0">
+                <Button local:ToolbarPanel.ItemId="Copy" local:ToolbarPanel.Title="{x:Static res:Strings.Common_Copy}"
+                        Style="{StaticResource AccentButton}" ToolTip="{x:Static res:Strings.Tool_CopyTip}" Click="Copy_Click" Margin="4,0,0,0">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE8C8;" Style="{StaticResource IconText}" FontSize="14" Foreground="White" />
-                        <TextBlock x:Name="CopyLabel" Text="Kopiëren" Margin="6,0,0,0" />
+                        <TextBlock x:Name="CopyLabel" Text="{x:Static res:Strings.Common_Copy}" Margin="6,0,0,0" />
                     </StackPanel>
                 </Button>
 
@@ -557,77 +558,77 @@
             <WrapPanel x:Name="PropsPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <StackPanel x:Name="ShapeGroup" Style="{StaticResource PropGroup}">
                     <ComboBox x:Name="ShapeKindCombo" Style="{StaticResource MiniCombo}" ItemTemplate="{StaticResource ShapeKindTemplate}"
-                              ToolTip="Vorm" SelectionChanged="ShapeKind_Changed" />
+                              ToolTip="{x:Static res:Strings.Prop_Shape}" SelectionChanged="ShapeKind_Changed" />
                 </StackPanel>
                 <StackPanel x:Name="TextShapeGroup" Style="{StaticResource PropGroup}">
                     <ComboBox x:Name="TextShapeCombo" Style="{StaticResource MiniCombo}" ItemTemplate="{StaticResource TextShapeTemplate}"
-                              ToolTip="Vorm" SelectionChanged="TextShape_Changed" />
+                              ToolTip="{x:Static res:Strings.Prop_Shape}" SelectionChanged="TextShape_Changed" />
                     <ComboBox x:Name="CloudBubblesCombo" Style="{StaticResource MiniCombo}" ItemTemplate="{StaticResource CloudBubblesTemplate}"
-                              ToolTip="Aantal bolletjes naar de punt" SelectionChanged="CloudBubbles_Changed" />
+                              ToolTip="{x:Static res:Strings.Prop_CloudDots}" SelectionChanged="CloudBubbles_Changed" />
                 </StackPanel>
                 <StackPanel x:Name="StrokeGroup" Style="{StaticResource PropGroup}">
-                    <local:ColorPickerButton x:Name="StrokePicker" ShowAsOutline="True" ToolTip="Randkleur" />
+                    <local:ColorPickerButton x:Name="StrokePicker" ShowAsOutline="True" ToolTip="{x:Static res:Strings.Prop_StrokeColor}" />
                 </StackPanel>
                 <StackPanel x:Name="FillGroup" Style="{StaticResource PropGroup}">
-                    <local:ColorPickerButton x:Name="FillPicker" AllowTransparent="True" ToolTip="Vulkleur" />
+                    <local:ColorPickerButton x:Name="FillPicker" AllowTransparent="True" ToolTip="{x:Static res:Strings.Prop_FillColor}" />
                 </StackPanel>
                 <StackPanel x:Name="ForegroundGroup" Style="{StaticResource PropGroup}">
-                    <local:ColorPickerButton x:Name="ForegroundPicker" ShowAsText="True" ToolTip="Tekstkleur" />
+                    <local:ColorPickerButton x:Name="ForegroundPicker" ShowAsText="True" ToolTip="{x:Static res:Strings.Prop_TextColor}" />
                 </StackPanel>
                 <StackPanel x:Name="ThicknessGroup" Style="{StaticResource PropGroup}">
                     <ComboBox x:Name="ThicknessCombo" Style="{StaticResource MiniCombo}" ItemTemplate="{StaticResource ThicknessTemplate}"
-                              ToolTip="Dikte" SelectionChanged="Thickness_Changed" />
+                              ToolTip="{x:Static res:Strings.Prop_Thickness}" SelectionChanged="Thickness_Changed" />
                 </StackPanel>
                 <StackPanel x:Name="DashGroup" Style="{StaticResource PropGroup}">
                     <ComboBox x:Name="DashCombo" Style="{StaticResource MiniCombo}" ItemTemplate="{StaticResource DashTemplate}"
-                              ToolTip="Lijnstijl" SelectionChanged="Dash_Changed" />
+                              ToolTip="{x:Static res:Strings.Prop_Dash}" SelectionChanged="Dash_Changed" />
                 </StackPanel>
                 <StackPanel x:Name="CornerGroup" Style="{StaticResource PropGroup}">
                     <ComboBox x:Name="CornerCombo" Style="{StaticResource MiniCombo}" ItemTemplate="{StaticResource CornerTemplate}"
-                              ToolTip="Hoeken" SelectionChanged="Corner_Changed" />
+                              ToolTip="{x:Static res:Strings.Prop_Corners}" SelectionChanged="Corner_Changed" />
                 </StackPanel>
                 <StackPanel x:Name="FontGroup" Style="{StaticResource PropGroup}">
                     <ComboBox x:Name="FontSizeCombo" Style="{StaticResource MiniCombo}" ItemTemplate="{StaticResource FontSizeTemplate}"
-                              ToolTip="Lettergrootte" SelectionChanged="FontSize_Changed" />
-                    <ToggleButton x:Name="BoldToggle" Style="{StaticResource MiniToggle}" ToolTip="Vet" Checked="Bold_Changed" Unchecked="Bold_Changed">
+                              ToolTip="{x:Static res:Strings.Prop_FontSize}" SelectionChanged="FontSize_Changed" />
+                    <ToggleButton x:Name="BoldToggle" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Prop_Bold}" Checked="Bold_Changed" Unchecked="Bold_Changed">
                         <TextBlock Text="B" FontWeight="Bold" FontSize="13" />
                     </ToggleButton>
-                    <ToggleButton x:Name="TextAlignLeftToggle" Style="{StaticResource MiniToggle}" ToolTip="Tekst links uitlijnen" Click="TextAlign_Click">
+                    <ToggleButton x:Name="TextAlignLeftToggle" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Prop_AlignLeft}" Click="TextAlign_Click">
                         <TextBlock Text="&#xE8E4;" Style="{StaticResource IconText}" FontSize="14" />
                     </ToggleButton>
-                    <ToggleButton x:Name="TextAlignCenterToggle" Style="{StaticResource MiniToggle}" ToolTip="Tekst centreren" Click="TextAlign_Click">
+                    <ToggleButton x:Name="TextAlignCenterToggle" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Prop_AlignCenter}" Click="TextAlign_Click">
                         <TextBlock Text="&#xE8E3;" Style="{StaticResource IconText}" FontSize="14" />
                     </ToggleButton>
-                    <ToggleButton x:Name="TextAlignRightToggle" Style="{StaticResource MiniToggle}" ToolTip="Tekst rechts uitlijnen" Click="TextAlign_Click">
+                    <ToggleButton x:Name="TextAlignRightToggle" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Prop_AlignRight}" Click="TextAlign_Click">
                         <TextBlock Text="&#xE8E2;" Style="{StaticResource IconText}" FontSize="14" />
                     </ToggleButton>
                 </StackPanel>
                 <StackPanel x:Name="NumberingGroup" Style="{StaticResource PropGroup}">
                     <ComboBox x:Name="NumberingCombo" Style="{StaticResource MiniCombo}" ItemTemplate="{StaticResource NumberingTemplate}"
-                              ToolTip="Reeks" SelectionChanged="Numbering_Changed" />
+                              ToolTip="{x:Static res:Strings.Prop_Numbering}" SelectionChanged="Numbering_Changed" />
                 </StackPanel>
                 <StackPanel x:Name="CursorGroup" Style="{StaticResource PropGroup}">
                     <ComboBox x:Name="CursorKindCombo" Style="{StaticResource MiniCombo}" ItemTemplate="{StaticResource CursorKindTemplate}"
-                              ToolTip="Soort cursor" SelectionChanged="CursorKind_Changed" />
+                              ToolTip="{x:Static res:Strings.Prop_CursorKind}" SelectionChanged="CursorKind_Changed" />
                 </StackPanel>
                 <StackPanel x:Name="EmojiGroup" Style="{StaticResource PropGroup}">
                     <local:EmojiPickerButton x:Name="EmojiPicker" />
                 </StackPanel>
                 <StackPanel x:Name="SizeGroup" Style="{StaticResource PropGroup}">
                     <ComboBox x:Name="SizeCombo" Style="{StaticResource MiniCombo}" ItemTemplate="{StaticResource SizeTemplate}"
-                              ToolTip="Grootte" SelectionChanged="Size_Changed" />
+                              ToolTip="{x:Static res:Strings.Prop_Size}" SelectionChanged="Size_Changed" />
                 </StackPanel>
                 <StackPanel x:Name="BlurGroup" Style="{StaticResource PropGroup}">
                     <ComboBox x:Name="BlurModeCombo" Style="{StaticResource MiniCombo}" ItemTemplate="{StaticResource BlurModeTemplate}"
                               ToolTip="Effect" SelectionChanged="BlurMode_Changed" />
                     <Border Background="{DynamicResource ControlBrush}" BorderBrush="{DynamicResource ControlBorderBrush}" BorderThickness="1" CornerRadius="4" Height="30" Margin="2,0" Padding="8,0"
-                            ToolTip="Sterkte">
+                            ToolTip="{x:Static res:Strings.Prop_Strength}">
                         <Slider x:Name="BlurStrengthSlider" Width="90" Minimum="1" Maximum="20" IsSnapToTickEnabled="True" TickFrequency="1"
                                 VerticalAlignment="Center" ValueChanged="BlurStrength_Changed" />
                     </Border>
                 </StackPanel>
                 <StackPanel x:Name="EraserModeGroup" Style="{StaticResource PropGroup}">
-                    <ToggleButton x:Name="EraserSmartToggle" Style="{StaticResource MiniToggle}" ToolTip="Smart-gum: klik op een kleur om alle aangrenzende pixels met die kleur weg te halen"
+                    <ToggleButton x:Name="EraserSmartToggle" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Prop_SmartEraserTip}"
                                   Click="EraserMode_Click">
                         <Grid Width="20" Height="20">
                             <TextBlock Text="&#xE75C;" Style="{StaticResource IconText}" FontSize="14" />
@@ -635,16 +636,16 @@
                                   Data="M3.5,0 L4.4,2.6 L7,3.5 L4.4,4.4 L3.5,7 L2.6,4.4 L0,3.5 L2.6,2.6 Z" />
                         </Grid>
                     </ToggleButton>
-                    <ToggleButton x:Name="EraserBrushToggle" Style="{StaticResource MiniToggle}" ToolTip="Vrije hand: sleep om weg te poetsen"
+                    <ToggleButton x:Name="EraserBrushToggle" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Prop_FreehandEraserTip}"
                                   Click="EraserMode_Click">
                         <TextBlock Text="&#xE75C;" Style="{StaticResource IconText}" FontSize="14" />
                     </ToggleButton>
                 </StackPanel>
                 <StackPanel x:Name="ToleranceGroup" Style="{StaticResource PropGroup}">
                     <Border Background="{DynamicResource ControlBrush}" BorderBrush="{DynamicResource ControlBorderBrush}" BorderThickness="1" CornerRadius="4" Height="30" Margin="2,0" Padding="8,0"
-                            ToolTip="Tolerantie: hoe ver een kleur mag afwijken om mee weggehaald te worden">
+                            ToolTip="{x:Static res:Strings.Prop_ToleranceTip}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Tolerantie" FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0" />
+                            <TextBlock Text="{x:Static res:Strings.Prop_Tolerance}" FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0" />
                             <Slider x:Name="ToleranceSlider" Width="90" Minimum="0" Maximum="100" IsSnapToTickEnabled="True" TickFrequency="1"
                                     VerticalAlignment="Center" ValueChanged="Tolerance_Changed" />
                             <TextBlock x:Name="ToleranceText" FontSize="12" Width="24" TextAlignment="Right" VerticalAlignment="Center" Margin="6,0,0,0" />
@@ -652,14 +653,14 @@
                     </Border>
                 </StackPanel>
                 <StackPanel x:Name="StraightGroup" Style="{StaticResource PropGroup}">
-                    <ToggleButton x:Name="StraightCheck" Style="{StaticResource MiniToggle}" ToolTip="Rechte horizontale streep (Shift wisselt)"
+                    <ToggleButton x:Name="StraightCheck" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Prop_StraightTip}"
                                   Checked="Straight_Changed" Unchecked="Straight_Changed">
                         <Path Data="M2,9 H16 M2,5 V13 M16,5 V13" Stroke="{DynamicResource InkBrush}" StrokeThickness="1.5"
                               StrokeStartLineCap="Round" StrokeEndLineCap="Round" Width="18" Height="18" />
                     </ToggleButton>
                 </StackPanel>
                 <StackPanel x:Name="ShadowGroup" Style="{StaticResource PropGroup}">
-                    <ToggleButton x:Name="ShadowCheck" Style="{StaticResource MiniToggle}" ToolTip="Schaduw"
+                    <ToggleButton x:Name="ShadowCheck" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Prop_Shadow}"
                                   Checked="Shadow_Changed" Unchecked="Shadow_Changed">
                         <Grid Width="18" Height="18">
                             <Rectangle Width="11" Height="11" RadiusX="2" RadiusY="2" Fill="#9A9A9A" Margin="5,5,0,0"
@@ -671,7 +672,7 @@
                 </StackPanel>
                 <StackPanel x:Name="ArrangeGroup" Style="{StaticResource PropGroup}">
                     <Rectangle Style="{StaticResource ArrangeDivider}" />
-                    <ToggleButton x:Name="ArrangeToggle" Style="{StaticResource MiniToggle}" ToolTip="Uitlijnen, spiegelen en volgorde"
+                    <ToggleButton x:Name="ArrangeToggle" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Arrange_Tip}"
                                   Checked="ArrangeToggle_Changed" Unchecked="ArrangeToggle_Changed">
                         <StackPanel Orientation="Horizontal">
                             <Grid>
@@ -682,74 +683,74 @@
                         </StackPanel>
                     </ToggleButton>
                     <StackPanel x:Name="ArrangeButtons" Orientation="Horizontal" Visibility="Collapsed" Margin="4,0,0,0">
-                        <Button Style="{StaticResource ArrangeButton}" ToolTip="Links uitlijnen op de afbeelding" Click="AlignLeft_Click">
+                        <Button Style="{StaticResource ArrangeButton}" ToolTip="{x:Static res:Strings.Arrange_Left}" Click="AlignLeft_Click">
                             <Grid>
                                 <Path Style="{StaticResource IconPath}" Data="M5.5,5 H15 V8.5 H5.5 Z M5.5,11.5 H11.5 V15 H5.5 Z" />
                                 <Path Style="{StaticResource ArrangeAccent}" Data="M3,2.5 V17.5" />
                             </Grid>
                         </Button>
-                        <Button Style="{StaticResource ArrangeButton}" ToolTip="Horizontaal centreren op de afbeelding" Click="AlignCenter_Click">
+                        <Button Style="{StaticResource ArrangeButton}" ToolTip="{x:Static res:Strings.Arrange_CenterH}" Click="AlignCenter_Click">
                             <Grid>
                                 <Path Style="{StaticResource IconPath}" Data="M4.5,5 H15.5 V8.5 H4.5 Z M6.5,11.5 H13.5 V15 H6.5 Z" />
                                 <Path Style="{StaticResource ArrangeAccent}" Data="M10,2.5 V17.5" />
                             </Grid>
                         </Button>
-                        <Button Style="{StaticResource ArrangeButton}" ToolTip="Rechts uitlijnen op de afbeelding" Click="AlignRight_Click">
+                        <Button Style="{StaticResource ArrangeButton}" ToolTip="{x:Static res:Strings.Arrange_Right}" Click="AlignRight_Click">
                             <Grid>
                                 <Path Style="{StaticResource IconPath}" Data="M5,5 H14.5 V8.5 H5 Z M8.5,11.5 H14.5 V15 H8.5 Z" />
                                 <Path Style="{StaticResource ArrangeAccent}" Data="M17,2.5 V17.5" />
                             </Grid>
                         </Button>
-                        <Button Style="{StaticResource ArrangeButton}" ToolTip="Boven uitlijnen op de afbeelding" Click="AlignTop_Click">
+                        <Button Style="{StaticResource ArrangeButton}" ToolTip="{x:Static res:Strings.Arrange_Top}" Click="AlignTop_Click">
                             <Grid>
                                 <Path Style="{StaticResource IconPath}" Data="M5,5.5 H8.5 V15 H5 Z M11.5,5.5 H15 V11.5 H11.5 Z" />
                                 <Path Style="{StaticResource ArrangeAccent}" Data="M2.5,3 H17.5" />
                             </Grid>
                         </Button>
-                        <Button Style="{StaticResource ArrangeButton}" ToolTip="Verticaal centreren op de afbeelding" Click="AlignMiddle_Click">
+                        <Button Style="{StaticResource ArrangeButton}" ToolTip="{x:Static res:Strings.Arrange_CenterV}" Click="AlignMiddle_Click">
                             <Grid>
                                 <Path Style="{StaticResource IconPath}" Data="M5,4.5 H8.5 V15.5 H5 Z M11.5,6.5 H15 V13.5 H11.5 Z" />
                                 <Path Style="{StaticResource ArrangeAccent}" Data="M2.5,10 H17.5" />
                             </Grid>
                         </Button>
-                        <Button Style="{StaticResource ArrangeButton}" ToolTip="Onder uitlijnen op de afbeelding" Click="AlignBottom_Click">
+                        <Button Style="{StaticResource ArrangeButton}" ToolTip="{x:Static res:Strings.Arrange_Bottom}" Click="AlignBottom_Click">
                             <Grid>
                                 <Path Style="{StaticResource IconPath}" Data="M5,5 H8.5 V14.5 H5 Z M11.5,8.5 H15 V14.5 H11.5 Z" />
                                 <Path Style="{StaticResource ArrangeAccent}" Data="M2.5,17 H17.5" />
                             </Grid>
                         </Button>
                         <Rectangle Style="{StaticResource ArrangeDivider}" />
-                        <Button x:Name="FlipHButton" Style="{StaticResource ArrangeButton}" ToolTip="Horizontaal spiegelen" Click="FlipH_Click">
+                        <Button x:Name="FlipHButton" Style="{StaticResource ArrangeButton}" ToolTip="{x:Static res:Strings.Arrange_FlipH}" Click="FlipH_Click">
                             <Grid>
                                 <Path Style="{StaticResource IconPath}" Fill="{DynamicResource InkBrush}" Data="M8,5 L3,15 H8 Z" />
                                 <Path Style="{StaticResource IconPath}" Data="M12,5 L17,15 H12 Z" />
                                 <Path Style="{StaticResource ArrangeAccent}" Data="M10,2.5 V17.5" />
                             </Grid>
                         </Button>
-                        <Button x:Name="FlipVButton" Style="{StaticResource ArrangeButton}" ToolTip="Verticaal spiegelen" Click="FlipV_Click">
+                        <Button x:Name="FlipVButton" Style="{StaticResource ArrangeButton}" ToolTip="{x:Static res:Strings.Arrange_FlipV}" Click="FlipV_Click">
                             <Grid>
                                 <Path Style="{StaticResource IconPath}" Fill="{DynamicResource InkBrush}" Data="M5,8 L15,3 V8 Z" />
                                 <Path Style="{StaticResource IconPath}" Data="M5,12 L15,17 V12 Z" />
                                 <Path Style="{StaticResource ArrangeAccent}" Data="M2.5,10 H17.5" />
                             </Grid>
                         </Button>
-                        <Button x:Name="RotateLeftButton" Style="{StaticResource ArrangeButton}" ToolTip="90° linksom draaien" Click="RotateLeft_Click">
+                        <Button x:Name="RotateLeftButton" Style="{StaticResource ArrangeButton}" ToolTip="{x:Static res:Strings.Arrange_RotateLeft}" Click="RotateLeft_Click">
                             <Grid>
                                 <Path Style="{StaticResource IconPath}" Data="M8.5,8.5 H15.5 V15.5 H8.5 Z" />
                                 <Path Style="{StaticResource ArrangeAccent}" Data="M3.5,11 A6.5,6.5 0 0 1 10,4.5 M3.5,11 L1.8,8.6 M3.5,11 L5.9,9.4" />
                             </Grid>
                         </Button>
-                        <Button x:Name="RotateRightButton" Style="{StaticResource ArrangeButton}" ToolTip="90° rechtsom draaien (sleep de ronde greep boven het object om vrij te draaien)" Click="RotateRight_Click">
+                        <Button x:Name="RotateRightButton" Style="{StaticResource ArrangeButton}" ToolTip="{x:Static res:Strings.Arrange_RotateRight}" Click="RotateRight_Click">
                             <Grid>
                                 <Path Style="{StaticResource IconPath}" Data="M4.5,8.5 H11.5 V15.5 H4.5 Z" />
                                 <Path Style="{StaticResource ArrangeAccent}" Data="M16.5,11 A6.5,6.5 0 0 0 10,4.5 M16.5,11 L18.2,8.6 M16.5,11 L14.1,9.4" />
                             </Grid>
                         </Button>
                         <Rectangle Style="{StaticResource ArrangeDivider}" />
-                        <Button x:Name="ForwardButton" Style="{StaticResource ArrangeButton}" ToolTip="Naar voren (PageUp)" Click="BringForward_Click">
+                        <Button x:Name="ForwardButton" Style="{StaticResource ArrangeButton}" ToolTip="{x:Static res:Strings.Arrange_Forward}" Click="BringForward_Click">
                             <TextBlock Text="&#xE74A;" Style="{StaticResource IconText}" />
                         </Button>
-                        <Button x:Name="BackwardButton" Style="{StaticResource ArrangeButton}" ToolTip="Naar achteren (PageDown)" Click="SendBackward_Click">
+                        <Button x:Name="BackwardButton" Style="{StaticResource ArrangeButton}" ToolTip="{x:Static res:Strings.Arrange_Backward}" Click="SendBackward_Click">
                             <TextBlock Text="&#xE74B;" Style="{StaticResource IconText}" />
                         </Button>
                     </StackPanel>
@@ -757,15 +758,15 @@
                 <TextBlock x:Name="NoPropsText" Style="{StaticResource PropLabel}" VerticalAlignment="Center" />
                 <StackPanel x:Name="BackgroundGroup" Style="{StaticResource PropGroup}">
                     <Rectangle Style="{StaticResource ArrangeDivider}" />
-                    <TextBlock Text="Achtergrond" Style="{StaticResource PropLabel}" Margin="4,0,4,0" />
+                    <TextBlock Text="{x:Static res:Strings.Background_Label}" Style="{StaticResource PropLabel}" Margin="4,0,4,0" />
                     <ComboBox x:Name="BackgroundKindCombo" Style="{StaticResource MiniCombo}" ItemTemplate="{StaticResource BackgroundKindTemplate}"
-                              ToolTip="Achtergrond onder de transparante delen" SelectionChanged="BackgroundKind_Changed" />
-                    <local:ColorPickerButton x:Name="BackgroundColorPicker" ToolTip="Kleur" />
-                    <local:ColorPickerButton x:Name="BackgroundColor2Picker" ToolTip="Tweede kleur van het verloop" />
+                              ToolTip="{x:Static res:Strings.Background_Tip}" SelectionChanged="BackgroundKind_Changed" />
+                    <local:ColorPickerButton x:Name="BackgroundColorPicker" ToolTip="{x:Static res:Strings.Common_Color}" />
+                    <local:ColorPickerButton x:Name="BackgroundColor2Picker" ToolTip="{x:Static res:Strings.Background_SecondColor}" />
                     <local:GradientAngleDial x:Name="GradientDial" Margin="2,0" />
                     <Button x:Name="BackgroundImageButton" Style="{StaticResource FlatButton}" Padding="6,4" MinWidth="0" MinHeight="30" Margin="2,0"
                             BorderBrush="{DynamicResource ControlBorderBrush}" Background="{DynamicResource ControlBrush}"
-                            ToolTip="Afbeelding kiezen; die vult het hele canvas" Click="BackgroundImage_Click">
+                            ToolTip="{x:Static res:Strings.Background_ImageTip}" Click="BackgroundImage_Click">
                         <StackPanel Orientation="Horizontal">
                             <Grid Width="20" Height="20">
                                 <TextBlock x:Name="BackgroundImageIcon" Text="&#xE91B;" Style="{StaticResource IconText}" />
@@ -775,7 +776,7 @@
                                     </Image.Clip>
                                 </Image>
                             </Grid>
-                            <TextBlock Text="Kiezen..." FontSize="12" VerticalAlignment="Center" Margin="6,0,0,0" />
+                            <TextBlock Text="{x:Static res:Strings.Background_Choose}" FontSize="12" VerticalAlignment="Center" Margin="6,0,0,0" />
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -806,7 +807,7 @@
                     BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,1,1"
                     MouseRightButtonUp="RulerCorner_MouseRightButtonUp">
                 <Button x:Name="RulerFolderButton" Style="{StaticResource FlatButton}" MinWidth="0" MinHeight="0" Margin="0"
-                        Padding="0" BorderThickness="0" ToolTip="Map openen (rechtsklik: hulplijnen wissen)" Click="RulerFolder_Click">
+                        Padding="0" BorderThickness="0" ToolTip="{x:Static res:Strings.Editor_RulerCornerTip}" Click="RulerFolder_Click">
                     <TextBlock Text="&#xE8B7;" Style="{StaticResource IconText}" FontSize="12" />
                 </Button>
             </Border>
@@ -857,7 +858,7 @@
                         <TextBlock x:Name="CaptureFloatGrip" Text="&#xE76F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Foreground="{DynamicResource SubtleTextBrush}" Background="Transparent" Padding="0,2" Cursor="SizeAll"
-                                   ToolTip="Slepen om te verplaatsen; rechtsklik om vast te zetten" />
+                                   ToolTip="{x:Static res:Strings.Toolbar_DragTip}" />
                         <Border x:Name="CaptureFloatHost" />
                     </StackPanel>
                 </Border>

@@ -5,7 +5,7 @@
 #define AppName "kniip"
 #define AppExe "Kniip.exe"
 #ifndef AppVersion
-  #define AppVersion "2.3.2"
+  #define AppVersion "2.5.0"
 #endif
 #ifndef PublishDir
   #define PublishDir "..\obj\publish"
@@ -30,14 +30,32 @@ WizardStyle=modern
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 CloseApplications=yes
+; Taal van de installer volgt de Windows-weergavetaal: Nederlands bij Nederlands, anders Engels.
+LanguageDetectionMethod=uilanguage
+ShowLanguageDialog=no
 
 [Languages]
+Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "dutch"; MessagesFile: "compiler:Languages\Dutch.isl"
 
+[CustomMessages]
+english.GroupIntegration=Integration:
+english.GroupShortcuts=Shortcuts:
+english.TaskAutostart=Start kniip with Windows (recommended)
+english.TaskOpenWith=Show kniip in 'Open with' for images (also in the Snipping Tool)
+english.TaskDesktopIcon=Desktop shortcut
+english.ImageType=kniip image
+dutch.GroupIntegration=Integratie:
+dutch.GroupShortcuts=Snelkoppelingen:
+dutch.TaskAutostart=kniip starten met Windows (aanbevolen)
+dutch.TaskOpenWith=kniip tonen in 'Openen met' voor afbeeldingen (ook in het Knipprogramma)
+dutch.TaskDesktopIcon=Snelkoppeling op het bureaublad
+dutch.ImageType=kniip afbeelding
+
 [Tasks]
-Name: "autostart"; Description: "kniip starten met Windows (aanbevolen)"; GroupDescription: "Integratie:"
-Name: "openwith"; Description: "kniip tonen in 'Openen met' voor afbeeldingen (ook in het Knipprogramma)"; GroupDescription: "Integratie:"
-Name: "desktopicon"; Description: "Snelkoppeling op het bureaublad"; GroupDescription: "Snelkoppelingen:"; Flags: unchecked
+Name: "autostart"; Description: "{cm:TaskAutostart}"; GroupDescription: "{cm:GroupIntegration}"
+Name: "openwith"; Description: "{cm:TaskOpenWith}"; GroupDescription: "{cm:GroupIntegration}"
+Name: "desktopicon"; Description: "{cm:TaskDesktopIcon}"; GroupDescription: "{cm:GroupShortcuts}"; Flags: unchecked
 
 [InstallDelete]
 ; Overblijfselen van voor de hernoeming van Knip+ naar kniip; de registersleutels ruimt de app zelf op.
@@ -59,7 +77,7 @@ Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExe}"; Tasks: desktopico
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "Kniip"; ValueData: """{app}\{#AppExe}"" --tray"; Tasks: autostart; Flags: uninsdeletevalue
 
 ; "Openen met"
-Root: HKCU; Subkey: "Software\Classes\Kniip.Image"; ValueType: string; ValueName: ""; ValueData: "kniip afbeelding"; Tasks: openwith; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Kniip.Image"; ValueType: string; ValueName: ""; ValueData: "{cm:ImageType}"; Tasks: openwith; Flags: uninsdeletekey
 Root: HKCU; Subkey: "Software\Classes\Kniip.Image\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: """{app}\{#AppExe}"",0"; Tasks: openwith
 Root: HKCU; Subkey: "Software\Classes\Kniip.Image\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#AppExe}"" ""%1"""; Tasks: openwith
 Root: HKCU; Subkey: "Software\Classes\Applications\{#AppExe}"; ValueType: string; ValueName: "FriendlyAppName"; ValueData: "kniip editor"; Tasks: openwith; Flags: uninsdeletekey
@@ -76,7 +94,7 @@ Root: HKCU; Subkey: "Software\Classes\.bmp\OpenWithProgids"; ValueType: none; Va
 Root: HKCU; Subkey: "Software\Classes\.gif\OpenWithProgids"; ValueType: none; ValueName: "Kniip.Image"; Tasks: openwith; Flags: uninsdeletevalue
 
 [Run]
-Filename: "{app}\{#AppExe}"; Description: "kniip nu starten"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#AppExe}"; Description: "{cm:LaunchProgram,{#AppName}}"; Flags: nowait postinstall skipifsilent
 ; Stille installatie = update vanuit kniip zelf; daarna opnieuw starten.
 Filename: "{app}\{#AppExe}"; Parameters: "--updated"; Flags: nowait; Check: WizardSilent
 

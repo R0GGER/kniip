@@ -91,6 +91,7 @@ $items = foreach ($e in $emoji) {
         y = $e.sheet_y
         s = $e.short_name
         n = if ($nameNl) { $nameNl } else { $nameEn }
+        e = $nameEn
         k = (($words | ForEach-Object { $_.ToLowerInvariant().Replace('_', ' ') } | Select-Object -Unique) -join '|')
     }
     if ($skins) { $item['t'] = $skins }

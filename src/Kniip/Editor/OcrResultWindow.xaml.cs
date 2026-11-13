@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Kniip.Resources;
 
 namespace Kniip.Editor;
 
@@ -43,7 +44,7 @@ public partial class OcrResultWindow : Window
         }
         catch (Exception ex)
         {
-            ShowError(ex is InvalidOperationException ? ex.Message : $"Tekst herkennen is mislukt.\n\n{ex.Message}");
+            ShowError(ex is InvalidOperationException ? ex.Message : string.Format(Strings.Ocr_Failed, ex.Message));
         }
         finally
         {
@@ -57,7 +58,7 @@ public partial class OcrResultWindow : Window
         CopyButton.IsEnabled = !busy && ResultBox.Text.Length > 0;
         if (busy)
         {
-            StatusText.Text = "Tekst herkennen...";
+            StatusText.Text = Strings.Ocr_Recognizing;
         }
     }
 
@@ -68,7 +69,7 @@ public partial class OcrResultWindow : Window
         EmptyPanel.Visibility = empty ? Visibility.Visible : Visibility.Collapsed;
         int lines = text.Split('\n').Count(line => line.Trim().Length > 0);
         StatusText.Text = empty ? string.Empty
-            : $"{lines} {(lines == 1 ? "regel" : "regels")} herkend. Je kunt de tekst hier aanpassen.";
+            : string.Format(lines == 1 ? Strings.Ocr_RecognizedOne : Strings.Ocr_RecognizedMany, lines);
         if (!empty)
         {
             ResultBox.Focus();
@@ -93,8 +94,8 @@ public partial class OcrResultWindow : Window
         }
 
         CopyLabel.Text = ResultBox.SelectionLength > 0 && ResultBox.SelectionLength < ResultBox.Text.Length
-            ? "Selectie kopiëren"
-            : "Kopiëren";
+            ? Strings.Ocr_CopySelection
+            : Strings.Common_Copy;
         CopyButton.IsEnabled = !ResultBox.IsReadOnly && ResultBox.Text.Length > 0;
     }
 
@@ -102,8 +103,8 @@ public partial class OcrResultWindow : Window
     {
         string text = ResultBox.SelectionLength > 0 ? ResultBox.SelectedText : ResultBox.Text;
         StatusText.Text = ClipboardWriter.SetText(text)
-            ? "Gekopieerd naar het klembord."
-            : "Kopiëren mislukt: het klembord is bezet. Probeer het opnieuw.";
+            ? Strings.Common_CopiedToClipboard
+            : Strings.Common_CopyFailedBusy;
     }
 
     private void Close_Click(object sender, RoutedEventArgs e) => Close();

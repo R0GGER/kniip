@@ -1,4 +1,4 @@
-﻿# Publiceert kniip als zelfstandige single-file exe (geen .NET-installatie nodig op de doel-pc)
+# Publiceert kniip als zelfstandige single-file exe (geen .NET-installatie nodig op de doel-pc)
 # en bouwt de installer als Inno Setup 6 aanwezig is.
 # ScreenRecorderLib (screencasts) is een C++/CLI-assembly die niet uit de bundel geladen kan worden;
 # IncludeAllContentForSelfExtract pakt daarom bij de eerste start alles uit naar %TEMP%\.net.
@@ -13,7 +13,7 @@
 #   .\build.ps1 -SkipTest       -> zonder testexe
 
 param(
-    [string]$Version = "2.3.2",
+    [string]$Version = "2.5.0",
     [string]$Runtime = "win-x64",
     [switch]$SkipTest
 )

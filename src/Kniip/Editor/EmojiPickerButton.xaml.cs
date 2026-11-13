@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Kniip.Editor.Emoji;
+using Kniip.Resources;
 
 namespace Kniip.Editor;
 
@@ -40,12 +41,12 @@ public partial class EmojiPickerButton : UserControl
 
     private static readonly (SkinTone Tone, Color Color, string Name)[] Tones =
     {
-        (SkinTone.Default, Color.FromRgb(0xFF, 0xC9, 0x3A), "Standaard"),
-        (SkinTone.Light, Color.FromRgb(0xFA, 0xDC, 0xBC), "Licht"),
-        (SkinTone.MediumLight, Color.FromRgb(0xE0, 0xBB, 0x95), "Middellicht"),
-        (SkinTone.Medium, Color.FromRgb(0xBF, 0x8F, 0x68), "Middel"),
-        (SkinTone.MediumDark, Color.FromRgb(0x9B, 0x64, 0x3D), "Middeldonker"),
-        (SkinTone.Dark, Color.FromRgb(0x59, 0x45, 0x39), "Donker")
+        (SkinTone.Default, Color.FromRgb(0xFF, 0xC9, 0x3A), Strings.SkinTone_Default),
+        (SkinTone.Light, Color.FromRgb(0xFA, 0xDC, 0xBC), Strings.SkinTone_Light),
+        (SkinTone.MediumLight, Color.FromRgb(0xE0, 0xBB, 0x95), Strings.SkinTone_MediumLight),
+        (SkinTone.Medium, Color.FromRgb(0xBF, 0x8F, 0x68), Strings.SkinTone_Medium),
+        (SkinTone.MediumDark, Color.FromRgb(0x9B, 0x64, 0x3D), Strings.SkinTone_MediumDark),
+        (SkinTone.Dark, Color.FromRgb(0x59, 0x45, 0x39), Strings.SkinTone_Dark)
     };
 
     private static readonly Brush AccentBrush = Annotations.RenderHelpers.Freeze(new SolidColorBrush(Palette.Accent));
@@ -106,7 +107,7 @@ public partial class EmojiPickerButton : UserControl
         Face.Source = EmojiCatalog.Get(_emoji, _tone);
         if (EmojiCatalog.Find(_emoji) is { } info)
         {
-            Toggle.ToolTip = $"Emoji kiezen ({info.Name})";
+            Toggle.ToolTip = string.Format(Strings.Emoji_ChooseCurrent, info.Name);
         }
     }
 
@@ -201,14 +202,14 @@ public partial class EmojiPickerButton : UserControl
         string query = SearchBox.Text.Trim();
         if (query.Length > 0)
         {
-            yield return ("Search", "Zoekresultaten", EmojiCatalog.Search(query));
+            yield return ("Search", Strings.Emoji_SearchResults, EmojiCatalog.Search(query));
             yield break;
         }
 
         List<EmojiInfo> recent = RecentEmoji();
         if (recent.Count > 0)
         {
-            yield return (RecentId, "Recent gebruikt", recent);
+            yield return (RecentId, Strings.Emoji_Recent, recent);
         }
 
         foreach (IGrouping<string, EmojiInfo> group in EmojiCatalog.All.GroupBy(e => e.Category))
@@ -277,7 +278,7 @@ public partial class EmojiPickerButton : UserControl
         _tabs.Clear();
         if (RecentEmoji().Count > 0)
         {
-            AddTab(RecentId, "Recent gebruikt", new TextBlock { Text = "\uE81C", Style = (Style)FindResource("IconText") });
+            AddTab(RecentId, Strings.Emoji_Recent, new TextBlock { Text = "\uE81C", Style = (Style)FindResource("IconText") });
         }
 
         foreach (EmojiCategory category in EmojiCatalog.Categories)
@@ -360,7 +361,7 @@ public partial class EmojiPickerButton : UserControl
                 Margin = new Thickness(0),
                 Content = dot,
                 Tag = tone,
-                ToolTip = $"Huidskleur: {name.ToLowerInvariant()}"
+                ToolTip = string.Format(Strings.SkinTone_ToolTip, name.ToLower(System.Globalization.CultureInfo.CurrentUICulture))
             };
             button.Click += (_, _) => SetTone(tone);
             TonePanel.Children.Add(button);

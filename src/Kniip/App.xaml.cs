@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -12,6 +13,7 @@ using Kniip.Infrastructure;
 using Kniip.Interop;
 using Kniip.Notifications;
 using Kniip.Recording;
+using Kniip.Resources;
 using Kniip.Settings;
 using Kniip.Update;
 using Microsoft.Win32;
@@ -52,6 +54,7 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        UiLanguage.Apply();
         base.OnStartup(e);
         DispatcherUnhandledException += OnUnhandledException;
 
@@ -83,6 +86,7 @@ public partial class App : Application
         }
 
         Settings = SettingsStore.Load();
+        UiLanguage.Apply(Settings.Language);
         ThemeManager.Apply(Settings.ColorMode);
 
         Capture = new CaptureCoordinator(Dispatcher);
@@ -165,7 +169,13 @@ public partial class App : Application
 
         if (args.Contains("--updated", StringComparer.OrdinalIgnoreCase))
         {
-            _tray?.ShowBalloon("kniip is bijgewerkt", $"Je gebruikt nu versie {UpdateChecker.CurrentVersion}.");
+            _tray?.ShowBalloon(Strings.App_UpdatedTitle, string.Format(Strings.App_UpdatedText, UpdateChecker.CurrentVersion));
+            return;
+        }
+
+        if (args.Contains("--settings", StringComparer.OrdinalIgnoreCase))
+        {
+            ShowSettings();
             return;
         }
 
@@ -177,9 +187,9 @@ public partial class App : Application
         if (isFirstStart)
         {
             string? hotkey = HotkeyDisplay(Settings.SnipHotkey);
-            _tray?.ShowBalloon($"{AppIdentity.DisplayName} is actief", hotkey == null
-                ? "Maak een knipsel met Win + Shift + S. kniip biedt het daarna aan om te bewerken."
-                : $"Druk op {hotkey} en sleep een rechthoek om te knippen en te bewerken.");
+            _tray?.ShowBalloon(string.Format(Strings.App_ActiveTitle, AppIdentity.DisplayName), hotkey == null
+                ? Strings.App_ActiveTextNoHotkey
+                : string.Format(Strings.App_ActiveText, hotkey));
         }
 
         // Opnieuw starten terwijl de editor (eventueel verborgen) tabbladen heeft: die tonen in plaats van een extra leeg canvas.
@@ -489,9 +499,9 @@ public partial class App : Application
         string? text = stage switch
         {
             RecordingStage.Idle => null,
-            RecordingStage.Recording or RecordingStage.Paused => "Opname stoppen",
-            RecordingStage.Finishing => "Opname afronden...",
-            _ => "Opname annuleren"
+            RecordingStage.Recording or RecordingStage.Paused => Strings.Recording_Stop,
+            RecordingStage.Finishing => Strings.Recording_Finishing,
+            _ => Strings.Recording_CancelTray
         };
         _tray?.SetRecordItem(text, stage is RecordingStage.Recording or RecordingStage.Paused);
         UpdateCapturePaused();
@@ -544,7 +554,7 @@ public partial class App : Application
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Kan '{Path.GetFileName(path)}' niet openen.\n\n{ex.Message}", "kniip",
+            MessageBox.Show(string.Format(Strings.Common_CannotOpenFile, Path.GetFileName(path), ex.Message), "kniip",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
@@ -561,8 +571,8 @@ public partial class App : Application
     {
         var dialog = new OpenFileDialog
         {
-            Title = "Afbeelding openen in kniip",
-            Filter = "Afbeeldingen|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Alle bestanden|*.*",
+            Title = Strings.App_OpenImageTitle,
+            Filter = Strings.App_OpenImageFilter,
             InitialDirectory = CaptureCoordinator.ScreenshotsFolder ?? Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)
         };
         bool? ok = owner == null ? dialog.ShowDialog() : dialog.ShowDialog(owner);
@@ -612,8 +622,8 @@ public partial class App : Application
 
     private IReadOnlyList<(string Label, string? Path)> TrayFolders() => new (string, string?)[]
     {
-        ("Schermafbeeldingen", ExistingFolder(CaptureCoordinator.ScreenshotsFolder)),
-        ("Knipsels", SnipFolder),
+        (Strings.App_FolderScreenshots, ExistingFolder(CaptureCoordinator.ScreenshotsFolder)),
+        (Strings.Common_Snips, SnipFolder),
         ("Screencasts", VideoFolder)
     };
 
@@ -654,7 +664,7 @@ public partial class App : Application
     {
         if (Recorder.Stage != RecordingStage.Idle)
         {
-            MessageBox.Show("Er loopt nog een screencast. Stop of annuleer die eerst.", "kniip",
+            MessageBox.Show(Strings.App_ScreencastRunning, "kniip",
                 MessageBoxButton.OK, MessageBoxImage.Information);
             return false;
         }
@@ -673,6 +683,31 @@ public partial class App : Application
         return _editorShell == null;
     }
 
+    /// <summary>Sluit kniip en start het opnieuw met de instellingen open, bijvoorbeeld na het wijzigen van de taal.</summary>
+    public void Restart()
+    {
+        if (!TryCloseAllWindows() || Environment.ProcessPath is not { } exe)
+        {
+            return;
+        }
+
+        // De nieuwe instantie moet de mutex kunnen krijgen, dus die nu al vrijgeven; OnExit slaat dan niet meer op.
+        SettingsStore.Save(Settings);
+        _singleInstance?.Dispose();
+        _singleInstance = null;
+        try
+        {
+            Process.Start(new ProcessStartInfo(exe, "--settings") { UseShellExecute = false });
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(string.Format(Strings.App_RestartFailed, ex.Message), "kniip",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
+        Shutdown();
+    }
+
     /// <summary>Start de gedownloade installer en sluit kniip; de installer start kniip daarna opnieuw.</summary>
     public void InstallUpdate(string installerPath)
     {
@@ -687,7 +722,7 @@ public partial class App : Application
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"De installer kon niet worden gestart.\n\n{ex.Message}", "kniip",
+            MessageBox.Show(string.Format(Strings.App_InstallerFailed, ex.Message), "kniip",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
@@ -721,7 +756,7 @@ public partial class App : Application
             // Loggen is best effort.
         }
 
-        MessageBox.Show($"Er ging iets mis:\n\n{e.Exception.Message}", "kniip", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show(string.Format(Strings.App_UnhandledError, e.Exception.Message), "kniip", MessageBoxButton.OK, MessageBoxImage.Error);
         e.Handled = true;
     }
 }

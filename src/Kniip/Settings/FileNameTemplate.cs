@@ -5,11 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using Kniip.Resources;
 
 namespace Kniip.Settings;
 
 /// <summary>
-/// Naamsjabloon voor opslaan: %J jaar, %M maand, %D dag, %V programmanaam van het venster,
+/// Naamsjabloon voor opslaan: %J of %Y jaar, %M maand, %D dag, %V programmanaam van het venster,
 /// %Rn n willekeurige tekens, %Nn eerste vrije nummer in de map met n cijfers. / of \ maakt submappen.
 /// </summary>
 public static class FileNameTemplate
@@ -17,12 +18,10 @@ public static class FileNameTemplate
     private const int MaxWidth = 32;
     private const string RandomChars = "abcdefghijklmnopqrstuvwxyz0123456789";
 
-    private static readonly Regex Token = new(@"%(?:(?<k>[JMDV])|(?<k>[RN])(?<n>\d{1,2}))",
+    private static readonly Regex Token = new(@"%(?:(?<k>[JYMDV])|(?<k>[RN])(?<n>\d{1,2}))",
         RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    public const string Help =
-        "%J jaar, %M maand, %D dag, %V programmanaam van het venster, %R6 zes willekeurige tekens, %N3 oplopend nummer met drie cijfers (001). " +
-        "Met / maak je submappen. De extensie kiest kniip zelf.";
+    public static string Help => Strings.Template_Help;
 
     /// <summary>
     /// Volledig pad in <paramref name="folder"/> dat nog niet bestaat; de submappen worden aangemaakt.
@@ -88,6 +87,7 @@ public static class FileNameTemplate
         switch (char.ToUpperInvariant(match.Groups["k"].Value[0]))
         {
             case 'J':
+            case 'Y':
                 return now.Year.ToString(CultureInfo.InvariantCulture);
             case 'M':
                 return now.Month.ToString("00", CultureInfo.InvariantCulture);

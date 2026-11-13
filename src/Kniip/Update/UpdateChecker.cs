@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Kniip.Resources;
 
 namespace Kniip.Update;
 
@@ -60,28 +61,28 @@ public static class UpdateChecker
             using HttpResponseMessage response = await Client.SendAsync(request, timeout.Token).ConfigureAwait(false);
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                throw new UpdateException("De releases van kniip zijn niet gevonden op GitHub.");
+                throw new UpdateException(Strings.Update_NotFound);
             }
 
             if (IsRateLimited(response))
             {
-                throw new UpdateException("De limiet van GitHub is bereikt. Probeer het later opnieuw.");
+                throw new UpdateException(Strings.Update_RateLimit);
             }
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new UpdateException($"GitHub gaf een fout ({(int)response.StatusCode}).");
+                throw new UpdateException(string.Format(Strings.Update_HttpError, (int)response.StatusCode));
             }
 
             body = await response.Content.ReadAsStringAsync(timeout.Token).ConfigureAwait(false);
         }
         catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested)
         {
-            throw new UpdateException("GitHub reageert niet (time-out).", ex);
+            throw new UpdateException(Strings.Update_Timeout, ex);
         }
         catch (HttpRequestException ex)
         {
-            throw new UpdateException("Kan GitHub niet bereiken. Controleer de internetverbinding.", ex);
+            throw new UpdateException(Strings.Update_Unreachable, ex);
         }
 
         try
@@ -90,7 +91,7 @@ public static class UpdateChecker
         }
         catch (Exception ex) when (ex is JsonException or InvalidOperationException or KeyNotFoundException)
         {
-            throw new UpdateException("Het antwoord van GitHub is niet te lezen.", ex);
+            throw new UpdateException(Strings.Update_BadResponse, ex);
         }
     }
 

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Kniip.History;
+using Kniip.Resources;
 
 namespace Kniip.Infrastructure;
 
@@ -15,7 +16,7 @@ internal sealed class TrayIcon : IDisposable
     private Icon? _badgeIcon;
     private bool _recording;
     private string? _updateVersion;
-    private const string RecordText = "Screencast opnemen (MP4)...";
+    private static string RecordText => Strings.Tray_RecordMp4;
 
     private readonly ToolStripMenuItem _clipboardItem;
     private readonly ToolStripMenuItem _pauseItem;
@@ -59,54 +60,54 @@ internal sealed class TrayIcon : IDisposable
     public TrayIcon()
     {
         var menu = new ContextMenuStrip();
-        menu.Items.Add(WithGlyph(new ToolStripMenuItem("Open kniip", null, (_, _) => OpenRequested?.Invoke())
+        menu.Items.Add(WithGlyph(new ToolStripMenuItem(Strings.Tray_Open, null, (_, _) => OpenRequested?.Invoke())
         {
-            ToolTipText = "De editor met de open tabbladen tonen, of anders de afbeeldingsgeschiedenis"
+            ToolTipText = Strings.Tray_OpenTip
         }, "\uE8A7"));
         menu.Items.Add(new ToolStripSeparator());
-        _clipboardItem = WithGlyph(new ToolStripMenuItem("Bewerken vanaf klembord", null, (_, _) => OpenFromClipboardRequested?.Invoke()), "\uE77F");
+        _clipboardItem = WithGlyph(new ToolStripMenuItem(Strings.Tray_EditFromClipboard, null, (_, _) => OpenFromClipboardRequested?.Invoke()), "\uE77F");
         menu.Items.Add(_clipboardItem);
-        menu.Items.Add(WithGlyph(new ToolStripMenuItem("Afbeelding openen...", null, (_, _) => OpenFileRequested?.Invoke()), "\uE8E5"));
+        menu.Items.Add(WithGlyph(new ToolStripMenuItem(Strings.Tray_OpenImage, null, (_, _) => OpenFileRequested?.Invoke()), "\uE8E5"));
         menu.Items.Add(new ToolStripSeparator());
-        _snipItem = WithGlyph(new ToolStripMenuItem("Rechthoek knippen", null, (_, _) => SnipRequested?.Invoke())
+        _snipItem = WithGlyph(new ToolStripMenuItem(Strings.Tray_SnipRectangle, null, (_, _) => SnipRequested?.Invoke())
         {
             Font = new Font(SystemFonts.MenuFont ?? Control.DefaultFont, FontStyle.Bold)
         }, "\uF407");
         menu.Items.Add(_snipItem);
-        _windowItem = WithGlyph(new ToolStripMenuItem("Venster knippen", null, (_, _) => WindowSnipRequested?.Invoke()), "\uE737");
+        _windowItem = WithGlyph(new ToolStripMenuItem(Strings.Tray_SnipWindow, null, (_, _) => WindowSnipRequested?.Invoke()), "\uE737");
         menu.Items.Add(_windowItem);
-        _ocrItem = WithGlyph(new ToolStripMenuItem("OCR (tekst herkennen)...", null, (_, _) => TextRecognitionRequested?.Invoke())
+        _ocrItem = WithGlyph(new ToolStripMenuItem(Strings.Tray_Ocr, null, (_, _) => TextRecognitionRequested?.Invoke())
         {
-            ToolTipText = "Sleep een rechthoek; de tekst daarin opent in een apart venster om te kopiëren"
+            ToolTipText = Strings.Tray_OcrTip
         }, "\uE8D2");
         menu.Items.Add(_ocrItem);
         _delayItem = WithGlyph(BuildDelayItem(), "\uE916");
         menu.Items.Add(_delayItem);
         _recordItem = WithGlyph(new ToolStripMenuItem(RecordText, null, (_, _) => RecordRequested?.Invoke()), "\uE714");
         menu.Items.Add(_recordItem);
-        _gifItem = WithGlyph(new ToolStripMenuItem("Screencast opnemen (GIF)...", null, (_, _) => GifRequested?.Invoke()), "\uF4A9");
+        _gifItem = WithGlyph(new ToolStripMenuItem(Strings.Tray_RecordGif, null, (_, _) => GifRequested?.Invoke()), "\uF4A9");
         menu.Items.Add(_gifItem);
         menu.Items.Add(new ToolStripSeparator());
 
-        _foldersItem = WithGlyph(new ToolStripMenuItem("Map openen"), "\uE838");
+        _foldersItem = WithGlyph(new ToolStripMenuItem(Strings.Common_OpenFolder), "\uE838");
         _foldersItem.DropDownItems.Add(new ToolStripMenuItem("..."));
         _foldersItem.DropDownOpening += (_, _) => BuildFolders();
         menu.Items.Add(_foldersItem);
-        menu.Items.Add(WithGlyph(new ToolStripMenuItem("Geschiedenis...", null, (_, _) => HistoryRequested?.Invoke(false)), "\uE81C"));
-        menu.Items.Add(WithGlyph(new ToolStripMenuItem("Afbeeldingsgeschiedenis...", null, (_, _) => HistoryRequested?.Invoke(true)), "\uE91B"));
-        _recentItem = WithGlyph(new ToolStripMenuItem("Recente items"), "\uE823");
+        menu.Items.Add(WithGlyph(new ToolStripMenuItem(Strings.Tray_History, null, (_, _) => HistoryRequested?.Invoke(false)), "\uE81C"));
+        menu.Items.Add(WithGlyph(new ToolStripMenuItem(Strings.Tray_ImageHistory, null, (_, _) => HistoryRequested?.Invoke(true)), "\uE91B"));
+        _recentItem = WithGlyph(new ToolStripMenuItem(Strings.Tray_RecentItems), "\uE823");
         _recentItem.DropDownItems.Add(new ToolStripMenuItem("..."));
         _recentItem.DropDownOpening += (_, _) => BuildRecent();
         menu.Items.Add(_recentItem);
         menu.Items.Add(new ToolStripSeparator());
 
         // Zonder icoon: het vinkje gebruikt dezelfde plek.
-        _pauseItem = new ToolStripMenuItem("Knipsels niet automatisch oppikken") { CheckOnClick = true };
+        _pauseItem = new ToolStripMenuItem(Strings.Tray_Pause) { CheckOnClick = true };
         _pauseItem.CheckedChanged += (_, _) => PauseChanged?.Invoke(_pauseItem.Checked);
         menu.Items.Add(_pauseItem);
-        menu.Items.Add(WithGlyph(new ToolStripMenuItem("Instellingen...", null, (_, _) => SettingsRequested?.Invoke()), "\uE713"));
+        menu.Items.Add(WithGlyph(new ToolStripMenuItem(Strings.Tray_Settings, null, (_, _) => SettingsRequested?.Invoke()), "\uE713"));
         menu.Items.Add(new ToolStripSeparator());
-        menu.Items.Add(WithGlyph(new ToolStripMenuItem("Afsluiten", null, (_, _) => ExitRequested?.Invoke()), "\uE7E8"));
+        menu.Items.Add(WithGlyph(new ToolStripMenuItem(Strings.Tray_Exit, null, (_, _) => ExitRequested?.Invoke()), "\uE7E8"));
         RenderGlyphs(menu.ImageScalingSize, SystemColors.ControlText);
 
         _baseIcon = LoadIcon();
@@ -163,10 +164,10 @@ internal sealed class TrayIcon : IDisposable
 
     private void UpdateToolTip()
     {
-        string text = _recording ? $"{AppIdentity.DisplayName} - opname loopt" : IdleText;
+        string text = _recording ? string.Format(Strings.Tray_RecordingToolTip, AppIdentity.DisplayName) : IdleText;
         if (_updateVersion != null)
         {
-            text += $"\nNieuwe versie {_updateVersion} beschikbaar";
+            text += "\n" + string.Format(Strings.Tray_UpdateToolTip, _updateVersion);
         }
 
         // NotifyIcon.Text gooit een uitzondering boven 127 tekens.
@@ -231,7 +232,7 @@ internal sealed class TrayIcon : IDisposable
         };
         _delayUnit = new Label
         {
-            Text = "seconden",
+            Text = Strings.Tray_Seconds,
             AutoSize = true,
             Location = new Point(_delayNumber.Right + 4, 13)
         };
@@ -265,7 +266,7 @@ internal sealed class TrayIcon : IDisposable
                 CaptureDelayChanged?.Invoke(_delaySeconds);
             }
         };
-        item.Text = "Schermafdruk vertraging: 0s";
+        item.Text = string.Format(Strings.Tray_Delay, 0);
         return item;
     }
 
@@ -282,7 +283,7 @@ internal sealed class TrayIcon : IDisposable
             _delayNumber.Value = seconds;
         }
 
-        _delayItem.Text = $"Schermafdruk vertraging: {seconds}s";
+        _delayItem.Text = string.Format(Strings.Tray_Delay, seconds);
     }
 
     /// <summary>Menu in de kleurmodus van kniip.</summary>
@@ -382,7 +383,7 @@ internal sealed class TrayIcon : IDisposable
         List<HistoryEntry> entries = HistoryStore.Recent(10).ToList();
         if (entries.Count == 0)
         {
-            _recentItem.DropDownItems.Add(new ToolStripMenuItem("Nog niets opgeslagen") { Enabled = false });
+            _recentItem.DropDownItems.Add(new ToolStripMenuItem(Strings.Tray_NothingSaved) { Enabled = false });
             return;
         }
 

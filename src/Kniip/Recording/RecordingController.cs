@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using Kniip.Interop;
 using Kniip.Settings;
 using Screen = System.Windows.Forms.Screen;
+using Kniip.Resources;
 
 namespace Kniip.Recording;
 
@@ -249,8 +250,8 @@ internal sealed class RecordingController
 
         if (_session.MissingAudio != null)
         {
-            Notify?.Invoke("Opname zonder " + _session.MissingAudio,
-                $"Er is geen {_session.MissingAudio} gevonden op deze pc; de opname gaat daarzonder verder.");
+            Notify?.Invoke(string.Format(Strings.Recording_WithoutAudioTitle, _session.MissingAudio),
+                string.Format(Strings.Recording_WithoutAudioText, _session.MissingAudio));
         }
     }
 
@@ -330,7 +331,7 @@ internal sealed class RecordingController
         if (!started && options is { HasAudio: true } && !_retriedWithoutAudio && !_discard)
         {
             _retriedWithoutAudio = true;
-            Notify?.Invoke("Opname zonder geluid", "Opnemen met geluid lukte niet; kniip neemt nu op zonder geluid.");
+            Notify?.Invoke(Strings.Recording_NoSoundTitle, Strings.Recording_NoSoundText);
             StartRecording(options with { SystemAudio = false, Microphone = false });
             return;
         }
@@ -344,7 +345,7 @@ internal sealed class RecordingController
 
         if (!discard)
         {
-            MessageBox.Show($"De opname is mislukt.\n\n{error}", "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(string.Format(Strings.Recording_Failed, error), "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
 

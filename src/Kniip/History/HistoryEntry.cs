@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text.Json.Serialization;
+using Kniip.Resources;
 
 namespace Kniip.History;
 
@@ -39,7 +40,7 @@ public sealed class HistoryEntry
     {
         HistoryKind.Mp4 => "Screencast (MP4)",
         HistoryKind.Gif => "Screencast (GIF)",
-        _ => "Knipsel"
+        _ => Strings.Snip_Name
     };
 
     [JsonIgnore]

@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using Kniip.Recording;
 using Rectangle = System.Drawing.Rectangle;
 using Screen = System.Windows.Forms.Screen;
+using Kniip.Resources;
 
 namespace Kniip.Capture;
 
@@ -47,7 +48,7 @@ public partial class RegionCaptureWindow : Window
         if (windows != null)
         {
             Cursor = Cursors.Hand;
-            HintTitle.Text = "Knipsel: klik op een venster";
+            HintTitle.Text = Strings.Capture_WindowHint;
             MouseLeave += (_, _) =>
             {
                 _hover = null;

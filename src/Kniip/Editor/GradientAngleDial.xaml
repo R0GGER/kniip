@@ -1,6 +1,7 @@
 <UserControl x:Class="Kniip.Editor.GradientAngleDial"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="clr-namespace:Kniip.Resources"
              VerticalAlignment="Center">
     <Grid>
         <ToggleButton x:Name="Toggle" Style="{StaticResource FlatButton}" Padding="6,4" MinWidth="0" MinHeight="30"
@@ -44,18 +45,18 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
                         <TextBox x:Name="AngleBox" Width="48" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" FontSize="12"
                                  Padding="2,3" KeyDown="AngleBox_KeyDown" LostKeyboardFocus="AngleBox_LostKeyboardFocus"
-                                 ToolTip="Hoek in graden: 0 = naar boven, 90 = naar rechts, 180 = naar onder" />
+                                 ToolTip="{x:Static res:Strings.Gradient_AngleTip}" />
                         <TextBlock Text="°" FontSize="12" VerticalAlignment="Center" Margin="3,0,0,0" Foreground="{DynamicResource InkBrush}" />
                     </StackPanel>
                     <ToggleButton x:Name="RadialToggle" Style="{StaticResource ToolToggle}" Margin="0,8,0,0" HorizontalAlignment="Stretch"
-                                  Click="Radial_Click" ToolTip="Verloop vanuit het midden naar buiten">
+                                  Click="Radial_Click" ToolTip="{x:Static res:Strings.Gradient_RadialTip}">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="M9,3 A6,6 0 1 1 8.99,3 Z M9,7.5 A1.5,1.5 0 1 1 8.99,7.5 Z" Stroke="{DynamicResource InkBrush}" StrokeThickness="1.4"
                                   Width="18" Height="18" VerticalAlignment="Center" />
-                            <TextBlock Text="Vanuit het midden" FontSize="12" VerticalAlignment="Center" Margin="6,0,0,0" />
+                            <TextBlock Text="{x:Static res:Strings.Gradient_Radial}" FontSize="12" VerticalAlignment="Center" Margin="6,0,0,0" />
                         </StackPanel>
                     </ToggleButton>
-                    <TextBlock Text="Shift = stappen van 15°, Alt = niet vastklikken" FontSize="11" Margin="0,6,0,0" HorizontalAlignment="Center"
+                    <TextBlock Text="{x:Static res:Strings.Gradient_Keys}" FontSize="11" Margin="0,6,0,0" HorizontalAlignment="Center"
                                Foreground="{DynamicResource SubtleTextBrush}" />
                 </StackPanel>
             </Border>

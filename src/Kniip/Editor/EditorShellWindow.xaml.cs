@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Kniip.Infrastructure;
 using Kniip.Settings;
+using Kniip.Resources;
 
 namespace Kniip.Editor;
 
@@ -170,7 +171,7 @@ public partial class EditorShellWindow : Window
         var close = new Button
         {
             Style = (Style)FindResource("TabCloseButton"),
-            ToolTip = "Tabblad sluiten (Ctrl+W)",
+            ToolTip = Strings.Editor_CloseTab,
             Content = new TextBlock { Text = "\uE711", Style = (Style)FindResource("IconText"), FontSize = 10 }
         };
         var header = new DockPanel();

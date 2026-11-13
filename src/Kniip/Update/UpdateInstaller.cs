@@ -4,6 +4,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Kniip.Resources;
 
 namespace Kniip.Update;
 
@@ -17,7 +18,7 @@ public static class UpdateInstaller
     {
         if (release.InstallerUrl is not { } url)
         {
-            throw new UpdateException($"Release {release.Tag} heeft geen installer.");
+            throw new UpdateException(string.Format(Strings.Update_NoInstaller, release.Tag));
         }
 
         Directory.CreateDirectory(DownloadFolder);
@@ -30,7 +31,7 @@ public static class UpdateInstaller
             {
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new UpdateException($"Downloaden is mislukt ({(int)response.StatusCode}).");
+                    throw new UpdateException(string.Format(Strings.Update_DownloadHttpError, (int)response.StatusCode));
                 }
 
                 long total = response.Content.Headers.ContentLength ?? release.InstallerSize;
@@ -51,7 +52,7 @@ public static class UpdateInstaller
 
                 if (release.InstallerSize > 0 && received != release.InstallerSize)
                 {
-                    throw new UpdateException("De download is onvolledig; probeer het opnieuw.");
+                    throw new UpdateException(Strings.Update_DownloadIncomplete);
                 }
             }
 
@@ -60,11 +61,11 @@ public static class UpdateInstaller
         }
         catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested)
         {
-            throw new UpdateException("GitHub reageert niet (time-out).", ex);
+            throw new UpdateException(Strings.Update_Timeout, ex);
         }
         catch (HttpRequestException ex)
         {
-            throw new UpdateException("Downloaden is mislukt. Controleer de internetverbinding.", ex);
+            throw new UpdateException(Strings.Update_DownloadFailed, ex);
         }
         finally
         {

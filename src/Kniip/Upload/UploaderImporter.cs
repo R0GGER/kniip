@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Kniip.Resources;
 
 namespace Kniip.Upload;
 
@@ -33,7 +34,7 @@ public static class UploaderImporter
         }
         catch (JsonException ex)
         {
-            throw new InvalidDataException($"Dit is geen geldig ShareX-uploaderbestand.\n\n{ex.Message}");
+            throw new InvalidDataException(Strings.Upload_InvalidShareX + "\n\n" + ex.Message);
         }
 
         using (document)
@@ -41,20 +42,20 @@ public static class UploaderImporter
             JsonElement root = document.RootElement;
             if (root.ValueKind != JsonValueKind.Object)
             {
-                throw new InvalidDataException("Dit is geen geldig ShareX-uploaderbestand.");
+                throw new InvalidDataException(Strings.Upload_InvalidShareX);
             }
 
             string? body = GetString(root, "Body");
             if (body != null && !body.Equals("MultipartFormData", StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidDataException(
-                    "Deze uploader verstuurt geen bestanden (misschien is het de URL-verkorter). Kies in Zipline de uploader voor bestanden.");
+                    Strings.Upload_NotFileUploader);
             }
 
             string? method = GetString(root, "RequestMethod");
             if (method != null && !method.Equals("POST", StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidDataException($"Deze uploader gebruikt {method}; kniip ondersteunt alleen POST.");
+                throw new InvalidDataException(string.Format(Strings.Upload_UnsupportedMethod, method));
             }
 
             var config = new UploaderConfig
@@ -136,7 +137,7 @@ public static class UploaderImporter
         string? curlLine = lines.FirstOrDefault(l => Regex.IsMatch(l, @"(^|[\s(`|;])curl\s") && !l.TrimStart().StartsWith('#'));
         if (curlLine == null)
         {
-            throw new InvalidDataException("In dit script staat geen curl-commando. Kies in Zipline de Shell Script-uploader voor bestanden.");
+            throw new InvalidDataException(Strings.Upload_NoCurl);
         }
 
         Match curl = Regex.Match(curlLine, @"(^|[\s(`|;])curl\s");
@@ -184,7 +185,7 @@ public static class UploaderImporter
         if (config.FileFormName.Length == 0)
         {
             throw new InvalidDataException(
-                "Dit script uploadt geen bestand (misschien is het de URL-verkorter). Kies in Zipline de Shell Script-uploader voor bestanden.");
+                Strings.Upload_ScriptNotFileUploader);
         }
 
         Match jq = Regex.Match(text, @"\bjq\s+(?:-\w+\s+)*['""]?\.?([A-Za-z0-9_\[\]\.]+)['""]?");
@@ -332,13 +333,13 @@ public static class UploaderImporter
         if (!config.IsConfigured)
         {
             throw new InvalidDataException(config.RequestUrl.Length == 0
-                ? "In dit bestand staat geen server-adres."
-                : $"Het server-adres is niet bruikbaar:\n{config.RequestUrl}");
+                ? Strings.Upload_NoServer
+                : string.Format(Strings.Upload_BadServer, config.RequestUrl));
         }
 
         if (!config.Headers.Keys.Any(k => k.Equals("authorization", StringComparison.OrdinalIgnoreCase)))
         {
-            throw new InvalidDataException("In dit bestand staat geen token (authorization-header).");
+            throw new InvalidDataException(Strings.Upload_NoToken);
         }
 
         return config;

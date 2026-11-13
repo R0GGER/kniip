@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Threading;
 using ScreenRecorderLib;
+using Kniip.Resources;
 
 namespace Kniip.Recording;
 
@@ -116,15 +117,15 @@ internal sealed class RecordingSession : IDisposable
         var missing = new List<string>();
         if (Options.SystemAudio)
         {
-            AddAudio(audioSources, missing, AudioDevices.DefaultPlaybackId, id => new LoopbackAudioSource(id), "systeemgeluid");
+            AddAudio(audioSources, missing, AudioDevices.DefaultPlaybackId, id => new LoopbackAudioSource(id), Strings.Audio_System);
         }
 
         if (Options.Microphone)
         {
-            AddAudio(audioSources, missing, AudioDevices.DefaultMicrophoneId, id => new CaptureAudioSource(id), "microfoon");
+            AddAudio(audioSources, missing, AudioDevices.DefaultMicrophoneId, id => new CaptureAudioSource(id), Strings.Audio_Microphone);
         }
 
-        MissingAudio = missing.Count == 0 ? null : string.Join(" en ", missing);
+        MissingAudio = missing.Count == 0 ? null : string.Join(Strings.Audio_And, missing);
 
         return new RecorderOptions
         {

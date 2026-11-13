@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Kniip.Resources;
 
 namespace Kniip.Editor;
 
@@ -114,8 +115,8 @@ public partial class GradientAngleDial : UserControl
         }
 
         Toggle.ToolTip = _isRadial
-            ? "Richting van het verloop: vanuit het midden"
-            : $"Richting van het verloop: {_angle.ToString("0.#", CultureInfo.CurrentCulture)}° (scroll om te draaien)";
+            ? Strings.Gradient_DirectionRadial
+            : string.Format(Strings.Gradient_Direction, _angle.ToString("0.#", CultureInfo.CurrentCulture));
     }
 
     private double AngleAt(Point p)

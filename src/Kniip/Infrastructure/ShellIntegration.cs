@@ -1,6 +1,7 @@
 using System;
 using Kniip.Interop;
 using Microsoft.Win32;
+using Kniip.Resources;
 
 namespace Kniip.Infrastructure;
 
@@ -17,7 +18,7 @@ internal static class ShellIntegration
     public static readonly string[] ImageExtensions = { ".png", ".jpg", ".jpeg", ".bmp", ".gif" };
 
     private static string ExePath => Environment.ProcessPath
-        ?? throw new InvalidOperationException("Pad van de applicatie is onbekend.");
+        ?? throw new InvalidOperationException(Strings.Shell_NoAppPath);
 
     private static string OpenCommand => $"\"{ExePath}\" \"%1\"";
 
@@ -32,8 +33,8 @@ internal static class ShellIntegration
     {
         using (var prog = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{ProgId}"))
         {
-            prog.SetValue(null, $"{AppIdentity.DisplayName} afbeelding");
-            prog.SetValue("FriendlyTypeName", $"{AppIdentity.DisplayName} afbeelding");
+            prog.SetValue(null, string.Format(Strings.Shell_ImageType, AppIdentity.DisplayName));
+            prog.SetValue("FriendlyTypeName", string.Format(Strings.Shell_ImageType, AppIdentity.DisplayName));
         }
         using (var icon = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{ProgId}\DefaultIcon"))
         {

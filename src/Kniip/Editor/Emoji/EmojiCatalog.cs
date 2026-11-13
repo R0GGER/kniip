@@ -6,10 +6,15 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Kniip.Infrastructure;
 
 namespace Kniip.Editor.Emoji;
 
-public sealed record EmojiCategory(string Id, string Title, string IconEmoji);
+/// <summary>De Engelse titel is gelijk aan <see cref="Id"/> (de categorienaam uit emoji-datasource).</summary>
+public sealed record EmojiCategory(string Id, string DutchTitle, string IconEmoji)
+{
+    public string Title => UiLanguage.IsDutch ? DutchTitle : Id;
+}
 
 public sealed class EmojiInfo
 {
@@ -177,7 +182,7 @@ public static class EmojiCatalog
                     SheetX = e.GetProperty("x").GetInt32(),
                     SheetY = e.GetProperty("y").GetInt32(),
                     ShortName = e.GetProperty("s").GetString()!,
-                    Name = e.GetProperty("n").GetString()!,
+                    Name = !UiLanguage.IsDutch && e.TryGetProperty("e", out JsonElement english) ? english.GetString()! : e.GetProperty("n").GetString()!,
                     Keywords = "|" + e.GetProperty("k").GetString()!,
                     Skins = skins
                 };

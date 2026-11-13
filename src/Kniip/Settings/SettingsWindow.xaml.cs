@@ -12,21 +12,21 @@ using Kniip.Editor;
 using Kniip.Infrastructure;
 using Kniip.Update;
 using Kniip.Upload;
+using Kniip.Resources;
 
 namespace Kniip.Settings;
 
 public partial class SettingsWindow : Window
 {
-    private const string HotkeyHintText =
-        "kniip vangt deze toetsen in alle programma's af; bij Print Screen opent het Windows-knipprogramma dan niet óók.";
+    private static string HotkeyHintText => Strings.Settings_HotkeyHint;
 
     private static readonly Dictionary<string, string> HotkeyNames = new()
     {
-        ["Snip"] = "rechthoek knippen",
-        ["Window"] = "venster knippen",
-        ["Record"] = "screencast (MP4)",
-        ["Gif"] = "screencast (GIF)",
-        ["Clipboard"] = "bewerken vanaf klembord",
+        ["Snip"] = Strings.Settings_HotkeyNameSnip,
+        ["Window"] = Strings.Settings_HotkeyNameWindow,
+        ["Record"] = Strings.Settings_HotkeyNameRecord,
+        ["Gif"] = Strings.Settings_HotkeyNameGif,
+        ["Clipboard"] = Strings.Settings_HotkeyNameClipboard,
         ["Ocr"] = "OCR",
     };
 
@@ -47,9 +47,9 @@ public partial class SettingsWindow : Window
         InitializeComponent();
         ThemeManager.Attach(this);
         _settings = settings;
-        Title = $"{AppIdentity.DisplayName} instellingen";
+        Title = string.Format(Strings.Settings_WindowTitle, AppIdentity.DisplayName);
 
-        FolderText.Text = CaptureCoordinator.ScreenshotsFolder ?? "Map Schermafbeeldingen niet gevonden.";
+        FolderText.Text = CaptureCoordinator.ScreenshotsFolder ?? Strings.Settings_ScreenshotsFolderMissing;
         AutostartBox.IsChecked = ShellIntegration.IsAutostartEnabled();
         OpenWithBox.IsChecked = ShellIntegration.IsOpenWithRegistered();
 
@@ -72,7 +72,7 @@ public partial class SettingsWindow : Window
 
         HotkeyHint.Text = App.Instance.HotkeyHook?.IsActive == true
             ? HotkeyHintText
-            : "De toetsenbordhaak kon niet worden gestart; de sneltoetsen werken nu niet.";
+            : Strings.Settings_HookFailed;
         Deactivated += (_, _) => StopListening();
         App.Instance.Updates.AvailabilityChanged += OnUpdateAvailabilityChanged;
         Closed += (_, _) =>
@@ -83,7 +83,7 @@ public partial class SettingsWindow : Window
         };
         ShowUpdateBadge();
 
-        CurrentVersionText.Text = $"Geïnstalleerde versie: {UpdateChecker.CurrentVersion}";
+        CurrentVersionText.Text = string.Format(Strings.Settings_InstalledVersion, UpdateChecker.CurrentVersion);
         LoadFrom(settings);
 
         MaxHeight = SystemParameters.WorkArea.Height;
@@ -142,10 +142,17 @@ public partial class SettingsWindow : Window
         MicrophoneBox.IsChecked = settings.RecordMicrophone;
         ShowCursorBox.IsChecked = settings.RecordShowCursor;
         HighlightClicksBox.IsChecked = settings.RecordHighlightClicks;
-        FillChoices(VideoFpsCombo, new[] { 15, 30, 60 }, settings.RecordFps, fps => $"{fps} beelden/s");
-        FillChoices(GifFpsCombo, new[] { 5, 10, 15, 20, 25 }, settings.GifFps, fps => $"{fps} beelden/s");
+        FillChoices(VideoFpsCombo, new[] { 15, 30, 60 }, settings.RecordFps, fps => string.Format(Strings.Settings_Fps, fps));
+        FillChoices(GifFpsCombo, new[] { 5, 10, 15, 20, 25 }, settings.GifFps, fps => string.Format(Strings.Settings_Fps, fps));
         FillChoices(GifWidthCombo, new[] { 0, 1920, 1280, 960, 800, 640, 480 }, settings.GifMaxWidth,
-            width => width == 0 ? "Originele breedte" : $"max. {width} px breed");
+            width => width == 0 ? Strings.Settings_OriginalWidth : string.Format(Strings.Settings_MaxWidth, width));
+        FillChoices(LanguageCombo, new[] { (int)AppLanguage.System, (int)AppLanguage.Dutch, (int)AppLanguage.English }, (int)settings.Language,
+            value => (AppLanguage)value switch
+            {
+                AppLanguage.Dutch => "Nederlands",
+                AppLanguage.English => "English",
+                _ => Strings.Settings_LanguageAutomatic
+            });
     }
 
     private void ResetDefaults_Click(object sender, RoutedEventArgs e)
@@ -174,7 +181,7 @@ public partial class SettingsWindow : Window
         combo.SelectedItem is ComboBoxItem { Tag: int value } ? value : fallback;
 
     private void ShowHotkey(string id) =>
-        _hotkeyButtons[id].Content = HotkeyGesture.TryParse(_hotkeys[id], out HotkeyGesture gesture) ? gesture.DisplayText : "(geen)";
+        _hotkeyButtons[id].Content = HotkeyGesture.TryParse(_hotkeys[id], out HotkeyGesture gesture) ? gesture.DisplayText : Strings.Settings_NoHotkeyShort;
 
     private void HotkeyButton_Click(object sender, RoutedEventArgs e)
     {
@@ -188,8 +195,8 @@ public partial class SettingsWindow : Window
         // Via de haak, niet via WPF: Print Screen komt nooit als KeyDown bij een venster aan.
         _listeningFor = id;
         hook.Capture = OnHotkeyPressed;
-        _hotkeyButtons[id].Content = "Druk op een toets...";
-        HotkeyHint.Text = "Esc = annuleren  ·  Delete = geen sneltoets";
+        _hotkeyButtons[id].Content = Strings.Settings_PressKey;
+        HotkeyHint.Text = Strings.Settings_PressKeyHint;
     }
 
     private void OnHotkeyPressed(HotkeyGesture pressed)
@@ -214,7 +221,7 @@ public partial class SettingsWindow : Window
 
         if (!pressed.IsAllowed)
         {
-            HotkeyHint.Text = $"{pressed.DisplayText} gebruik je om te typen. Kies Print Screen, Pause, een F-toets of een combinatie met Ctrl, Alt of Win.";
+            HotkeyHint.Text = string.Format(Strings.Settings_HotkeyTyping, pressed.DisplayText);
             return;
         }
 
@@ -222,7 +229,7 @@ public partial class SettingsWindow : Window
         {
             if (other != id && HotkeyGesture.TryParse(hotkey, out HotkeyGesture taken) && taken == pressed)
             {
-                HotkeyHint.Text = $"{pressed.DisplayText} is al de sneltoets voor {HotkeyNames[other]}; kies een andere.";
+                HotkeyHint.Text = string.Format(Strings.Settings_HotkeyTaken, pressed.DisplayText, HotkeyNames[other]);
                 return;
             }
         }
@@ -268,7 +275,7 @@ public partial class SettingsWindow : Window
 
     private static void ShowSaveFolder(TextBlock text, string? folder)
     {
-        text.Text = string.IsNullOrEmpty(folder) ? "Elke keer vragen" : folder;
+        text.Text = string.IsNullOrEmpty(folder) ? Strings.Settings_AskEveryTime : folder;
         text.ToolTip = folder;
         text.SetResourceReference(TextBlock.ForegroundProperty, string.IsNullOrEmpty(folder) ? "SubtleTextBrush" : "InkBrush");
     }
@@ -278,10 +285,10 @@ public partial class SettingsWindow : Window
     private void ShowTemplatePreviews()
     {
         TemplateHelp.Text = FileNameTemplate.Help;
-        SnipTemplatePreview.Text = "Voorbeeld: " + FileNameTemplate.Preview(NullIfBlank(SnipTemplateBox.Text), "Cursor",
-            $"Knipsel {DateTime.Now:yyyy-MM-dd HHmmss}", ".png");
-        VideoTemplatePreview.Text = "Voorbeeld: " + FileNameTemplate.Preview(NullIfBlank(VideoTemplateBox.Text), "Cursor",
-            $"Screencast {DateTime.Now:yyyy-MM-dd HHmmss}", ".mp4");
+        SnipTemplatePreview.Text = Strings.Settings_Example + FileNameTemplate.Preview(NullIfBlank(SnipTemplateBox.Text), "Cursor",
+            string.Format(Strings.Snip_DefaultName, DateTime.Now), ".png");
+        VideoTemplatePreview.Text = Strings.Settings_Example + FileNameTemplate.Preview(NullIfBlank(VideoTemplateBox.Text), "Cursor",
+            string.Format(Strings.Screencast_DefaultName, DateTime.Now), ".mp4");
     }
 
     private static string? NullIfBlank(string text) => string.IsNullOrWhiteSpace(text) ? null : text.Trim();
@@ -292,7 +299,7 @@ public partial class SettingsWindow : Window
         string? current = snip ? _snipFolder : _videoFolder;
         var dialog = new Microsoft.Win32.OpenFolderDialog
         {
-            Title = snip ? "Map voor knipsels kiezen" : "Map voor screencasts kiezen",
+            Title = snip ? Strings.Settings_ChooseSnipFolder : Strings.Settings_ChooseVideoFolder,
             InitialDirectory = current is { Length: > 0 } && System.IO.Directory.Exists(current)
                 ? current
                 : Environment.GetFolderPath(snip ? Environment.SpecialFolder.MyPictures : Environment.SpecialFolder.MyVideos)
@@ -331,7 +338,7 @@ public partial class SettingsWindow : Window
     private void ShowUploader()
     {
         bool configured = _uploader is { IsConfigured: true };
-        UploaderText.Text = configured ? _uploader!.DisplayName : "Niet ingesteld";
+        UploaderText.Text = configured ? _uploader!.DisplayName : Strings.Settings_NotConfigured;
         UploaderText.ToolTip = configured ? _uploader!.RequestUrl : null;
         UploaderText.SetResourceReference(TextBlock.ForegroundProperty, configured ? "InkBrush" : "SubtleTextBrush");
         TestUploaderButton.IsEnabled = configured;
@@ -344,7 +351,7 @@ public partial class SettingsWindow : Window
         UploaderStatus.Inlines.Add(new Run(message ?? string.Empty));
         if (url != null)
         {
-            var link = new Hyperlink(new Run(url)) { ToolTip = "Openen in de browser" };
+            var link = new Hyperlink(new Run(url)) { ToolTip = Strings.Settings_OpenInBrowser };
             link.Click += (_, _) => OpenUrl(url);
             UploaderStatus.Inlines.Add(link);
             UploaderStatus.Inlines.Add(new Run(suffix ?? string.Empty));
@@ -369,8 +376,8 @@ public partial class SettingsWindow : Window
     {
         var dialog = new Microsoft.Win32.OpenFileDialog
         {
-            Title = "Zipline-uploader importeren",
-            Filter = "Zipline-uploader (*.sxcu;*.sh)|*.sxcu;*.sh|ShareX-uploader (*.sxcu)|*.sxcu|Shell script (*.sh)|*.sh|Alle bestanden (*.*)|*.*",
+            Title = Strings.Settings_ImportTitle,
+            Filter = Strings.Settings_ImportFilter,
             InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) is { } home
                                && System.IO.Directory.Exists(System.IO.Path.Combine(home, "Downloads"))
                 ? System.IO.Path.Combine(home, "Downloads")
@@ -385,11 +392,11 @@ public partial class SettingsWindow : Window
         {
             _uploader = UploaderImporter.FromFile(dialog.FileName);
             ShowUploader();
-            ShowUploaderStatus($"Geïmporteerd: {_uploader.Name}. Klik op Opslaan om dit te bewaren.");
+            ShowUploaderStatus(string.Format(Strings.Settings_Imported, _uploader.Name));
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, $"Dit bestand kan niet worden gebruikt:\n{dialog.FileName}\n\n{ex.Message}", "kniip",
+            MessageBox.Show(this, string.Format(Strings.Settings_ImportFailed, dialog.FileName, ex.Message), "kniip",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
@@ -402,18 +409,18 @@ public partial class SettingsWindow : Window
         }
 
         TestUploaderButton.IsEnabled = false;
-        ShowUploaderStatus("Testplaatje uploaden...");
+        ShowUploaderStatus(Strings.Settings_TestUploading);
         try
         {
             using System.IO.MemoryStream png = ImageExporter.EncodePng(CreateTestImage());
             string url = await ZiplineUploader.UploadAsync(config, png, "kniip-test.png", "image/png");
             bool copied = ClipboardWriter.SetText(url);
-            ShowUploaderStatus("Gelukt: ", url, copied ? " (gekopieerd)" : null);
+            ShowUploaderStatus(Strings.Settings_TestSucceeded, url, copied ? Strings.Settings_TestCopied : null);
         }
         catch (Exception ex)
         {
             ShowUploaderStatus(null);
-            MessageBox.Show(this, $"De test-upload is mislukt.\n\n{ex.Message}", "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(this, string.Format(Strings.Settings_TestFailed, ex.Message), "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
         finally
         {
@@ -494,6 +501,7 @@ public partial class SettingsWindow : Window
         _settings.RecordFps = SelectedValue(VideoFpsCombo, 30);
         _settings.GifFps = SelectedValue(GifFpsCombo, 10);
         _settings.GifMaxWidth = SelectedValue(GifWidthCombo, 800);
+        _settings.Language = (AppLanguage)SelectedValue(LanguageCombo, (int)_settings.Language);
 
         if (_resetEditor)
         {
@@ -525,12 +533,18 @@ public partial class SettingsWindow : Window
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, $"Windows-integratie kon niet worden bijgewerkt:\n\n{ex.Message}", "kniip",
+            MessageBox.Show(this, string.Format(Strings.Settings_IntegrationFailed, ex.Message), "kniip",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         App.Instance.SaveSettings();
         Close();
+
+        if (UiLanguage.IsDutchFor(_settings.Language) != UiLanguage.IsDutch
+            && MessageBox.Show(Strings.Settings_LanguageRestart, "kniip", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+        {
+            App.Instance.Restart();
+        }
     }
 
     private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
@@ -567,7 +581,7 @@ public partial class SettingsWindow : Window
         _update = null;
         UpdateButton.Visibility = Visibility.Collapsed;
         CheckUpdateButton.IsEnabled = false;
-        UpdateStatus.Text = "Controleren op updates...";
+        UpdateStatus.Text = Strings.Settings_CheckingUpdates;
         try
         {
             IReadOnlyList<ReleaseInfo> releases = await UpdateChecker.GetReleasesAsync(cts.Token);
@@ -576,7 +590,7 @@ public partial class SettingsWindow : Window
         catch (UpdateException ex)
         {
             UpdateStatus.Text = ex.Message;
-            ShowChangelog(Array.Empty<ReleaseInfo>(), "Geen changelog beschikbaar.");
+            ShowChangelog(Array.Empty<ReleaseInfo>(), Strings.Settings_NoChangelog);
         }
         catch (OperationCanceledException)
         {
@@ -602,17 +616,16 @@ public partial class SettingsWindow : Window
         if (newer.Count == 0)
         {
             UpdateStatus.Text = releases.Count == 0
-                ? "Er zijn nog geen releases gepubliceerd."
-                : $"Je gebruikt de nieuwste versie ({current}).";
+                ? Strings.Settings_NoReleases
+                : string.Format(Strings.Settings_UpToDate, current);
             ReleaseInfo? notes = releases.FirstOrDefault(r => r.Version == current) ?? releases.FirstOrDefault();
-            ShowChangelog(notes == null ? Array.Empty<ReleaseInfo>() : new[] { notes }, "Geen changelog beschikbaar.");
+            ShowChangelog(notes == null ? Array.Empty<ReleaseInfo>() : new[] { notes }, Strings.Settings_NoChangelog);
             return;
         }
 
         if (AppIdentity.IsTest)
         {
-            UpdateStatus.Text = $"Versie {newer[0].Version} is beschikbaar. Deze testversie werkt zichzelf niet bij; " +
-                                "de installer zou de gewone kniip overschrijven.";
+            UpdateStatus.Text = string.Format(Strings.Settings_UpdateTestBuild, newer[0].Version);
             ShowChangelog(newer, null);
             return;
         }
@@ -620,13 +633,13 @@ public partial class SettingsWindow : Window
         _update = newer.FirstOrDefault(r => r.InstallerUrl != null);
         if (_update != null)
         {
-            UpdateStatus.Text = $"Versie {_update.Version} is beschikbaar.";
-            UpdateButton.Content = $"Updaten naar {_update.Version}";
+            UpdateStatus.Text = string.Format(Strings.Settings_UpdateAvailable, _update.Version);
+            UpdateButton.Content = string.Format(Strings.Settings_UpdateTo, _update.Version);
             UpdateButton.Visibility = Visibility.Visible;
         }
         else
         {
-            UpdateStatus.Text = $"Versie {newer[0].Version} is beschikbaar, maar zonder installer. Download die via de releasepagina.";
+            UpdateStatus.Text = string.Format(Strings.Settings_UpdateNoInstaller, newer[0].Version);
         }
 
         ShowChangelog(newer, null);
@@ -635,11 +648,11 @@ public partial class SettingsWindow : Window
     private void ShowChangelog(IReadOnlyList<ReleaseInfo> releases, string? emptyText)
     {
         FlowDocument document = MarkdownRenderer.CreateDocument();
-        var culture = System.Globalization.CultureInfo.GetCultureInfo("nl-NL");
+        var culture = System.Globalization.CultureInfo.CurrentUICulture;
         var baseUri = new Uri(UpdateChecker.RepositoryUrl);
         foreach (ReleaseInfo release in releases)
         {
-            Paragraph heading = MarkdownRenderer.Heading($"Versie {release.Version}", 17,
+            Paragraph heading = MarkdownRenderer.Heading(string.Format(Strings.Settings_VersionHeading, release.Version), 17,
                 new Thickness(0, document.Blocks.Count == 0 ? 0 : 14, 0, 0));
             document.Blocks.Add(heading);
             if (release.Date is DateTimeOffset date)
@@ -654,7 +667,7 @@ public partial class SettingsWindow : Window
 
             if (string.IsNullOrWhiteSpace(release.Body))
             {
-                document.Blocks.Add(new Paragraph(new Run("Geen beschrijving."))
+                document.Blocks.Add(new Paragraph(new Run(Strings.Settings_NoDescription))
                 {
                     Foreground = (Brush)Application.Current.Resources["SubtleTextBrush"],
                 });
@@ -687,14 +700,13 @@ public partial class SettingsWindow : Window
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Programs", "Kniip");
         bool installed = Environment.ProcessPath is { } exe
                          && string.Equals(System.IO.Path.GetDirectoryName(exe), installFolder, StringComparison.OrdinalIgnoreCase);
-        string message = $"kniip wordt afgesloten, bijgewerkt naar versie {release.Version} en daarna opnieuw gestart. " +
-                         "Open editors en screencasts worden eerst gesloten.";
+        string message = string.Format(Strings.Settings_UpdateConfirm, release.Version);
         if (!installed)
         {
-            message += $"\n\nDeze kniip is niet via de installer gestart; de nieuwe versie wordt geïnstalleerd in {installFolder}.";
+            message += "\n\n" + string.Format(Strings.Settings_UpdateNotInstalled, installFolder);
         }
 
-        if (MessageBox.Show(this, message, "kniip bijwerken", MessageBoxButton.OKCancel, MessageBoxImage.Information) != MessageBoxResult.OK)
+        if (MessageBox.Show(this, message, Strings.Settings_UpdateConfirmTitle, MessageBoxButton.OKCancel, MessageBoxImage.Information) != MessageBoxResult.OK)
         {
             return;
         }
@@ -705,7 +717,7 @@ public partial class SettingsWindow : Window
         CheckUpdateButton.IsEnabled = false;
         DownloadProgress.Value = 0;
         DownloadProgress.Visibility = Visibility.Visible;
-        UpdateStatus.Text = $"Versie {release.Version} downloaden...";
+        UpdateStatus.Text = string.Format(Strings.Settings_UpdateDownloading, release.Version);
         string path;
         try
         {
@@ -717,8 +729,8 @@ public partial class SettingsWindow : Window
         }
         catch (Exception ex) when (ex is UpdateException or System.IO.IOException or UnauthorizedAccessException)
         {
-            UpdateStatus.Text = $"Versie {release.Version} is beschikbaar.";
-            MessageBox.Show(this, $"De update kon niet worden gedownload.\n\n{ex.Message}", "kniip",
+            UpdateStatus.Text = string.Format(Strings.Settings_UpdateAvailable, release.Version);
+            MessageBox.Show(this, string.Format(Strings.Settings_UpdateDownloadFailed, ex.Message), "kniip",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
@@ -738,7 +750,7 @@ public partial class SettingsWindow : Window
             }
         }
 
-        UpdateStatus.Text = "Installer starten...";
+        UpdateStatus.Text = Strings.Settings_StartingInstaller;
         App.Instance.InstallUpdate(path);
     }
 }

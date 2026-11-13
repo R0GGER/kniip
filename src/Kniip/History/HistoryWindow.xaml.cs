@@ -9,6 +9,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Kniip.Resources;
 
 namespace Kniip.History;
 
@@ -45,7 +46,7 @@ public partial class HistoryWindow : Window
         ICollectionView view = System.Windows.Data.CollectionViewSource.GetDefaultView(_rows);
         view.Filter = query.Length == 0 ? null : item => ((HistoryRow)item).Matches(query);
         int shown = view.Cast<object>().Count();
-        CountText.Text = query.Length == 0 ? $"{_rows.Count} items" : $"{shown} van {_rows.Count} items";
+        CountText.Text = query.Length == 0 ? string.Format(Strings.History_Count, _rows.Count) : string.Format(Strings.History_CountFiltered, shown, _rows.Count);
         EmptyText.Visibility = _rows.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         ClearButton.IsEnabled = _rows.Count > 0;
     }
@@ -55,7 +56,7 @@ public partial class HistoryWindow : Window
         bool images = GridToggle.IsChecked == true;
         GridItems.Visibility = images ? Visibility.Visible : Visibility.Collapsed;
         ListItems.Visibility = images ? Visibility.Collapsed : Visibility.Visible;
-        Title = images ? "kniip afbeeldingsgeschiedenis" : "kniip geschiedenis";
+        Title = images ? Strings.History_ImageTitle : Strings.History_Title;
     }
 
     private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -94,7 +95,7 @@ public partial class HistoryWindow : Window
         }
 
         menu.Items.Add(new Separator());
-        menu.Items.Add(MenuItemFor("Uit geschiedenis verwijderen", "\uE74D", true, () => HistoryStore.Remove(row.Entry)));
+        menu.Items.Add(MenuItemFor(Strings.History_Remove, "\uE74D", true, () => HistoryStore.Remove(row.Entry)));
     }
 
     private static MenuItem MenuItemFor(string label, string glyph, bool enabled, Action run)
@@ -111,7 +112,7 @@ public partial class HistoryWindow : Window
 
     private void Clear_Click(object sender, RoutedEventArgs e)
     {
-        if (MessageBox.Show(this, "De hele geschiedenis wissen? Je opgeslagen bestanden en uploads blijven gewoon bestaan.", "kniip",
+        if (MessageBox.Show(this, Strings.History_ClearConfirm, "kniip",
                 MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
         {
             HistoryStore.Clear();
@@ -133,7 +134,7 @@ public partial class HistoryWindow : Window
         public bool IsAvailable { get; }
         public ImageSource? Thumbnail { get; }
         public Visibility NoThumbnailVisibility => Thumbnail == null ? Visibility.Visible : Visibility.Collapsed;
-        public string TimeText => Entry.Time.ToString("dd-MM-yyyy HH:mm:ss");
+        public string TimeText => Entry.Time.ToString("G", System.Globalization.CultureInfo.CurrentCulture);
         public string? Folder => Entry.FilePath is { Length: > 0 } path ? Path.GetDirectoryName(path) : null;
 
         public string ToolTip => string.Join("\n", new[]

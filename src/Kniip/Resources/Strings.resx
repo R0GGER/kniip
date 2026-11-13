@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="App_ActiveText" xml:space="preserve"><value>Press {0} and drag a rectangle to snip and edit.</value></data>
+  <data name="App_ActiveTextNoHotkey" xml:space="preserve"><value>Take a snip with Win + Shift + S. kniip then offers to edit it.</value></data>
+  <data name="App_ActiveTitle" xml:space="preserve"><value>{0} is running</value></data>
+  <data name="App_FolderScreenshots" xml:space="preserve"><value>Screenshots</value></data>
+  <data name="App_InstallerFailed" xml:space="preserve"><value>The installer could not be started.&#xA;&#xA;{0}</value></data>
+  <data name="App_OpenImageFilter" xml:space="preserve"><value>Images|*.png;*.jpg;*.jpeg;*.bmp;*.gif|All files|*.*</value></data>
+  <data name="App_OpenImageTitle" xml:space="preserve"><value>Open image in kniip</value></data>
+  <data name="App_RestartFailed" xml:space="preserve"><value>kniip couldn&apos;t restart. Start kniip again yourself.&#xA;&#xA;{0}</value></data>
+  <data name="App_ScreencastRunning" xml:space="preserve"><value>A screencast is still running. Stop or cancel it first.</value></data>
+  <data name="App_UnhandledError" xml:space="preserve"><value>Something went wrong:&#xA;&#xA;{0}</value></data>
+  <data name="App_UpdatedText" xml:space="preserve"><value>You are now using version {0}.</value></data>
+  <data name="App_UpdatedTitle" xml:space="preserve"><value>kniip has been updated</value></data>
+  <data name="Arrange_Backward" xml:space="preserve"><value>Send backward (PageDown)</value></data>
+  <data name="Arrange_Bottom" xml:space="preserve"><value>Align bottom to the image</value></data>
+  <data name="Arrange_CenterH" xml:space="preserve"><value>Center horizontally on the image</value></data>
+  <data name="Arrange_CenterV" xml:space="preserve"><value>Center vertically on the image</value></data>
+  <data name="Arrange_FlipH" xml:space="preserve"><value>Flip horizontally</value></data>
+  <data name="Arrange_FlipV" xml:space="preserve"><value>Flip vertically</value></data>
+  <data name="Arrange_Forward" xml:space="preserve"><value>Bring forward (PageUp)</value></data>
+  <data name="Arrange_Left" xml:space="preserve"><value>Align left to the image</value></data>
+  <data name="Arrange_Right" xml:space="preserve"><value>Align right to the image</value></data>
+  <data name="Arrange_RotateLeft" xml:space="preserve"><value>Rotate 90° left</value></data>
+  <data name="Arrange_RotateRight" xml:space="preserve"><value>Rotate 90° right (drag the round handle above the object to rotate freely)</value></data>
+  <data name="Arrange_Tip" xml:space="preserve"><value>Align, flip and order</value></data>
+  <data name="Arrange_Top" xml:space="preserve"><value>Align top to the image</value></data>
+  <data name="Audio_And" xml:space="preserve"><value> and </value></data>
+  <data name="Audio_Microphone" xml:space="preserve"><value>microphone</value></data>
+  <data name="Audio_System" xml:space="preserve"><value>system audio</value></data>
+  <data name="Background_Choose" xml:space="preserve"><value>Choose...</value></data>
+  <data name="Background_FirstColor" xml:space="preserve"><value>First color of the gradient</value></data>
+  <data name="Background_Gradient" xml:space="preserve"><value>Gradient</value></data>
+  <data name="Background_ImageTip" xml:space="preserve"><value>Choose an image; it fills the whole canvas</value></data>
+  <data name="Background_Label" xml:space="preserve"><value>Background</value></data>
+  <data name="Background_None" xml:space="preserve"><value>None (transparent)</value></data>
+  <data name="Background_SecondColor" xml:space="preserve"><value>Second color of the gradient</value></data>
+  <data name="Background_Tip" xml:space="preserve"><value>Background under the transparent parts</value></data>
+  <data name="Blur_Blur" xml:space="preserve"><value>Blur</value></data>
+  <data name="Blur_Pixelate" xml:space="preserve"><value>Pixelate</value></data>
+  <data name="Capture_Hint" xml:space="preserve"><value>Snip: drag a rectangle</value></data>
+  <data name="Capture_Keys" xml:space="preserve"><value>Enter = whole screen  ·  Esc or right-click = cancel</value></data>
+  <data name="Capture_Title" xml:space="preserve"><value>kniip rectangle snip</value></data>
+  <data name="Capture_WindowHint" xml:space="preserve"><value>Snip: click a window</value></data>
+  <data name="CloseDialog_Explanation" xml:space="preserve"><value>Keep hides the window; the tabs come back with the next snip or via &apos;Open kniip&apos; in the system tray.</value></data>
+  <data name="CloseDialog_ManyTabs" xml:space="preserve"><value>There are {0} tabs open. What do you want to do?</value></data>
+  <data name="CloseDialog_OneTab" xml:space="preserve"><value>There is 1 tab open. What do you want to do?</value></data>
+  <data name="CloseDialog_Remember" xml:space="preserve"><value>Remember (change in Settings &gt; Appearance)</value></data>
+  <data name="Color_MoreColors" xml:space="preserve"><value>More colors...</value></data>
+  <data name="Common_Arrow" xml:space="preserve"><value>Arrow</value></data>
+  <data name="Common_Ask" xml:space="preserve"><value>Ask</value></data>
+  <data name="Common_Balloon" xml:space="preserve"><value>Balloon</value></data>
+  <data name="Common_Bottom" xml:space="preserve"><value>Bottom</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Browse...</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Common_CannotOpenFile" xml:space="preserve"><value>Can&apos;t open &apos;{0}&apos;.&#xA;&#xA;{1}</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Common_CloseAllTabs" xml:space="preserve"><value>Close all tabs</value></data>
+  <data name="Common_Cloud" xml:space="preserve"><value>Cloud</value></data>
+  <data name="Common_Color" xml:space="preserve"><value>Color</value></data>
+  <data name="Common_CopiedToClipboard" xml:space="preserve"><value>Copied to the clipboard.</value></data>
+  <data name="Common_Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="Common_CopyFailedBusy" xml:space="preserve"><value>Copying failed: the clipboard is busy. Please try again.</value></data>
+  <data name="Common_CopyFailedBusyLong" xml:space="preserve"><value>Copying failed: the clipboard is busy. Please try again.</value></data>
+  <data name="Common_Floating" xml:space="preserve"><value>Floating</value></data>
+  <data name="Common_Image" xml:space="preserve"><value>Image</value></data>
+  <data name="Common_KeepTabs" xml:space="preserve"><value>Keep tabs</value></data>
+  <data name="Common_Left" xml:space="preserve"><value>Left</value></data>
+  <data name="Common_MoreSaveOptions" xml:space="preserve"><value>More save options</value></data>
+  <data name="Common_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Common_NewSnip" xml:space="preserve"><value>New snip</value></data>
+  <data name="Common_None" xml:space="preserve"><value>None</value></data>
+  <data name="Common_OpenFolder" xml:space="preserve"><value>Open folder</value></data>
+  <data name="Common_Rectangle" xml:space="preserve"><value>Rectangle</value></data>
+  <data name="Common_Right" xml:space="preserve"><value>Right</value></data>
+  <data name="Common_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Common_SaveAs" xml:space="preserve"><value>Save as...</value></data>
+  <data name="Common_SaveFailed" xml:space="preserve"><value>Saving failed:&#xA;&#xA;{0}</value></data>
+  <data name="Common_Settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="Common_SnippingTool" xml:space="preserve"><value>Snipping Tool</value></data>
+  <data name="Common_Snips" xml:space="preserve"><value>Snips</value></data>
+  <data name="Common_Top" xml:space="preserve"><value>Top</value></data>
+  <data name="Common_Upload" xml:space="preserve"><value>Upload</value></data>
+  <data name="Common_UploadFailed" xml:space="preserve"><value>Upload failed.&#xA;&#xA;{0}</value></data>
+  <data name="Common_Window" xml:space="preserve"><value>Window</value></data>
+  <data name="Corner_Square" xml:space="preserve"><value>Square</value></data>
+  <data name="Countdown_ClickToCancel" xml:space="preserve"><value>Click to cancel</value></data>
+  <data name="Countdown_EscToCancel" xml:space="preserve"><value>Press Esc to cancel</value></data>
+  <data name="Countdown_SnipIn" xml:space="preserve"><value>Snip in</value></data>
+  <data name="Cursor_ArrowClick" xml:space="preserve"><value>Arrow with click</value></data>
+  <data name="Dash_Dashed" xml:space="preserve"><value>Dashed</value></data>
+  <data name="Dash_Dotted" xml:space="preserve"><value>Dotted</value></data>
+  <data name="Dash_Solid" xml:space="preserve"><value>Solid</value></data>
+  <data name="Editor_BlankCanvas" xml:space="preserve"><value>Blank canvas</value></data>
+  <data name="Editor_BlankHint" xml:space="preserve"><value>Blank canvas: draw right away, paste an image with Ctrl+V or open one with Ctrl+O.</value></data>
+  <data name="Editor_CloseTab" xml:space="preserve"><value>Close tab (Ctrl+W)</value></data>
+  <data name="Editor_CloseUnsaved" xml:space="preserve"><value>Your annotations haven&apos;t been copied or saved yet.&#xA;&#xA;Do you want to copy the result to the clipboard before closing?</value></data>
+  <data name="Editor_ConfirmClear" xml:space="preserve"><value>Do you want to discard the snip and start over with a blank canvas?</value></data>
+  <data name="Editor_Cropped" xml:space="preserve"><value>Cropped. Ctrl+Z undoes this.</value></data>
+  <data name="Editor_CropProps" xml:space="preserve"><value>Drag a frame over the part you want to keep.</value></data>
+  <data name="Editor_CutFailedBusy" xml:space="preserve"><value>Cutting failed: the clipboard is busy. Please try again.</value></data>
+  <data name="Editor_DiscardWarning" xml:space="preserve"><value>This snip and your annotations will be erased.&#xA;&#xA;{0}</value></data>
+  <data name="Editor_DropFailed" xml:space="preserve"><value>This image could not be opened.</value></data>
+  <data name="Editor_Flattened" xml:space="preserve"><value>Annotations merged with the image.</value></data>
+  <data name="Editor_FlattenedForEraser" xml:space="preserve"><value>Annotations merged with the image so they can be erased.</value></data>
+  <data name="Editor_GuideHint" xml:space="preserve"><value>Guide at {0} = {1} px. Release outside the image or on the ruler to remove it.</value></data>
+  <data name="Editor_NoClipboardImage" xml:space="preserve"><value>There is no image on the clipboard.</value></data>
+  <data name="Editor_Printed" xml:space="preserve"><value>Sent to the printer.</value></data>
+  <data name="Editor_PrintFailed" xml:space="preserve"><value>Printing failed:&#xA;&#xA;{0}</value></data>
+  <data name="Editor_PrintJobName" xml:space="preserve"><value>kniip - snip</value></data>
+  <data name="Editor_RotationHint" xml:space="preserve"><value>Rotation {0}°. Shift = steps of 15°, Alt = no snapping to 0° and 90°.</value></data>
+  <data name="Editor_RulerCornerTip" xml:space="preserve"><value>Open folder (right-click: clear guides)</value></data>
+  <data name="Editor_Saved" xml:space="preserve"><value>Saved as {0}.</value></data>
+  <data name="Editor_SavedCopied" xml:space="preserve"><value>Saved and copied: {0}.</value></data>
+  <data name="Editor_SavedCopyFailed" xml:space="preserve"><value>Saved as {0}. Copying failed: the clipboard is busy.</value></data>
+  <data name="Editor_SaveDialogFilter" xml:space="preserve"><value>PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg</value></data>
+  <data name="Editor_SaveDialogTitle" xml:space="preserve"><value>Save snip</value></data>
+  <data name="Editor_SaveFolderUnusable" xml:space="preserve"><value>The save folder from the settings can&apos;t be used:&#xA;{0}&#xA;&#xA;{1}&#xA;&#xA;Choose where to save the snip yourself.</value></data>
+  <data name="Editor_SelectProps" xml:space="preserve"><value>Select an object to change its properties.</value></data>
+  <data name="Editor_SettingsUpdateTip" xml:space="preserve"><value>Settings - new version available</value></data>
+  <data name="Editor_SnipTabTitle" xml:space="preserve"><value>Snip {0:HH:mm}</value></data>
+  <data name="Editor_ToolbarsHidden" xml:space="preserve"><value>Toolbars hidden. Press Ctrl+H or right-click the canvas to bring them back.</value></data>
+  <data name="Editor_UploadedCopied" xml:space="preserve"><value>Uploaded, link copied: {0}</value></data>
+  <data name="Editor_UploadedCopyFailed" xml:space="preserve"><value>Uploaded: {0}. Copying failed: the clipboard is busy.</value></data>
+  <data name="Editor_UploadFailedShort" xml:space="preserve"><value>Upload failed.</value></data>
+  <data name="Editor_Uploading" xml:space="preserve"><value>Uploading to {0}...</value></data>
+  <data name="Emoji_Choose" xml:space="preserve"><value>Choose an emoji</value></data>
+  <data name="Emoji_ChooseCurrent" xml:space="preserve"><value>Choose an emoji ({0})</value></data>
+  <data name="Emoji_NoneFound" xml:space="preserve"><value>No emoji found</value></data>
+  <data name="Emoji_Recent" xml:space="preserve"><value>Recently used</value></data>
+  <data name="Emoji_Search" xml:space="preserve"><value>Search (English or Dutch)</value></data>
+  <data name="Emoji_SearchResults" xml:space="preserve"><value>Search results</value></data>
+  <data name="Gradient_AngleTip" xml:space="preserve"><value>Angle in degrees: 0 = up, 90 = right, 180 = down</value></data>
+  <data name="Gradient_Direction" xml:space="preserve"><value>Gradient direction: {0}° (scroll to rotate)</value></data>
+  <data name="Gradient_DirectionRadial" xml:space="preserve"><value>Gradient direction: from the center</value></data>
+  <data name="Gradient_Keys" xml:space="preserve"><value>Shift = steps of 15°, Alt = no snapping</value></data>
+  <data name="Gradient_Radial" xml:space="preserve"><value>From the center</value></data>
+  <data name="Gradient_RadialTip" xml:space="preserve"><value>Gradient from the center outward</value></data>
+  <data name="Hint_Arrow" xml:space="preserve"><value>Drag to draw an arrow. Shift = 45° angles. Drag a midpoint to bend it; double-click a bend point to remove it.</value></data>
+  <data name="Hint_Blur" xml:space="preserve"><value>Drag over the area you want to pixelate or blur.</value></data>
+  <data name="Hint_Crop" xml:space="preserve"><value>Drag a frame over the part you want to keep. Esc cancels.</value></data>
+  <data name="Hint_Cursor" xml:space="preserve"><value>Click to place a cursor; its tip lands exactly where you click.</value></data>
+  <data name="Hint_Ellipse" xml:space="preserve"><value>Drag to draw an ellipse. Shift = circle.</value></data>
+  <data name="Hint_Emoji" xml:space="preserve"><value>Click to place the chosen emoji; choose another emoji in the bar below.</value></data>
+  <data name="Hint_EraserBrush" xml:space="preserve"><value>Drag to erase; the area becomes transparent. Annotations are merged first.</value></data>
+  <data name="Hint_EraserSmart" xml:space="preserve"><value>Click a color to remove all adjacent pixels of the same color. Tolerance sets how strict.</value></data>
+  <data name="Hint_HighlightFree" xml:space="preserve"><value>Drag to highlight freehand. Hold Shift for a straight horizontal stroke.</value></data>
+  <data name="Hint_HighlightStraight" xml:space="preserve"><value>Drag to place a straight horizontal highlight. Hold Shift to draw freehand.</value></data>
+  <data name="Hint_Line" xml:space="preserve"><value>Drag to draw a line. Shift = 45° angles. Drag a midpoint to bend it; double-click a bend point to remove it.</value></data>
+  <data name="Hint_Rectangle" xml:space="preserve"><value>Drag to draw a rectangle. Shift = square.</value></data>
+  <data name="Hint_Select" xml:space="preserve"><value>Click to select, drag to move. Double-click text to edit it. Arrow keys nudge.</value></data>
+  <data name="Hint_Shape" xml:space="preserve"><value>Drag to draw the chosen shape. Shift = equal width and height. Choose another shape in the bar below.</value></data>
+  <data name="Hint_Step" xml:space="preserve"><value>Click to place a numbered step. The numbering continues automatically.</value></data>
+  <data name="Hint_Text" xml:space="preserve"><value>Click to place a text box, or click existing text to edit it. Drag the tip of a balloon or cloud to what you want to point at.</value></data>
+  <data name="Hint_TextEditing" xml:space="preserve"><value>Type your text. Enter = new line, Ctrl+Enter or Esc = done.</value></data>
+  <data name="Hint_ToolbarUnlocked" xml:space="preserve"><value>Toolbar unlocked: drag buttons to another place. Right-click the toolbar to lock it again.</value></data>
+  <data name="History_CannotCopy" xml:space="preserve"><value>Can&apos;t copy &apos;{0}&apos;.&#xA;&#xA;{1}</value></data>
+  <data name="History_Clear" xml:space="preserve"><value>Clear history...</value></data>
+  <data name="History_ClearConfirm" xml:space="preserve"><value>Clear the entire history? Your saved files and uploads will still exist.</value></data>
+  <data name="History_CopyImage" xml:space="preserve"><value>Copy image</value></data>
+  <data name="History_CopyLink" xml:space="preserve"><value>Copy link</value></data>
+  <data name="History_CopyPath" xml:space="preserve"><value>Copy path</value></data>
+  <data name="History_Count" xml:space="preserve"><value>{0} items</value></data>
+  <data name="History_CountFiltered" xml:space="preserve"><value>{0} of {1} items</value></data>
+  <data name="History_Date" xml:space="preserve"><value>Date</value></data>
+  <data name="History_Empty" xml:space="preserve"><value>Nothing in the history yet.&#xA;Whatever you save or upload in kniip shows up here.</value></data>
+  <data name="History_FileMissing" xml:space="preserve"><value>The file no longer exists:&#xA;{0}</value></data>
+  <data name="History_Folder" xml:space="preserve"><value>Folder</value></data>
+  <data name="History_ImageTitle" xml:space="preserve"><value>kniip image history</value></data>
+  <data name="History_Kind" xml:space="preserve"><value>Type</value></data>
+  <data name="History_List" xml:space="preserve"><value>List</value></data>
+  <data name="History_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="History_OpenFailed" xml:space="preserve"><value>Opening failed.&#xA;&#xA;{0}</value></data>
+  <data name="History_OpenInEditor" xml:space="preserve"><value>Open in the editor</value></data>
+  <data name="History_OpenLink" xml:space="preserve"><value>Open link</value></data>
+  <data name="History_Remove" xml:space="preserve"><value>Remove from history</value></data>
+  <data name="History_Search" xml:space="preserve"><value>Search by name or link</value></data>
+  <data name="History_ShowInFolder" xml:space="preserve"><value>Show in folder</value></data>
+  <data name="History_Thumbnails" xml:space="preserve"><value>Thumbnails</value></data>
+  <data name="History_Title" xml:space="preserve"><value>kniip history</value></data>
+  <data name="Menu_AlignToImage" xml:space="preserve"><value>Align to the image</value></data>
+  <data name="Menu_BringForward" xml:space="preserve"><value>Bring forward</value></data>
+  <data name="Menu_BringToFront" xml:space="preserve"><value>Bring to front</value></data>
+  <data name="Menu_CenterHorizontally" xml:space="preserve"><value>Center horizontally</value></data>
+  <data name="Menu_CenterOfImage" xml:space="preserve"><value>Center of the image</value></data>
+  <data name="Menu_CenterVertically" xml:space="preserve"><value>Center vertically</value></data>
+  <data name="Menu_ClearGuides" xml:space="preserve"><value>Clear guides</value></data>
+  <data name="Menu_Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="Menu_Cut" xml:space="preserve"><value>Cut</value></data>
+  <data name="Menu_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Menu_DeleteAll" xml:space="preserve"><value>Delete all</value></data>
+  <data name="Menu_Duplicate" xml:space="preserve"><value>Duplicate</value></data>
+  <data name="Menu_Flatten" xml:space="preserve"><value>Merge with image</value></data>
+  <data name="Menu_HideRulers" xml:space="preserve"><value>Hide rulers</value></data>
+  <data name="Menu_HideToolbars" xml:space="preserve"><value>Hide toolbars</value></data>
+  <data name="Menu_OpenScreencastFolder" xml:space="preserve"><value>Open screencast folder</value></data>
+  <data name="Menu_OpenScreenshotFolder" xml:space="preserve"><value>Open screenshot folder</value></data>
+  <data name="Menu_Paste" xml:space="preserve"><value>Paste</value></data>
+  <data name="Menu_ResetRotation" xml:space="preserve"><value>Reset rotation</value></data>
+  <data name="Menu_RotateRight" xml:space="preserve"><value>Rotate 90° right</value></data>
+  <data name="Menu_SendBackward" xml:space="preserve"><value>Send backward</value></data>
+  <data name="Menu_SendToBack" xml:space="preserve"><value>Send to back</value></data>
+  <data name="Menu_ShowToolbars" xml:space="preserve"><value>Show toolbars</value></data>
+  <data name="Ocr_CopySelection" xml:space="preserve"><value>Copy selection</value></data>
+  <data name="Ocr_CopyTip" xml:space="preserve"><value>Copy everything, or only the selected text</value></data>
+  <data name="Ocr_Failed" xml:space="preserve"><value>Text recognition failed.&#xA;&#xA;{0}</value></data>
+  <data name="Ocr_NoLanguage" xml:space="preserve"><value>Windows has no language for text recognition. Add one via Settings &gt; Time &amp; language &gt; Language &amp; region: choose a language and turn on Optical character recognition in the language options.</value></data>
+  <data name="Ocr_NoText" xml:space="preserve"><value>No text found in this image.</value></data>
+  <data name="Ocr_RecognizedMany" xml:space="preserve"><value>{0} lines recognized. You can edit the text here.</value></data>
+  <data name="Ocr_RecognizedOne" xml:space="preserve"><value>{0} line recognized. You can edit the text here.</value></data>
+  <data name="Ocr_Recognizing" xml:space="preserve"><value>Recognizing text...</value></data>
+  <data name="Ocr_Title" xml:space="preserve"><value>kniip text recognition</value></data>
+  <data name="Prop_AlignCenter" xml:space="preserve"><value>Center text</value></data>
+  <data name="Prop_AlignLeft" xml:space="preserve"><value>Align text left</value></data>
+  <data name="Prop_AlignRight" xml:space="preserve"><value>Align text right</value></data>
+  <data name="Prop_BackgroundColor" xml:space="preserve"><value>Background color</value></data>
+  <data name="Prop_Bold" xml:space="preserve"><value>Bold</value></data>
+  <data name="Prop_BorderThickness" xml:space="preserve"><value>Border thickness</value></data>
+  <data name="Prop_CloudDots" xml:space="preserve"><value>Number of bubbles toward the tip</value></data>
+  <data name="Prop_Corners" xml:space="preserve"><value>Corners</value></data>
+  <data name="Prop_CursorKind" xml:space="preserve"><value>Cursor type</value></data>
+  <data name="Prop_Dash" xml:space="preserve"><value>Line style</value></data>
+  <data name="Prop_EraserSize" xml:space="preserve"><value>Eraser size</value></data>
+  <data name="Prop_FillColor" xml:space="preserve"><value>Fill color</value></data>
+  <data name="Prop_FontSize" xml:space="preserve"><value>Font size</value></data>
+  <data name="Prop_FreehandEraserTip" xml:space="preserve"><value>Freehand: drag to erase</value></data>
+  <data name="Prop_Numbering" xml:space="preserve"><value>Sequence</value></data>
+  <data name="Prop_Shadow" xml:space="preserve"><value>Shadow</value></data>
+  <data name="Prop_Shape" xml:space="preserve"><value>Shape</value></data>
+  <data name="Prop_Size" xml:space="preserve"><value>Size</value></data>
+  <data name="Prop_SmartEraserTip" xml:space="preserve"><value>Smart eraser: click a color to remove all adjacent pixels of that color</value></data>
+  <data name="Prop_StraightTip" xml:space="preserve"><value>Straight horizontal stroke (Shift toggles)</value></data>
+  <data name="Prop_Strength" xml:space="preserve"><value>Strength</value></data>
+  <data name="Prop_StrokeColor" xml:space="preserve"><value>Border color</value></data>
+  <data name="Prop_TextColor" xml:space="preserve"><value>Text color</value></data>
+  <data name="Prop_Thickness" xml:space="preserve"><value>Thickness</value></data>
+  <data name="Prop_Tolerance" xml:space="preserve"><value>Tolerance</value></data>
+  <data name="Prop_ToleranceTip" xml:space="preserve"><value>Tolerance: how far a color may differ and still be removed</value></data>
+  <data name="Recording_CancelTip" xml:space="preserve"><value>Cancel (discard recording)</value></data>
+  <data name="Recording_CancelTray" xml:space="preserve"><value>Cancel recording</value></data>
+  <data name="Recording_Failed" xml:space="preserve"><value>The recording failed.&#xA;&#xA;{0}</value></data>
+  <data name="Recording_Finishing" xml:space="preserve"><value>Finishing recording...</value></data>
+  <data name="Recording_Microphone" xml:space="preserve"><value>Record microphone</value></data>
+  <data name="Recording_NoSoundText" xml:space="preserve"><value>Recording with sound didn&apos;t work; kniip is now recording without sound.</value></data>
+  <data name="Recording_NoSoundTitle" xml:space="preserve"><value>Recording without sound</value></data>
+  <data name="Recording_Pause" xml:space="preserve"><value>Pause</value></data>
+  <data name="Recording_Record" xml:space="preserve"><value>Record</value></data>
+  <data name="Recording_Resume" xml:space="preserve"><value>Resume</value></data>
+  <data name="Recording_Start" xml:space="preserve"><value>Start recording</value></data>
+  <data name="Recording_StartNow" xml:space="preserve"><value>Start right away</value></data>
+  <data name="Recording_StartsIn" xml:space="preserve"><value>Starting in {0}...</value></data>
+  <data name="Recording_Stop" xml:space="preserve"><value>Stop recording</value></data>
+  <data name="Recording_StopShort" xml:space="preserve"><value>Stop</value></data>
+  <data name="Recording_SystemAudio" xml:space="preserve"><value>Record system audio</value></data>
+  <data name="Recording_Title" xml:space="preserve"><value>kniip recording</value></data>
+  <data name="Recording_WithoutAudioText" xml:space="preserve"><value>No {0} was found on this PC; the recording continues without it.</value></data>
+  <data name="Recording_WithoutAudioTitle" xml:space="preserve"><value>Recording without {0}</value></data>
+  <data name="Region_Hint" xml:space="preserve"><value>Screencast: choose what to record</value></data>
+  <data name="Region_Keys" xml:space="preserve"><value>Drag an area  ·  click a window  ·  Enter = whole screen  ·  Esc = cancel</value></data>
+  <data name="Region_Title" xml:space="preserve"><value>kniip choose recording area</value></data>
+  <data name="Screencast_CopyTip" xml:space="preserve"><value>Copy to the clipboard as a file (paste in File Explorer, Teams, Outlook, ...)</value></data>
+  <data name="Screencast_DefaultName" xml:space="preserve"><value>Screencast {0:yyyy-MM-dd HHmmss}</value></data>
+  <data name="Screencast_DiscardConfirm" xml:space="preserve"><value>This recording hasn&apos;t been saved or copied yet. Discard it?</value></data>
+  <data name="Screencast_Format" xml:space="preserve"><value>Format</value></data>
+  <data name="Screencast_Fps" xml:space="preserve"><value>Frames/s</value></data>
+  <data name="Screencast_GifFilter" xml:space="preserve"><value>GIF animation (*.gif)|*.gif</value></data>
+  <data name="Screencast_GifNoSound" xml:space="preserve"><value>GIF has no sound</value></data>
+  <data name="Screencast_GifTip" xml:space="preserve"><value>Animated image without sound; plays everywhere (including email and wikis)</value></data>
+  <data name="Screencast_Loading" xml:space="preserve"><value>Loading recording...</value></data>
+  <data name="Screencast_LongGifWarning" xml:space="preserve"><value>long GIFs get large; consider MP4</value></data>
+  <data name="Screencast_Mp4Filter" xml:space="preserve"><value>MP4 video (*.mp4)|*.mp4</value></data>
+  <data name="Screencast_Mp4Tip" xml:space="preserve"><value>Video with sound; small file, best quality</value></data>
+  <data name="Screencast_Name" xml:space="preserve"><value>Screencast</value></data>
+  <data name="Screencast_OnClipboard" xml:space="preserve"><value>{0} is on the clipboard; paste it wherever you want.</value></data>
+  <data name="Screencast_Original" xml:space="preserve"><value>Original</value></data>
+  <data name="Screencast_Play" xml:space="preserve"><value>Play (spacebar)</value></data>
+  <data name="Screencast_PreviewFailed" xml:space="preserve"><value>The preview can&apos;t be played ({0}).&#xA;Saving still works; trimming isn&apos;t possible then.</value></data>
+  <data name="Screencast_SaveAndCopyAsFormat" xml:space="preserve"><value>Save and copy as {0}</value></data>
+  <data name="Screencast_SaveAndCopyTip" xml:space="preserve"><value>Saves and copies the file to the clipboard. Shift+click = always ask where to save; the arrow shows more options.</value></data>
+  <data name="Screencast_SaveAsFormat" xml:space="preserve"><value>Save as {0}</value></data>
+  <data name="Screencast_SaveAsMp4" xml:space="preserve"><value>Save as MP4...</value></data>
+  <data name="Screencast_SaveButtonTip" xml:space="preserve"><value>Shift+click = always ask where to save; the arrow shows more options</value></data>
+  <data name="Screencast_Saved" xml:space="preserve"><value>Screencast saved</value></data>
+  <data name="Screencast_SavedCopied" xml:space="preserve"><value>Screencast saved and copied</value></data>
+  <data name="Screencast_SavedCopyFailed" xml:space="preserve"><value>The file was saved, but copying to the clipboard failed. The clipboard is busy.</value></data>
+  <data name="Screencast_SaveDialogTitle" xml:space="preserve"><value>Save screencast</value></data>
+  <data name="Screencast_SaveFailed" xml:space="preserve"><value>Saving failed.&#xA;&#xA;{0}</value></data>
+  <data name="Screencast_SaveFolderUnusable" xml:space="preserve"><value>The save folder from the settings can&apos;t be used:&#xA;{0}&#xA;&#xA;{1}&#xA;&#xA;Choose where to save the screencast yourself.</value></data>
+  <data name="Screencast_SaveTip" xml:space="preserve"><value>Shift+click = always ask where to save</value></data>
+  <data name="Screencast_Selection" xml:space="preserve"><value>Selection {0} – {1}  ·  {2:0.0} s</value></data>
+  <data name="Screencast_SelEnd" xml:space="preserve"><value>End of the selection</value></data>
+  <data name="Screencast_SelStart" xml:space="preserve"><value>Start of the selection</value></data>
+  <data name="Screencast_SetEnd" xml:space="preserve"><value>End here</value></data>
+  <data name="Screencast_SetEndTip" xml:space="preserve"><value>Set the end of the selection to the current position</value></data>
+  <data name="Screencast_SetStart" xml:space="preserve"><value>Start here</value></data>
+  <data name="Screencast_SetStartTip" xml:space="preserve"><value>Set the start of the selection to the current position</value></data>
+  <data name="Screencast_Uploaded" xml:space="preserve"><value>Uploaded: {0}</value></data>
+  <data name="Screencast_UploadedCopied" xml:space="preserve"><value>Uploaded; the link is on the clipboard: {0}</value></data>
+  <data name="Screencast_UploadTip" xml:space="preserve"><value>Upload to Zipline and copy the link to the clipboard</value></data>
+  <data name="Screencast_Width" xml:space="preserve"><value>Width</value></data>
+  <data name="Screencast_WithoutSound" xml:space="preserve"><value>without sound</value></data>
+  <data name="Screencast_WithSound" xml:space="preserve"><value>with sound</value></data>
+  <data name="Settings_Appearance" xml:space="preserve"><value>Appearance</value></data>
+  <data name="Settings_AskEveryTime" xml:space="preserve"><value>Ask every time</value></data>
+  <data name="Settings_AskSnipTip" xml:space="preserve"><value>Ask every time where to save the snip</value></data>
+  <data name="Settings_AskVideoTip" xml:space="preserve"><value>Ask every time where to save the screencast</value></data>
+  <data name="Settings_AutoCheck" xml:space="preserve"><value>Automatically check for new versions (at startup and daily)</value></data>
+  <data name="Settings_Autostart" xml:space="preserve"><value>Start kniip with Windows</value></data>
+  <data name="Settings_CheckAgain" xml:space="preserve"><value>Check again</value></data>
+  <data name="Settings_CheckingUpdates" xml:space="preserve"><value>Checking for updates...</value></data>
+  <data name="Settings_ChooseSnipFolder" xml:space="preserve"><value>Choose a folder for snips</value></data>
+  <data name="Settings_ChooseVideoFolder" xml:space="preserve"><value>Choose a folder for screencasts</value></data>
+  <data name="Settings_CloseEditor" xml:space="preserve"><value>Closing the editor window:</value></data>
+  <data name="Settings_CloseEditorTip" xml:space="preserve"><value>Keep hides the window; the tabs come back with the next snip or via &apos;Open kniip&apos; in the system tray. Exiting kniip always closes everything.</value></data>
+  <data name="Settings_ColorMode" xml:space="preserve"><value>Color mode</value></data>
+  <data name="Settings_Dark" xml:space="preserve"><value>Dark</value></data>
+  <data name="Settings_Defaults" xml:space="preserve"><value>Defaults</value></data>
+  <data name="Settings_DefaultsFilled" xml:space="preserve"><value>Defaults filled in; click Save to keep them.</value></data>
+  <data name="Settings_DefaultsTip" xml:space="preserve"><value>Reset settings, tool styles, toolbar and recently used folders; they are only kept when you click Save</value></data>
+  <data name="Settings_DoNothing" xml:space="preserve"><value>Do nothing (open via the system tray or &apos;Open with&apos;)</value></data>
+  <data name="Settings_Example" xml:space="preserve"><value>Example: </value></data>
+  <data name="Settings_Fps" xml:space="preserve"><value>{0} frames/s</value></data>
+  <data name="Settings_FromClipboard" xml:space="preserve"><value>From clipboard</value></data>
+  <data name="Settings_HighlightClicks" xml:space="preserve"><value>Highlight mouse clicks (yellow = left, blue = right)</value></data>
+  <data name="Settings_HighlighterStraight" xml:space="preserve"><value>Highlighter draws a straight horizontal stroke by default (Shift toggles)</value></data>
+  <data name="Settings_HookFailed" xml:space="preserve"><value>The keyboard hook could not be started; the shortcuts don&apos;t work right now.</value></data>
+  <data name="Settings_HotkeyHint" xml:space="preserve"><value>kniip captures these keys in all programs; with Print Screen, the Windows Snipping Tool then doesn&apos;t open as well.</value></data>
+  <data name="Settings_HotkeyNameClipboard" xml:space="preserve"><value>edit from clipboard</value></data>
+  <data name="Settings_HotkeyNameGif" xml:space="preserve"><value>screencast (GIF)</value></data>
+  <data name="Settings_HotkeyNameRecord" xml:space="preserve"><value>screencast (MP4)</value></data>
+  <data name="Settings_HotkeyNameSnip" xml:space="preserve"><value>snip rectangle</value></data>
+  <data name="Settings_HotkeyNameWindow" xml:space="preserve"><value>snip window</value></data>
+  <data name="Settings_Hotkeys" xml:space="preserve"><value>Keyboard shortcuts</value></data>
+  <data name="Settings_HotkeyTaken" xml:space="preserve"><value>{0} is already the shortcut for {1}; choose another one.</value></data>
+  <data name="Settings_HotkeyTip" xml:space="preserve"><value>Click, then press the key combination you want</value></data>
+  <data name="Settings_HotkeyTipAltPrint" xml:space="preserve"><value>Click, then press the key you want, for example Alt + Print Screen</value></data>
+  <data name="Settings_HotkeyTipClipboard" xml:space="preserve"><value>Click, then press the key combination you want; opens the image on the clipboard</value></data>
+  <data name="Settings_HotkeyTipOcr" xml:space="preserve"><value>Click, then press the key combination you want; then drag a rectangle to read the text in it</value></data>
+  <data name="Settings_HotkeyTipPrint" xml:space="preserve"><value>Click, then press the key you want, for example Print Screen</value></data>
+  <data name="Settings_HotkeyTyping" xml:space="preserve"><value>{0} is used for typing. Choose Print Screen, Pause, an F key or a combination with Ctrl, Alt or Win.</value></data>
+  <data name="Settings_Import" xml:space="preserve"><value>Import...</value></data>
+  <data name="Settings_Imported" xml:space="preserve"><value>Imported: {0}. Click Save to keep it.</value></data>
+  <data name="Settings_ImportExplanation" xml:space="preserve"><value>Create the file in Zipline via Settings &gt; Generate Uploaders (ShareX or Shell Script) and import it here. kniip only reads the address and the token; the script is not run.</value></data>
+  <data name="Settings_ImportFailed" xml:space="preserve"><value>This file can&apos;t be used:&#xA;{0}&#xA;&#xA;{1}</value></data>
+  <data name="Settings_ImportFilter" xml:space="preserve"><value>Zipline uploader (*.sxcu;*.sh)|*.sxcu;*.sh|ShareX uploader (*.sxcu)|*.sxcu|Shell script (*.sh)|*.sh|All files (*.*)|*.*</value></data>
+  <data name="Settings_ImportTip" xml:space="preserve"><value>Choose a ShareX uploader (.sxcu) or Shell Script (.sh) from Zipline</value></data>
+  <data name="Settings_ImportTitle" xml:space="preserve"><value>Import Zipline uploader</value></data>
+  <data name="Settings_InstalledVersion" xml:space="preserve"><value>Installed version: {0}</value></data>
+  <data name="Settings_InstallTip" xml:space="preserve"><value>Download the installer; kniip closes, updates and restarts</value></data>
+  <data name="Settings_IntegrationExplanation" xml:space="preserve"><value>Only for your user account; no administrator is needed and the Snipping Tool itself is not changed.</value></data>
+  <data name="Settings_IntegrationFailed" xml:space="preserve"><value>Windows integration could not be updated:&#xA;&#xA;{0}</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>Language</value></data>
+  <data name="Settings_LanguageAutomatic" xml:space="preserve"><value>Automatic (Windows language)</value></data>
+  <data name="Settings_LanguageExplanation" xml:space="preserve"><value>Automatic uses Dutch when Windows is set to Dutch, and English otherwise. A different language takes effect after kniip restarts.</value></data>
+  <data name="Settings_LanguageRestart" xml:space="preserve"><value>kniip needs to restart to use the new language. Restart now?</value></data>
+  <data name="Settings_Light" xml:space="preserve"><value>Light</value></data>
+  <data name="Settings_MaxWidth" xml:space="preserve"><value>max. {0} px wide</value></data>
+  <data name="Settings_Microphone" xml:space="preserve"><value>Record microphone (default)</value></data>
+  <data name="Settings_NoChangelog" xml:space="preserve"><value>No changelog available.</value></data>
+  <data name="Settings_NoDescription" xml:space="preserve"><value>No description.</value></data>
+  <data name="Settings_NoHotkey" xml:space="preserve"><value>Don&apos;t use a shortcut</value></data>
+  <data name="Settings_NoHotkeyShort" xml:space="preserve"><value>(none)</value></data>
+  <data name="Settings_NoReleases" xml:space="preserve"><value>No releases have been published yet.</value></data>
+  <data name="Settings_NotConfigured" xml:space="preserve"><value>Not configured</value></data>
+  <data name="Settings_OcrHotkey" xml:space="preserve"><value>OCR (recognize text)</value></data>
+  <data name="Settings_OnlySnippingTool" xml:space="preserve"><value>Only images from the Snipping Tool</value></data>
+  <data name="Settings_OnNewSnip" xml:space="preserve"><value>On a new snip</value></data>
+  <data name="Settings_OpenEditor" xml:space="preserve"><value>Open the editor right away</value></data>
+  <data name="Settings_OpenInBrowser" xml:space="preserve"><value>Open in the browser</value></data>
+  <data name="Settings_OpenWith" xml:space="preserve"><value>Show kniip in &apos;Open with&apos; (also in the Snipping Tool: ... → Open with)</value></data>
+  <data name="Settings_OriginalWidth" xml:space="preserve"><value>Original width</value></data>
+  <data name="Settings_PressKey" xml:space="preserve"><value>Press a key...</value></data>
+  <data name="Settings_PressKeyHint" xml:space="preserve"><value>Esc = cancel  ·  Delete = no shortcut</value></data>
+  <data name="Settings_ReleasePage" xml:space="preserve"><value>Release page</value></data>
+  <data name="Settings_RemoveUpload" xml:space="preserve"><value>Remove</value></data>
+  <data name="Settings_RemoveUploadTip" xml:space="preserve"><value>Stop using an upload destination</value></data>
+  <data name="Settings_SaveAndCopy" xml:space="preserve"><value>Save and copy</value></data>
+  <data name="Settings_SaveAndCopyExplanation" xml:space="preserve"><value>Save and copy also puts the file on the clipboard, so you can paste it right away.</value></data>
+  <data name="Settings_SaveExplanation" xml:space="preserve"><value>With a folder set, Save (Ctrl+S) saves right away, using the name above. Shift+click or Ctrl+Shift+S still asks where the file should go.</value></data>
+  <data name="Settings_ScreencastExplanation" xml:space="preserve"><value>Shortcut: press once to choose an area, a second time to start recording and a third time to stop. Afterwards, editing starts on MP4 or GIF.</value></data>
+  <data name="Settings_ScreenshotsFolderMissing" xml:space="preserve"><value>Screenshots folder not found.</value></data>
+  <data name="Settings_SelectArea" xml:space="preserve"><value>Selecting an area</value></data>
+  <data name="Settings_ShowCursor" xml:space="preserve"><value>Show the mouse pointer</value></data>
+  <data name="Settings_ShowMagnifier" xml:space="preserve"><value>Show a magnifier when selecting an area (snip and screencast)</value></data>
+  <data name="Settings_ShowNotification" xml:space="preserve"><value>Show a notification (click to edit)</value></data>
+  <data name="Settings_SingleLayout" xml:space="preserve"><value>One toolbar with tools and actions</value></data>
+  <data name="Settings_SnipNameTip" xml:space="preserve"><value>Empty: Snip with date and time</value></data>
+  <data name="Settings_SnippingToolTip" xml:space="preserve"><value>Tip: turn off &apos;Automatically copy changes&apos; in the Snipping Tool, otherwise kniip sees every pen stroke in the Snipping Tool as a new snip.</value></data>
+  <data name="Settings_SplitLayout" xml:space="preserve"><value>Split view: tools at the top, saving at the bottom</value></data>
+  <data name="Settings_StartingInstaller" xml:space="preserve"><value>Starting installer...</value></data>
+  <data name="Settings_System" xml:space="preserve"><value>System</value></data>
+  <data name="Settings_SystemAudio" xml:space="preserve"><value>Record system audio (default)</value></data>
+  <data name="Settings_SystemExplanation" xml:space="preserve"><value>System follows the Windows app mode (Settings &gt; Personalization &gt; Colors) and switches along when you change it.</value></data>
+  <data name="Settings_Test" xml:space="preserve"><value>Test</value></data>
+  <data name="Settings_TestCopied" xml:space="preserve"><value> (copied)</value></data>
+  <data name="Settings_TestFailed" xml:space="preserve"><value>The test upload failed.&#xA;&#xA;{0}</value></data>
+  <data name="Settings_TestSucceeded" xml:space="preserve"><value>Success: </value></data>
+  <data name="Settings_TestTip" xml:space="preserve"><value>Upload a small test image</value></data>
+  <data name="Settings_TestUploading" xml:space="preserve"><value>Uploading test image...</value></data>
+  <data name="Settings_ThreeSplitLayout" xml:space="preserve"><value>Three-way split: tools at the top, save, upload and copy at the bottom, screenshot, screencast and OCR separate or floating</value></data>
+  <data name="Settings_Title" xml:space="preserve"><value>kniip settings</value></data>
+  <data name="Settings_Toolbar" xml:space="preserve"><value>Toolbar</value></data>
+  <data name="Settings_ToolbarExplanation" xml:space="preserve"><value>You can also switch this by right-clicking the toolbar in the editor. There you can also drag or hide buttons.</value></data>
+  <data name="Settings_UpdateAvailable" xml:space="preserve"><value>Version {0} is available.</value></data>
+  <data name="Settings_UpdateConfirm" xml:space="preserve"><value>kniip will close, update to version {0} and then restart. Open editors and screencasts are closed first.</value></data>
+  <data name="Settings_UpdateConfirmTitle" xml:space="preserve"><value>Update kniip</value></data>
+  <data name="Settings_UpdateDownloadFailed" xml:space="preserve"><value>The update could not be downloaded.&#xA;&#xA;{0}</value></data>
+  <data name="Settings_UpdateDownloading" xml:space="preserve"><value>Downloading version {0}...</value></data>
+  <data name="Settings_UpdateNoInstaller" xml:space="preserve"><value>Version {0} is available, but without an installer. Download it from the release page.</value></data>
+  <data name="Settings_UpdateNotInstalled" xml:space="preserve"><value>This kniip wasn&apos;t started from the installer; the new version will be installed in {0}.</value></data>
+  <data name="Settings_UpdateTestBuild" xml:space="preserve"><value>Version {0} is available. This test build doesn&apos;t update itself; the installer would overwrite the regular kniip.</value></data>
+  <data name="Settings_UpdateTo" xml:space="preserve"><value>Update to {0}</value></data>
+  <data name="Settings_UploadExplanation" xml:space="preserve"><value>After that there is an Upload button in the editor (Ctrl+U) and for screencasts. The link goes to the clipboard. The token is stored encrypted for your Windows account.</value></data>
+  <data name="Settings_UploadZipline" xml:space="preserve"><value>Upload to Zipline</value></data>
+  <data name="Settings_UpToDate" xml:space="preserve"><value>You are using the latest version ({0}).</value></data>
+  <data name="Settings_VersionHeading" xml:space="preserve"><value>Version {0}</value></data>
+  <data name="Settings_VideoNameTip" xml:space="preserve"><value>Empty: Screencast with date and time</value></data>
+  <data name="Settings_WatchClipboard" xml:space="preserve"><value>Watch the clipboard</value></data>
+  <data name="Settings_WatchScreenshots" xml:space="preserve"><value>Watch the Screenshots folder</value></data>
+  <data name="Settings_WindowsIntegration" xml:space="preserve"><value>Windows integration</value></data>
+  <data name="Settings_WindowTitle" xml:space="preserve"><value>{0} settings</value></data>
+  <data name="Shape_Drop" xml:space="preserve"><value>Drop</value></data>
+  <data name="Shape_Egg" xml:space="preserve"><value>Egg</value></data>
+  <data name="Shape_Heart" xml:space="preserve"><value>Heart</value></data>
+  <data name="Shape_Lightning" xml:space="preserve"><value>Lightning bolt</value></data>
+  <data name="Shape_Moon" xml:space="preserve"><value>Moon</value></data>
+  <data name="Shape_Spiral" xml:space="preserve"><value>Spiral</value></data>
+  <data name="Shape_Star" xml:space="preserve"><value>Star</value></data>
+  <data name="Shape_Triangle" xml:space="preserve"><value>Triangle</value></data>
+  <data name="Shell_ImageType" xml:space="preserve"><value>{0} image</value></data>
+  <data name="Shell_NoAppPath" xml:space="preserve"><value>The application path is unknown.</value></data>
+  <data name="SkinTone_Dark" xml:space="preserve"><value>Dark</value></data>
+  <data name="SkinTone_Default" xml:space="preserve"><value>Default</value></data>
+  <data name="SkinTone_Light" xml:space="preserve"><value>Light</value></data>
+  <data name="SkinTone_Medium" xml:space="preserve"><value>Medium</value></data>
+  <data name="SkinTone_MediumDark" xml:space="preserve"><value>Medium-dark</value></data>
+  <data name="SkinTone_MediumLight" xml:space="preserve"><value>Medium-light</value></data>
+  <data name="SkinTone_ToolTip" xml:space="preserve"><value>Skin tone: {0}</value></data>
+  <data name="Snip_DefaultName" xml:space="preserve"><value>Snip {0:yyyy-MM-dd HHmmss}</value></data>
+  <data name="Snip_Name" xml:space="preserve"><value>Snip</value></data>
+  <data name="Template_Help" xml:space="preserve"><value>%Y year, %M month, %D day, %V program name of the window, %R6 six random characters, %N3 sequence number with three digits (001). Use / to create subfolders. kniip adds the extension itself.</value></data>
+  <data name="TextShape_Box" xml:space="preserve"><value>Box</value></data>
+  <data name="TextShape_None" xml:space="preserve"><value>No box</value></data>
+  <data name="TextShape_OvalBalloon" xml:space="preserve"><value>Oval balloon</value></data>
+  <data name="Toast_ClickToAnnotate" xml:space="preserve"><value>click to add annotations</value></data>
+  <data name="Toast_Dismiss" xml:space="preserve"><value>Dismiss</value></data>
+  <data name="Toast_Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Tool_ArrowTip" xml:space="preserve"><value>Arrow (A) - Shift for 45° angles</value></data>
+  <data name="Tool_Blur" xml:space="preserve"><value>Blur / pixelate</value></data>
+  <data name="Tool_BlurTip" xml:space="preserve"><value>Blur / pixelate (B)</value></data>
+  <data name="Tool_Clear" xml:space="preserve"><value>Clear</value></data>
+  <data name="Tool_ClearTip" xml:space="preserve"><value>Discard the snip and start over with a blank canvas (Ctrl+Delete)</value></data>
+  <data name="Tool_CopyTip" xml:space="preserve"><value>Copy to clipboard (Ctrl+C)</value></data>
+  <data name="Tool_Crop" xml:space="preserve"><value>Crop</value></data>
+  <data name="Tool_CropTip" xml:space="preserve"><value>Crop (X)</value></data>
+  <data name="Tool_CursorTip" xml:space="preserve"><value>Place a cursor (C)</value></data>
+  <data name="Tool_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Tool_DeleteTip" xml:space="preserve"><value>Delete the selected object (Delete)</value></data>
+  <data name="Tool_Ellipse" xml:space="preserve"><value>Ellipse</value></data>
+  <data name="Tool_EllipseTip" xml:space="preserve"><value>Ellipse (E) - Shift for a circle</value></data>
+  <data name="Tool_EmojiTip" xml:space="preserve"><value>Place an emoji (J)</value></data>
+  <data name="Tool_Eraser" xml:space="preserve"><value>Eraser</value></data>
+  <data name="Tool_EraserTip" xml:space="preserve"><value>Eraser (G) - the smart eraser removes connected pixels of the same color; choose freehand in the bar below</value></data>
+  <data name="Tool_Folders" xml:space="preserve"><value>Open folders</value></data>
+  <data name="Tool_FoldersTip" xml:space="preserve"><value>Open the screenshot or screencast folder</value></data>
+  <data name="Tool_Highlighter" xml:space="preserve"><value>Highlighter</value></data>
+  <data name="Tool_HighlighterTip" xml:space="preserve"><value>Highlighter (H) - straight horizontal stroke, Shift toggles</value></data>
+  <data name="Tool_Line" xml:space="preserve"><value>Line</value></data>
+  <data name="Tool_LineTip" xml:space="preserve"><value>Line (L) - Shift for 45° angles</value></data>
+  <data name="Tool_New" xml:space="preserve"><value>New</value></data>
+  <data name="Tool_NewTip" xml:space="preserve"><value>Take a new snip; it opens in a new tab (Ctrl+N)</value></data>
+  <data name="Tool_OcrTip" xml:space="preserve"><value>OCR: drag a rectangle on the screen and copy the text in it. Ctrl+Shift+T reads the text of this snip.</value></data>
+  <data name="Tool_Print" xml:space="preserve"><value>Print</value></data>
+  <data name="Tool_PrintTip" xml:space="preserve"><value>Print (Ctrl+P)</value></data>
+  <data name="Tool_RectangleTip" xml:space="preserve"><value>Rectangle (R) - Shift for a square</value></data>
+  <data name="Tool_Redo" xml:space="preserve"><value>Redo</value></data>
+  <data name="Tool_RedoTip" xml:space="preserve"><value>Redo (Ctrl+Y)</value></data>
+  <data name="Tool_Rulers" xml:space="preserve"><value>Rulers</value></data>
+  <data name="Tool_RulersTip" xml:space="preserve"><value>Rulers and guides (Ctrl+R) - drag from a ruler to add a guide</value></data>
+  <data name="Tool_SaveAndCopyTip" xml:space="preserve"><value>Save and copy to the clipboard (Ctrl+S); Shift+click or Ctrl+Shift+S = save as; the arrow shows more options</value></data>
+  <data name="Tool_SaveTip" xml:space="preserve"><value>Save (Ctrl+S); Shift+click or Ctrl+Shift+S = save as; the arrow shows more options</value></data>
+  <data name="Tool_ScreencastTip" xml:space="preserve"><value>Record a screencast as MP4 or GIF</value></data>
+  <data name="Tool_Select" xml:space="preserve"><value>Select</value></data>
+  <data name="Tool_SelectTip" xml:space="preserve"><value>Select and move (V)</value></data>
+  <data name="Tool_Shapes" xml:space="preserve"><value>Shapes</value></data>
+  <data name="Tool_ShapesTip" xml:space="preserve"><value>Shapes (F) - Shift for equal width and height</value></data>
+  <data name="Tool_Steps" xml:space="preserve"><value>Steps</value></data>
+  <data name="Tool_StepsTip" xml:space="preserve"><value>Steps 1, 2, 3 / a, b, c (S)</value></data>
+  <data name="Tool_Text" xml:space="preserve"><value>Text</value></data>
+  <data name="Tool_TextTip" xml:space="preserve"><value>Text in a box (T)</value></data>
+  <data name="Tool_Undo" xml:space="preserve"><value>Undo</value></data>
+  <data name="Tool_UndoTip" xml:space="preserve"><value>Undo (Ctrl+Z)</value></data>
+  <data name="Tool_UploadTip" xml:space="preserve"><value>Upload and copy the link (Ctrl+U)</value></data>
+  <data name="Tool_Zoom" xml:space="preserve"><value>Zoom percentage</value></data>
+  <data name="Tool_ZoomIn" xml:space="preserve"><value>Zoom in</value></data>
+  <data name="Tool_ZoomInTip" xml:space="preserve"><value>Zoom in (Ctrl++)</value></data>
+  <data name="Tool_ZoomOut" xml:space="preserve"><value>Zoom out</value></data>
+  <data name="Tool_ZoomOutTip" xml:space="preserve"><value>Zoom out (Ctrl+-)</value></data>
+  <data name="Tool_ZoomTip" xml:space="preserve"><value>Fit to window (Ctrl+0) / actual size (Ctrl+1)</value></data>
+  <data name="Toolbar_CaptureBarPosition" xml:space="preserve"><value>New and Screencast</value></data>
+  <data name="Toolbar_DragTip" xml:space="preserve"><value>Drag to move; right-click to dock</value></data>
+  <data name="Toolbar_Layout" xml:space="preserve"><value>Layout</value></data>
+  <data name="Toolbar_Lock" xml:space="preserve"><value>Lock toolbar</value></data>
+  <data name="Toolbar_LockFloating" xml:space="preserve"><value>Pin floating buttons</value></data>
+  <data name="Toolbar_Position" xml:space="preserve"><value>Position</value></data>
+  <data name="Toolbar_Reset" xml:space="preserve"><value>Restore defaults</value></data>
+  <data name="Toolbar_ShowButtons" xml:space="preserve"><value>Show buttons</value></data>
+  <data name="Toolbar_Single" xml:space="preserve"><value>One toolbar</value></data>
+  <data name="Toolbar_SwapGroups" xml:space="preserve"><value>Swap groups</value></data>
+  <data name="Toolbar_ThreeSplit" xml:space="preserve"><value>Three-way split: screenshot, screencast and OCR separate or floating</value></data>
+  <data name="Tray_Delay" xml:space="preserve"><value>Capture delay: {0}s</value></data>
+  <data name="Tray_EditFromClipboard" xml:space="preserve"><value>Edit from clipboard</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Exit</value></data>
+  <data name="Tray_History" xml:space="preserve"><value>History...</value></data>
+  <data name="Tray_ImageHistory" xml:space="preserve"><value>Image history...</value></data>
+  <data name="Tray_NothingSaved" xml:space="preserve"><value>Nothing saved yet</value></data>
+  <data name="Tray_Ocr" xml:space="preserve"><value>OCR (recognize text)...</value></data>
+  <data name="Tray_OcrTip" xml:space="preserve"><value>Drag a rectangle; the text in it opens in a separate window for copying</value></data>
+  <data name="Tray_Open" xml:space="preserve"><value>Open kniip</value></data>
+  <data name="Tray_OpenImage" xml:space="preserve"><value>Open image...</value></data>
+  <data name="Tray_OpenTip" xml:space="preserve"><value>Show the editor with the open tabs, or otherwise the image history</value></data>
+  <data name="Tray_Pause" xml:space="preserve"><value>Don&apos;t pick up snips automatically</value></data>
+  <data name="Tray_RecentItems" xml:space="preserve"><value>Recent items</value></data>
+  <data name="Tray_RecordGif" xml:space="preserve"><value>Record screencast (GIF)...</value></data>
+  <data name="Tray_RecordingToolTip" xml:space="preserve"><value>{0} - recording</value></data>
+  <data name="Tray_RecordMp4" xml:space="preserve"><value>Record screencast (MP4)...</value></data>
+  <data name="Tray_Seconds" xml:space="preserve"><value>seconds</value></data>
+  <data name="Tray_Settings" xml:space="preserve"><value>Settings...</value></data>
+  <data name="Tray_SnipRectangle" xml:space="preserve"><value>Snip rectangle</value></data>
+  <data name="Tray_SnipWindow" xml:space="preserve"><value>Snip window</value></data>
+  <data name="Tray_UpdateToolTip" xml:space="preserve"><value>New version {0} available</value></data>
+  <data name="Update_Available" xml:space="preserve"><value>A new version is available</value></data>
+  <data name="Update_BadResponse" xml:space="preserve"><value>The response from GitHub can&apos;t be read.</value></data>
+  <data name="Update_DownloadFailed" xml:space="preserve"><value>Download failed. Check the internet connection.</value></data>
+  <data name="Update_DownloadHttpError" xml:space="preserve"><value>Download failed ({0}).</value></data>
+  <data name="Update_DownloadIncomplete" xml:space="preserve"><value>The download is incomplete; please try again.</value></data>
+  <data name="Update_HttpError" xml:space="preserve"><value>GitHub returned an error ({0}).</value></data>
+  <data name="Update_NoInstaller" xml:space="preserve"><value>Release {0} has no installer.</value></data>
+  <data name="Update_NotFound" xml:space="preserve"><value>The kniip releases weren&apos;t found on GitHub.</value></data>
+  <data name="Update_RateLimit" xml:space="preserve"><value>The GitHub limit has been reached. Please try again later.</value></data>
+  <data name="Update_Timeout" xml:space="preserve"><value>GitHub isn&apos;t responding (time-out).</value></data>
+  <data name="Update_Unreachable" xml:space="preserve"><value>Can&apos;t reach GitHub. Check the internet connection.</value></data>
+  <data name="Upload_BadServer" xml:space="preserve"><value>The server address can&apos;t be used:&#xA;{0}</value></data>
+  <data name="Upload_InvalidShareX" xml:space="preserve"><value>This isn&apos;t a valid ShareX uploader file.</value></data>
+  <data name="Upload_NoCurl" xml:space="preserve"><value>This script has no curl command. Choose the Shell Script uploader for files in Zipline.</value></data>
+  <data name="Upload_NoLink" xml:space="preserve"><value>The upload succeeded, but there&apos;s no link in the response at &apos;{0}&apos;.</value></data>
+  <data name="Upload_NoServer" xml:space="preserve"><value>This file has no server address.</value></data>
+  <data name="Upload_NotConfigured" xml:space="preserve"><value>No upload destination has been set up yet (Settings &gt; Upload).</value></data>
+  <data name="Upload_NotFileUploader" xml:space="preserve"><value>This uploader doesn&apos;t send files (maybe it&apos;s the URL shortener). Choose the file uploader in Zipline.</value></data>
+  <data name="Upload_NoToken" xml:space="preserve"><value>This file has no token (authorization header).</value></data>
+  <data name="Upload_Rejected" xml:space="preserve"><value>The server rejected the upload ({0}): {1}</value></data>
+  <data name="Upload_ScriptNotFileUploader" xml:space="preserve"><value>This script doesn&apos;t upload a file (maybe it&apos;s the URL shortener). Choose the Shell Script uploader for files in Zipline.</value></data>
+  <data name="Upload_Timeout" xml:space="preserve"><value>The server isn&apos;t responding (time-out).</value></data>
+  <data name="Upload_TokenInvalid" xml:space="preserve"><value>The token is invalid or expired; import the uploader again.</value></data>
+  <data name="Upload_Unreachable" xml:space="preserve"><value>Can&apos;t reach {0}.&#xA;&#xA;{1}</value></data>
+  <data name="Upload_UnsupportedMethod" xml:space="preserve"><value>This uploader uses {0}; kniip only supports POST.</value></data>
+  <data name="Video_SaveFailed" xml:space="preserve"><value>Windows couldn&apos;t save the video ({0}).</value></data>
+  <data name="Window_Maximize" xml:space="preserve"><value>Maximize</value></data>
+  <data name="Window_Minimize" xml:space="preserve"><value>Minimize</value></data>
+  <data name="Window_Restore" xml:space="preserve"><value>Restore Down</value></data>
+</root>

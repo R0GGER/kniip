@@ -1,8 +1,9 @@
 <Window x:Class="Kniip.Capture.RegionCaptureWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="clr-namespace:Kniip.Resources"
         xmlns:local="clr-namespace:Kniip.Capture"
-        Title="kniip rechthoek knippen" WindowStyle="None" ResizeMode="NoResize"
+        Title="{x:Static res:Strings.Capture_Title}" WindowStyle="None" ResizeMode="NoResize"
         ShowInTaskbar="False" Topmost="True" Cursor="Cross" FontFamily="Segoe UI" FontSize="13"
         Background="Black">
     <Grid>
@@ -21,9 +22,9 @@
                 <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.25" />
             </Border.Effect>
             <StackPanel>
-                <TextBlock x:Name="HintTitle" Text="Knipsel: sleep een rechthoek" FontWeight="SemiBold" Foreground="{DynamicResource InkBrush}" />
+                <TextBlock x:Name="HintTitle" Text="{x:Static res:Strings.Capture_Hint}" FontWeight="SemiBold" Foreground="{DynamicResource InkBrush}" />
                 <TextBlock Foreground="{DynamicResource SubtleTextBrush}" FontSize="12" Margin="0,2,0,0"
-                           Text="Enter = heel scherm  ·  Esc of rechtermuisknop = annuleren" />
+                           Text="{x:Static res:Strings.Capture_Keys}" />
             </StackPanel>
         </Border>
     </Grid>

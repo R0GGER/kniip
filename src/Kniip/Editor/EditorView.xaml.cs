@@ -14,6 +14,7 @@ using Kniip.Editor.Emoji;
 using Kniip.Infrastructure;
 using Kniip.Settings;
 using Kniip.Upload;
+using Kniip.Resources;
 
 namespace Kniip.Editor;
 
@@ -125,7 +126,7 @@ public partial class EditorView : UserControl
         _settings = settings;
         _isBlank = isBlank;
         _windowName = windowName;
-        TabTitle = windowName ?? (isBlank ? "Leeg canvas" : $"Knipsel {DateTime.Now:HH:mm}");
+        TabTitle = windowName ?? (isBlank ? Strings.Editor_BlankCanvas : string.Format(Strings.Editor_SnipTabTitle, DateTime.Now));
         _doc = new EditorDocument(image, isBlank);
 
         Surface.Document = _doc;
@@ -201,7 +202,7 @@ public partial class EditorView : UserControl
         UpdateInfo();
         if (isBlank)
         {
-            HintText.Text = "Leeg canvas: teken direct, plak een afbeelding met Ctrl+V of open er een met Ctrl+O.";
+            HintText.Text = Strings.Editor_BlankHint;
         }
     }
 
@@ -578,23 +579,23 @@ public partial class EditorView : UserControl
         ContextMenu menu = bar.ContextMenu;
         menu.Items.Clear();
 
-        var lockItem = new MenuItem { Header = "Werkbalk vergrendelen", IsCheckable = true, IsChecked = _settings.ToolbarLocked };
+        var lockItem = new MenuItem { Header = Strings.Toolbar_Lock, IsCheckable = true, IsChecked = _settings.ToolbarLocked };
         lockItem.Click += (_, _) => SetToolbarLocked(lockItem.IsChecked);
         menu.Items.Add(lockItem);
 
         if (IsThreeSplit && _settings.CaptureBarFloating)
         {
-            var floatLock = new MenuItem { Header = "Zwevende knoppen vastzetten", IsCheckable = true, IsChecked = _settings.CaptureBarFloatLocked };
+            var floatLock = new MenuItem { Header = Strings.Toolbar_LockFloating, IsCheckable = true, IsChecked = _settings.CaptureBarFloatLocked };
             floatLock.Click += (_, _) => SetCaptureFloatLocked(floatLock.IsChecked);
             menu.Items.Add(floatLock);
         }
 
-        var layout = new MenuItem { Header = "Indeling" };
+        var layout = new MenuItem { Header = Strings.Toolbar_Layout };
         foreach ((EditorLayout value, string label) in new[]
                  {
-                     (EditorLayout.Split, "Split-weergave: gereedschappen boven, opslaan onder"),
-                     (EditorLayout.ThreeSplit, "Drie-split: screenshot, screencast en OCR apart of zwevend"),
-                     (EditorLayout.Single, "Eén werkbalk")
+                     (EditorLayout.Split, Strings.Settings_SplitLayout),
+                     (EditorLayout.ThreeSplit, Strings.Toolbar_ThreeSplit),
+                     (EditorLayout.Single, Strings.Toolbar_Single)
                  })
         {
             var item = new MenuItem { Header = label, IsCheckable = true, IsChecked = _settings.EditorLayout == value };
@@ -606,10 +607,10 @@ public partial class EditorView : UserControl
 
         if (IsThreeSplit)
         {
-            var side = new MenuItem { Header = "Nieuw en Screencast" };
+            var side = new MenuItem { Header = Strings.Toolbar_CaptureBarPosition };
             foreach ((Dock? dock, string label) in new (Dock?, string)[]
                      {
-                         (Dock.Left, "Links"), (Dock.Right, "Rechts"), (Dock.Top, "Boven"), (Dock.Bottom, "Onder"), (null, "Zwevend")
+                         (Dock.Left, Strings.Common_Left), (Dock.Right, Strings.Common_Right), (Dock.Top, Strings.Common_Top), (Dock.Bottom, Strings.Common_Bottom), (null, Strings.Common_Floating)
                      })
             {
                 bool isChecked = dock == null
@@ -625,8 +626,8 @@ public partial class EditorView : UserControl
 
         if (!IsSplitLayout)
         {
-            var position = new MenuItem { Header = "Positie" };
-            foreach ((Dock dock, string label) in new[] { (Dock.Top, "Boven"), (Dock.Bottom, "Onder"), (Dock.Left, "Links"), (Dock.Right, "Rechts") })
+            var position = new MenuItem { Header = Strings.Toolbar_Position };
+            foreach ((Dock dock, string label) in new[] { (Dock.Top, Strings.Common_Top), (Dock.Bottom, Strings.Common_Bottom), (Dock.Left, Strings.Common_Left), (Dock.Right, Strings.Common_Right) })
             {
                 var item = new MenuItem { Header = label, IsCheckable = true, IsChecked = _settings.ToolbarPosition == dock };
                 item.Click += (_, _) =>
@@ -642,12 +643,12 @@ public partial class EditorView : UserControl
 
         if (panel.Items.Any(i => i is ToolbarSpacer))
         {
-            var swap = new MenuItem { Header = "Groepen omwisselen" };
+            var swap = new MenuItem { Header = Strings.Toolbar_SwapGroups };
             swap.Click += (_, _) => SwapToolbarGroups(panel);
             menu.Items.Add(swap);
         }
 
-        var buttons = new MenuItem { Header = "Knoppen tonen" };
+        var buttons = new MenuItem { Header = Strings.Toolbar_ShowButtons };
         foreach (UIElement element in AllToolbarItems)
         {
             if (ToolbarPanel.GetTitle(element) is not { } title || (element == UploadButton && !CanUpload))
@@ -663,7 +664,7 @@ public partial class EditorView : UserControl
         menu.Items.Add(buttons);
         menu.Items.Add(new Separator());
 
-        var reset = new MenuItem { Header = "Standaard herstellen" };
+        var reset = new MenuItem { Header = Strings.Toolbar_Reset };
         reset.Click += (_, _) => ResetToolbar();
         menu.Items.Add(reset);
     }
@@ -991,7 +992,7 @@ public partial class EditorView : UserControl
         if (_doc.Items.Count > 0)
         {
             _doc.Flatten(DocumentRenderer.Export(_doc, includeBackground: false));
-            ShowTemporaryHint("Annotaties samengevoegd met de afbeelding om te kunnen gummen.");
+            ShowTemporaryHint(Strings.Editor_FlattenedForEraser);
         }
 
         _doc.BeginPixelEdit();
@@ -1065,7 +1066,7 @@ public partial class EditorView : UserControl
 
             case DragMode.Rotating when _selected != null:
                 _selected.Angle = RotationFromPointer(_selected.Pivot, p, shift);
-                HintText.Text = $"Draaiing {Math.Round(_selected.Angle)}°. Shift = stappen van 15°, Alt = niet vastklikken op 0° en 90°.";
+                HintText.Text = string.Format(Strings.Editor_RotationHint, Math.Round(_selected.Angle));
                 break;
 
             case DragMode.Cropping:
@@ -1272,51 +1273,51 @@ public partial class EditorView : UserControl
         int last = _doc.Items.Count - 1;
 
         var menu = new ContextMenu { PlacementTarget = Surface };
-        menu.Items.Add(MenuItem("Ongedaan maken", "\uE7A7", "Ctrl+Z", Undo, _undo.CanUndo));
-        menu.Items.Add(MenuItem("Opnieuw", "\uE7A6", "Ctrl+Y", Redo, _undo.CanRedo));
+        menu.Items.Add(MenuItem(Strings.Tool_Undo, "\uE7A7", "Ctrl+Z", Undo, _undo.CanUndo));
+        menu.Items.Add(MenuItem(Strings.Tool_Redo, "\uE7A6", "Ctrl+Y", Redo, _undo.CanRedo));
         menu.Items.Add(new Separator());
-        menu.Items.Add(MenuItem("Verwijder", "\uE74D", "Delete", DeleteSelected, has));
-        menu.Items.Add(MenuItem("Verwijder alles", "\uE894", "Shift+Delete", DeleteAll, last >= 0));
-        menu.Items.Add(MenuItem("Samenvoegen", "\uE81E", "Ctrl+Shift+F", Flatten, last >= 0));
+        menu.Items.Add(MenuItem(Strings.Menu_Delete, "\uE74D", "Delete", DeleteSelected, has));
+        menu.Items.Add(MenuItem(Strings.Menu_DeleteAll, "\uE894", "Shift+Delete", DeleteAll, last >= 0));
+        menu.Items.Add(MenuItem(Strings.Menu_Flatten, "\uE81E", "Ctrl+Shift+F", Flatten, last >= 0));
         menu.Items.Add(new Separator());
-        menu.Items.Add(MenuItem("Knip", "\uE8C6", "Ctrl+X", () => CutAnnotation(hit!), has));
-        menu.Items.Add(MenuItem("Kopieer", "\uE8C8", "Ctrl+Shift+C", () => CopyAnnotation(hit!), has));
-        menu.Items.Add(MenuItem("Plak", "\uE77F", "Ctrl+V", () => Paste(point), CanPaste()));
-        menu.Items.Add(MenuItem("Dupliceren", "\uE710", "Ctrl+D", () => Duplicate(hit!), has));
+        menu.Items.Add(MenuItem(Strings.Menu_Cut, "\uE8C6", "Ctrl+X", () => CutAnnotation(hit!), has));
+        menu.Items.Add(MenuItem(Strings.Menu_Copy, "\uE8C8", "Ctrl+Shift+C", () => CopyAnnotation(hit!), has));
+        menu.Items.Add(MenuItem(Strings.Menu_Paste, "\uE77F", "Ctrl+V", () => Paste(point), CanPaste()));
+        menu.Items.Add(MenuItem(Strings.Menu_Duplicate, "\uE710", "Ctrl+D", () => Duplicate(hit!), has));
         menu.Items.Add(new Separator());
-        menu.Items.Add(MenuItem("Naar voorgrond", "\uE898", "Home", () => Reorder(hit!, ZOrder.Front), has && index < last));
-        menu.Items.Add(MenuItem("Naar voren", "\uE74A", "PageUp", () => Reorder(hit!, ZOrder.Forward), has && index < last));
-        menu.Items.Add(MenuItem("Naar achteren", "\uE74B", "PageDown", () => Reorder(hit!, ZOrder.Backward), has && index > 0));
-        menu.Items.Add(MenuItem("Naar achtergrond", "\uE896", "End", () => Reorder(hit!, ZOrder.Back), has && index > 0));
-        var align = new MenuItem { Header = "Uitlijnen op de afbeelding", IsEnabled = has };
-        align.Items.Add(MenuItem("Links", "\uE8E4", "", () => AlignSelected(0, null)));
-        align.Items.Add(MenuItem("Horizontaal centreren", "\uE8E3", "", () => AlignSelected(0.5, null)));
-        align.Items.Add(MenuItem("Rechts", "\uE8E2", "", () => AlignSelected(1, null)));
+        menu.Items.Add(MenuItem(Strings.Menu_BringToFront, "\uE898", "Home", () => Reorder(hit!, ZOrder.Front), has && index < last));
+        menu.Items.Add(MenuItem(Strings.Menu_BringForward, "\uE74A", "PageUp", () => Reorder(hit!, ZOrder.Forward), has && index < last));
+        menu.Items.Add(MenuItem(Strings.Menu_SendBackward, "\uE74B", "PageDown", () => Reorder(hit!, ZOrder.Backward), has && index > 0));
+        menu.Items.Add(MenuItem(Strings.Menu_SendToBack, "\uE896", "End", () => Reorder(hit!, ZOrder.Back), has && index > 0));
+        var align = new MenuItem { Header = Strings.Menu_AlignToImage, IsEnabled = has };
+        align.Items.Add(MenuItem(Strings.Common_Left, "\uE8E4", "", () => AlignSelected(0, null)));
+        align.Items.Add(MenuItem(Strings.Menu_CenterHorizontally, "\uE8E3", "", () => AlignSelected(0.5, null)));
+        align.Items.Add(MenuItem(Strings.Common_Right, "\uE8E2", "", () => AlignSelected(1, null)));
         align.Items.Add(new Separator());
-        align.Items.Add(MenuItem("Boven", "", "", () => AlignSelected(null, 0)));
-        align.Items.Add(MenuItem("Verticaal centreren", "", "", () => AlignSelected(null, 0.5)));
-        align.Items.Add(MenuItem("Onder", "", "", () => AlignSelected(null, 1)));
+        align.Items.Add(MenuItem(Strings.Common_Top, "", "", () => AlignSelected(null, 0)));
+        align.Items.Add(MenuItem(Strings.Menu_CenterVertically, "", "", () => AlignSelected(null, 0.5)));
+        align.Items.Add(MenuItem(Strings.Common_Bottom, "", "", () => AlignSelected(null, 1)));
         align.Items.Add(new Separator());
-        align.Items.Add(MenuItem("Midden van de afbeelding", "", "", () => AlignSelected(0.5, 0.5)));
+        align.Items.Add(MenuItem(Strings.Menu_CenterOfImage, "", "", () => AlignSelected(0.5, 0.5)));
         menu.Items.Add(align);
-        menu.Items.Add(MenuItem("Horizontaal spiegelen", "", "", () => FlipSelected(true), hit?.CanFlip == true));
-        menu.Items.Add(MenuItem("Verticaal spiegelen", "", "", () => FlipSelected(false), hit?.CanFlip == true));
+        menu.Items.Add(MenuItem(Strings.Arrange_FlipH, "", "", () => FlipSelected(true), hit?.CanFlip == true));
+        menu.Items.Add(MenuItem(Strings.Arrange_FlipV, "", "", () => FlipSelected(false), hit?.CanFlip == true));
         if (hit?.CanRotate == true)
         {
-            menu.Items.Add(MenuItem("90° rechtsom draaien", "\uE7AD", "", () => RotateSelected(90)));
-            menu.Items.Add(MenuItem("90° linksom draaien", "", "", () => RotateSelected(-90)));
-            menu.Items.Add(MenuItem("Draaiing herstellen", "", "", () => SetAngle(hit, 0), hit.Angle != 0));
+            menu.Items.Add(MenuItem(Strings.Menu_RotateRight, "\uE7AD", "", () => RotateSelected(90)));
+            menu.Items.Add(MenuItem(Strings.Arrange_RotateLeft, "", "", () => RotateSelected(-90)));
+            menu.Items.Add(MenuItem(Strings.Menu_ResetRotation, "", "", () => SetAngle(hit, 0), hit.Angle != 0));
         }
 
         menu.Items.Add(new Separator());
         if (_settings.ShowRulers && _guidesX.Count + _guidesY.Count > 0)
         {
-            menu.Items.Add(MenuItem("Hulplijnen wissen", "\uE894", "", ClearGuides));
+            menu.Items.Add(MenuItem(Strings.Menu_ClearGuides, "\uE894", "", ClearGuides));
         }
 
         menu.Items.Add(_toolbarsHidden
-            ? MenuItem("Werkbalken tonen", "\uE7B3", "Ctrl+H", ToggleToolbars)
-            : MenuItem("Werkbalken verbergen", "\uED1A", "Ctrl+H", ToggleToolbars));
+            ? MenuItem(Strings.Menu_ShowToolbars, "\uE7B3", "Ctrl+H", ToggleToolbars)
+            : MenuItem(Strings.Menu_HideToolbars, "\uED1A", "Ctrl+H", ToggleToolbars));
         menu.IsOpen = true;
         e.Handled = true;
     }
@@ -1397,7 +1398,7 @@ public partial class EditorView : UserControl
         Commit(_doc.CaptureState());
         _doc.Flatten(DocumentRenderer.Export(_doc, includeBackground: false));
         SetSelected(null);
-        ShowTemporaryHint("Annotaties samengevoegd met de afbeelding.");
+        ShowTemporaryHint(Strings.Editor_Flattened);
     }
 
     private void Reorder(Annotation item, ZOrder order)
@@ -1649,7 +1650,7 @@ public partial class EditorView : UserControl
         _guideDrag[_guideIndex] = value;
         HRuler.SetMarker(vertical ? value : null);
         VRuler.SetMarker(vertical ? null : value);
-        HintText.Text = $"Hulplijn op {(vertical ? "X" : "Y")} = {value} px. Laat los buiten de afbeelding of op de liniaal om hem te verwijderen.";
+        HintText.Text = string.Format(Strings.Editor_GuideHint, vertical ? "X" : "Y", value);
         RefreshGuides();
     }
 
@@ -1680,8 +1681,8 @@ public partial class EditorView : UserControl
     private void RulerCorner_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
     {
         var menu = new ContextMenu { PlacementTarget = RulerCorner };
-        menu.Items.Add(MenuItem("Hulplijnen wissen", "\uE894", "", ClearGuides, _guidesX.Count + _guidesY.Count > 0));
-        menu.Items.Add(MenuItem("Linialen verbergen", "\uED1A", "Ctrl+R", ToggleRulers));
+        menu.Items.Add(MenuItem(Strings.Menu_ClearGuides, "\uE894", "", ClearGuides, _guidesX.Count + _guidesY.Count > 0));
+        menu.Items.Add(MenuItem(Strings.Menu_HideRulers, "\uED1A", "Ctrl+R", ToggleRulers));
         menu.IsOpen = true;
         e.Handled = true;
     }
@@ -1689,8 +1690,8 @@ public partial class EditorView : UserControl
     private void RulerFolder_Click(object sender, RoutedEventArgs e)
     {
         var menu = new ContextMenu { PlacementTarget = RulerFolderButton, Placement = PlacementMode.Bottom };
-        menu.Items.Add(MenuItem("Screenshotmap openen", "\uE91B", "", () => Kniip.History.HistoryActions.OpenFolder(ScreenshotFolder)));
-        menu.Items.Add(MenuItem("Screencastmap openen", "\uE714", "", () => Kniip.History.HistoryActions.OpenFolder(App.Instance.VideoFolder)));
+        menu.Items.Add(MenuItem(Strings.Menu_OpenScreenshotFolder, "\uE91B", "", () => Kniip.History.HistoryActions.OpenFolder(ScreenshotFolder)));
+        menu.Items.Add(MenuItem(Strings.Menu_OpenScreencastFolder, "\uE714", "", () => Kniip.History.HistoryActions.OpenFolder(App.Instance.VideoFolder)));
         menu.IsOpen = true;
     }
 
@@ -1776,7 +1777,7 @@ public partial class EditorView : UserControl
     {
         if (!AnnotationClipboard.Set(item))
         {
-            ShowTemporaryHint("Kopiëren mislukt: het klembord is bezet. Probeer het opnieuw.");
+            ShowTemporaryHint(Strings.Common_CopyFailedBusy);
         }
     }
 
@@ -1789,7 +1790,7 @@ public partial class EditorView : UserControl
         }
         else
         {
-            ShowTemporaryHint("Knippen mislukt: het klembord is bezet. Probeer het opnieuw.");
+            ShowTemporaryHint(Strings.Editor_CutFailedBusy);
         }
     }
 
@@ -1839,7 +1840,7 @@ public partial class EditorView : UserControl
         ApplyCaptureBarPosition();
         if (_toolbarsHidden)
         {
-            ShowTemporaryHint("Werkbalken verborgen. Ctrl+H of rechtsklik op het canvas om ze terug te halen.");
+            ShowTemporaryHint(Strings.Editor_ToolbarsHidden);
         }
     }
 
@@ -1929,7 +1930,7 @@ public partial class EditorView : UserControl
         _doc.Crop(area);
         SetSelected(null);
         OnDocumentSizeChanged();
-        ShowTemporaryHint("Bijgesneden. Ctrl+Z maakt dit ongedaan.");
+        ShowTemporaryHint(Strings.Editor_Cropped);
     }
 
     private Rect ClampToImage(Rect r)
@@ -2165,8 +2166,8 @@ public partial class EditorView : UserControl
 
         NoPropsText.Text = kind switch
         {
-            ToolKind.Crop => "Sleep een kader over het deel dat je wilt bewaren.",
-            ToolKind.Select => "Selecteer een object om de eigenschappen ervan te wijzigen.",
+            ToolKind.Crop => Strings.Editor_CropProps,
+            ToolKind.Select => Strings.Editor_SelectProps,
             _ => string.Empty
         };
         SetVisible(NoPropsText, props == StyleProps.None);
@@ -2174,18 +2175,18 @@ public partial class EditorView : UserControl
 
         bool strokeIsLine = kind is ToolKind.Line or ToolKind.Arrow or ToolKind.Highlight;
         StrokePicker.ShowAsOutline = !strokeIsLine;
-        StrokePicker.ToolTip = strokeIsLine ? "Kleur" : "Randkleur";
+        StrokePicker.ToolTip = strokeIsLine ? Strings.Common_Color : Strings.Prop_StrokeColor;
         FillPicker.ToolTip = kind switch
         {
-            ToolKind.Text => "Achtergrondkleur",
-            ToolKind.Step => "Kleur",
-            _ => "Vulkleur"
+            ToolKind.Text => Strings.Prop_BackgroundColor,
+            ToolKind.Step => Strings.Common_Color,
+            _ => Strings.Prop_FillColor
         };
         ThicknessCombo.ToolTip = kind switch
         {
-            ToolKind.Text => "Randdikte",
-            ToolKind.Eraser => "Grootte van de gum",
-            _ => "Dikte"
+            ToolKind.Text => Strings.Prop_BorderThickness,
+            ToolKind.Eraser => Strings.Prop_EraserSize,
+            _ => Strings.Prop_Thickness
         };
 
         _suppressStyleEvents = true;
@@ -2251,7 +2252,7 @@ public partial class EditorView : UserControl
         SetVisible(BackgroundColor2Picker, kind == BackgroundKind.Gradient);
         SetVisible(GradientDial, kind == BackgroundKind.Gradient);
         SetVisible(BackgroundImageButton, kind == BackgroundKind.Image);
-        BackgroundColorPicker.ToolTip = kind == BackgroundKind.Gradient ? "Eerste kleur van het verloop" : "Kleur";
+        BackgroundColorPicker.ToolTip = kind == BackgroundKind.Gradient ? Strings.Background_FirstColor : Strings.Common_Color;
         BackgroundImageThumb.Source = background.Image;
         SetVisible(BackgroundImageThumb, background.Image != null);
         SetVisible(BackgroundImageIcon, background.Image == null);
@@ -2358,7 +2359,7 @@ public partial class EditorView : UserControl
         }
         catch (Exception ex)
         {
-            ShowMessage($"Kan '{System.IO.Path.GetFileName(path)}' niet openen.\n\n{ex.Message}", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ShowMessage(string.Format(Strings.Common_CannotOpenFile, System.IO.Path.GetFileName(path), ex.Message), MessageBoxButton.OK, MessageBoxImage.Warning);
             return null;
         }
     }
@@ -2645,7 +2646,7 @@ public partial class EditorView : UserControl
     private void ApplySaveButton()
     {
         bool copy = CopiesOnSave;
-        string label = copy ? "Opslaan en kopiëren" : "Opslaan";
+        string label = copy ? Strings.Settings_SaveAndCopy : Strings.Common_Save;
         if (SaveLabel.Text == label)
         {
             return;
@@ -2654,8 +2655,8 @@ public partial class EditorView : UserControl
         SaveLabel.Text = label;
         ToolbarPanel.SetTitle(SaveButton, label);
         SaveButton.ToolTip = copy
-            ? "Opslaan en naar het klembord kopiëren (Ctrl+S); Shift+klik of Ctrl+Shift+S = opslaan als; het pijltje toont meer opties"
-            : "Opslaan (Ctrl+S); Shift+klik of Ctrl+Shift+S = opslaan als; het pijltje toont meer opties";
+            ? Strings.Tool_SaveAndCopyTip
+            : Strings.Tool_SaveTip;
         UpdateToolbarLayout();
     }
 
@@ -2711,22 +2712,22 @@ public partial class EditorView : UserControl
         CommitTextEdit();
         BitmapSource image = DocumentRenderer.Export(_doc);
         UploadButton.IsEnabled = false;
-        ShowTemporaryHint($"Uploaden naar {config.DisplayName}...");
+        ShowTemporaryHint(string.Format(Strings.Editor_Uploading, config.DisplayName));
         try
         {
             using System.IO.MemoryStream png = ImageExporter.EncodePng(image);
-            string url = await ZiplineUploader.UploadAsync(config, png, $"Knipsel {DateTime.Now:yyyy-MM-dd HHmmss}.png", "image/png");
+            string url = await ZiplineUploader.UploadAsync(config, png, DefaultName + ".png", "image/png");
             Kniip.History.HistoryStore.Add(Kniip.History.HistoryKind.Snip, null, url, image);
             SetDirty(false);
             _exported = true;
             ShowTemporaryHint(ClipboardWriter.SetText(url)
-                ? $"Geüpload, link gekopieerd: {url}"
-                : $"Geüpload: {url}. Kopiëren mislukt: het klembord is bezet.");
+                ? string.Format(Strings.Editor_UploadedCopied, url)
+                : string.Format(Strings.Editor_UploadedCopyFailed, url));
         }
         catch (Exception ex)
         {
-            ShowTemporaryHint("Uploaden mislukt.");
-            ShowMessage($"Uploaden is mislukt.\n\n{ex.Message}", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ShowTemporaryHint(Strings.Editor_UploadFailedShort);
+            ShowMessage(string.Format(Strings.Common_UploadFailed, ex.Message), MessageBoxButton.OK, MessageBoxImage.Warning);
         }
         finally
         {
@@ -2744,11 +2745,11 @@ public partial class EditorView : UserControl
         {
             SetDirty(false);
             _exported = true;
-            ShowTemporaryHint("Gekopieerd naar het klembord.");
+            ShowTemporaryHint(Strings.Common_CopiedToClipboard);
         }
         else
         {
-            ShowTemporaryHint("Kopiëren mislukt: het klembord is bezet. Probeer het opnieuw.");
+            ShowTemporaryHint(Strings.Common_CopyFailedBusy);
         }
     }
 
@@ -2763,7 +2764,7 @@ public partial class EditorView : UserControl
         CommitTextEdit();
         BitmapSource image = DocumentRenderer.Export(_doc);
         _recognizing = true;
-        ShowTemporaryHint("Tekst herkennen...");
+        ShowTemporaryHint(Strings.Ocr_Recognizing);
         try
         {
             await OcrResultWindow.Open(image, Window.GetWindow(this)).Completion;
@@ -2789,7 +2790,7 @@ public partial class EditorView : UserControl
         timer.Start();
     }
 
-    private static string DefaultName => $"Knipsel {DateTime.Now:yyyy-MM-dd HHmmss}";
+    private static string DefaultName => string.Format(Strings.Snip_DefaultName, DateTime.Now);
 
     private bool Save() => Save(CopiesOnSave);
 
@@ -2804,11 +2805,11 @@ public partial class EditorView : UserControl
         string path;
         try
         {
-            path = FileNameTemplate.Resolve(target, _settings.SnipFileNameTemplate, _windowName ?? "Knipsel", DefaultName, ".png");
+            path = FileNameTemplate.Resolve(target, _settings.SnipFileNameTemplate, _windowName ?? Strings.Snip_Name, DefaultName, ".png");
         }
         catch (Exception ex)
         {
-            ShowMessage($"De opslagmap uit de instellingen is niet bruikbaar:\n{target}\n\n{ex.Message}\n\nKies zelf waar je het knipsel opslaat.",
+            ShowMessage(string.Format(Strings.Editor_SaveFolderUnusable, target, ex.Message),
                 MessageBoxButton.OK, MessageBoxImage.Warning);
             return SaveAs(copy);
         }
@@ -2826,9 +2827,9 @@ public partial class EditorView : UserControl
             : Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
         var dialog = new Microsoft.Win32.SaveFileDialog
         {
-            Title = "Knipsel opslaan",
-            Filter = "PNG-afbeelding (*.png)|*.png|JPEG-afbeelding (*.jpg)|*.jpg",
-            FileName = FileNameTemplate.SuggestedName(_settings.SnipFileNameTemplate, _windowName ?? "Knipsel", DefaultName),
+            Title = Strings.Editor_SaveDialogTitle,
+            Filter = Strings.Editor_SaveDialogFilter,
+            FileName = FileNameTemplate.SuggestedName(_settings.SnipFileNameTemplate, _windowName ?? Strings.Snip_Name, DefaultName),
             DefaultExt = ".png",
             InitialDirectory = folder,
             AddExtension = true
@@ -2862,19 +2863,19 @@ public partial class EditorView : UserControl
             if (copy)
             {
                 ShowTemporaryHint(ClipboardWriter.SetImage(image, path)
-                    ? $"Opgeslagen en gekopieerd: {name}."
-                    : $"Opgeslagen als {name}. Kopiëren mislukt: het klembord is bezet.");
+                    ? string.Format(Strings.Editor_SavedCopied, name)
+                    : string.Format(Strings.Editor_SavedCopyFailed, name));
             }
             else
             {
-                ShowTemporaryHint($"Opgeslagen als {name}.");
+                ShowTemporaryHint(string.Format(Strings.Editor_Saved, name));
             }
 
             return true;
         }
         catch (Exception ex)
         {
-            ShowMessage($"Opslaan is mislukt:\n\n{ex.Message}", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ShowMessage(string.Format(Strings.Common_SaveFailed, ex.Message), MessageBoxButton.OK, MessageBoxImage.Warning);
             return false;
         }
     }
@@ -2905,17 +2906,17 @@ public partial class EditorView : UserControl
         string ellipsis = string.IsNullOrEmpty(_settings.SnipSaveFolder) ? "..." : string.Empty;
         var menu = new ContextMenu { PlacementTarget = SaveButton, Placement = PlacementMode.Bottom };
         menu.Items.Add(copy
-            ? MenuItem("Opslaan" + ellipsis, "\uE74E", "", () => Save(false))
-            : MenuItem("Opslaan en kopiëren" + ellipsis, "\uE74E", "", () => Save(true)));
-        menu.Items.Add(MenuItem("Opslaan als...", "\uE792", "Ctrl+Shift+S", () => SaveAs()));
+            ? MenuItem(Strings.Common_Save + ellipsis, "\uE74E", "", () => Save(false))
+            : MenuItem(Strings.Settings_SaveAndCopy + ellipsis, "\uE74E", "", () => Save(true)));
+        menu.Items.Add(MenuItem(Strings.Common_SaveAs, "\uE792", "Ctrl+Shift+S", () => SaveAs()));
         menu.IsOpen = true;
     }
 
     private void Folders_Click(object sender, RoutedEventArgs e)
     {
         var menu = new ContextMenu { PlacementTarget = FoldersButton, Placement = PlacementMode.Bottom };
-        menu.Items.Add(MenuItem("Open Screenshot map", "\uE91B", "", () => Kniip.History.HistoryActions.OpenFolder(App.Instance.SnipFolder)));
-        menu.Items.Add(MenuItem("Open Screencast map", "\uE714", "", () => Kniip.History.HistoryActions.OpenFolder(App.Instance.VideoFolder)));
+        menu.Items.Add(MenuItem(Strings.Menu_OpenScreenshotFolder, "\uE91B", "", () => Kniip.History.HistoryActions.OpenFolder(App.Instance.SnipFolder)));
+        menu.Items.Add(MenuItem(Strings.Menu_OpenScreencastFolder, "\uE714", "", () => Kniip.History.HistoryActions.OpenFolder(App.Instance.VideoFolder)));
         menu.IsOpen = true;
     }
 
@@ -2946,12 +2947,12 @@ public partial class EditorView : UserControl
                 dc.DrawImage(image, new Rect((pageWidth - width) / 2, (pageHeight - height) / 2, width, height));
             }
 
-            dialog.PrintVisual(visual, "kniip - knipsel");
-            ShowTemporaryHint("Naar de printer gestuurd.");
+            dialog.PrintVisual(visual, Strings.Editor_PrintJobName);
+            ShowTemporaryHint(Strings.Editor_Printed);
         }
         catch (Exception ex)
         {
-            ShowMessage($"Printen is mislukt:\n\n{ex.Message}", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ShowMessage(string.Format(Strings.Editor_PrintFailed, ex.Message), MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
 
@@ -2969,7 +2970,7 @@ public partial class EditorView : UserControl
     {
         bool available = App.Instance.Updates.IsUpdateAvailable;
         SettingsBadge.Visibility = available ? Visibility.Visible : Visibility.Collapsed;
-        SettingsButton.ToolTip = available ? "Instellingen - nieuwe versie beschikbaar" : "Instellingen";
+        SettingsButton.ToolTip = available ? Strings.Editor_SettingsUpdateTip : Strings.Common_Settings;
     }
 
     private void NewSnip_Click(object sender, RoutedEventArgs e) => StartNewSnip();
@@ -2980,7 +2981,7 @@ public partial class EditorView : UserControl
     private void DiscardAndStartBlank()
     {
         if (OwnerShell is not { } shell
-            || !ConfirmDiscard("Wil je het knipsel weggooien en opnieuw beginnen met een leeg canvas?"))
+            || !ConfirmDiscard(Strings.Editor_ConfirmClear))
         {
             return;
         }
@@ -3017,7 +3018,7 @@ public partial class EditorView : UserControl
         BitmapSource? image = ClipboardImageReader.TryRead(includeFiles: true);
         if (image == null)
         {
-            ShowTemporaryHint("Er staat geen afbeelding op het klembord.");
+            ShowTemporaryHint(Strings.Editor_NoClipboardImage);
             return;
         }
 
@@ -3046,7 +3047,7 @@ public partial class EditorView : UserControl
         BitmapSource? image = ClipboardImageReader.FromDrop(e.Data);
         if (image == null)
         {
-            ShowTemporaryHint("Deze afbeelding kon niet worden geopend.");
+            ShowTemporaryHint(Strings.Editor_DropFailed);
             return;
         }
 
@@ -3070,7 +3071,7 @@ public partial class EditorView : UserControl
         }
         catch (Exception ex)
         {
-            ShowMessage($"Kan '{System.IO.Path.GetFileName(path)}' niet openen.\n\n{ex.Message}", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ShowMessage(string.Format(Strings.Common_CannotOpenFile, System.IO.Path.GetFileName(path), ex.Message), MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
@@ -3094,7 +3095,7 @@ public partial class EditorView : UserControl
             return true;
         }
 
-        return ShowMessage($"Dit knipsel en je aantekeningen worden gewist.\n\n{question}",
+        return ShowMessage(string.Format(Strings.Editor_DiscardWarning, question),
             MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK;
     }
 
@@ -3112,7 +3113,7 @@ public partial class EditorView : UserControl
         if (!force && confirm && NeedsCloseConfirmation)
         {
             MessageBoxResult answer = ShowMessage(
-                "Je aantekeningen zijn nog niet gekopieerd of opgeslagen.\n\nWil je het resultaat naar het klembord kopiëren voordat je sluit?",
+                Strings.Editor_CloseUnsaved,
                 MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
             if (answer == MessageBoxResult.Cancel)
             {
@@ -3349,35 +3350,35 @@ public partial class EditorView : UserControl
     {
         if (_editingText != null)
         {
-            HintText.Text = "Typ je tekst. Enter = nieuwe regel, Ctrl+Enter of Esc = klaar.";
+            HintText.Text = Strings.Hint_TextEditing;
             return;
         }
 
         if (!_settings.ToolbarLocked)
         {
-            HintText.Text = "Werkbalk ontgrendeld: sleep knoppen naar een andere plek. Rechtsklik op de werkbalk om hem weer vast te zetten.";
+            HintText.Text = Strings.Hint_ToolbarUnlocked;
             return;
         }
 
         HintText.Text = _tool switch
         {
-            ToolKind.Select => "Klik om te selecteren, sleep om te verplaatsen. Dubbelklik op tekst om te bewerken. Pijltoetsen verschuiven.",
-            ToolKind.Rectangle => "Sleep om een rechthoek te tekenen. Shift = vierkant.",
-            ToolKind.Ellipse => "Sleep om een ellips te tekenen. Shift = cirkel.",
-            ToolKind.Shape => "Sleep om de gekozen vorm te tekenen. Shift = gelijke breedte en hoogte. Kies een andere vorm in de balk eronder.",
-            ToolKind.Line => "Sleep om een lijn te tekenen. Shift = hoeken van 45°. Sleep een middenpunt om te buigen; dubbelklik op een buigpunt om het te verwijderen.",
-            ToolKind.Arrow => "Sleep om een pijl te tekenen. Shift = hoeken van 45°. Sleep een middenpunt om te buigen; dubbelklik op een buigpunt om het te verwijderen.",
-            ToolKind.Text => "Klik om een tekstkader te plaatsen, of klik op bestaande tekst om die te bewerken. Sleep de punt van een ballon of wolk naar wat je wilt aanwijzen.",
-            ToolKind.Step => "Klik om een genummerde stap te plaatsen. De nummering loopt automatisch door.",
-            ToolKind.Cursor => "Klik om een cursor te plaatsen; de punt komt precies op de klikplek.",
-            ToolKind.Emoji => "Klik om de gekozen emoji te plaatsen; kies een andere emoji in de balk eronder.",
+            ToolKind.Select => Strings.Hint_Select,
+            ToolKind.Rectangle => Strings.Hint_Rectangle,
+            ToolKind.Ellipse => Strings.Hint_Ellipse,
+            ToolKind.Shape => Strings.Hint_Shape,
+            ToolKind.Line => Strings.Hint_Line,
+            ToolKind.Arrow => Strings.Hint_Arrow,
+            ToolKind.Text => Strings.Hint_Text,
+            ToolKind.Step => Strings.Hint_Step,
+            ToolKind.Cursor => Strings.Hint_Cursor,
+            ToolKind.Emoji => Strings.Hint_Emoji,
             ToolKind.Highlight => _settings.StraightHighlight
-                ? "Sleep om een rechte horizontale markering te zetten. Houd Shift ingedrukt voor uit de vrije hand."
-                : "Sleep om uit de vrije hand te markeren. Houd Shift ingedrukt voor een rechte horizontale streep.",
-            ToolKind.Blur => "Sleep over het gebied dat je wilt pixeleren of vervagen.",
-            ToolKind.Crop => "Sleep een kader over het deel dat je wilt bewaren. Esc annuleert.",
-            ToolKind.Eraser when IsBrushEraser => "Sleep om weg te poetsen; de plek wordt transparant. Aantekeningen worden eerst samengevoegd.",
-            ToolKind.Eraser => "Klik op een kleur om alle aangrenzende pixels met dezelfde kleur weg te halen. Tolerantie bepaalt hoe streng.",
+                ? Strings.Hint_HighlightStraight
+                : Strings.Hint_HighlightFree,
+            ToolKind.Blur => Strings.Hint_Blur,
+            ToolKind.Crop => Strings.Hint_Crop,
+            ToolKind.Eraser when IsBrushEraser => Strings.Hint_EraserBrush,
+            ToolKind.Eraser => Strings.Hint_EraserSmart,
             _ => string.Empty
         };
     }

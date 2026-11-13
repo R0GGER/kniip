@@ -15,6 +15,7 @@ using Kniip.Editor;
 using Kniip.Settings;
 using Kniip.Upload;
 using Microsoft.Win32;
+using Kniip.Resources;
 
 namespace Kniip.Recording;
 
@@ -67,7 +68,7 @@ public partial class ScreencastWindow : Window
             : WidthChoices.Append(settings.GifMaxWidth).OrderByDescending(w => w == 0 ? int.MaxValue : w).ToArray();
         foreach (int width in widths)
         {
-            AddChoice(WidthCombo, width == 0 ? "Origineel" : $"{width} px", width, width == settings.GifMaxWidth);
+            AddChoice(WidthCombo, width == 0 ? Strings.Screencast_Original : $"{width} px", width, width == settings.GifMaxWidth);
         }
 
         FpsCombo.SelectionChanged += (_, _) => UpdateInfo();
@@ -114,8 +115,7 @@ public partial class ScreencastWindow : Window
 
     private void Player_MediaFailed(object? sender, ExceptionRoutedEventArgs e)
     {
-        PlayerMessage.Text = "Het voorbeeld kan niet worden afgespeeld (" + e.ErrorException.Message + ").\n"
-                             + "Opslaan werkt wel; inkorten is dan niet mogelijk.";
+        PlayerMessage.Text = string.Format(Strings.Screencast_PreviewFailed, e.ErrorException.Message);
         PlayerMessage.Visibility = Visibility.Visible;
         _loaded = false;
         using var reader = TryOpenReader();
@@ -320,7 +320,7 @@ public partial class ScreencastWindow : Window
         Canvas.SetLeft(SelectionBorder, startX);
         SelectionBorder.Width = Math.Max(0, endX - startX);
 
-        SelectionText.Text = $"Selectie {FormatTime(_start)} – {FormatTime(_end)}  ·  {(_end - _start).TotalSeconds:0.0} s";
+        SelectionText.Text = string.Format(Strings.Screencast_Selection, FormatTime(_start), FormatTime(_end), (_end - _start).TotalSeconds);
         UpdatePlayhead();
         UpdateInfo();
     }
@@ -349,11 +349,11 @@ public partial class ScreencastWindow : Window
         GifOptions.Visibility = format == ScreencastFormat.Gif ? Visibility.Visible : Visibility.Collapsed;
         bool copy = CopiesOnSave;
         string ellipsis = string.IsNullOrEmpty(_settings.VideoSaveFolder) ? "..." : string.Empty;
-        string action = copy ? "Opslaan en kopiëren als " : "Opslaan als ";
-        SaveText.Text = action + (format == ScreencastFormat.Gif ? "GIF" : "MP4") + ellipsis;
+        string action = copy ? Strings.Screencast_SaveAndCopyAsFormat : Strings.Screencast_SaveAsFormat;
+        SaveText.Text = string.Format(action, format == ScreencastFormat.Gif ? "GIF" : "MP4") + ellipsis;
         SaveButton.ToolTip = copy
-            ? "Slaat op en kopieert het bestand naar het klembord. Shift+klik = altijd vragen waar je opslaat; het pijltje toont meer opties."
-            : "Shift+klik = altijd vragen waar je opslaat; het pijltje toont meer opties";
+            ? Strings.Screencast_SaveAndCopyTip
+            : Strings.Screencast_SaveButtonTip;
         UploadButton.Visibility = _settings.Uploader is { IsConfigured: true } ? Visibility.Visible : Visibility.Collapsed;
         UpdateInfo();
     }
@@ -377,19 +377,19 @@ public partial class ScreencastWindow : Window
                 size = $"{gifWidth} × {(int)Math.Round(height * (double)gifWidth / width)} px";
             }
 
-            string warning = (_end - _start).TotalSeconds > 30 ? "  ·  lange GIF's worden groot; overweeg MP4" : string.Empty;
-            InfoText.Text = $"{size}  ·  GIF bevat geen geluid{warning}";
+            string warning = (_end - _start).TotalSeconds > 30 ? "  ·  " + Strings.Screencast_LongGifWarning : string.Empty;
+            InfoText.Text = $"{size}  ·  {Strings.Screencast_GifNoSound}{warning}";
         }
         else
         {
-            string audio = _loaded ? (Player.HasAudio ? "met geluid" : "zonder geluid") : string.Empty;
+            string audio = _loaded ? (Player.HasAudio ? Strings.Screencast_WithSound : Strings.Screencast_WithoutSound) : string.Empty;
             InfoText.Text = string.Join("  ·  ", new[] { size, audio }.Where(s => s.Length > 0));
         }
     }
 
     private string Extension => Format == ScreencastFormat.Gif ? ".gif" : ".mp4";
 
-    private static string DefaultName => $"Screencast {DateTime.Now:yyyy-MM-dd HHmmss}";
+    private static string DefaultName => string.Format(Strings.Screencast_DefaultName, DateTime.Now);
 
     private string DefaultFileName => DefaultName + Extension;
 
@@ -413,8 +413,8 @@ public partial class ScreencastWindow : Window
         string format = Format == ScreencastFormat.Gif ? "GIF" : "MP4";
         string ellipsis = string.IsNullOrEmpty(_settings.VideoSaveFolder) ? "..." : string.Empty;
         var menu = new ContextMenu { PlacementTarget = SaveButton, Placement = PlacementMode.Bottom };
-        menu.Items.Add(SaveMenuItem((copy ? "Opslaan als " : "Opslaan en kopiëren als ") + format + ellipsis, false, !copy));
-        menu.Items.Add(SaveMenuItem("Opslaan als...", true, copy));
+        menu.Items.Add(SaveMenuItem(string.Format(copy ? Strings.Screencast_SaveAsFormat : Strings.Screencast_SaveAndCopyAsFormat, format) + ellipsis, false, !copy));
+        menu.Items.Add(SaveMenuItem(Strings.Common_SaveAs, true, copy));
         menu.IsOpen = true;
     }
 
@@ -451,10 +451,10 @@ public partial class ScreencastWindow : Window
             RememberChoices();
             AddToHistory(target, null, target);
             bool copied = !copy || ClipboardWriter.SetFile(target);
-            App.Instance.ShowBalloon(copy && copied ? "Screencast opgeslagen en gekopieerd" : "Screencast opgeslagen", target);
+            App.Instance.ShowBalloon(copy && copied ? Strings.Screencast_SavedCopied : Strings.Screencast_Saved, target);
             if (!copied)
             {
-                MessageBox.Show(this, "Het bestand is opgeslagen, maar kopiëren naar het klembord is mislukt. Het klembord is bezet.",
+                MessageBox.Show(this, Strings.Screencast_SavedCopyFailed,
                     "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
@@ -471,11 +471,11 @@ public partial class ScreencastWindow : Window
 
         try
         {
-            return FileNameTemplate.Resolve(folder, _settings.VideoFileNameTemplate, _windowName ?? "Screencast", DefaultName, Extension);
+            return FileNameTemplate.Resolve(folder, _settings.VideoFileNameTemplate, _windowName ?? Strings.Screencast_Name, DefaultName, Extension);
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, $"De opslagmap uit de instellingen is niet bruikbaar:\n{folder}\n\n{ex.Message}\n\nKies zelf waar je de screencast opslaat.",
+            MessageBox.Show(this, string.Format(Strings.Screencast_SaveFolderUnusable, folder, ex.Message),
                 "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
             return null;
         }
@@ -488,9 +488,9 @@ public partial class ScreencastWindow : Window
         bool gif = Format == ScreencastFormat.Gif;
         var dialog = new SaveFileDialog
         {
-            Title = "Screencast opslaan",
-            Filter = gif ? "GIF-animatie (*.gif)|*.gif" : "MP4-video (*.mp4)|*.mp4",
-            FileName = FileNameTemplate.SuggestedName(_settings.VideoFileNameTemplate, _windowName ?? "Screencast", DefaultName) + Extension,
+            Title = Strings.Screencast_SaveDialogTitle,
+            Filter = gif ? Strings.Screencast_GifFilter : Strings.Screencast_Mp4Filter,
+            FileName = FileNameTemplate.SuggestedName(_settings.VideoFileNameTemplate, _windowName ?? Strings.Screencast_Name, DefaultName) + Extension,
             InitialDirectory = folder,
             AddExtension = true
         };
@@ -511,15 +511,15 @@ public partial class ScreencastWindow : Window
         {
             if (!ClipboardWriter.SetFile(target))
             {
-                MessageBox.Show(this, "Kopiëren is mislukt: het klembord is bezet. Probeer het opnieuw.",
+                MessageBox.Show(this, Strings.Common_CopyFailedBusyLong,
                     "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             _kept = true;
             RememberChoices();
-            SavedRun.Text = $"{Path.GetFileName(target)} staat op het klembord; plak het waar je wilt.  ";
-            OpenRun.Text = "Map openen";
+            SavedRun.Text = string.Format(Strings.Screencast_OnClipboard, Path.GetFileName(target)) + "  ";
+            OpenRun.Text = Strings.Common_OpenFolder;
             _lastSaved = target;
             SavedText.Visibility = Visibility.Visible;
         }
@@ -556,8 +556,8 @@ public partial class ScreencastWindow : Window
             RememberChoices();
             AddToHistory(null, url, target);
             bool copied = ClipboardWriter.SetText(url);
-            SavedRun.Text = copied ? $"Geüpload; de link staat op het klembord: {url}  " : $"Geüpload: {url}  ";
-            OpenRun.Text = "Link openen";
+            SavedRun.Text = string.Format(copied ? Strings.Screencast_UploadedCopied : Strings.Screencast_Uploaded, url) + "  ";
+            OpenRun.Text = Strings.History_OpenLink;
             _lastSaved = url;
             SavedText.Visibility = Visibility.Visible;
         }
@@ -566,7 +566,7 @@ public partial class ScreencastWindow : Window
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, $"Uploaden is mislukt.\n\n{ex.Message}", "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(this, string.Format(Strings.Common_UploadFailed, ex.Message), "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
         finally
         {
@@ -624,7 +624,7 @@ public partial class ScreencastWindow : Window
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, $"Opslaan is mislukt.\n\n{ex.Message}", "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(this, string.Format(Strings.Screencast_SaveFailed, ex.Message), "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
             return false;
         }
         finally
@@ -682,7 +682,7 @@ public partial class ScreencastWindow : Window
             return;
         }
 
-        if (!_kept && MessageBox.Show(this, "Deze opname is nog niet opgeslagen of gekopieerd. Weggooien?", "kniip",
+        if (!_kept && MessageBox.Show(this, Strings.Screencast_DiscardConfirm, "kniip",
                 MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) != MessageBoxResult.Yes)
         {
             e.Cancel = true;

@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Kniip.Resources;
 
 namespace Kniip.Upload;
 
@@ -32,7 +33,7 @@ public static class ZiplineUploader
     {
         if (!config.IsConfigured)
         {
-            throw new UploadException("Er is nog geen uploadbestemming ingesteld (Instellingen > Uploaden).");
+            throw new UploadException(Strings.Upload_NotConfigured);
         }
 
         var file = new ProgressContent(data, progress);
@@ -54,11 +55,11 @@ public static class ZiplineUploader
         }
         catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested)
         {
-            throw new UploadException("De server reageert niet (time-out).", ex);
+            throw new UploadException(Strings.Upload_Timeout, ex);
         }
         catch (HttpRequestException ex)
         {
-            throw new UploadException($"Kan {config.DisplayName} niet bereiken.\n\n{ex.Message}", ex);
+            throw new UploadException(string.Format(Strings.Upload_Unreachable, config.DisplayName, ex.Message), ex);
         }
 
         using (response)
@@ -67,12 +68,12 @@ public static class ZiplineUploader
             if (!response.IsSuccessStatusCode)
             {
                 string detail = ReadError(body) ?? response.ReasonPhrase ?? string.Empty;
-                string hint = response.StatusCode == HttpStatusCode.Unauthorized ? "\n\nDe token is ongeldig of verlopen; importeer de uploader opnieuw." : string.Empty;
-                throw new UploadException($"De server weigerde de upload ({(int)response.StatusCode}): {detail}{hint}");
+                string hint = response.StatusCode == HttpStatusCode.Unauthorized ? "\n\n" + Strings.Upload_TokenInvalid : string.Empty;
+                throw new UploadException(string.Format(Strings.Upload_Rejected, (int)response.StatusCode, detail) + hint);
             }
 
             return ReadUrl(body, config.UrlPath)
-                   ?? throw new UploadException($"De upload is gelukt, maar er staat geen link in het antwoord op '{config.UrlPath}'.");
+                   ?? throw new UploadException(string.Format(Strings.Upload_NoLink, config.UrlPath));
         }
     }
 

@@ -1,8 +1,9 @@
 <Window x:Class="Kniip.Recording.RegionSelectorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="clr-namespace:Kniip.Resources"
         xmlns:capture="clr-namespace:Kniip.Capture"
-        Title="kniip opnamegebied kiezen" WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize"
+        Title="{x:Static res:Strings.Region_Title}" WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize"
         ShowInTaskbar="False" Topmost="True" Cursor="Cross" FontFamily="Segoe UI" FontSize="13"
         Background="#01000000">
     <Grid>
@@ -20,9 +21,9 @@
                 <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.25" />
             </Border.Effect>
             <StackPanel>
-                <TextBlock Text="Screencast: kies wat je wilt opnemen" FontWeight="SemiBold" Foreground="{DynamicResource InkBrush}" />
+                <TextBlock Text="{x:Static res:Strings.Region_Hint}" FontWeight="SemiBold" Foreground="{DynamicResource InkBrush}" />
                 <TextBlock Foreground="{DynamicResource SubtleTextBrush}" FontSize="12" Margin="0,2,0,0"
-                           Text="Sleep een gebied  ·  klik op een venster  ·  Enter = heel scherm  ·  Esc = annuleren" />
+                           Text="{x:Static res:Strings.Region_Keys}" />
             </StackPanel>
         </Border>
     </Grid>

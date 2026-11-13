@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="App_ActiveText" xml:space="preserve"><value>Druk op {0} en sleep een rechthoek om te knippen en te bewerken.</value></data>
+  <data name="App_ActiveTextNoHotkey" xml:space="preserve"><value>Maak een knipsel met Win + Shift + S. kniip biedt het daarna aan om te bewerken.</value></data>
+  <data name="App_ActiveTitle" xml:space="preserve"><value>{0} is actief</value></data>
+  <data name="App_FolderScreenshots" xml:space="preserve"><value>Schermafbeeldingen</value></data>
+  <data name="App_InstallerFailed" xml:space="preserve"><value>De installer kon niet worden gestart.&#xA;&#xA;{0}</value></data>
+  <data name="App_OpenImageFilter" xml:space="preserve"><value>Afbeeldingen|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Alle bestanden|*.*</value></data>
+  <data name="App_OpenImageTitle" xml:space="preserve"><value>Afbeelding openen in kniip</value></data>
+  <data name="App_RestartFailed" xml:space="preserve"><value>kniip kon niet opnieuw starten. Start kniip zelf opnieuw.&#xA;&#xA;{0}</value></data>
+  <data name="App_ScreencastRunning" xml:space="preserve"><value>Er loopt nog een screencast. Stop of annuleer die eerst.</value></data>
+  <data name="App_UnhandledError" xml:space="preserve"><value>Er ging iets mis:&#xA;&#xA;{0}</value></data>
+  <data name="App_UpdatedText" xml:space="preserve"><value>Je gebruikt nu versie {0}.</value></data>
+  <data name="App_UpdatedTitle" xml:space="preserve"><value>kniip is bijgewerkt</value></data>
+  <data name="Arrange_Backward" xml:space="preserve"><value>Naar achteren (PageDown)</value></data>
+  <data name="Arrange_Bottom" xml:space="preserve"><value>Onder uitlijnen op de afbeelding</value></data>
+  <data name="Arrange_CenterH" xml:space="preserve"><value>Horizontaal centreren op de afbeelding</value></data>
+  <data name="Arrange_CenterV" xml:space="preserve"><value>Verticaal centreren op de afbeelding</value></data>
+  <data name="Arrange_FlipH" xml:space="preserve"><value>Horizontaal spiegelen</value></data>
+  <data name="Arrange_FlipV" xml:space="preserve"><value>Verticaal spiegelen</value></data>
+  <data name="Arrange_Forward" xml:space="preserve"><value>Naar voren (PageUp)</value></data>
+  <data name="Arrange_Left" xml:space="preserve"><value>Links uitlijnen op de afbeelding</value></data>
+  <data name="Arrange_Right" xml:space="preserve"><value>Rechts uitlijnen op de afbeelding</value></data>
+  <data name="Arrange_RotateLeft" xml:space="preserve"><value>90° linksom draaien</value></data>
+  <data name="Arrange_RotateRight" xml:space="preserve"><value>90° rechtsom draaien (sleep de ronde greep boven het object om vrij te draaien)</value></data>
+  <data name="Arrange_Tip" xml:space="preserve"><value>Uitlijnen, spiegelen en volgorde</value></data>
+  <data name="Arrange_Top" xml:space="preserve"><value>Boven uitlijnen op de afbeelding</value></data>
+  <data name="Audio_And" xml:space="preserve"><value> en </value></data>
+  <data name="Audio_Microphone" xml:space="preserve"><value>microfoon</value></data>
+  <data name="Audio_System" xml:space="preserve"><value>systeemgeluid</value></data>
+  <data name="Background_Choose" xml:space="preserve"><value>Kiezen...</value></data>
+  <data name="Background_FirstColor" xml:space="preserve"><value>Eerste kleur van het verloop</value></data>
+  <data name="Background_Gradient" xml:space="preserve"><value>Verloop</value></data>
+  <data name="Background_ImageTip" xml:space="preserve"><value>Afbeelding kiezen; die vult het hele canvas</value></data>
+  <data name="Background_Label" xml:space="preserve"><value>Achtergrond</value></data>
+  <data name="Background_None" xml:space="preserve"><value>Geen (transparant)</value></data>
+  <data name="Background_SecondColor" xml:space="preserve"><value>Tweede kleur van het verloop</value></data>
+  <data name="Background_Tip" xml:space="preserve"><value>Achtergrond onder de transparante delen</value></data>
+  <data name="Blur_Blur" xml:space="preserve"><value>Vervagen</value></data>
+  <data name="Blur_Pixelate" xml:space="preserve"><value>Pixeleren</value></data>
+  <data name="Capture_Hint" xml:space="preserve"><value>Knipsel: sleep een rechthoek</value></data>
+  <data name="Capture_Keys" xml:space="preserve"><value>Enter = heel scherm  ·  Esc of rechtermuisknop = annuleren</value></data>
+  <data name="Capture_Title" xml:space="preserve"><value>kniip rechthoek knippen</value></data>
+  <data name="Capture_WindowHint" xml:space="preserve"><value>Knipsel: klik op een venster</value></data>
+  <data name="CloseDialog_Explanation" xml:space="preserve"><value>Behouden verbergt het venster; de tabbladen komen terug bij het volgende knipsel of via &apos;Open kniip&apos; in het systeemvak.</value></data>
+  <data name="CloseDialog_ManyTabs" xml:space="preserve"><value>Er zijn {0} tabbladen open. Wat wil je doen?</value></data>
+  <data name="CloseDialog_OneTab" xml:space="preserve"><value>Er is 1 tabblad open. Wat wil je doen?</value></data>
+  <data name="CloseDialog_Remember" xml:space="preserve"><value>Onthouden (te wijzigen in Instellingen &gt; Weergave)</value></data>
+  <data name="Color_MoreColors" xml:space="preserve"><value>Meer kleuren...</value></data>
+  <data name="Common_Arrow" xml:space="preserve"><value>Pijl</value></data>
+  <data name="Common_Ask" xml:space="preserve"><value>Vragen</value></data>
+  <data name="Common_Balloon" xml:space="preserve"><value>Ballon</value></data>
+  <data name="Common_Bottom" xml:space="preserve"><value>Onder</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Bladeren...</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>Annuleren</value></data>
+  <data name="Common_CannotOpenFile" xml:space="preserve"><value>Kan &apos;{0}&apos; niet openen.&#xA;&#xA;{1}</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>Sluiten</value></data>
+  <data name="Common_CloseAllTabs" xml:space="preserve"><value>Alle tabbladen sluiten</value></data>
+  <data name="Common_Cloud" xml:space="preserve"><value>Wolk</value></data>
+  <data name="Common_Color" xml:space="preserve"><value>Kleur</value></data>
+  <data name="Common_CopiedToClipboard" xml:space="preserve"><value>Gekopieerd naar het klembord.</value></data>
+  <data name="Common_Copy" xml:space="preserve"><value>Kopiëren</value></data>
+  <data name="Common_CopyFailedBusy" xml:space="preserve"><value>Kopiëren mislukt: het klembord is bezet. Probeer het opnieuw.</value></data>
+  <data name="Common_CopyFailedBusyLong" xml:space="preserve"><value>Kopiëren is mislukt: het klembord is bezet. Probeer het opnieuw.</value></data>
+  <data name="Common_Floating" xml:space="preserve"><value>Zwevend</value></data>
+  <data name="Common_Image" xml:space="preserve"><value>Afbeelding</value></data>
+  <data name="Common_KeepTabs" xml:space="preserve"><value>Tabbladen behouden</value></data>
+  <data name="Common_Left" xml:space="preserve"><value>Links</value></data>
+  <data name="Common_MoreSaveOptions" xml:space="preserve"><value>Meer opslagopties</value></data>
+  <data name="Common_Name" xml:space="preserve"><value>Naam</value></data>
+  <data name="Common_NewSnip" xml:space="preserve"><value>Nieuw knipsel</value></data>
+  <data name="Common_None" xml:space="preserve"><value>Geen</value></data>
+  <data name="Common_OpenFolder" xml:space="preserve"><value>Map openen</value></data>
+  <data name="Common_Rectangle" xml:space="preserve"><value>Rechthoek</value></data>
+  <data name="Common_Right" xml:space="preserve"><value>Rechts</value></data>
+  <data name="Common_Save" xml:space="preserve"><value>Opslaan</value></data>
+  <data name="Common_SaveAs" xml:space="preserve"><value>Opslaan als...</value></data>
+  <data name="Common_SaveFailed" xml:space="preserve"><value>Opslaan is mislukt:&#xA;&#xA;{0}</value></data>
+  <data name="Common_Settings" xml:space="preserve"><value>Instellingen</value></data>
+  <data name="Common_SnippingTool" xml:space="preserve"><value>Knipprogramma</value></data>
+  <data name="Common_Snips" xml:space="preserve"><value>Knipsels</value></data>
+  <data name="Common_Top" xml:space="preserve"><value>Boven</value></data>
+  <data name="Common_Upload" xml:space="preserve"><value>Uploaden</value></data>
+  <data name="Common_UploadFailed" xml:space="preserve"><value>Uploaden is mislukt.&#xA;&#xA;{0}</value></data>
+  <data name="Common_Window" xml:space="preserve"><value>Venster</value></data>
+  <data name="Corner_Square" xml:space="preserve"><value>Recht</value></data>
+  <data name="Countdown_ClickToCancel" xml:space="preserve"><value>Klik om te annuleren</value></data>
+  <data name="Countdown_EscToCancel" xml:space="preserve"><value>Esc om te annuleren</value></data>
+  <data name="Countdown_SnipIn" xml:space="preserve"><value>Knipsel over</value></data>
+  <data name="Cursor_ArrowClick" xml:space="preserve"><value>Pijl met klik</value></data>
+  <data name="Dash_Dashed" xml:space="preserve"><value>Gestreept</value></data>
+  <data name="Dash_Dotted" xml:space="preserve"><value>Gestippeld</value></data>
+  <data name="Dash_Solid" xml:space="preserve"><value>Doorgetrokken</value></data>
+  <data name="Editor_BlankCanvas" xml:space="preserve"><value>Leeg canvas</value></data>
+  <data name="Editor_BlankHint" xml:space="preserve"><value>Leeg canvas: teken direct, plak een afbeelding met Ctrl+V of open er een met Ctrl+O.</value></data>
+  <data name="Editor_CloseTab" xml:space="preserve"><value>Tabblad sluiten (Ctrl+W)</value></data>
+  <data name="Editor_CloseUnsaved" xml:space="preserve"><value>Je aantekeningen zijn nog niet gekopieerd of opgeslagen.&#xA;&#xA;Wil je het resultaat naar het klembord kopiëren voordat je sluit?</value></data>
+  <data name="Editor_ConfirmClear" xml:space="preserve"><value>Wil je het knipsel weggooien en opnieuw beginnen met een leeg canvas?</value></data>
+  <data name="Editor_Cropped" xml:space="preserve"><value>Bijgesneden. Ctrl+Z maakt dit ongedaan.</value></data>
+  <data name="Editor_CropProps" xml:space="preserve"><value>Sleep een kader over het deel dat je wilt bewaren.</value></data>
+  <data name="Editor_CutFailedBusy" xml:space="preserve"><value>Knippen mislukt: het klembord is bezet. Probeer het opnieuw.</value></data>
+  <data name="Editor_DiscardWarning" xml:space="preserve"><value>Dit knipsel en je aantekeningen worden gewist.&#xA;&#xA;{0}</value></data>
+  <data name="Editor_DropFailed" xml:space="preserve"><value>Deze afbeelding kon niet worden geopend.</value></data>
+  <data name="Editor_Flattened" xml:space="preserve"><value>Annotaties samengevoegd met de afbeelding.</value></data>
+  <data name="Editor_FlattenedForEraser" xml:space="preserve"><value>Annotaties samengevoegd met de afbeelding om te kunnen gummen.</value></data>
+  <data name="Editor_GuideHint" xml:space="preserve"><value>Hulplijn op {0} = {1} px. Laat los buiten de afbeelding of op de liniaal om hem te verwijderen.</value></data>
+  <data name="Editor_NoClipboardImage" xml:space="preserve"><value>Er staat geen afbeelding op het klembord.</value></data>
+  <data name="Editor_Printed" xml:space="preserve"><value>Naar de printer gestuurd.</value></data>
+  <data name="Editor_PrintFailed" xml:space="preserve"><value>Printen is mislukt:&#xA;&#xA;{0}</value></data>
+  <data name="Editor_PrintJobName" xml:space="preserve"><value>kniip - knipsel</value></data>
+  <data name="Editor_RotationHint" xml:space="preserve"><value>Draaiing {0}°. Shift = stappen van 15°, Alt = niet vastklikken op 0° en 90°.</value></data>
+  <data name="Editor_RulerCornerTip" xml:space="preserve"><value>Map openen (rechtsklik: hulplijnen wissen)</value></data>
+  <data name="Editor_Saved" xml:space="preserve"><value>Opgeslagen als {0}.</value></data>
+  <data name="Editor_SavedCopied" xml:space="preserve"><value>Opgeslagen en gekopieerd: {0}.</value></data>
+  <data name="Editor_SavedCopyFailed" xml:space="preserve"><value>Opgeslagen als {0}. Kopiëren mislukt: het klembord is bezet.</value></data>
+  <data name="Editor_SaveDialogFilter" xml:space="preserve"><value>PNG-afbeelding (*.png)|*.png|JPEG-afbeelding (*.jpg)|*.jpg</value></data>
+  <data name="Editor_SaveDialogTitle" xml:space="preserve"><value>Knipsel opslaan</value></data>
+  <data name="Editor_SaveFolderUnusable" xml:space="preserve"><value>De opslagmap uit de instellingen is niet bruikbaar:&#xA;{0}&#xA;&#xA;{1}&#xA;&#xA;Kies zelf waar je het knipsel opslaat.</value></data>
+  <data name="Editor_SelectProps" xml:space="preserve"><value>Selecteer een object om de eigenschappen ervan te wijzigen.</value></data>
+  <data name="Editor_SettingsUpdateTip" xml:space="preserve"><value>Instellingen - nieuwe versie beschikbaar</value></data>
+  <data name="Editor_SnipTabTitle" xml:space="preserve"><value>Knipsel {0:HH:mm}</value></data>
+  <data name="Editor_ToolbarsHidden" xml:space="preserve"><value>Werkbalken verborgen. Ctrl+H of rechtsklik op het canvas om ze terug te halen.</value></data>
+  <data name="Editor_UploadedCopied" xml:space="preserve"><value>Geüpload, link gekopieerd: {0}</value></data>
+  <data name="Editor_UploadedCopyFailed" xml:space="preserve"><value>Geüpload: {0}. Kopiëren mislukt: het klembord is bezet.</value></data>
+  <data name="Editor_UploadFailedShort" xml:space="preserve"><value>Uploaden mislukt.</value></data>
+  <data name="Editor_Uploading" xml:space="preserve"><value>Uploaden naar {0}...</value></data>
+  <data name="Emoji_Choose" xml:space="preserve"><value>Emoji kiezen</value></data>
+  <data name="Emoji_ChooseCurrent" xml:space="preserve"><value>Emoji kiezen ({0})</value></data>
+  <data name="Emoji_NoneFound" xml:space="preserve"><value>Geen emoji gevonden</value></data>
+  <data name="Emoji_Recent" xml:space="preserve"><value>Recent gebruikt</value></data>
+  <data name="Emoji_Search" xml:space="preserve"><value>Zoeken (Nederlands of Engels)</value></data>
+  <data name="Emoji_SearchResults" xml:space="preserve"><value>Zoekresultaten</value></data>
+  <data name="Gradient_AngleTip" xml:space="preserve"><value>Hoek in graden: 0 = naar boven, 90 = naar rechts, 180 = naar onder</value></data>
+  <data name="Gradient_Direction" xml:space="preserve"><value>Richting van het verloop: {0}° (scroll om te draaien)</value></data>
+  <data name="Gradient_DirectionRadial" xml:space="preserve"><value>Richting van het verloop: vanuit het midden</value></data>
+  <data name="Gradient_Keys" xml:space="preserve"><value>Shift = stappen van 15°, Alt = niet vastklikken</value></data>
+  <data name="Gradient_Radial" xml:space="preserve"><value>Vanuit het midden</value></data>
+  <data name="Gradient_RadialTip" xml:space="preserve"><value>Verloop vanuit het midden naar buiten</value></data>
+  <data name="Hint_Arrow" xml:space="preserve"><value>Sleep om een pijl te tekenen. Shift = hoeken van 45°. Sleep een middenpunt om te buigen; dubbelklik op een buigpunt om het te verwijderen.</value></data>
+  <data name="Hint_Blur" xml:space="preserve"><value>Sleep over het gebied dat je wilt pixeleren of vervagen.</value></data>
+  <data name="Hint_Crop" xml:space="preserve"><value>Sleep een kader over het deel dat je wilt bewaren. Esc annuleert.</value></data>
+  <data name="Hint_Cursor" xml:space="preserve"><value>Klik om een cursor te plaatsen; de punt komt precies op de klikplek.</value></data>
+  <data name="Hint_Ellipse" xml:space="preserve"><value>Sleep om een ellips te tekenen. Shift = cirkel.</value></data>
+  <data name="Hint_Emoji" xml:space="preserve"><value>Klik om de gekozen emoji te plaatsen; kies een andere emoji in de balk eronder.</value></data>
+  <data name="Hint_EraserBrush" xml:space="preserve"><value>Sleep om weg te poetsen; de plek wordt transparant. Aantekeningen worden eerst samengevoegd.</value></data>
+  <data name="Hint_EraserSmart" xml:space="preserve"><value>Klik op een kleur om alle aangrenzende pixels met dezelfde kleur weg te halen. Tolerantie bepaalt hoe streng.</value></data>
+  <data name="Hint_HighlightFree" xml:space="preserve"><value>Sleep om uit de vrije hand te markeren. Houd Shift ingedrukt voor een rechte horizontale streep.</value></data>
+  <data name="Hint_HighlightStraight" xml:space="preserve"><value>Sleep om een rechte horizontale markering te zetten. Houd Shift ingedrukt voor uit de vrije hand.</value></data>
+  <data name="Hint_Line" xml:space="preserve"><value>Sleep om een lijn te tekenen. Shift = hoeken van 45°. Sleep een middenpunt om te buigen; dubbelklik op een buigpunt om het te verwijderen.</value></data>
+  <data name="Hint_Rectangle" xml:space="preserve"><value>Sleep om een rechthoek te tekenen. Shift = vierkant.</value></data>
+  <data name="Hint_Select" xml:space="preserve"><value>Klik om te selecteren, sleep om te verplaatsen. Dubbelklik op tekst om te bewerken. Pijltoetsen verschuiven.</value></data>
+  <data name="Hint_Shape" xml:space="preserve"><value>Sleep om de gekozen vorm te tekenen. Shift = gelijke breedte en hoogte. Kies een andere vorm in de balk eronder.</value></data>
+  <data name="Hint_Step" xml:space="preserve"><value>Klik om een genummerde stap te plaatsen. De nummering loopt automatisch door.</value></data>
+  <data name="Hint_Text" xml:space="preserve"><value>Klik om een tekstkader te plaatsen, of klik op bestaande tekst om die te bewerken. Sleep de punt van een ballon of wolk naar wat je wilt aanwijzen.</value></data>
+  <data name="Hint_TextEditing" xml:space="preserve"><value>Typ je tekst. Enter = nieuwe regel, Ctrl+Enter of Esc = klaar.</value></data>
+  <data name="Hint_ToolbarUnlocked" xml:space="preserve"><value>Werkbalk ontgrendeld: sleep knoppen naar een andere plek. Rechtsklik op de werkbalk om hem weer vast te zetten.</value></data>
+  <data name="History_CannotCopy" xml:space="preserve"><value>Kan &apos;{0}&apos; niet kopiëren.&#xA;&#xA;{1}</value></data>
+  <data name="History_Clear" xml:space="preserve"><value>Geschiedenis wissen...</value></data>
+  <data name="History_ClearConfirm" xml:space="preserve"><value>De hele geschiedenis wissen? Je opgeslagen bestanden en uploads blijven gewoon bestaan.</value></data>
+  <data name="History_CopyImage" xml:space="preserve"><value>Afbeelding kopiëren</value></data>
+  <data name="History_CopyLink" xml:space="preserve"><value>Link kopiëren</value></data>
+  <data name="History_CopyPath" xml:space="preserve"><value>Pad kopiëren</value></data>
+  <data name="History_Count" xml:space="preserve"><value>{0} items</value></data>
+  <data name="History_CountFiltered" xml:space="preserve"><value>{0} van {1} items</value></data>
+  <data name="History_Date" xml:space="preserve"><value>Datum</value></data>
+  <data name="History_Empty" xml:space="preserve"><value>Nog niets in de geschiedenis.&#xA;Wat je in kniip opslaat of uploadt, komt hier te staan.</value></data>
+  <data name="History_FileMissing" xml:space="preserve"><value>Het bestand bestaat niet meer:&#xA;{0}</value></data>
+  <data name="History_Folder" xml:space="preserve"><value>Map</value></data>
+  <data name="History_ImageTitle" xml:space="preserve"><value>kniip afbeeldingsgeschiedenis</value></data>
+  <data name="History_Kind" xml:space="preserve"><value>Soort</value></data>
+  <data name="History_List" xml:space="preserve"><value>Lijst</value></data>
+  <data name="History_Open" xml:space="preserve"><value>Openen</value></data>
+  <data name="History_OpenFailed" xml:space="preserve"><value>Openen is mislukt.&#xA;&#xA;{0}</value></data>
+  <data name="History_OpenInEditor" xml:space="preserve"><value>Openen in de editor</value></data>
+  <data name="History_OpenLink" xml:space="preserve"><value>Link openen</value></data>
+  <data name="History_Remove" xml:space="preserve"><value>Uit geschiedenis verwijderen</value></data>
+  <data name="History_Search" xml:space="preserve"><value>Zoeken op naam of link</value></data>
+  <data name="History_ShowInFolder" xml:space="preserve"><value>Tonen in map</value></data>
+  <data name="History_Thumbnails" xml:space="preserve"><value>Miniaturen</value></data>
+  <data name="History_Title" xml:space="preserve"><value>kniip geschiedenis</value></data>
+  <data name="Menu_AlignToImage" xml:space="preserve"><value>Uitlijnen op de afbeelding</value></data>
+  <data name="Menu_BringForward" xml:space="preserve"><value>Naar voren</value></data>
+  <data name="Menu_BringToFront" xml:space="preserve"><value>Naar voorgrond</value></data>
+  <data name="Menu_CenterHorizontally" xml:space="preserve"><value>Horizontaal centreren</value></data>
+  <data name="Menu_CenterOfImage" xml:space="preserve"><value>Midden van de afbeelding</value></data>
+  <data name="Menu_CenterVertically" xml:space="preserve"><value>Verticaal centreren</value></data>
+  <data name="Menu_ClearGuides" xml:space="preserve"><value>Hulplijnen wissen</value></data>
+  <data name="Menu_Copy" xml:space="preserve"><value>Kopieer</value></data>
+  <data name="Menu_Cut" xml:space="preserve"><value>Knip</value></data>
+  <data name="Menu_Delete" xml:space="preserve"><value>Verwijder</value></data>
+  <data name="Menu_DeleteAll" xml:space="preserve"><value>Verwijder alles</value></data>
+  <data name="Menu_Duplicate" xml:space="preserve"><value>Dupliceren</value></data>
+  <data name="Menu_Flatten" xml:space="preserve"><value>Samenvoegen</value></data>
+  <data name="Menu_HideRulers" xml:space="preserve"><value>Linialen verbergen</value></data>
+  <data name="Menu_HideToolbars" xml:space="preserve"><value>Werkbalken verbergen</value></data>
+  <data name="Menu_OpenScreencastFolder" xml:space="preserve"><value>Screencastmap openen</value></data>
+  <data name="Menu_OpenScreenshotFolder" xml:space="preserve"><value>Screenshotmap openen</value></data>
+  <data name="Menu_Paste" xml:space="preserve"><value>Plak</value></data>
+  <data name="Menu_ResetRotation" xml:space="preserve"><value>Draaiing herstellen</value></data>
+  <data name="Menu_RotateRight" xml:space="preserve"><value>90° rechtsom draaien</value></data>
+  <data name="Menu_SendBackward" xml:space="preserve"><value>Naar achteren</value></data>
+  <data name="Menu_SendToBack" xml:space="preserve"><value>Naar achtergrond</value></data>
+  <data name="Menu_ShowToolbars" xml:space="preserve"><value>Werkbalken tonen</value></data>
+  <data name="Ocr_CopySelection" xml:space="preserve"><value>Selectie kopiëren</value></data>
+  <data name="Ocr_CopyTip" xml:space="preserve"><value>Alles kopiëren, of alleen de geselecteerde tekst</value></data>
+  <data name="Ocr_Failed" xml:space="preserve"><value>Tekst herkennen is mislukt.&#xA;&#xA;{0}</value></data>
+  <data name="Ocr_NoLanguage" xml:space="preserve"><value>Windows heeft geen taal voor tekstherkenning. Voeg er een toe via Instellingen &gt; Tijd en taal &gt; Taal en regio: kies een taal en zet bij de taalopties Optische tekenherkenning aan.</value></data>
+  <data name="Ocr_NoText" xml:space="preserve"><value>Geen tekst gevonden in deze afbeelding.</value></data>
+  <data name="Ocr_RecognizedMany" xml:space="preserve"><value>{0} regels herkend. Je kunt de tekst hier aanpassen.</value></data>
+  <data name="Ocr_RecognizedOne" xml:space="preserve"><value>{0} regel herkend. Je kunt de tekst hier aanpassen.</value></data>
+  <data name="Ocr_Recognizing" xml:space="preserve"><value>Tekst herkennen...</value></data>
+  <data name="Ocr_Title" xml:space="preserve"><value>kniip tekst herkennen</value></data>
+  <data name="Prop_AlignCenter" xml:space="preserve"><value>Tekst centreren</value></data>
+  <data name="Prop_AlignLeft" xml:space="preserve"><value>Tekst links uitlijnen</value></data>
+  <data name="Prop_AlignRight" xml:space="preserve"><value>Tekst rechts uitlijnen</value></data>
+  <data name="Prop_BackgroundColor" xml:space="preserve"><value>Achtergrondkleur</value></data>
+  <data name="Prop_Bold" xml:space="preserve"><value>Vet</value></data>
+  <data name="Prop_BorderThickness" xml:space="preserve"><value>Randdikte</value></data>
+  <data name="Prop_CloudDots" xml:space="preserve"><value>Aantal bolletjes naar de punt</value></data>
+  <data name="Prop_Corners" xml:space="preserve"><value>Hoeken</value></data>
+  <data name="Prop_CursorKind" xml:space="preserve"><value>Soort cursor</value></data>
+  <data name="Prop_Dash" xml:space="preserve"><value>Lijnstijl</value></data>
+  <data name="Prop_EraserSize" xml:space="preserve"><value>Grootte van de gum</value></data>
+  <data name="Prop_FillColor" xml:space="preserve"><value>Vulkleur</value></data>
+  <data name="Prop_FontSize" xml:space="preserve"><value>Lettergrootte</value></data>
+  <data name="Prop_FreehandEraserTip" xml:space="preserve"><value>Vrije hand: sleep om weg te poetsen</value></data>
+  <data name="Prop_Numbering" xml:space="preserve"><value>Reeks</value></data>
+  <data name="Prop_Shadow" xml:space="preserve"><value>Schaduw</value></data>
+  <data name="Prop_Shape" xml:space="preserve"><value>Vorm</value></data>
+  <data name="Prop_Size" xml:space="preserve"><value>Grootte</value></data>
+  <data name="Prop_SmartEraserTip" xml:space="preserve"><value>Smart-gum: klik op een kleur om alle aangrenzende pixels met die kleur weg te halen</value></data>
+  <data name="Prop_StraightTip" xml:space="preserve"><value>Rechte horizontale streep (Shift wisselt)</value></data>
+  <data name="Prop_Strength" xml:space="preserve"><value>Sterkte</value></data>
+  <data name="Prop_StrokeColor" xml:space="preserve"><value>Randkleur</value></data>
+  <data name="Prop_TextColor" xml:space="preserve"><value>Tekstkleur</value></data>
+  <data name="Prop_Thickness" xml:space="preserve"><value>Dikte</value></data>
+  <data name="Prop_Tolerance" xml:space="preserve"><value>Tolerantie</value></data>
+  <data name="Prop_ToleranceTip" xml:space="preserve"><value>Tolerantie: hoe ver een kleur mag afwijken om mee weggehaald te worden</value></data>
+  <data name="Recording_CancelTip" xml:space="preserve"><value>Annuleren (opname weggooien)</value></data>
+  <data name="Recording_CancelTray" xml:space="preserve"><value>Opname annuleren</value></data>
+  <data name="Recording_Failed" xml:space="preserve"><value>De opname is mislukt.&#xA;&#xA;{0}</value></data>
+  <data name="Recording_Finishing" xml:space="preserve"><value>Opname afronden...</value></data>
+  <data name="Recording_Microphone" xml:space="preserve"><value>Microfoon opnemen</value></data>
+  <data name="Recording_NoSoundText" xml:space="preserve"><value>Opnemen met geluid lukte niet; kniip neemt nu op zonder geluid.</value></data>
+  <data name="Recording_NoSoundTitle" xml:space="preserve"><value>Opname zonder geluid</value></data>
+  <data name="Recording_Pause" xml:space="preserve"><value>Pauzeren</value></data>
+  <data name="Recording_Record" xml:space="preserve"><value>Opnemen</value></data>
+  <data name="Recording_Resume" xml:space="preserve"><value>Hervatten</value></data>
+  <data name="Recording_Start" xml:space="preserve"><value>Opname starten</value></data>
+  <data name="Recording_StartNow" xml:space="preserve"><value>Nu meteen starten</value></data>
+  <data name="Recording_StartsIn" xml:space="preserve"><value>Start over {0}...</value></data>
+  <data name="Recording_Stop" xml:space="preserve"><value>Opname stoppen</value></data>
+  <data name="Recording_StopShort" xml:space="preserve"><value>Stoppen</value></data>
+  <data name="Recording_SystemAudio" xml:space="preserve"><value>Systeemgeluid opnemen</value></data>
+  <data name="Recording_Title" xml:space="preserve"><value>kniip opname</value></data>
+  <data name="Recording_WithoutAudioText" xml:space="preserve"><value>Er is geen {0} gevonden op deze pc; de opname gaat daarzonder verder.</value></data>
+  <data name="Recording_WithoutAudioTitle" xml:space="preserve"><value>Opname zonder {0}</value></data>
+  <data name="Region_Hint" xml:space="preserve"><value>Screencast: kies wat je wilt opnemen</value></data>
+  <data name="Region_Keys" xml:space="preserve"><value>Sleep een gebied  ·  klik op een venster  ·  Enter = heel scherm  ·  Esc = annuleren</value></data>
+  <data name="Region_Title" xml:space="preserve"><value>kniip opnamegebied kiezen</value></data>
+  <data name="Screencast_CopyTip" xml:space="preserve"><value>Als bestand naar het klembord kopiëren (plakken in Verkenner, Teams, Outlook, ...)</value></data>
+  <data name="Screencast_DefaultName" xml:space="preserve"><value>Screencast {0:yyyy-MM-dd HHmmss}</value></data>
+  <data name="Screencast_DiscardConfirm" xml:space="preserve"><value>Deze opname is nog niet opgeslagen of gekopieerd. Weggooien?</value></data>
+  <data name="Screencast_Format" xml:space="preserve"><value>Formaat</value></data>
+  <data name="Screencast_Fps" xml:space="preserve"><value>Beelden/s</value></data>
+  <data name="Screencast_GifFilter" xml:space="preserve"><value>GIF-animatie (*.gif)|*.gif</value></data>
+  <data name="Screencast_GifNoSound" xml:space="preserve"><value>GIF bevat geen geluid</value></data>
+  <data name="Screencast_GifTip" xml:space="preserve"><value>Bewegend plaatje zonder geluid; speelt overal af (ook in e-mail en wiki&apos;s)</value></data>
+  <data name="Screencast_Loading" xml:space="preserve"><value>Opname laden...</value></data>
+  <data name="Screencast_LongGifWarning" xml:space="preserve"><value>lange GIF&apos;s worden groot; overweeg MP4</value></data>
+  <data name="Screencast_Mp4Filter" xml:space="preserve"><value>MP4-video (*.mp4)|*.mp4</value></data>
+  <data name="Screencast_Mp4Tip" xml:space="preserve"><value>Video met geluid; klein bestand, beste kwaliteit</value></data>
+  <data name="Screencast_Name" xml:space="preserve"><value>Screencast</value></data>
+  <data name="Screencast_OnClipboard" xml:space="preserve"><value>{0} staat op het klembord; plak het waar je wilt.</value></data>
+  <data name="Screencast_Original" xml:space="preserve"><value>Origineel</value></data>
+  <data name="Screencast_Play" xml:space="preserve"><value>Afspelen (spatiebalk)</value></data>
+  <data name="Screencast_PreviewFailed" xml:space="preserve"><value>Het voorbeeld kan niet worden afgespeeld ({0}).&#xA;Opslaan werkt wel; inkorten is dan niet mogelijk.</value></data>
+  <data name="Screencast_SaveAndCopyAsFormat" xml:space="preserve"><value>Opslaan en kopiëren als {0}</value></data>
+  <data name="Screencast_SaveAndCopyTip" xml:space="preserve"><value>Slaat op en kopieert het bestand naar het klembord. Shift+klik = altijd vragen waar je opslaat; het pijltje toont meer opties.</value></data>
+  <data name="Screencast_SaveAsFormat" xml:space="preserve"><value>Opslaan als {0}</value></data>
+  <data name="Screencast_SaveAsMp4" xml:space="preserve"><value>Opslaan als MP4...</value></data>
+  <data name="Screencast_SaveButtonTip" xml:space="preserve"><value>Shift+klik = altijd vragen waar je opslaat; het pijltje toont meer opties</value></data>
+  <data name="Screencast_Saved" xml:space="preserve"><value>Screencast opgeslagen</value></data>
+  <data name="Screencast_SavedCopied" xml:space="preserve"><value>Screencast opgeslagen en gekopieerd</value></data>
+  <data name="Screencast_SavedCopyFailed" xml:space="preserve"><value>Het bestand is opgeslagen, maar kopiëren naar het klembord is mislukt. Het klembord is bezet.</value></data>
+  <data name="Screencast_SaveDialogTitle" xml:space="preserve"><value>Screencast opslaan</value></data>
+  <data name="Screencast_SaveFailed" xml:space="preserve"><value>Opslaan is mislukt.&#xA;&#xA;{0}</value></data>
+  <data name="Screencast_SaveFolderUnusable" xml:space="preserve"><value>De opslagmap uit de instellingen is niet bruikbaar:&#xA;{0}&#xA;&#xA;{1}&#xA;&#xA;Kies zelf waar je de screencast opslaat.</value></data>
+  <data name="Screencast_SaveTip" xml:space="preserve"><value>Shift+klik = altijd vragen waar je opslaat</value></data>
+  <data name="Screencast_Selection" xml:space="preserve"><value>Selectie {0} – {1}  ·  {2:0.0} s</value></data>
+  <data name="Screencast_SelEnd" xml:space="preserve"><value>Einde van de selectie</value></data>
+  <data name="Screencast_SelStart" xml:space="preserve"><value>Begin van de selectie</value></data>
+  <data name="Screencast_SetEnd" xml:space="preserve"><value>Einde hier</value></data>
+  <data name="Screencast_SetEndTip" xml:space="preserve"><value>Einde van de selectie op de huidige positie zetten</value></data>
+  <data name="Screencast_SetStart" xml:space="preserve"><value>Begin hier</value></data>
+  <data name="Screencast_SetStartTip" xml:space="preserve"><value>Begin van de selectie op de huidige positie zetten</value></data>
+  <data name="Screencast_Uploaded" xml:space="preserve"><value>Geüpload: {0}</value></data>
+  <data name="Screencast_UploadedCopied" xml:space="preserve"><value>Geüpload; de link staat op het klembord: {0}</value></data>
+  <data name="Screencast_UploadTip" xml:space="preserve"><value>Uploaden naar Zipline en de link naar het klembord kopiëren</value></data>
+  <data name="Screencast_Width" xml:space="preserve"><value>Breedte</value></data>
+  <data name="Screencast_WithoutSound" xml:space="preserve"><value>zonder geluid</value></data>
+  <data name="Screencast_WithSound" xml:space="preserve"><value>met geluid</value></data>
+  <data name="Settings_Appearance" xml:space="preserve"><value>Weergave</value></data>
+  <data name="Settings_AskEveryTime" xml:space="preserve"><value>Elke keer vragen</value></data>
+  <data name="Settings_AskSnipTip" xml:space="preserve"><value>Elke keer vragen waar het knipsel wordt opgeslagen</value></data>
+  <data name="Settings_AskVideoTip" xml:space="preserve"><value>Elke keer vragen waar de screencast wordt opgeslagen</value></data>
+  <data name="Settings_AutoCheck" xml:space="preserve"><value>Automatisch controleren op nieuwe versies (bij starten en dagelijks)</value></data>
+  <data name="Settings_Autostart" xml:space="preserve"><value>kniip starten met Windows</value></data>
+  <data name="Settings_CheckAgain" xml:space="preserve"><value>Opnieuw controleren</value></data>
+  <data name="Settings_CheckingUpdates" xml:space="preserve"><value>Controleren op updates...</value></data>
+  <data name="Settings_ChooseSnipFolder" xml:space="preserve"><value>Map voor knipsels kiezen</value></data>
+  <data name="Settings_ChooseVideoFolder" xml:space="preserve"><value>Map voor screencasts kiezen</value></data>
+  <data name="Settings_CloseEditor" xml:space="preserve"><value>Editorvenster sluiten:</value></data>
+  <data name="Settings_CloseEditorTip" xml:space="preserve"><value>Behouden verbergt het venster; de tabbladen komen terug bij het volgende knipsel of via &apos;Open kniip&apos; in het systeemvak. Afsluiten van kniip sluit altijd alles.</value></data>
+  <data name="Settings_ColorMode" xml:space="preserve"><value>Kleurmodus</value></data>
+  <data name="Settings_Dark" xml:space="preserve"><value>Donker</value></data>
+  <data name="Settings_Defaults" xml:space="preserve"><value>Standaardinstellingen</value></data>
+  <data name="Settings_DefaultsFilled" xml:space="preserve"><value>Standaardwaarden ingevuld; klik op Opslaan om ze te bewaren.</value></data>
+  <data name="Settings_DefaultsTip" xml:space="preserve"><value>Instellingen, toolstijlen, werkbalk en laatst gebruikte mappen terugzetten; pas bij Opslaan worden ze bewaard</value></data>
+  <data name="Settings_DoNothing" xml:space="preserve"><value>Niets doen (openen via systeemvak of &apos;Openen met&apos;)</value></data>
+  <data name="Settings_Example" xml:space="preserve"><value>Voorbeeld: </value></data>
+  <data name="Settings_Fps" xml:space="preserve"><value>{0} beelden/s</value></data>
+  <data name="Settings_FromClipboard" xml:space="preserve"><value>Vanaf klembord</value></data>
+  <data name="Settings_HighlightClicks" xml:space="preserve"><value>Muisklikken markeren (geel = links, blauw = rechts)</value></data>
+  <data name="Settings_HighlighterStraight" xml:space="preserve"><value>Markeerstift trekt standaard een rechte horizontale streep (Shift wisselt)</value></data>
+  <data name="Settings_HookFailed" xml:space="preserve"><value>De toetsenbordhaak kon niet worden gestart; de sneltoetsen werken nu niet.</value></data>
+  <data name="Settings_HotkeyHint" xml:space="preserve"><value>kniip vangt deze toetsen in alle programma&apos;s af; bij Print Screen opent het Windows-knipprogramma dan niet óók.</value></data>
+  <data name="Settings_HotkeyNameClipboard" xml:space="preserve"><value>bewerken vanaf klembord</value></data>
+  <data name="Settings_HotkeyNameGif" xml:space="preserve"><value>screencast (GIF)</value></data>
+  <data name="Settings_HotkeyNameRecord" xml:space="preserve"><value>screencast (MP4)</value></data>
+  <data name="Settings_HotkeyNameSnip" xml:space="preserve"><value>rechthoek knippen</value></data>
+  <data name="Settings_HotkeyNameWindow" xml:space="preserve"><value>venster knippen</value></data>
+  <data name="Settings_Hotkeys" xml:space="preserve"><value>Sneltoetsen</value></data>
+  <data name="Settings_HotkeyTaken" xml:space="preserve"><value>{0} is al de sneltoets voor {1}; kies een andere.</value></data>
+  <data name="Settings_HotkeyTip" xml:space="preserve"><value>Klik en druk daarna de gewenste toetscombinatie in</value></data>
+  <data name="Settings_HotkeyTipAltPrint" xml:space="preserve"><value>Klik en druk daarna de gewenste toets in, bijvoorbeeld Alt + Print Screen</value></data>
+  <data name="Settings_HotkeyTipClipboard" xml:space="preserve"><value>Klik en druk daarna de gewenste toetscombinatie in; opent de afbeelding op het klembord</value></data>
+  <data name="Settings_HotkeyTipOcr" xml:space="preserve"><value>Klik en druk daarna de gewenste toetscombinatie in; sleep daarna een rechthoek om de tekst erin te lezen</value></data>
+  <data name="Settings_HotkeyTipPrint" xml:space="preserve"><value>Klik en druk daarna de gewenste toets in, bijvoorbeeld Print Screen</value></data>
+  <data name="Settings_HotkeyTyping" xml:space="preserve"><value>{0} gebruik je om te typen. Kies Print Screen, Pause, een F-toets of een combinatie met Ctrl, Alt of Win.</value></data>
+  <data name="Settings_Import" xml:space="preserve"><value>Importeren...</value></data>
+  <data name="Settings_Imported" xml:space="preserve"><value>Geïmporteerd: {0}. Klik op Opslaan om dit te bewaren.</value></data>
+  <data name="Settings_ImportExplanation" xml:space="preserve"><value>Maak het bestand in Zipline via Instellingen &gt; Generate Uploaders (ShareX of Shell Script) en importeer het hier. kniip leest alleen het adres en de token uit; het script wordt niet uitgevoerd.</value></data>
+  <data name="Settings_ImportFailed" xml:space="preserve"><value>Dit bestand kan niet worden gebruikt:&#xA;{0}&#xA;&#xA;{1}</value></data>
+  <data name="Settings_ImportFilter" xml:space="preserve"><value>Zipline-uploader (*.sxcu;*.sh)|*.sxcu;*.sh|ShareX-uploader (*.sxcu)|*.sxcu|Shell script (*.sh)|*.sh|Alle bestanden (*.*)|*.*</value></data>
+  <data name="Settings_ImportTip" xml:space="preserve"><value>ShareX-uploader (.sxcu) of Shell Script (.sh) uit Zipline kiezen</value></data>
+  <data name="Settings_ImportTitle" xml:space="preserve"><value>Zipline-uploader importeren</value></data>
+  <data name="Settings_InstalledVersion" xml:space="preserve"><value>Geïnstalleerde versie: {0}</value></data>
+  <data name="Settings_InstallTip" xml:space="preserve"><value>Installer downloaden; kniip sluit, wordt bijgewerkt en start opnieuw</value></data>
+  <data name="Settings_IntegrationExplanation" xml:space="preserve"><value>Alleen voor jouw gebruikersaccount; er is geen beheerder nodig en het Knipprogramma zelf wordt niet aangepast.</value></data>
+  <data name="Settings_IntegrationFailed" xml:space="preserve"><value>Windows-integratie kon niet worden bijgewerkt:&#xA;&#xA;{0}</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>Taal</value></data>
+  <data name="Settings_LanguageAutomatic" xml:space="preserve"><value>Automatisch (taal van Windows)</value></data>
+  <data name="Settings_LanguageExplanation" xml:space="preserve"><value>Automatisch kiest Nederlands als Windows in het Nederlands staat, en anders Engels. Een andere taal werkt nadat kniip opnieuw is gestart.</value></data>
+  <data name="Settings_LanguageRestart" xml:space="preserve"><value>kniip moet opnieuw starten om de nieuwe taal te gebruiken. Nu opnieuw starten?</value></data>
+  <data name="Settings_Light" xml:space="preserve"><value>Licht</value></data>
+  <data name="Settings_MaxWidth" xml:space="preserve"><value>max. {0} px breed</value></data>
+  <data name="Settings_Microphone" xml:space="preserve"><value>Microfoon opnemen (standaard)</value></data>
+  <data name="Settings_NoChangelog" xml:space="preserve"><value>Geen changelog beschikbaar.</value></data>
+  <data name="Settings_NoDescription" xml:space="preserve"><value>Geen beschrijving.</value></data>
+  <data name="Settings_NoHotkey" xml:space="preserve"><value>Geen sneltoets gebruiken</value></data>
+  <data name="Settings_NoHotkeyShort" xml:space="preserve"><value>(geen)</value></data>
+  <data name="Settings_NoReleases" xml:space="preserve"><value>Er zijn nog geen releases gepubliceerd.</value></data>
+  <data name="Settings_NotConfigured" xml:space="preserve"><value>Niet ingesteld</value></data>
+  <data name="Settings_OcrHotkey" xml:space="preserve"><value>OCR (tekst herkennen)</value></data>
+  <data name="Settings_OnlySnippingTool" xml:space="preserve"><value>Alleen afbeeldingen van het Knipprogramma</value></data>
+  <data name="Settings_OnNewSnip" xml:space="preserve"><value>Bij een nieuw knipsel</value></data>
+  <data name="Settings_OpenEditor" xml:space="preserve"><value>Editor meteen openen</value></data>
+  <data name="Settings_OpenInBrowser" xml:space="preserve"><value>Openen in de browser</value></data>
+  <data name="Settings_OpenWith" xml:space="preserve"><value>kniip tonen in &apos;Openen met&apos; (ook in het Knipprogramma: ... → Openen met)</value></data>
+  <data name="Settings_OriginalWidth" xml:space="preserve"><value>Originele breedte</value></data>
+  <data name="Settings_PressKey" xml:space="preserve"><value>Druk op een toets...</value></data>
+  <data name="Settings_PressKeyHint" xml:space="preserve"><value>Esc = annuleren  ·  Delete = geen sneltoets</value></data>
+  <data name="Settings_ReleasePage" xml:space="preserve"><value>Releasepagina</value></data>
+  <data name="Settings_RemoveUpload" xml:space="preserve"><value>Verwijderen</value></data>
+  <data name="Settings_RemoveUploadTip" xml:space="preserve"><value>Geen uploadbestemming meer gebruiken</value></data>
+  <data name="Settings_SaveAndCopy" xml:space="preserve"><value>Opslaan en kopiëren</value></data>
+  <data name="Settings_SaveAndCopyExplanation" xml:space="preserve"><value>Opslaan en kopiëren zet het bestand ook op het klembord, zodat je het meteen kunt plakken.</value></data>
+  <data name="Settings_SaveExplanation" xml:space="preserve"><value>Met een map ingesteld slaat Opslaan (Ctrl+S) direct op, met de naam hierboven. Shift+klik of Ctrl+Shift+S vraagt toch waar het bestand moet komen.</value></data>
+  <data name="Settings_ScreencastExplanation" xml:space="preserve"><value>Sneltoets: eerste keer gebied kiezen, tweede keer opname starten, derde keer stoppen. De nabewerking staat daarna op MP4 of GIF.</value></data>
+  <data name="Settings_ScreenshotsFolderMissing" xml:space="preserve"><value>Map Schermafbeeldingen niet gevonden.</value></data>
+  <data name="Settings_SelectArea" xml:space="preserve"><value>Gebied kiezen</value></data>
+  <data name="Settings_ShowCursor" xml:space="preserve"><value>Muisaanwijzer tonen</value></data>
+  <data name="Settings_ShowMagnifier" xml:space="preserve"><value>Vergrootglas tonen bij het kiezen van een gebied (knipsel en screencast)</value></data>
+  <data name="Settings_ShowNotification" xml:space="preserve"><value>Melding tonen (klik om te bewerken)</value></data>
+  <data name="Settings_SingleLayout" xml:space="preserve"><value>Eén werkbalk met gereedschappen en acties</value></data>
+  <data name="Settings_SnipNameTip" xml:space="preserve"><value>Leeg: Knipsel met datum en tijd</value></data>
+  <data name="Settings_SnippingToolTip" xml:space="preserve"><value>Tip: zet in het Knipprogramma &apos;Wijzigingen automatisch kopiëren&apos; uit, anders ziet kniip elke pennenstreek in het Knipprogramma als nieuw knipsel.</value></data>
+  <data name="Settings_SplitLayout" xml:space="preserve"><value>Split-weergave: gereedschappen boven, opslaan onder</value></data>
+  <data name="Settings_StartingInstaller" xml:space="preserve"><value>Installer starten...</value></data>
+  <data name="Settings_System" xml:space="preserve"><value>Systeem</value></data>
+  <data name="Settings_SystemAudio" xml:space="preserve"><value>Systeemgeluid opnemen (standaard)</value></data>
+  <data name="Settings_SystemExplanation" xml:space="preserve"><value>Systeem volgt de app-modus van Windows (Instellingen &gt; Persoonlijke instellingen &gt; Kleuren) en wisselt mee als je die verandert.</value></data>
+  <data name="Settings_Test" xml:space="preserve"><value>Testen</value></data>
+  <data name="Settings_TestCopied" xml:space="preserve"><value> (gekopieerd)</value></data>
+  <data name="Settings_TestFailed" xml:space="preserve"><value>De test-upload is mislukt.&#xA;&#xA;{0}</value></data>
+  <data name="Settings_TestSucceeded" xml:space="preserve"><value>Gelukt: </value></data>
+  <data name="Settings_TestTip" xml:space="preserve"><value>Een klein testplaatje uploaden</value></data>
+  <data name="Settings_TestUploading" xml:space="preserve"><value>Testplaatje uploaden...</value></data>
+  <data name="Settings_ThreeSplitLayout" xml:space="preserve"><value>Drie-split: gereedschappen boven, opslaan, uploaden en kopiëren onder, screenshot, screencast en OCR apart of zwevend</value></data>
+  <data name="Settings_Title" xml:space="preserve"><value>kniip instellingen</value></data>
+  <data name="Settings_Toolbar" xml:space="preserve"><value>Werkbalk</value></data>
+  <data name="Settings_ToolbarExplanation" xml:space="preserve"><value>Ook te wisselen via rechtsklik op de werkbalk in de editor. Daar kun je knoppen ook verslepen of verbergen.</value></data>
+  <data name="Settings_UpdateAvailable" xml:space="preserve"><value>Versie {0} is beschikbaar.</value></data>
+  <data name="Settings_UpdateConfirm" xml:space="preserve"><value>kniip wordt afgesloten, bijgewerkt naar versie {0} en daarna opnieuw gestart. Open editors en screencasts worden eerst gesloten.</value></data>
+  <data name="Settings_UpdateConfirmTitle" xml:space="preserve"><value>kniip bijwerken</value></data>
+  <data name="Settings_UpdateDownloadFailed" xml:space="preserve"><value>De update kon niet worden gedownload.&#xA;&#xA;{0}</value></data>
+  <data name="Settings_UpdateDownloading" xml:space="preserve"><value>Versie {0} downloaden...</value></data>
+  <data name="Settings_UpdateNoInstaller" xml:space="preserve"><value>Versie {0} is beschikbaar, maar zonder installer. Download die via de releasepagina.</value></data>
+  <data name="Settings_UpdateNotInstalled" xml:space="preserve"><value>Deze kniip is niet via de installer gestart; de nieuwe versie wordt geïnstalleerd in {0}.</value></data>
+  <data name="Settings_UpdateTestBuild" xml:space="preserve"><value>Versie {0} is beschikbaar. Deze testversie werkt zichzelf niet bij; de installer zou de gewone kniip overschrijven.</value></data>
+  <data name="Settings_UpdateTo" xml:space="preserve"><value>Updaten naar {0}</value></data>
+  <data name="Settings_UploadExplanation" xml:space="preserve"><value>Daarna staat er een knop Uploaden in de editor (Ctrl+U) en bij screencasts. De link komt op het klembord. De token wordt versleuteld bewaard voor jouw Windows-account.</value></data>
+  <data name="Settings_UploadZipline" xml:space="preserve"><value>Uploaden naar Zipline</value></data>
+  <data name="Settings_UpToDate" xml:space="preserve"><value>Je gebruikt de nieuwste versie ({0}).</value></data>
+  <data name="Settings_VersionHeading" xml:space="preserve"><value>Versie {0}</value></data>
+  <data name="Settings_VideoNameTip" xml:space="preserve"><value>Leeg: Screencast met datum en tijd</value></data>
+  <data name="Settings_WatchClipboard" xml:space="preserve"><value>Klembord bewaken</value></data>
+  <data name="Settings_WatchScreenshots" xml:space="preserve"><value>Map Schermafbeeldingen bewaken</value></data>
+  <data name="Settings_WindowsIntegration" xml:space="preserve"><value>Windows-integratie</value></data>
+  <data name="Settings_WindowTitle" xml:space="preserve"><value>{0} instellingen</value></data>
+  <data name="Shape_Drop" xml:space="preserve"><value>Druppel</value></data>
+  <data name="Shape_Egg" xml:space="preserve"><value>Ei</value></data>
+  <data name="Shape_Heart" xml:space="preserve"><value>Hart</value></data>
+  <data name="Shape_Lightning" xml:space="preserve"><value>Bliksemschicht</value></data>
+  <data name="Shape_Moon" xml:space="preserve"><value>Maan</value></data>
+  <data name="Shape_Spiral" xml:space="preserve"><value>Spiraal</value></data>
+  <data name="Shape_Star" xml:space="preserve"><value>Ster</value></data>
+  <data name="Shape_Triangle" xml:space="preserve"><value>Driehoek</value></data>
+  <data name="Shell_ImageType" xml:space="preserve"><value>{0} afbeelding</value></data>
+  <data name="Shell_NoAppPath" xml:space="preserve"><value>Pad van de applicatie is onbekend.</value></data>
+  <data name="SkinTone_Dark" xml:space="preserve"><value>Donker</value></data>
+  <data name="SkinTone_Default" xml:space="preserve"><value>Standaard</value></data>
+  <data name="SkinTone_Light" xml:space="preserve"><value>Licht</value></data>
+  <data name="SkinTone_Medium" xml:space="preserve"><value>Middel</value></data>
+  <data name="SkinTone_MediumDark" xml:space="preserve"><value>Middeldonker</value></data>
+  <data name="SkinTone_MediumLight" xml:space="preserve"><value>Middellicht</value></data>
+  <data name="SkinTone_ToolTip" xml:space="preserve"><value>Huidskleur: {0}</value></data>
+  <data name="Snip_DefaultName" xml:space="preserve"><value>Knipsel {0:yyyy-MM-dd HHmmss}</value></data>
+  <data name="Snip_Name" xml:space="preserve"><value>Knipsel</value></data>
+  <data name="Template_Help" xml:space="preserve"><value>%J jaar, %M maand, %D dag, %V programmanaam van het venster, %R6 zes willekeurige tekens, %N3 oplopend nummer met drie cijfers (001). Met / maak je submappen. De extensie kiest kniip zelf.</value></data>
+  <data name="TextShape_Box" xml:space="preserve"><value>Kader</value></data>
+  <data name="TextShape_None" xml:space="preserve"><value>Geen kader</value></data>
+  <data name="TextShape_OvalBalloon" xml:space="preserve"><value>Ovale ballon</value></data>
+  <data name="Toast_ClickToAnnotate" xml:space="preserve"><value>klik om aantekeningen toe te voegen</value></data>
+  <data name="Toast_Dismiss" xml:space="preserve"><value>Negeren</value></data>
+  <data name="Toast_Edit" xml:space="preserve"><value>Bewerken</value></data>
+  <data name="Tool_ArrowTip" xml:space="preserve"><value>Pijl (A) - Shift voor hoeken van 45°</value></data>
+  <data name="Tool_Blur" xml:space="preserve"><value>Vervagen / pixeleren</value></data>
+  <data name="Tool_BlurTip" xml:space="preserve"><value>Vervagen / pixeleren (B)</value></data>
+  <data name="Tool_Clear" xml:space="preserve"><value>Wissen</value></data>
+  <data name="Tool_ClearTip" xml:space="preserve"><value>Knipsel weggooien en opnieuw beginnen met een leeg canvas (Ctrl+Delete)</value></data>
+  <data name="Tool_CopyTip" xml:space="preserve"><value>Kopiëren naar klembord (Ctrl+C)</value></data>
+  <data name="Tool_Crop" xml:space="preserve"><value>Bijsnijden</value></data>
+  <data name="Tool_CropTip" xml:space="preserve"><value>Bijsnijden (X)</value></data>
+  <data name="Tool_CursorTip" xml:space="preserve"><value>Cursor plaatsen (C)</value></data>
+  <data name="Tool_Delete" xml:space="preserve"><value>Verwijderen</value></data>
+  <data name="Tool_DeleteTip" xml:space="preserve"><value>Geselecteerd object verwijderen (Delete)</value></data>
+  <data name="Tool_Ellipse" xml:space="preserve"><value>Ellips</value></data>
+  <data name="Tool_EllipseTip" xml:space="preserve"><value>Ellips (E) - Shift voor cirkel</value></data>
+  <data name="Tool_EmojiTip" xml:space="preserve"><value>Emoji plaatsen (J)</value></data>
+  <data name="Tool_Eraser" xml:space="preserve"><value>Gum</value></data>
+  <data name="Tool_EraserTip" xml:space="preserve"><value>Gum (G) - smart-gum haalt aaneengesloten dezelfde kleur weg; kies in de balk eronder voor vrije hand</value></data>
+  <data name="Tool_Folders" xml:space="preserve"><value>Mappen openen</value></data>
+  <data name="Tool_FoldersTip" xml:space="preserve"><value>Screenshot- of screencastmap openen</value></data>
+  <data name="Tool_Highlighter" xml:space="preserve"><value>Markeerstift</value></data>
+  <data name="Tool_HighlighterTip" xml:space="preserve"><value>Markeerstift (H) - rechte horizontale streep, Shift wisselt</value></data>
+  <data name="Tool_Line" xml:space="preserve"><value>Lijn</value></data>
+  <data name="Tool_LineTip" xml:space="preserve"><value>Lijn (L) - Shift voor hoeken van 45°</value></data>
+  <data name="Tool_New" xml:space="preserve"><value>Nieuw</value></data>
+  <data name="Tool_NewTip" xml:space="preserve"><value>Nieuw knipsel maken; dat opent in een nieuw tabblad (Ctrl+N)</value></data>
+  <data name="Tool_OcrTip" xml:space="preserve"><value>OCR: sleep een rechthoek op het scherm en kopieer de tekst daarin. Ctrl+Shift+T leest de tekst van dit knipsel.</value></data>
+  <data name="Tool_Print" xml:space="preserve"><value>Printen</value></data>
+  <data name="Tool_PrintTip" xml:space="preserve"><value>Printen (Ctrl+P)</value></data>
+  <data name="Tool_RectangleTip" xml:space="preserve"><value>Rechthoek (R) - Shift voor vierkant</value></data>
+  <data name="Tool_Redo" xml:space="preserve"><value>Opnieuw</value></data>
+  <data name="Tool_RedoTip" xml:space="preserve"><value>Opnieuw (Ctrl+Y)</value></data>
+  <data name="Tool_Rulers" xml:space="preserve"><value>Linialen</value></data>
+  <data name="Tool_RulersTip" xml:space="preserve"><value>Linialen en hulplijnen (Ctrl+R) - sleep vanuit een liniaal voor een hulplijn</value></data>
+  <data name="Tool_SaveAndCopyTip" xml:space="preserve"><value>Opslaan en naar het klembord kopiëren (Ctrl+S); Shift+klik of Ctrl+Shift+S = opslaan als; het pijltje toont meer opties</value></data>
+  <data name="Tool_SaveTip" xml:space="preserve"><value>Opslaan (Ctrl+S); Shift+klik of Ctrl+Shift+S = opslaan als; het pijltje toont meer opties</value></data>
+  <data name="Tool_ScreencastTip" xml:space="preserve"><value>Screencast opnemen als MP4 of GIF</value></data>
+  <data name="Tool_Select" xml:space="preserve"><value>Selecteren</value></data>
+  <data name="Tool_SelectTip" xml:space="preserve"><value>Selecteren en verplaatsen (V)</value></data>
+  <data name="Tool_Shapes" xml:space="preserve"><value>Vormen</value></data>
+  <data name="Tool_ShapesTip" xml:space="preserve"><value>Vormen (F) - Shift voor gelijke breedte en hoogte</value></data>
+  <data name="Tool_Steps" xml:space="preserve"><value>Stappen</value></data>
+  <data name="Tool_StepsTip" xml:space="preserve"><value>Stappen 1, 2, 3 / a, b, c (S)</value></data>
+  <data name="Tool_Text" xml:space="preserve"><value>Tekst</value></data>
+  <data name="Tool_TextTip" xml:space="preserve"><value>Tekst in kader (T)</value></data>
+  <data name="Tool_Undo" xml:space="preserve"><value>Ongedaan maken</value></data>
+  <data name="Tool_UndoTip" xml:space="preserve"><value>Ongedaan maken (Ctrl+Z)</value></data>
+  <data name="Tool_UploadTip" xml:space="preserve"><value>Uploaden en de link kopiëren (Ctrl+U)</value></data>
+  <data name="Tool_Zoom" xml:space="preserve"><value>Zoompercentage</value></data>
+  <data name="Tool_ZoomIn" xml:space="preserve"><value>Inzoomen</value></data>
+  <data name="Tool_ZoomInTip" xml:space="preserve"><value>Inzoomen (Ctrl++)</value></data>
+  <data name="Tool_ZoomOut" xml:space="preserve"><value>Uitzoomen</value></data>
+  <data name="Tool_ZoomOutTip" xml:space="preserve"><value>Uitzoomen (Ctrl+-)</value></data>
+  <data name="Tool_ZoomTip" xml:space="preserve"><value>Passend maken (Ctrl+0) / werkelijke grootte (Ctrl+1)</value></data>
+  <data name="Toolbar_CaptureBarPosition" xml:space="preserve"><value>Nieuw en Screencast</value></data>
+  <data name="Toolbar_DragTip" xml:space="preserve"><value>Slepen om te verplaatsen; rechtsklik om vast te zetten</value></data>
+  <data name="Toolbar_Layout" xml:space="preserve"><value>Indeling</value></data>
+  <data name="Toolbar_Lock" xml:space="preserve"><value>Werkbalk vergrendelen</value></data>
+  <data name="Toolbar_LockFloating" xml:space="preserve"><value>Zwevende knoppen vastzetten</value></data>
+  <data name="Toolbar_Position" xml:space="preserve"><value>Positie</value></data>
+  <data name="Toolbar_Reset" xml:space="preserve"><value>Standaard herstellen</value></data>
+  <data name="Toolbar_ShowButtons" xml:space="preserve"><value>Knoppen tonen</value></data>
+  <data name="Toolbar_Single" xml:space="preserve"><value>Eén werkbalk</value></data>
+  <data name="Toolbar_SwapGroups" xml:space="preserve"><value>Groepen omwisselen</value></data>
+  <data name="Toolbar_ThreeSplit" xml:space="preserve"><value>Drie-split: screenshot, screencast en OCR apart of zwevend</value></data>
+  <data name="Tray_Delay" xml:space="preserve"><value>Schermafdruk vertraging: {0}s</value></data>
+  <data name="Tray_EditFromClipboard" xml:space="preserve"><value>Bewerken vanaf klembord</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Afsluiten</value></data>
+  <data name="Tray_History" xml:space="preserve"><value>Geschiedenis...</value></data>
+  <data name="Tray_ImageHistory" xml:space="preserve"><value>Afbeeldingsgeschiedenis...</value></data>
+  <data name="Tray_NothingSaved" xml:space="preserve"><value>Nog niets opgeslagen</value></data>
+  <data name="Tray_Ocr" xml:space="preserve"><value>OCR (tekst herkennen)...</value></data>
+  <data name="Tray_OcrTip" xml:space="preserve"><value>Sleep een rechthoek; de tekst daarin opent in een apart venster om te kopiëren</value></data>
+  <data name="Tray_Open" xml:space="preserve"><value>Open kniip</value></data>
+  <data name="Tray_OpenImage" xml:space="preserve"><value>Afbeelding openen...</value></data>
+  <data name="Tray_OpenTip" xml:space="preserve"><value>De editor met de open tabbladen tonen, of anders de afbeeldingsgeschiedenis</value></data>
+  <data name="Tray_Pause" xml:space="preserve"><value>Knipsels niet automatisch oppikken</value></data>
+  <data name="Tray_RecentItems" xml:space="preserve"><value>Recente items</value></data>
+  <data name="Tray_RecordGif" xml:space="preserve"><value>Screencast opnemen (GIF)...</value></data>
+  <data name="Tray_RecordingToolTip" xml:space="preserve"><value>{0} - opname loopt</value></data>
+  <data name="Tray_RecordMp4" xml:space="preserve"><value>Screencast opnemen (MP4)...</value></data>
+  <data name="Tray_Seconds" xml:space="preserve"><value>seconden</value></data>
+  <data name="Tray_Settings" xml:space="preserve"><value>Instellingen...</value></data>
+  <data name="Tray_SnipRectangle" xml:space="preserve"><value>Rechthoek knippen</value></data>
+  <data name="Tray_SnipWindow" xml:space="preserve"><value>Venster knippen</value></data>
+  <data name="Tray_UpdateToolTip" xml:space="preserve"><value>Nieuwe versie {0} beschikbaar</value></data>
+  <data name="Update_Available" xml:space="preserve"><value>Er is een nieuwe versie beschikbaar</value></data>
+  <data name="Update_BadResponse" xml:space="preserve"><value>Het antwoord van GitHub is niet te lezen.</value></data>
+  <data name="Update_DownloadFailed" xml:space="preserve"><value>Downloaden is mislukt. Controleer de internetverbinding.</value></data>
+  <data name="Update_DownloadHttpError" xml:space="preserve"><value>Downloaden is mislukt ({0}).</value></data>
+  <data name="Update_DownloadIncomplete" xml:space="preserve"><value>De download is onvolledig; probeer het opnieuw.</value></data>
+  <data name="Update_HttpError" xml:space="preserve"><value>GitHub gaf een fout ({0}).</value></data>
+  <data name="Update_NoInstaller" xml:space="preserve"><value>Release {0} heeft geen installer.</value></data>
+  <data name="Update_NotFound" xml:space="preserve"><value>De releases van kniip zijn niet gevonden op GitHub.</value></data>
+  <data name="Update_RateLimit" xml:space="preserve"><value>De limiet van GitHub is bereikt. Probeer het later opnieuw.</value></data>
+  <data name="Update_Timeout" xml:space="preserve"><value>GitHub reageert niet (time-out).</value></data>
+  <data name="Update_Unreachable" xml:space="preserve"><value>Kan GitHub niet bereiken. Controleer de internetverbinding.</value></data>
+  <data name="Upload_BadServer" xml:space="preserve"><value>Het server-adres is niet bruikbaar:&#xA;{0}</value></data>
+  <data name="Upload_InvalidShareX" xml:space="preserve"><value>Dit is geen geldig ShareX-uploaderbestand.</value></data>
+  <data name="Upload_NoCurl" xml:space="preserve"><value>In dit script staat geen curl-commando. Kies in Zipline de Shell Script-uploader voor bestanden.</value></data>
+  <data name="Upload_NoLink" xml:space="preserve"><value>De upload is gelukt, maar er staat geen link in het antwoord op &apos;{0}&apos;.</value></data>
+  <data name="Upload_NoServer" xml:space="preserve"><value>In dit bestand staat geen server-adres.</value></data>
+  <data name="Upload_NotConfigured" xml:space="preserve"><value>Er is nog geen uploadbestemming ingesteld (Instellingen &gt; Uploaden).</value></data>
+  <data name="Upload_NotFileUploader" xml:space="preserve"><value>Deze uploader verstuurt geen bestanden (misschien is het de URL-verkorter). Kies in Zipline de uploader voor bestanden.</value></data>
+  <data name="Upload_NoToken" xml:space="preserve"><value>In dit bestand staat geen token (authorization-header).</value></data>
+  <data name="Upload_Rejected" xml:space="preserve"><value>De server weigerde de upload ({0}): {1}</value></data>
+  <data name="Upload_ScriptNotFileUploader" xml:space="preserve"><value>Dit script uploadt geen bestand (misschien is het de URL-verkorter). Kies in Zipline de Shell Script-uploader voor bestanden.</value></data>
+  <data name="Upload_Timeout" xml:space="preserve"><value>De server reageert niet (time-out).</value></data>
+  <data name="Upload_TokenInvalid" xml:space="preserve"><value>De token is ongeldig of verlopen; importeer de uploader opnieuw.</value></data>
+  <data name="Upload_Unreachable" xml:space="preserve"><value>Kan {0} niet bereiken.&#xA;&#xA;{1}</value></data>
+  <data name="Upload_UnsupportedMethod" xml:space="preserve"><value>Deze uploader gebruikt {0}; kniip ondersteunt alleen POST.</value></data>
+  <data name="Video_SaveFailed" xml:space="preserve"><value>Windows kon de video niet opslaan ({0}).</value></data>
+  <data name="Window_Maximize" xml:space="preserve"><value>Maximaliseren</value></data>
+  <data name="Window_Minimize" xml:space="preserve"><value>Minimaliseren</value></data>
+  <data name="Window_Restore" xml:space="preserve"><value>Vorige grootte</value></data>
+</root>

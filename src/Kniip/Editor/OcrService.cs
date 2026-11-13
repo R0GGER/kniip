@@ -13,6 +13,7 @@ using BitmapAlphaMode = Windows.Graphics.Imaging.BitmapAlphaMode;
 using BitmapPixelFormat = Windows.Graphics.Imaging.BitmapPixelFormat;
 using SoftwareBitmap = Windows.Graphics.Imaging.SoftwareBitmap;
 using WinBitmapDecoder = Windows.Graphics.Imaging.BitmapDecoder;
+using Kniip.Resources;
 
 namespace Kniip.Editor;
 
@@ -117,8 +118,7 @@ internal static class OcrService
         }
 
         throw new InvalidOperationException(
-            "Windows heeft geen taal voor tekstherkenning. Voeg er een toe via Instellingen > Tijd en taal > Taal en regio: " +
-            "kies een taal en zet bij de taalopties Optische tekenherkenning aan.");
+            Strings.Ocr_NoLanguage);
     }
 
     /// <summary>Op wit leggen (transparant leest de OCR als zwart) en zo nodig vergroten of verkleinen.</summary>

@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Kniip.Resources;
 
 namespace Kniip.Notifications;
 
@@ -47,7 +48,7 @@ public partial class SnipToast : Window
     {
         _onEdit = onEdit;
         Thumbnail.Source = image;
-        DetailText.Text = $"{image.PixelWidth} × {image.PixelHeight} px  ·  klik om aantekeningen toe te voegen";
+        DetailText.Text = $"{image.PixelWidth} × {image.PixelHeight} px  ·  {Strings.Toast_ClickToAnnotate}";
         if (!IsVisible)
         {
             Show();
