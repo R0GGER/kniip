@@ -1,0 +1,70 @@
+# Bouwt kniip bij het pushen van een tag v<versie> en commit de installer en testexe naar public/
+# op de standaardbranch.
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+
+    steps:
+      - name: Checkout tag
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install Inno Setup
+        run: choco install innosetup -y --no-progress
+
+      - name: Build
+        run: |
+          $version = "$env:GITHUB_REF_NAME".TrimStart('v')
+          "VERSION=$version" >> $env:GITHUB_ENV
+          ./build.ps1 -Version $version
+          $setup = "public/Kniip-Setup-$version.exe"
+          if (-not (Test-Path $setup)) { throw "Installer niet gevonden: $setup" }
+          Get-ChildItem public | Format-Table Name, @{ n = "MB"; e = { [math]::Round($_.Length / 1MB, 1) } }
+
+      - name: Commit public/ to default branch
+        run: |
+          $staging = Join-Path $env:RUNNER_TEMP "public"
+          New-Item -ItemType Directory -Path $staging -Force | Out-Null
+          Copy-Item public/*.exe $staging
+          Remove-Item public -Recurse -Force
+          git reset --hard
+
+          git fetch origin $env:DEFAULT_BRANCH
+          git checkout -B $env:DEFAULT_BRANCH "origin/$env:DEFAULT_BRANCH"
+
+          if (Test-Path public) { Remove-Item public -Recurse -Force }
+          New-Item -ItemType Directory -Path public | Out-Null
+          Copy-Item (Join-Path $staging "*.exe") public
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A public
+          git diff --cached --quiet
+          if ($LASTEXITCODE -eq 0) { Write-Host "Geen wijzigingen in public/."; exit 0 }
+          git commit -m "Build $env:VERSION [skip ci]"
+          git push origin $env:DEFAULT_BRANCH

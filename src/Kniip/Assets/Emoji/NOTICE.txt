@@ -1,0 +1,12 @@
+Emoji in kniip
+
+twemoji-64.png
+  Twemoji, Copyright 2019 Twitter, Inc and other contributors (https://github.com/jdecked/twemoji)
+  Graphics licensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/
+  Spritesheet uit emoji-datasource-twitter 15.1.2 (https://github.com/iamcal/emoji-data, MIT).
+
+emoji.json
+  Afgeleid van emoji-datasource 15.1.2 (MIT, Copyright (c) 2013 Cal Henderson)
+  en de Unicode CLDR 46 annotaties voor nl en en (Unicode License v3, https://www.unicode.org/license.txt).
+
+Opnieuw genereren: tools/fetch-emoji.ps1

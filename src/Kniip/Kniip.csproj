@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <!-- ScreenRecorderLib is een native C++/CLI-assembly en vereist een vast platform. -->
+    <Platform>x64</Platform>
+    <PlatformTarget>x64</PlatformTarget>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Kniip</AssemblyName>
+    <RootNamespace>Kniip</RootNamespace>
+    <ApplicationIcon>AppIcon.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Product>kniip</Product>
+    <Description>Annotatie-editor naast het Windows Knipprogramma</Description>
+    <Version>2.3.2</Version>
+    <Authors>Rogier Meijer</Authors>
+    <Copyright>Copyright © 2026 Rogier Meijer</Copyright>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <SatelliteResourceLanguages>nl;en</SatelliteResourceLanguages>
+    <!-- WPF regelt DPI via app.manifest; de WinForms-analyzer is hier niet van toepassing. -->
+    <NoWarn>$(NoWarn);WFAC010</NoWarn>
+    <!-- Geen .pdb/.xml van ScreenRecorderLib (15 MB) naast de exe. -->
+    <AllowedReferenceRelatedFileExtensions>.none</AllowedReferenceRelatedFileExtensions>
+  </PropertyGroup>
+
+  <!-- Testbuild (build.ps1, -p:KniipTest=true): eigen register- en instellingennamen, zie AppIdentity. -->
+  <PropertyGroup Condition="'$(KniipTest)' == 'true'">
+    <DefineConstants>$(DefineConstants);KNIIP_TEST</DefineConstants>
+    <Product>kniip test</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="AppIcon.ico" />
+    <Resource Include="TrayIcon.ico" />
+    <Resource Include="Assets\Emoji\emoji.json;Assets\Emoji\twemoji-64.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Markdig" Version="1.6.0" />
+    <PackageReference Include="ScreenRecorderLib" Version="7.0.1" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>

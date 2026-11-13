@@ -1,0 +1,64 @@
+<UserControl x:Class="Kniip.Editor.GradientAngleDial"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             VerticalAlignment="Center">
+    <Grid>
+        <ToggleButton x:Name="Toggle" Style="{StaticResource FlatButton}" Padding="6,4" MinWidth="0" MinHeight="30"
+                      BorderBrush="{DynamicResource ControlBorderBrush}" Background="{DynamicResource ControlBrush}"
+                      MouseWheel="Dial_MouseWheel">
+            <StackPanel Orientation="Horizontal">
+                <Grid Width="20" Height="20">
+                    <Ellipse Stroke="{DynamicResource InkBrush}" StrokeThickness="1.2" Margin="1" />
+                    <Path x:Name="SmallArrow" Data="M10,15 V5 M7,8 L10,5 L13,8" Stroke="{DynamicResource InkBrush}" StrokeThickness="1.4"
+                          StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" RenderTransformOrigin="0.5,0.5">
+                        <Path.RenderTransform>
+                            <RotateTransform x:Name="SmallRotate" />
+                        </Path.RenderTransform>
+                    </Path>
+                    <Ellipse x:Name="SmallRadial" Width="5" Height="5" Fill="{DynamicResource InkBrush}" Visibility="Collapsed" />
+                </Grid>
+                <TextBlock Text="&#xE70D;" Style="{StaticResource IconText}" FontSize="9" Margin="5,0,1,0" Foreground="{DynamicResource SubtleTextBrush}" />
+            </StackPanel>
+        </ToggleButton>
+        <Popup x:Name="PopupPanel" PlacementTarget="{Binding ElementName=Toggle}" Placement="Bottom" StaysOpen="False"
+               AllowsTransparency="True" PopupAnimation="Fade"
+               IsOpen="{Binding IsChecked, ElementName=Toggle, Mode=TwoWay}">
+            <Border Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource ControlStrongBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,4,10,10">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.18" />
+                </Border.Effect>
+                <StackPanel>
+                    <!-- Sleep de knop rond; klik ergens op de cirkel om de richting meteen te kiezen -->
+                    <Canvas x:Name="DialCanvas" Width="140" Height="140" Background="Transparent" Cursor="Hand"
+                            MouseLeftButtonDown="Dial_MouseDown" MouseMove="Dial_MouseMove" MouseLeftButtonUp="Dial_MouseUp"
+                            LostMouseCapture="Dial_LostMouseCapture" MouseWheel="Dial_MouseWheel">
+                        <Ellipse x:Name="Track" Canvas.Left="20" Canvas.Top="20" Width="100" Height="100"
+                                 Stroke="{DynamicResource ControlStrongBorderBrush}" StrokeThickness="2" />
+                        <Canvas x:Name="Ticks" IsHitTestVisible="False" />
+                        <Line x:Name="Needle" X1="70" Y1="70" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2"
+                              StrokeStartLineCap="Round" StrokeEndLineCap="Round" IsHitTestVisible="False" />
+                        <Ellipse Canvas.Left="66" Canvas.Top="66" Width="8" Height="8" Fill="{DynamicResource AccentBrush}" IsHitTestVisible="False" />
+                        <Ellipse x:Name="Knob" Width="16" Height="16" Fill="White" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2"
+                                 IsHitTestVisible="False" />
+                    </Canvas>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
+                        <TextBox x:Name="AngleBox" Width="48" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" FontSize="12"
+                                 Padding="2,3" KeyDown="AngleBox_KeyDown" LostKeyboardFocus="AngleBox_LostKeyboardFocus"
+                                 ToolTip="Hoek in graden: 0 = naar boven, 90 = naar rechts, 180 = naar onder" />
+                        <TextBlock Text="°" FontSize="12" VerticalAlignment="Center" Margin="3,0,0,0" Foreground="{DynamicResource InkBrush}" />
+                    </StackPanel>
+                    <ToggleButton x:Name="RadialToggle" Style="{StaticResource ToolToggle}" Margin="0,8,0,0" HorizontalAlignment="Stretch"
+                                  Click="Radial_Click" ToolTip="Verloop vanuit het midden naar buiten">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="M9,3 A6,6 0 1 1 8.99,3 Z M9,7.5 A1.5,1.5 0 1 1 8.99,7.5 Z" Stroke="{DynamicResource InkBrush}" StrokeThickness="1.4"
+                                  Width="18" Height="18" VerticalAlignment="Center" />
+                            <TextBlock Text="Vanuit het midden" FontSize="12" VerticalAlignment="Center" Margin="6,0,0,0" />
+                        </StackPanel>
+                    </ToggleButton>
+                    <TextBlock Text="Shift = stappen van 15°, Alt = niet vastklikken" FontSize="11" Margin="0,6,0,0" HorizontalAlignment="Center"
+                               Foreground="{DynamicResource SubtleTextBrush}" />
+                </StackPanel>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>

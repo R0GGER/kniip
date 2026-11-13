@@ -1,0 +1,30 @@
+<Window x:Class="Kniip.Capture.RegionCaptureWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Kniip.Capture"
+        Title="kniip rechthoek knippen" WindowStyle="None" ResizeMode="NoResize"
+        ShowInTaskbar="False" Topmost="True" Cursor="Cross" FontFamily="Segoe UI" FontSize="13"
+        Background="Black">
+    <Grid>
+        <Image x:Name="Frozen" Stretch="Fill" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+        <Path x:Name="Dim" Fill="#73000000" />
+        <Rectangle x:Name="SelectionRect" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2"
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed" IsHitTestVisible="False" />
+        <Border x:Name="SizeBadge" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#E6202020"
+                CornerRadius="4" Padding="6,2" Visibility="Collapsed" IsHitTestVisible="False">
+            <TextBlock x:Name="SizeText" Foreground="White" FontSize="12" />
+        </Border>
+        <local:MagnifierControl x:Name="Magnifier" />
+        <Border x:Name="Hint" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,28,0,0" Background="{DynamicResource ToastBrush}"
+                CornerRadius="6" Padding="16,9" IsHitTestVisible="False">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.25" />
+            </Border.Effect>
+            <StackPanel>
+                <TextBlock x:Name="HintTitle" Text="Knipsel: sleep een rechthoek" FontWeight="SemiBold" Foreground="{DynamicResource InkBrush}" />
+                <TextBlock Foreground="{DynamicResource SubtleTextBrush}" FontSize="12" Margin="0,2,0,0"
+                           Text="Enter = heel scherm  ·  Esc of rechtermuisknop = annuleren" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

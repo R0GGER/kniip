@@ -1,0 +1,18 @@
+<Window x:Class="Kniip.Editor.CloseEditorDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="kniip" SizeToContent="WidthAndHeight" ResizeMode="NoResize" ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner" Background="{DynamicResource WindowBrush}" Foreground="{DynamicResource InkBrush}"
+        FontFamily="Segoe UI" FontSize="13" Icon="pack://application:,,,/AppIcon.ico">
+    <StackPanel Margin="20,18,20,16" MinWidth="420">
+        <TextBlock x:Name="MessageText" FontSize="14" TextWrapping="Wrap" MaxWidth="460" />
+        <TextBlock Margin="0,6,0,0" FontSize="12" TextWrapping="Wrap" MaxWidth="460" Foreground="{DynamicResource SubtleTextBrush}"
+                   Text="Behouden verbergt het venster; de tabbladen komen terug bij het volgende knipsel of via 'Open kniip' in het systeemvak." />
+        <CheckBox x:Name="RememberBox" Content="Onthouden (te wijzigen in Instellingen &gt; Weergave)" Margin="0,14,0,0" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
+            <Button Style="{StaticResource AccentButton}" Content="Alle tabbladen sluiten" IsDefault="True" Click="CloseAll_Click" Margin="0" />
+            <Button Style="{StaticResource SecondaryButton}" Content="Tabbladen behouden" Click="KeepTabs_Click" Margin="6,0,0,0" />
+            <Button Style="{StaticResource SecondaryButton}" Content="Annuleren" IsCancel="True" Margin="6,0,0,0" />
+        </StackPanel>
+    </StackPanel>
+</Window>

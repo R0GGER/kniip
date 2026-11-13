@@ -1,0 +1,35 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="AccentBrush" Color="#0067C0" />
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="#1975C5" />
+    <SolidColorBrush x:Key="AccentPressedBrush" Color="#3183CA" />
+    <SolidColorBrush x:Key="AccentTextBrush" Color="#0067C0" />
+    <SolidColorBrush x:Key="SelectedBrush" Color="#1A0067C0" />
+    <SolidColorBrush x:Key="WindowBrush" Color="#F3F3F3" />
+    <SolidColorBrush x:Key="ToolbarBrush" Color="#F9F9F9" />
+    <SolidColorBrush x:Key="UnlockedToolbarBrush" Color="#EAF2FB" />
+    <SolidColorBrush x:Key="CardBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="CardBorderBrush" Color="#E5E5E5" />
+    <SolidColorBrush x:Key="ToastBrush" Color="#FCFCFC" />
+    <SolidColorBrush x:Key="ToastBorderBrush" Color="#DADADA" />
+    <SolidColorBrush x:Key="HoverBrush" Color="#0F000000" />
+    <SolidColorBrush x:Key="PressedBrush" Color="#18000000" />
+    <SolidColorBrush x:Key="CheckedBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="DividerBrush" Color="#E5E5E5" />
+    <SolidColorBrush x:Key="InkBrush" Color="#1A1A1A" />
+    <SolidColorBrush x:Key="SubtleTextBrush" Color="#5C5C5C" />
+    <SolidColorBrush x:Key="ControlBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="ControlHoverBrush" Color="#F5F5F5" />
+    <SolidColorBrush x:Key="ControlPressedBrush" Color="#EBEBEB" />
+    <SolidColorBrush x:Key="ControlBorderBrush" Color="#E0E0E0" />
+    <SolidColorBrush x:Key="ControlStrongBorderBrush" Color="#D6D6D6" />
+    <SolidColorBrush x:Key="CheckBoxBorderBrush" Color="#8A8A8A" />
+    <SolidColorBrush x:Key="ProminentBrush" Color="#ECECEC" />
+    <SolidColorBrush x:Key="ProminentHoverBrush" Color="#E0E0E0" />
+    <SolidColorBrush x:Key="ProminentPressedBrush" Color="#D4D4D4" />
+    <SolidColorBrush x:Key="CanvasBrush" Color="#E9E9E9" />
+    <SolidColorBrush x:Key="CanvasBorderBrush" Color="#C8C8C8" />
+    <SolidColorBrush x:Key="TrackBrush" Color="#DADADA" />
+    <SolidColorBrush x:Key="CodeBrush" Color="#F3F3F3" />
+    <SolidColorBrush x:Key="QuoteBorderBrush" Color="#D0D0D0" />
+</ResourceDictionary>

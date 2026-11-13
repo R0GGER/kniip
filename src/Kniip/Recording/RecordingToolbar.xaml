@@ -1,0 +1,76 @@
+<Window x:Class="Kniip.Recording.RecordingToolbar"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="kniip opname" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ResizeMode="NoResize" SizeToContent="WidthAndHeight" ShowInTaskbar="False" Topmost="True"
+        FontFamily="Segoe UI" FontSize="13" Foreground="{DynamicResource InkBrush}">
+    <Window.Resources>
+        <Style x:Key="RecordStyle" TargetType="Button" BasedOn="{StaticResource AccentButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="#E81123" CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#F1394A" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#C50F1F" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Border Margin="10" Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource ControlStrongBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="6"
+            MouseLeftButtonDown="Background_MouseLeftButtonDown">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="14" ShadowDepth="2" Opacity="0.25" />
+        </Border.Effect>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel x:Name="TimePanel" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,8,0" Visibility="Collapsed">
+                <Ellipse x:Name="RecordDot" Width="10" Height="10" Fill="#E81123" Margin="0,0,6,0" />
+                <TextBlock x:Name="TimeText" Text="0:00" FontWeight="SemiBold" MinWidth="40" Foreground="{DynamicResource InkBrush}" />
+            </StackPanel>
+
+            <ToggleButton x:Name="SystemAudioToggle" Style="{StaticResource MiniToggle}" Height="34" MinWidth="34"
+                          ToolTip="Systeemgeluid opnemen">
+                <TextBlock Text="&#xE767;" Style="{StaticResource IconText}" />
+            </ToggleButton>
+            <ToggleButton x:Name="MicrophoneToggle" Style="{StaticResource MiniToggle}" Height="34" MinWidth="34"
+                          ToolTip="Microfoon opnemen">
+                <TextBlock Text="&#xE720;" Style="{StaticResource IconText}" />
+            </ToggleButton>
+
+            <Button x:Name="RecordButton" Style="{StaticResource RecordStyle}" Click="Record_Click"
+                    ToolTip="Opname starten" MinWidth="104">
+                <StackPanel Orientation="Horizontal">
+                    <Ellipse x:Name="RecordButtonDot" Width="10" Height="10" Fill="White" Margin="0,0,7,0" VerticalAlignment="Center" />
+                    <TextBlock x:Name="RecordButtonText" Text="Opnemen" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="PauseButton" Style="{StaticResource FlatButton}" Click="Pause_Click" Visibility="Collapsed"
+                    ToolTip="Pauzeren">
+                <TextBlock x:Name="PauseIcon" Text="&#xE769;" Style="{StaticResource IconText}" />
+            </Button>
+            <Button x:Name="StopButton" Style="{StaticResource RecordStyle}" Click="Stop_Click" Visibility="Collapsed"
+                    ToolTip="Opname stoppen">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="10" Height="10" Fill="White" RadiusX="1.5" RadiusY="1.5" Margin="0,0,7,0" VerticalAlignment="Center" />
+                    <TextBlock Text="Stoppen" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+
+            <TextBlock x:Name="BusyText" Text="Opname afronden..." VerticalAlignment="Center" Margin="8,0" Visibility="Collapsed"
+                       Foreground="{DynamicResource SubtleTextBrush}" />
+
+            <Button x:Name="CancelButton" Style="{StaticResource FlatButton}" Click="Cancel_Click" ToolTip="Annuleren (opname weggooien)">
+                <TextBlock Text="&#xE711;" Style="{StaticResource IconText}" FontSize="14" />
+            </Button>
+        </StackPanel>
+    </Border>
+</Window>
