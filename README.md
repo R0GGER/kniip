@@ -1,4 +1,6 @@
-![kniip logo](images/kniip_logo.svg)
+<p align="center">
+  <img src="images/kniip_logo.svg" alt="kniip-logo" width="160">
+</p>
 
 # kniip
 
