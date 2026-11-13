@@ -29,12 +29,12 @@ public sealed record ReleaseInfo(
     string? InstallerUrl,
     long InstallerSize);
 
-/// <summary>Leest de releases van kniip uit de Gitea/Forgejo-API van git.hibbit.net.</summary>
+/// <summary>Leest de releases van kniip uit de GitHub-API.</summary>
 public static class UpdateChecker
 {
-    public const string RepositoryUrl = "https://git.hibbit.net/rogier/kniip/";
-    public const string ReleasesPage = "https://git.hibbit.net/rogier/kniip/releases";
-    private const string ReleasesApi = "https://git.hibbit.net/api/v1/repos/rogier/kniip/releases?limit=20";
+    public const string RepositoryUrl = "https://github.com/R0GGER/kniip/";
+    public const string ReleasesPage = "https://github.com/R0GGER/kniip/releases";
+    private const string ReleasesApi = "https://api.github.com/repos/R0GGER/kniip/releases?per_page=20";
 
     internal static readonly HttpClient Client = new() { Timeout = TimeSpan.FromMinutes(10) };
 
@@ -53,29 +53,35 @@ public static class UpdateChecker
         try
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, ReleasesApi);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
+            request.Headers.Add("X-GitHub-Api-Version", "2022-11-28");
             using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             timeout.CancelAfter(TimeSpan.FromSeconds(20));
             using HttpResponseMessage response = await Client.SendAsync(request, timeout.Token).ConfigureAwait(false);
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                throw new UpdateException("De releases van kniip zijn niet gevonden op git.hibbit.net.");
+                throw new UpdateException("De releases van kniip zijn niet gevonden op GitHub.");
+            }
+
+            if (IsRateLimited(response))
+            {
+                throw new UpdateException("De limiet van GitHub is bereikt. Probeer het later opnieuw.");
             }
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new UpdateException($"git.hibbit.net gaf een fout ({(int)response.StatusCode}).");
+                throw new UpdateException($"GitHub gaf een fout ({(int)response.StatusCode}).");
             }
 
             body = await response.Content.ReadAsStringAsync(timeout.Token).ConfigureAwait(false);
         }
         catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested)
         {
-            throw new UpdateException("git.hibbit.net reageert niet (time-out).", ex);
+            throw new UpdateException("GitHub reageert niet (time-out).", ex);
         }
         catch (HttpRequestException ex)
         {
-            throw new UpdateException("Kan git.hibbit.net niet bereiken. Controleer de internetverbinding.", ex);
+            throw new UpdateException("Kan GitHub niet bereiken. Controleer de internetverbinding.", ex);
         }
 
         try
@@ -84,9 +90,15 @@ public static class UpdateChecker
         }
         catch (Exception ex) when (ex is JsonException or InvalidOperationException or KeyNotFoundException)
         {
-            throw new UpdateException("Het antwoord van git.hibbit.net is niet te lezen.", ex);
+            throw new UpdateException("Het antwoord van GitHub is niet te lezen.", ex);
         }
     }
+
+    private static bool IsRateLimited(HttpResponseMessage response) =>
+        response.StatusCode is HttpStatusCode.TooManyRequests
+        || (response.StatusCode is HttpStatusCode.Forbidden
+            && response.Headers.TryGetValues("X-RateLimit-Remaining", out IEnumerable<string>? remaining)
+            && remaining.FirstOrDefault() == "0");
 
     private static List<ReleaseInfo> Parse(string json)
     {

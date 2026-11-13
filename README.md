@@ -117,7 +117,7 @@ Lokaal bouwen kan ook met `.\build.ps1 -Version <versie>`.
 
 ### Updaten vanuit kniip
 
-Onder **Instellingen > Update** controleert kniip via de API van git.hibbit.net of er een nieuwere release is en toont de changelog van alle nieuwere versies. **Updaten** downloadt de installer, sluit kniip, installeert stil en start kniip opnieuw. De eerder gekozen integraties blijven behouden.
+Onder **Instellingen > Update** controleert kniip via de API van GitHub of er een nieuwere release is en toont de changelog van alle nieuwere versies. **Updaten** downloadt de installer, sluit kniip, installeert stil en start kniip opnieuw. De eerder gekozen integraties blijven behouden.
 
 kniip controleert ook zelf bij het starten en daarna elke 24 uur. Is er een nieuwere versie, dan staat er een blauwe stip op het kniip-icoon in het systeemvak, op de knop **Instellingen** in de editor en op de tab **Update**. Wijs het icoon in het systeemvak aan om te zien welke versie er klaarstaat. Dit zet je uit met **Automatisch controleren op nieuwe versies** in die tab.
 

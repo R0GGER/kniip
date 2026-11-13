@@ -60,7 +60,7 @@ public static class UpdateInstaller
         }
         catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested)
         {
-            throw new UpdateException("git.hibbit.net reageert niet (time-out).", ex);
+            throw new UpdateException("GitHub reageert niet (time-out).", ex);
         }
         catch (HttpRequestException ex)
         {

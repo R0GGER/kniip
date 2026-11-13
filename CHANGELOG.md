@@ -2,6 +2,12 @@
 
 Alle noemenswaardige wijzigingen in kniip staan in dit bestand. De nieuwste versie staat bovenaan.
 
+## 2.3.4 - 2026-11-13
+
+### Gewijzigd
+
+- kniip zoekt nieuwe versies nu op GitHub ([github.com/R0GGER/kniip/releases](https://github.com/R0GGER/kniip/releases)) in plaats van op git.hibbit.net. Onder **Instellingen > Update** komen de changelog en de installer voortaan van GitHub.
+
 ## 2.3.2 - 2026-11-12
 
 ### Gewijzigd

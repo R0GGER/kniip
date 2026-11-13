@@ -18,7 +18,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Product>kniip</Product>
     <Description>Annotatie-editor naast het Windows Knipprogramma</Description>
-    <Version>2.3.2</Version>
+    <Version>2.3.4</Version>
     <Authors>Rogier Meijer</Authors>
     <Copyright>Copyright © 2026 Rogier Meijer</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>

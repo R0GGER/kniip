@@ -312,7 +312,7 @@
                         <Button x:Name="CheckUpdateButton" Style="{StaticResource SecondaryButton}" Content="Opnieuw controleren"
                                 Click="CheckUpdate_Click" Margin="0,0,6,0" />
                         <Button Style="{StaticResource FlatButton}" Content="Releasepagina" Click="ReleasePage_Click"
-                                ToolTip="https://git.hibbit.net/rogier/kniip/releases" />
+                                ToolTip="https://github.com/R0GGER/kniip/releases" />
                     </StackPanel>
                     <ProgressBar x:Name="DownloadProgress" Height="4" Minimum="0" Maximum="1" Margin="0,0,0,8"
                                  Foreground="{DynamicResource AccentBrush}" Visibility="Collapsed" />
