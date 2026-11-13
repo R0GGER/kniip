@@ -2,6 +2,12 @@
 
 All notable changes to kniip are listed in this file. The newest version is at the top.
 
+## 2.5.1 - 2026-11-13
+
+### Fixed
+
+- **Open kniip** in the system tray menu opened the image history when the editor had no tabs. It now always opens the editor, with an empty canvas if there are no tabs.
+
 ## 2.5.0 - 2026-11-13
 
 ### Added

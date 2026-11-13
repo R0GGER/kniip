@@ -18,7 +18,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Product>kniip</Product>
     <Description>Annotation editor alongside the Windows Snipping Tool</Description>
-    <Version>2.5.0</Version>
+    <Version>2.5.1</Version>
     <Authors>Rogier Meijer</Authors>
     <Copyright>Copyright © 2026 Rogier Meijer</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>

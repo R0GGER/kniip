@@ -13,7 +13,7 @@
 #   .\build.ps1 -SkipTest       -> zonder testexe
 
 param(
-    [string]$Version = "2.5.0",
+    [string]$Version = "2.5.1",
     [string]$Runtime = "win-x64",
     [switch]$SkipTest
 )

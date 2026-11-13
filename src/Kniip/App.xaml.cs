@@ -244,7 +244,7 @@ public partial class App : Application
         BringToFront(_editorShell);
     }
 
-    /// <summary>Open kniip uit het systeemvak: de editor als er tabbladen zijn, anders de afbeeldingsgeschiedenis.</summary>
+    /// <summary>Open kniip uit het systeemvak: de editor met de bestaande tabbladen, anders met een leeg canvas.</summary>
     private void OpenKniip()
     {
         if (_editorShell != null)
@@ -253,7 +253,7 @@ public partial class App : Application
         }
         else
         {
-            ShowHistory(images: true);
+            OpenBlankEditor();
         }
     }
 

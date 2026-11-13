@@ -85,7 +85,7 @@ Vereisten:
 Bouwen:
 
 ```powershell
-.\build.ps1                  # versie 2.5.0
+.\build.ps1                  # versie 2.5.1
 .\build.ps1 -Version 1.2.0   # andere versie
 ```
 
