@@ -6,11 +6,15 @@
 
 **kniip** is a full-featured annotation editor for Windows. Capture something on your screen, make it clear with annotations and share it as an image, video, GIF or link.
 
-**[Download: kniip](https://github.com/R0GGER/kniip/releases/latest)**
+<p align="center">
+  <a href="https://github.com/R0GGER/kniip/releases/latest"><strong>Download: kniip</strong></a>
+</p>
 
 ---
 
-**English** · [Nederlands](README_NL.md)
+<p align="center">
+  <b>English</b> . <a href="README_NL.md">Nederlands</a>
+</p>
 
 **kniip** is an annotation editor that works alongside the Windows Snipping Tool. Take a screenshot, add arrows, text, highlights, steps, emoji or blur, and save, copy or upload the result. kniip can also record your screen and export the recording as a video or GIF.
 
