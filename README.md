@@ -38,7 +38,7 @@
 
 | Version | Installer |
 | ------- | --------- |
-| 2.5.1 | [Kniip-Setup-2.5.1.exe](https://github.com/R0GGER/kniip/releases/download/2.5.1/Kniip-Setup-2.5.1.exe) |
+| 2.5.2 | [Kniip-Setup-2.5.2.exe](https://github.com/R0GGER/kniip/releases/download/2.5.2/Kniip-Setup-2.5.2.exe) |
 
 Older versions are available under [all releases](https://github.com/R0GGER/kniip/releases).
 
