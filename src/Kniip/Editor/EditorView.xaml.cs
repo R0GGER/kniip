@@ -114,19 +114,19 @@ public partial class EditorView : UserControl
     private bool _exported;
     private bool _toolbarsHidden;
     private readonly bool _isBlank;
-    private readonly string? _windowName;
+    private readonly WindowInfo? _window;
 
     /// <summary>Aantekeningen zijn gewijzigd sinds het laatste kopiëren, opslaan of uploaden.</summary>
     public event EventHandler? DirtyChanged;
 
-    /// <param name="windowName">Programmanaam van het geknipte venster, voor %V in het naamsjabloon.</param>
-    public EditorView(BitmapSource image, AppSettings settings, bool isBlank = false, string? windowName = null)
+    /// <param name="window">Programmanaam en titel van het geknipte venster, voor %pn en %t in het naamsjabloon.</param>
+    public EditorView(BitmapSource image, AppSettings settings, bool isBlank = false, WindowInfo? window = null)
     {
         InitializeComponent();
         _settings = settings;
         _isBlank = isBlank;
-        _windowName = windowName;
-        TabTitle = windowName ?? (isBlank ? Strings.Editor_BlankCanvas : string.Format(Strings.Editor_SnipTabTitle, DateTime.Now));
+        _window = window;
+        TabTitle = window?.ProcessName ?? (isBlank ? Strings.Editor_BlankCanvas : string.Format(Strings.Editor_SnipTabTitle, DateTime.Now));
         _doc = new EditorDocument(image, isBlank);
 
         Surface.Document = _doc;
@@ -2688,13 +2688,17 @@ public partial class EditorView : UserControl
     /// <summary>Het venster staat op een scherm met een andere schaal.</summary>
     public void OnHostDpiChanged() => ApplyZoom();
 
-    private bool CanUpload => _settings.Uploader is { IsConfigured: true };
+    private bool CanUpload => _settings.DefaultUploader != null;
 
     private void ApplyUploadButton()
     {
         Visibility visibility = CanUpload && !_settings.ToolbarHidden.Contains(ItemId(UploadButton))
             ? Visibility.Visible
             : Visibility.Collapsed;
+        UploadMenuChevron.Visibility = _settings.Uploaders.Count(u => u.IsConfigured) > 1 ? Visibility.Visible : Visibility.Collapsed;
+        UploadButton.ToolTip = _settings.DefaultUploader is { } target
+            ? Strings.Tool_UploadTip + " (" + target.Title + ")"
+            : Strings.Tool_UploadTip;
         if (UploadButton.Visibility != visibility)
         {
             UploadButton.Visibility = visibility;
@@ -2702,9 +2706,30 @@ public partial class EditorView : UserControl
         }
     }
 
-    private async void Upload()
+    private void UploadMenu_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (_settings.Uploader is not { IsConfigured: true } config || !UploadButton.IsEnabled)
+        e.Handled = true;
+        if (!UploadButton.IsEnabled)
+        {
+            return;
+        }
+
+        var menu = new ContextMenu { PlacementTarget = UploadButton, Placement = PlacementMode.Bottom };
+        UploadDestination? standard = _settings.DefaultUploader;
+        foreach (UploadDestination destination in _settings.Uploaders.Where(u => u.IsConfigured))
+        {
+            UploadDestination target = destination;
+            MenuItem item = MenuItem(string.Format(Strings.Common_UploadToNamed, target.Title), "\uE898",
+                target == standard ? "Ctrl+U" : "", () => Upload(target));
+            menu.Items.Add(item);
+        }
+
+        menu.IsOpen = true;
+    }
+
+    private async void Upload(UploadDestination? target = null)
+    {
+        if ((target ?? _settings.DefaultUploader) is not { IsConfigured: true } config || !UploadButton.IsEnabled)
         {
             return;
         }
@@ -2712,17 +2737,27 @@ public partial class EditorView : UserControl
         CommitTextEdit();
         BitmapSource image = DocumentRenderer.Export(_doc);
         UploadButton.IsEnabled = false;
-        ShowTemporaryHint(string.Format(Strings.Editor_Uploading, config.DisplayName));
+        ShowTemporaryHint(string.Format(Strings.Editor_Uploading, config.Title));
         try
         {
             using System.IO.MemoryStream png = ImageExporter.EncodePng(image);
-            string url = await ZiplineUploader.UploadAsync(config, png, DefaultName + ".png", "image/png");
+            UploadResult result = await UploaderFactory.UploadAsync(config, png, DefaultName + ".png", "image/png");
+            if (result.DestinationChanged)
+            {
+                App.Instance.SaveSettings();
+            }
+
+            string url = result.Url;
             Kniip.History.HistoryStore.Add(Kniip.History.HistoryKind.Snip, null, url, image);
             SetDirty(false);
             _exported = true;
             ShowTemporaryHint(ClipboardWriter.SetText(url)
                 ? string.Format(Strings.Editor_UploadedCopied, url)
                 : string.Format(Strings.Editor_UploadedCopyFailed, url));
+        }
+        catch (OperationCanceledException)
+        {
+            ShowTemporaryHint(Strings.Editor_UploadCancelled);
         }
         catch (Exception ex)
         {
@@ -2805,7 +2840,7 @@ public partial class EditorView : UserControl
         string path;
         try
         {
-            path = FileNameTemplate.Resolve(target, _settings.SnipFileNameTemplate, _windowName ?? Strings.Snip_Name, DefaultName, ".png");
+            path = FileNameTemplate.Resolve(target, _settings.SnipFolderTemplate, _settings.SnipFileNameTemplate, TemplateWindow, DefaultName, ".png");
         }
         catch (Exception ex)
         {
@@ -2816,6 +2851,8 @@ public partial class EditorView : UserControl
 
         return WriteTo(path, copy);
     }
+
+    private WindowInfo TemplateWindow => _window ?? new WindowInfo(Strings.Snip_Name, Strings.Snip_Name);
 
     private bool SaveAs() => SaveAs(CopiesOnSave);
 
@@ -2829,7 +2866,7 @@ public partial class EditorView : UserControl
         {
             Title = Strings.Editor_SaveDialogTitle,
             Filter = Strings.Editor_SaveDialogFilter,
-            FileName = FileNameTemplate.SuggestedName(_settings.SnipFileNameTemplate, _windowName ?? Strings.Snip_Name, DefaultName),
+            FileName = FileNameTemplate.SuggestedName(_settings.SnipFileNameTemplate, TemplateWindow, DefaultName),
             DefaultExt = ".png",
             InitialDirectory = folder,
             AddExtension = true

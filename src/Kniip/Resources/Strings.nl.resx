@@ -86,6 +86,8 @@
   <data name="Common_Top" xml:space="preserve"><value>Boven</value></data>
   <data name="Common_Upload" xml:space="preserve"><value>Uploaden</value></data>
   <data name="Common_UploadFailed" xml:space="preserve"><value>Uploaden is mislukt.&#xA;&#xA;{0}</value></data>
+  <data name="Common_UploadTo" xml:space="preserve"><value>Uploaden naar...</value></data>
+  <data name="Common_UploadToNamed" xml:space="preserve"><value>Uploaden naar {0}</value></data>
   <data name="Common_Window" xml:space="preserve"><value>Venster</value></data>
   <data name="Corner_Square" xml:space="preserve"><value>Recht</value></data>
   <data name="Countdown_ClickToCancel" xml:space="preserve"><value>Klik om te annuleren</value></data>
@@ -124,6 +126,7 @@
   <data name="Editor_SettingsUpdateTip" xml:space="preserve"><value>Instellingen - nieuwe versie beschikbaar</value></data>
   <data name="Editor_SnipTabTitle" xml:space="preserve"><value>Knipsel {0:HH:mm}</value></data>
   <data name="Editor_ToolbarsHidden" xml:space="preserve"><value>Werkbalken verborgen. Ctrl+H of rechtsklik op het canvas om ze terug te halen.</value></data>
+  <data name="Editor_UploadCancelled" xml:space="preserve"><value>Uploaden geannuleerd.</value></data>
   <data name="Editor_UploadedCopied" xml:space="preserve"><value>Geüpload, link gekopieerd: {0}</value></data>
   <data name="Editor_UploadedCopyFailed" xml:space="preserve"><value>Geüpload: {0}. Kopiëren mislukt: het klembord is bezet.</value></data>
   <data name="Editor_UploadFailedShort" xml:space="preserve"><value>Uploaden mislukt.</value></data>
@@ -309,6 +312,17 @@
   <data name="Settings_AskSnipTip" xml:space="preserve"><value>Elke keer vragen waar het knipsel wordt opgeslagen</value></data>
   <data name="Settings_AskVideoTip" xml:space="preserve"><value>Elke keer vragen waar de screencast wordt opgeslagen</value></data>
   <data name="Settings_AutoCheck" xml:space="preserve"><value>Automatisch controleren op nieuwe versies</value></data>
+  <data name="Settings_Backup" xml:space="preserve"><value>Backup</value></data>
+  <data name="Settings_BackupCreate" xml:space="preserve"><value>Backup maken...</value></data>
+  <data name="Settings_BackupExplanation" xml:space="preserve"><value>Bewaart alle opgeslagen instellingen (sneltoetsen, mappen, uploadbestemmingen, toolstijlen en werkbalk) in een bestand. Wijzigingen die je nog niet hebt opgeslagen, gaan niet mee.</value></data>
+  <data name="Settings_BackupFailed" xml:space="preserve"><value>De backup kan niet worden opgeslagen:&#xA;{0}&#xA;&#xA;{1}</value></data>
+  <data name="Settings_BackupFileName" xml:space="preserve"><value>instellingen</value></data>
+  <data name="Settings_BackupFilter" xml:space="preserve"><value>kniip-instellingen (*.json)|*.json|Alle bestanden (*.*)|*.*</value></data>
+  <data name="Settings_BackupPlainToken" xml:space="preserve"><value>Upload-tokens en wachtwoorden onversleuteld meenemen (voor een andere pc)</value></data>
+  <data name="Settings_BackupPlainTokenExplanation" xml:space="preserve"><value>Standaard blijven ze versleuteld en kan alleen deze Windows-gebruiker op deze pc ze herstellen; elders moet je ze opnieuw invullen of de uploader opnieuw importeren.</value></data>
+  <data name="Settings_BackupPlainTokenWarning" xml:space="preserve"><value>De upload-tokens en wachtwoorden staan leesbaar in deze backup. Bewaar het bestand veilig en deel het niet.</value></data>
+  <data name="Settings_BackupSaved" xml:space="preserve"><value>Backup opgeslagen: {0}</value></data>
+  <data name="Settings_BackupTitle" xml:space="preserve"><value>Backup en herstel instellingen</value></data>
   <data name="Settings_Autostart" xml:space="preserve"><value>kniip starten met Windows</value></data>
   <data name="Settings_CheckAgain" xml:space="preserve"><value>Opnieuw controleren</value></data>
   <data name="Settings_CheckingUpdates" xml:space="preserve"><value>Controleren op updates...</value></data>
@@ -325,6 +339,8 @@
   <data name="Settings_EveryHour" xml:space="preserve"><value>Elk uur</value></data>
   <data name="Settings_EveryHours" xml:space="preserve"><value>Elke {0} uur</value></data>
   <data name="Settings_Example" xml:space="preserve"><value>Voorbeeld: </value></data>
+  <data name="Settings_ExportFilter" xml:space="preserve"><value>ShareX-uploader (*.sxcu)|*.sxcu|Alle bestanden (*.*)|*.*</value></data>
+  <data name="Settings_FileName" xml:space="preserve"><value>Bestandsnaam</value></data>
   <data name="Settings_Fps" xml:space="preserve"><value>{0} beelden/s</value></data>
   <data name="Settings_FromClipboard" xml:space="preserve"><value>Vanaf klembord</value></data>
   <data name="Settings_HighlightClicks" xml:space="preserve"><value>Muisklikken markeren (geel = links, blauw = rechts)</value></data>
@@ -346,11 +362,12 @@
   <data name="Settings_HotkeyTyping" xml:space="preserve"><value>{0} gebruik je om te typen. Kies Print Screen, Pause, een F-toets of een combinatie met Ctrl, Alt of Win.</value></data>
   <data name="Settings_Import" xml:space="preserve"><value>Importeren...</value></data>
   <data name="Settings_Imported" xml:space="preserve"><value>Geïmporteerd: {0}. Klik op Opslaan om dit te bewaren.</value></data>
-  <data name="Settings_ImportExplanation" xml:space="preserve"><value>Maak het bestand in Zipline via Instellingen &gt; Generate Uploaders (ShareX of Shell Script) en importeer het hier. kniip leest alleen het adres en de token uit; het script wordt niet uitgevoerd.</value></data>
+  <data name="Settings_ImportExplanation" xml:space="preserve"><value>Importeren leest een ShareX custom uploader (.sxcu), zoals Zipline die maakt via Instellingen &gt; Generate Uploaders, of het Shell Script van Zipline (.sh). Het script wordt niet uitgevoerd; kniip leest alleen het adres, de headers en de velden.</value></data>
   <data name="Settings_ImportFailed" xml:space="preserve"><value>Dit bestand kan niet worden gebruikt:&#xA;{0}&#xA;&#xA;{1}</value></data>
-  <data name="Settings_ImportFilter" xml:space="preserve"><value>Zipline-uploader (*.sxcu;*.sh)|*.sxcu;*.sh|ShareX-uploader (*.sxcu)|*.sxcu|Shell script (*.sh)|*.sh|Alle bestanden (*.*)|*.*</value></data>
-  <data name="Settings_ImportTip" xml:space="preserve"><value>ShareX-uploader (.sxcu) of Shell Script (.sh) uit Zipline kiezen</value></data>
-  <data name="Settings_ImportTitle" xml:space="preserve"><value>Zipline-uploader importeren</value></data>
+  <data name="Settings_ImportFilter" xml:space="preserve"><value>Uploaders (*.sxcu;*.sh)|*.sxcu;*.sh|ShareX-uploader (*.sxcu)|*.sxcu|Shell script (*.sh)|*.sh|Alle bestanden (*.*)|*.*</value></data>
+  <data name="Settings_ImportTip" xml:space="preserve"><value>Een ShareX-uploader (.sxcu) of het Shell Script (.sh) uit Zipline kiezen</value></data>
+  <data name="Settings_ImportTitle" xml:space="preserve"><value>Uploader importeren</value></data>
+  <data name="Settings_InsertToken" xml:space="preserve"><value>Invoegen</value></data>
   <data name="Settings_InstalledVersion" xml:space="preserve"><value>Geïnstalleerde versie: {0}</value></data>
   <data name="Settings_InstallTip" xml:space="preserve"><value>Installer downloaden; kniip sluit, wordt bijgewerkt en start opnieuw</value></data>
   <data name="Settings_IntegrationExplanation" xml:space="preserve"><value>Alleen voor jouw gebruikersaccount; er is geen beheerder nodig en het Knipprogramma zelf wordt niet aangepast.</value></data>
@@ -367,7 +384,7 @@
   <data name="Settings_NoHotkey" xml:space="preserve"><value>Geen sneltoets gebruiken</value></data>
   <data name="Settings_NoHotkeyShort" xml:space="preserve"><value>(geen)</value></data>
   <data name="Settings_NoReleases" xml:space="preserve"><value>Er zijn nog geen releases gepubliceerd.</value></data>
-  <data name="Settings_NotConfigured" xml:space="preserve"><value>Niet ingesteld</value></data>
+  <data name="Settings_NoUploaders" xml:space="preserve"><value>Nog geen bestemmingen. Importeer een uploader of maak er zelf een.</value></data>
   <data name="Settings_OcrHotkey" xml:space="preserve"><value>OCR (tekst herkennen)</value></data>
   <data name="Settings_OnlySnippingTool" xml:space="preserve"><value>Alleen afbeeldingen van het Knipprogramma</value></data>
   <data name="Settings_OnNewSnip" xml:space="preserve"><value>Bij een nieuw knipsel</value></data>
@@ -379,7 +396,11 @@
   <data name="Settings_PressKeyHint" xml:space="preserve"><value>Esc = annuleren  ·  Delete = geen sneltoets</value></data>
   <data name="Settings_ReleasePage" xml:space="preserve"><value>Releasepagina</value></data>
   <data name="Settings_RemoveUpload" xml:space="preserve"><value>Verwijderen</value></data>
-  <data name="Settings_RemoveUploadTip" xml:space="preserve"><value>Geen uploadbestemming meer gebruiken</value></data>
+  <data name="Settings_Restore" xml:space="preserve"><value>Herstellen</value></data>
+  <data name="Settings_RestoreButton" xml:space="preserve"><value>Herstellen...</value></data>
+  <data name="Settings_RestoreConfirm" xml:space="preserve"><value>Alle huidige instellingen worden vervangen door die uit de backup en kniip wordt herstart. Doorgaan?</value></data>
+  <data name="Settings_RestoreExplanation" xml:space="preserve"><value>Kies een backupbestand om alle huidige instellingen te vervangen. kniip herstart daarna.</value></data>
+  <data name="Settings_RestoreFailed" xml:space="preserve"><value>Dit is geen geldige instellingenbackup:&#xA;{0}&#xA;&#xA;{1}</value></data>
   <data name="Settings_SaveAndCopy" xml:space="preserve"><value>Opslaan en kopiëren</value></data>
   <data name="Settings_SaveAndCopyExplanation" xml:space="preserve"><value>Opslaan en kopiëren zet het bestand ook op het klembord, zodat je het meteen kunt plakken.</value></data>
   <data name="Settings_SaveExplanation" xml:space="preserve"><value>Met een map ingesteld slaat Opslaan (Ctrl+S) direct op, met de naam hierboven. Shift+klik of Ctrl+Shift+S vraagt toch waar het bestand moet komen.</value></data>
@@ -394,6 +415,8 @@
   <data name="Settings_SnippingToolTip" xml:space="preserve"><value>Tip: zet in het Knipprogramma &apos;Wijzigingen automatisch kopiëren&apos; uit, anders ziet kniip elke pennenstreek in het Knipprogramma als nieuw knipsel.</value></data>
   <data name="Settings_SplitLayout" xml:space="preserve"><value>Split-weergave: gereedschappen boven, opslaan onder</value></data>
   <data name="Settings_StartingInstaller" xml:space="preserve"><value>Installer starten...</value></data>
+  <data name="Settings_Subfolder" xml:space="preserve"><value>Submap</value></data>
+  <data name="Settings_SubfolderTip" xml:space="preserve"><value>Leeg: direct in de map</value></data>
   <data name="Settings_System" xml:space="preserve"><value>Systeem</value></data>
   <data name="Settings_SystemAudio" xml:space="preserve"><value>Systeemgeluid opnemen (standaard)</value></data>
   <data name="Settings_SystemExplanation" xml:space="preserve"><value>Systeem volgt de app-modus van Windows (Instellingen &gt; Persoonlijke instellingen &gt; Kleuren) en wisselt mee als je die verandert.</value></data>
@@ -417,9 +440,22 @@
   <data name="Settings_UpdateNotInstalled" xml:space="preserve"><value>Deze kniip is niet via de installer gestart; de nieuwe versie wordt geïnstalleerd in {0}.</value></data>
   <data name="Settings_UpdateTestBuild" xml:space="preserve"><value>Versie {0} is beschikbaar. Deze testversie werkt zichzelf niet bij; de installer zou de gewone kniip overschrijven.</value></data>
   <data name="Settings_UpdateTo" xml:space="preserve"><value>Updaten naar {0}</value></data>
-  <data name="Settings_UploadExplanation" xml:space="preserve"><value>Daarna staat er een knop Uploaden in de editor (Ctrl+U) en bij screencasts. De link komt op het klembord. De token wordt versleuteld bewaard voor jouw Windows-account.</value></data>
-  <data name="Settings_UploadZipline" xml:space="preserve"><value>Uploaden naar Zipline</value></data>
+  <data name="Settings_UploadAdded" xml:space="preserve"><value>Toegevoegd: {0}. Klik op Opslaan om dit te bewaren.</value></data>
+  <data name="Settings_UploadCopyName" xml:space="preserve"><value>{0} (kopie)</value></data>
+  <data name="Settings_UploadDefault" xml:space="preserve"><value>Standaard</value></data>
+  <data name="Settings_UploadDestinations" xml:space="preserve"><value>Uploadbestemmingen</value></data>
+  <data name="Settings_UploadDuplicate" xml:space="preserve"><value>Dupliceren</value></data>
+  <data name="Settings_UploadEdit" xml:space="preserve"><value>Bewerken...</value></data>
+  <data name="Settings_UploadExplanation" xml:space="preserve"><value>Met een bestemming staat er een knop Uploaden in de editor (Ctrl+U) en bij screencasts. Die uploadt naar de standaardbestemming; met het pijltje ernaast kies je een andere. De link komt op het klembord. Tokens en wachtwoorden worden versleuteld bewaard voor jouw Windows-account.</value></data>
   <data name="Settings_UpToDate" xml:space="preserve"><value>Je gebruikt de nieuwste versie ({0}).</value></data>
+  <data name="Settings_UploadExport" xml:space="preserve"><value>Exporteren...</value></data>
+  <data name="Settings_UploadExportTip" xml:space="preserve"><value>Als ShareX-uploader (.sxcu) opslaan</value></data>
+  <data name="Settings_UploadExportWarning" xml:space="preserve"><value>De token en de andere headers staan leesbaar in dit bestand. Bewaar het veilig en deel het niet.</value></data>
+  <data name="Settings_UploadExported" xml:space="preserve"><value>Opgeslagen: {0}</value></data>
+  <data name="Settings_UploadIsDefault" xml:space="preserve"><value>Standaardbestemming</value></data>
+  <data name="Settings_UploadMakeDefault" xml:space="preserve"><value>Als standaardbestemming gebruiken</value></data>
+  <data name="Settings_UploadMore" xml:space="preserve"><value>Meer acties</value></data>
+  <data name="Settings_UploadOrNew" xml:space="preserve"><value>of nieuw:</value></data>
   <data name="Settings_VersionHeading" xml:space="preserve"><value>Versie {0}</value></data>
   <data name="Settings_VideoNameTip" xml:space="preserve"><value>Leeg: Screencast met datum en tijd</value></data>
   <data name="Settings_WatchClipboard" xml:space="preserve"><value>Klembord bewaken</value></data>
@@ -445,13 +481,38 @@
   <data name="SkinTone_ToolTip" xml:space="preserve"><value>Huidskleur: {0}</value></data>
   <data name="Snip_DefaultName" xml:space="preserve"><value>Knipsel {0:yyyy-MM-dd HHmmss}</value></data>
   <data name="Snip_Name" xml:space="preserve"><value>Knipsel</value></data>
-  <data name="Template_Help" xml:space="preserve"><value>%J jaar, %M maand, %D dag, %V programmanaam van het venster, %R6 zes willekeurige tekens, %N3 oplopend nummer met drie cijfers (001). Met / maak je submappen. De extensie kiest kniip zelf.</value></data>
+  <data name="Template_CategoryComputer" xml:space="preserve"><value>Computer</value></data>
+  <data name="Template_CategoryIncremental" xml:space="preserve"><value>Incrementeel</value></data>
+  <data name="Template_CategoryTime" xml:space="preserve"><value>Tijd</value></data>
+  <data name="Template_CategoryWindow" xml:space="preserve"><value>Venster</value></data>
   <data name="TextShape_Box" xml:space="preserve"><value>Kader</value></data>
   <data name="TextShape_None" xml:space="preserve"><value>Geen kader</value></data>
   <data name="TextShape_OvalBalloon" xml:space="preserve"><value>Ovale ballon</value></data>
   <data name="Toast_ClickToAnnotate" xml:space="preserve"><value>klik om aantekeningen toe te voegen</value></data>
   <data name="Toast_Dismiss" xml:space="preserve"><value>Negeren</value></data>
   <data name="Toast_Edit" xml:space="preserve"><value>Bewerken</value></data>
+  <data name="Token_Counter" xml:space="preserve"><value>oplopend nummer, {3} = aantal cijfers (001)</value></data>
+  <data name="Token_Day" xml:space="preserve"><value>dag van de maand</value></data>
+  <data name="Token_Domain" xml:space="preserve"><value>domeinnaam</value></data>
+  <data name="Token_Guid" xml:space="preserve"><value>willekeurige GUID</value></data>
+  <data name="Token_Hour12" xml:space="preserve"><value>uur, 12-uursklok</value></data>
+  <data name="Token_Hour24" xml:space="preserve"><value>uur, 24-uursklok</value></data>
+  <data name="Token_MachineName" xml:space="preserve"><value>machinenaam</value></data>
+  <data name="Token_Milliseconds" xml:space="preserve"><value>milliseconden</value></data>
+  <data name="Token_Minutes" xml:space="preserve"><value>minuten</value></data>
+  <data name="Token_Month" xml:space="preserve"><value>maand (nummer)</value></data>
+  <data name="Token_MonthName" xml:space="preserve"><value>maand (naam)</value></data>
+  <data name="Token_ProcessName" xml:space="preserve"><value>procesnaam van het venster</value></data>
+  <data name="Token_RandomAlphaNumeric" xml:space="preserve"><value>willekeurige letters en cijfers, {n} = hoeveel</value></data>
+  <data name="Token_RandomDigit" xml:space="preserve"><value>willekeurige cijfers (0-9), {n} = hoeveel</value></data>
+  <data name="Token_RandomHex" xml:space="preserve"><value>willekeurige hexadecimale tekens, {n} = hoeveel</value></data>
+  <data name="Token_RandomUnambiguous" xml:space="preserve"><value>willekeurige tekens die je niet kunt verwarren (geen 0/o, 1/l/i), {n} = hoeveel</value></data>
+  <data name="Token_Seconds" xml:space="preserve"><value>seconden</value></data>
+  <data name="Token_Title" xml:space="preserve"><value>titel van het actieve venster</value></data>
+  <data name="Token_UserName" xml:space="preserve"><value>gebruikersnaam</value></data>
+  <data name="Token_Week" xml:space="preserve"><value>weeknummer</value></data>
+  <data name="Token_Year" xml:space="preserve"><value>jaar</value></data>
+  <data name="Token_YearShort" xml:space="preserve"><value>jaar (twee cijfers)</value></data>
   <data name="Tool_ArrowTip" xml:space="preserve"><value>Pijl (A) - Shift voor hoeken van 45°</value></data>
   <data name="Tool_Blur" xml:space="preserve"><value>Vervagen / pixeleren</value></data>
   <data name="Tool_BlurTip" xml:space="preserve"><value>Vervagen / pixeleren (B)</value></data>
@@ -548,19 +609,73 @@
   <data name="Update_Timeout" xml:space="preserve"><value>GitHub reageert niet (time-out).</value></data>
   <data name="Update_Unreachable" xml:space="preserve"><value>Kan GitHub niet bereiken. Controleer de internetverbinding.</value></data>
   <data name="Upload_BadServer" xml:space="preserve"><value>Het server-adres is niet bruikbaar:&#xA;{0}</value></data>
+  <data name="Upload_FtpTlsFailed" xml:space="preserve"><value>Er kan geen beveiligde verbinding met {0} worden gemaakt. Ondersteunt de server deze vorm van FTPS en is het certificaat geldig? Kies anders een andere versleuteling.&#xA;&#xA;{1}</value></data>
+  <data name="Upload_HostKeyChanged" xml:space="preserve"><value>De host key van {0} is veranderd.&#xA;&#xA;Verwacht: {1}&#xA;Ontvangen: {2}&#xA;&#xA;Misschien onderschept iemand de verbinding. Is de server opnieuw geïnstalleerd, kies dan bij de bestemming &apos;Vergeten&apos; en verbind opnieuw.</value></data>
+  <data name="Upload_HostKeyConfirm" xml:space="preserve"><value>Dit is de eerste verbinding met {0}.&#xA;&#xA;Vingerafdruk van de server ({1}):&#xA;{2}&#xA;&#xA;Vertrouw je deze server? kniip onthoudt de vingerafdruk en weigert de server als die ooit verandert.</value></data>
+  <data name="Upload_HostKeyConfirmTitle" xml:space="preserve"><value>Onbekende server</value></data>
+  <data name="Upload_HostKeyDeclined" xml:space="preserve"><value>De verbinding is afgebroken omdat de server niet is vertrouwd.</value></data>
+  <data name="Upload_InputPrompt" xml:space="preserve"><value>Deze uploader vraagt om invoer:</value></data>
   <data name="Upload_InvalidShareX" xml:space="preserve"><value>Dit is geen geldig ShareX-uploaderbestand.</value></data>
+  <data name="Upload_LoginFailed" xml:space="preserve"><value>Aanmelden bij {0} is mislukt. Controleer de gebruikersnaam, het wachtwoord of de sleutel.&#xA;&#xA;{1}</value></data>
   <data name="Upload_NoCurl" xml:space="preserve"><value>In dit script staat geen curl-commando. Kies in Zipline de Shell Script-uploader voor bestanden.</value></data>
-  <data name="Upload_NoLink" xml:space="preserve"><value>De upload is gelukt, maar er staat geen link in het antwoord op &apos;{0}&apos;.</value></data>
+  <data name="Upload_NoLink" xml:space="preserve"><value>De upload is gelukt, maar er komt geen link uit het antwoord (URL: &apos;{0}&apos;).</value></data>
   <data name="Upload_NoServer" xml:space="preserve"><value>In dit bestand staat geen server-adres.</value></data>
   <data name="Upload_NotConfigured" xml:space="preserve"><value>Er is nog geen uploadbestemming ingesteld (Instellingen &gt; Uploaden).</value></data>
-  <data name="Upload_NotFileUploader" xml:space="preserve"><value>Deze uploader verstuurt geen bestanden (misschien is het de URL-verkorter). Kies in Zipline de uploader voor bestanden.</value></data>
-  <data name="Upload_NoToken" xml:space="preserve"><value>In dit bestand staat geen token (authorization-header).</value></data>
+  <data name="Upload_NotFileUploader" xml:space="preserve"><value>Deze uploader is bedoeld voor {0}, niet voor afbeeldingen of bestanden.</value></data>
+  <data name="Upload_PrivateKeyInvalid" xml:space="preserve"><value>De sleutel kan niet worden gelezen:&#xA;{0}&#xA;&#xA;{1}&#xA;&#xA;Klopt de wachtzin?</value></data>
   <data name="Upload_Rejected" xml:space="preserve"><value>De server weigerde de upload ({0}): {1}</value></data>
   <data name="Upload_ScriptNotFileUploader" xml:space="preserve"><value>Dit script uploadt geen bestand (misschien is het de URL-verkorter). Kies in Zipline de Shell Script-uploader voor bestanden.</value></data>
+  <data name="Upload_SelectPrompt" xml:space="preserve"><value>Deze uploader vraagt om een keuze:</value></data>
+  <data name="Upload_SelectTitle" xml:space="preserve"><value>Kiezen</value></data>
+  <data name="Upload_ServerFailed" xml:space="preserve"><value>{0} kon het bestand niet opslaan.&#xA;&#xA;{1}</value></data>
   <data name="Upload_Timeout" xml:space="preserve"><value>De server reageert niet (time-out).</value></data>
-  <data name="Upload_TokenInvalid" xml:space="preserve"><value>De token is ongeldig of verlopen; importeer de uploader opnieuw.</value></data>
+  <data name="Upload_TokenInvalid" xml:space="preserve"><value>Controleer de token of de headers van deze uploader.</value></data>
+  <data name="Upload_TypeCustom" xml:space="preserve"><value>Custom uploader</value></data>
   <data name="Upload_Unreachable" xml:space="preserve"><value>Kan {0} niet bereiken.&#xA;&#xA;{1}</value></data>
-  <data name="Upload_UnsupportedMethod" xml:space="preserve"><value>Deze uploader gebruikt {0}; kniip ondersteunt alleen POST.</value></data>
+  <data name="Upload_UnsupportedBody" xml:space="preserve"><value>Onbekend body-type: {0}.</value></data>
+  <data name="Upload_UnsupportedMethod" xml:space="preserve"><value>Onbekende methode: {0}.</value></data>
+  <data name="UploaderEditor_Arguments" xml:space="preserve"><value>Formuliervelden</value></data>
+  <data name="UploaderEditor_BadPort" xml:space="preserve"><value>De poort moet een getal tussen 1 en 65535 zijn.</value></data>
+  <data name="UploaderEditor_BadPublicUrl" xml:space="preserve"><value>De publieke URL is geen geldig webadres.</value></data>
+  <data name="UploaderEditor_BodyNone" xml:space="preserve"><value>Geen body</value></data>
+  <data name="UploaderEditor_BodyType" xml:space="preserve"><value>Type</value></data>
+  <data name="UploaderEditor_Data" xml:space="preserve"><value>Inhoud (JSON of XML)</value></data>
+  <data name="UploaderEditor_DeletionUrl" xml:space="preserve"><value>Verwijder-URL</value></data>
+  <data name="UploaderEditor_Encryption" xml:space="preserve"><value>Versleuteling</value></data>
+  <data name="UploaderEditor_EncryptionExplicit" xml:space="preserve"><value>FTPS, expliciet (AUTH TLS)</value></data>
+  <data name="UploaderEditor_EncryptionImplicit" xml:space="preserve"><value>FTPS, impliciet (poort 990)</value></data>
+  <data name="UploaderEditor_EncryptionNone" xml:space="preserve"><value>Geen (gewone FTP)</value></data>
+  <data name="UploaderEditor_ErrorMessage" xml:space="preserve"><value>Foutmelding</value></data>
+  <data name="UploaderEditor_FileFormName" xml:space="preserve"><value>Bestandsveld</value></data>
+  <data name="UploaderEditor_ForgetHostKey" xml:space="preserve"><value>Vergeten</value></data>
+  <data name="UploaderEditor_HostKeyUnknown" xml:space="preserve"><value>Nog onbekend; wordt bij de eerste verbinding gevraagd</value></data>
+  <data name="UploaderEditor_KeyFilter" xml:space="preserve"><value>Alle bestanden (*.*)|*.*|PuTTY-sleutel (*.ppk)|*.ppk|PEM (*.pem)|*.pem</value></data>
+  <data name="UploaderEditor_KeyHint" xml:space="preserve"><value>Een OpenSSH- of PuTTY-sleutel; laat leeg om met het wachtwoord aan te melden.</value></data>
+  <data name="UploaderEditor_Location" xml:space="preserve"><value>Locatie</value></data>
+  <data name="UploaderEditor_Method" xml:space="preserve"><value>Methode en URL</value></data>
+  <data name="UploaderEditor_NameHint" xml:space="preserve"><value>Optioneel; leeg gebruikt de servernaam.</value></data>
+  <data name="UploaderEditor_NeedFileFormName" xml:space="preserve"><value>Vul bij Form data de naam van het bestandsveld in (meestal &apos;file&apos;).</value></data>
+  <data name="UploaderEditor_NeedHost" xml:space="preserve"><value>Vul de host in.</value></data>
+  <data name="UploaderEditor_NeedUrl" xml:space="preserve"><value>Vul een Request URL in die begint met https:// of http://.</value></data>
+  <data name="UploaderEditor_Parameters" xml:space="preserve"><value>URL-parameters</value></data>
+  <data name="UploaderEditor_Passive" xml:space="preserve"><value>Passieve modus</value></data>
+  <data name="UploaderEditor_Passphrase" xml:space="preserve"><value>Wachtzin</value></data>
+  <data name="UploaderEditor_Password" xml:space="preserve"><value>Wachtwoord</value></data>
+  <data name="UploaderEditor_Port" xml:space="preserve"><value>Poort</value></data>
+  <data name="UploaderEditor_PortDefault" xml:space="preserve"><value>Leeg: {0}</value></data>
+  <data name="UploaderEditor_PrivateKey" xml:space="preserve"><value>Sleutelbestand</value></data>
+  <data name="UploaderEditor_PublicUrl" xml:space="preserve"><value>Publieke URL</value></data>
+  <data name="UploaderEditor_PublicUrlHint" xml:space="preserve"><value>Webadres van het bestand; {filename} wordt de bestandsnaam, zonder {filename} komt die erachter. Leeg: het ftp://- of sftp://-adres.</value></data>
+  <data name="UploaderEditor_RemoteFolder" xml:space="preserve"><value>Map op de server</value></data>
+  <data name="UploaderEditor_Request" xml:space="preserve"><value>Verzoek</value></data>
+  <data name="UploaderEditor_Response" xml:space="preserve"><value>Antwoord</value></data>
+  <data name="UploaderEditor_SyntaxHelp" xml:space="preserve"><value>Syntax</value></data>
+  <data name="UploaderEditor_SyntaxHelpText" xml:space="preserve"><value>{response} het hele antwoord  ·  {responseurl} adres na doorverwijzing  ·  {header:naam} een antwoordheader&#xA;{json:pad} of {json:invoer|pad}, bijvoorbeeld {json:files[0].url}  ·  {xml:xpath}&#xA;{regex:patroon}, {regex:patroon|groep} of {regex:invoer|patroon|groep}&#xA;{filename} bestandsnaam  ·  {input} tekst of URL (bij bestanden leeg)  ·  {base64:tekst}&#xA;{random:a|b} willekeurig  ·  {select:a|b} kiezen bij het uploaden  ·  {inputbox:titel|standaard} vragen  ·  {outputbox:titel|tekst} tonen&#xA;In het verzoek ook: %y %yy %mo %d %h %mi %s %ms %unix %guid %rn %ra&#xA;Schrijf \{ \} \| en \\ voor de tekens zelf. Laat URL leeg als het antwoord alleen de link is.</value></data>
+  <data name="UploaderEditor_ThumbnailUrl" xml:space="preserve"><value>Miniatuur-URL</value></data>
+  <data name="UploaderEditor_Title" xml:space="preserve"><value>Uploadbestemming</value></data>
+  <data name="UploaderEditor_UrlHint" xml:space="preserve"><value>Leeg: het hele antwoord is de link. Bijvoorbeeld {json:files[0].url}.</value></data>
+  <data name="UploaderEditor_Username" xml:space="preserve"><value>Gebruikersnaam</value></data>
+  <data name="UploaderEditor_Value" xml:space="preserve"><value>Waarde</value></data>
   <data name="Video_SaveFailed" xml:space="preserve"><value>Windows kon de video niet opslaan ({0}).</value></data>
   <data name="Window_Maximize" xml:space="preserve"><value>Maximaliseren</value></data>
   <data name="Window_Minimize" xml:space="preserve"><value>Minimaliseren</value></data>

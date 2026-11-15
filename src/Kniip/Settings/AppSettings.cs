@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using System.Windows.Controls;
 using Kniip.Editor;
 using Kniip.Upload;
@@ -91,6 +93,9 @@ public sealed class AppSettings
     /// <summary>Map waarin knipsels zonder te vragen worden opgeslagen; leeg betekent elke keer vragen.</summary>
     public string? SnipSaveFolder { get; set; }
 
+    /// <summary>Submappatroon voor knipsels (zie FileNameTemplate); leeg betekent direct in de map.</summary>
+    public string? SnipFolderTemplate { get; set; }
+
     /// <summary>Naamsjabloon voor knipsels (zie FileNameTemplate); leeg betekent "Knipsel" met datum en tijd.</summary>
     public string? SnipFileNameTemplate { get; set; }
     public Dictionary<ToolKind, StyleSet> ToolStyles { get; set; } = new();
@@ -127,6 +132,9 @@ public sealed class AppSettings
 
     /// <summary>Map waarin screencasts zonder te vragen worden opgeslagen; leeg betekent elke keer vragen.</summary>
     public string? VideoSaveFolder { get; set; }
+
+    /// <summary>Submappatroon voor screencasts (zie FileNameTemplate); leeg betekent direct in de map.</summary>
+    public string? VideoFolderTemplate { get; set; }
 
     /// <summary>Naamsjabloon voor screencasts (zie FileNameTemplate); leeg betekent "Screencast" met datum en tijd.</summary>
     public string? VideoFileNameTemplate { get; set; }
@@ -175,8 +183,20 @@ public sealed class AppSettings
     /// <summary>Linialen en hulplijnen in de editor tonen; objecten klikken dan ook vast aan hulplijnen en de randen en het midden van de afbeelding.</summary>
     public bool ShowRulers { get; set; } = true;
 
-    /// <summary>Zipline-server waar Uploaden naartoe gaat; leeg betekent geen uploadknop.</summary>
-    public UploaderConfig? Uploader { get; set; }
+    /// <summary>Bestemmingen voor Uploaden; leeg betekent geen uploadknop.</summary>
+    public List<UploadDestination> Uploaders { get; set; } = new();
+
+    /// <summary>Bestemming van de uploadknop; zonder geldige waarde de eerste uit de lijst.</summary>
+    public Guid? DefaultUploaderId { get; set; }
+
+    /// <summary>De enige Zipline-uploader van vóór de lijst; wordt bij het laden naar <see cref="Uploaders"/> verplaatst.</summary>
+    [JsonPropertyName("Uploader")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public LegacyUploaderConfig? LegacyUploader { get; set; }
+
+    [JsonIgnore]
+    public UploadDestination? DefaultUploader =>
+        Uploaders.FirstOrDefault(u => u.Id == DefaultUploaderId && u.IsConfigured) ?? Uploaders.FirstOrDefault(u => u.IsConfigured);
 
     /// <summary>Bij het starten en daarna elke UpdateCheckHours op de achtergrond kijken of er een nieuwere versie is.</summary>
     public bool CheckForUpdates { get; set; } = true;

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,12 +10,12 @@ using Kniip.Resources;
 namespace Kniip.Upload;
 
 /// <summary>
-/// Leest de uploaders die Zipline genereert (ShareX .sxcu en Shell Script .sh) in.
+/// Leest ShareX custom uploaders (.sxcu, ook het formaat van vóór ShareX 13) en de Shell Script-uploader van Zipline (.sh) in.
 /// Het script wordt nooit uitgevoerd; alleen de gegevens uit het curl-commando worden overgenomen.
 /// </summary>
 public static class UploaderImporter
 {
-    public static UploaderConfig FromFile(string path)
+    public static CustomUploaderDestination FromFile(string path)
     {
         string text = File.ReadAllText(path);
         return Path.GetExtension(path).Equals(".sxcu", StringComparison.OrdinalIgnoreCase) || text.TrimStart().StartsWith('{')
@@ -25,7 +25,10 @@ public static class UploaderImporter
 
     // ---------------------------------------------------------------- ShareX
 
-    public static UploaderConfig FromSxcu(string json)
+    private static readonly string[] LegacyFunctions =
+        { "json", "xml", "regex", "response", "responseurl", "header", "filename", "input", "random", "select", "prompt", "base64" };
+
+    public static CustomUploaderDestination FromSxcu(string json)
     {
         JsonDocument document;
         try
@@ -45,57 +48,274 @@ public static class UploaderImporter
                 throw new InvalidDataException(Strings.Upload_InvalidShareX);
             }
 
-            string? body = GetString(root, "Body");
-            if (body != null && !body.Equals("MultipartFormData", StringComparison.OrdinalIgnoreCase))
+            string? destinationType = GetString(root, "DestinationType");
+            if (destinationType is { Length: > 0 }
+                && !destinationType.Contains("ImageUploader", StringComparison.OrdinalIgnoreCase)
+                && !destinationType.Contains("FileUploader", StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidDataException(
-                    Strings.Upload_NotFileUploader);
+                throw new InvalidDataException(string.Format(Strings.Upload_NotFileUploader, destinationType));
             }
 
-            string? method = GetString(root, "RequestMethod");
-            if (method != null && !method.Equals("POST", StringComparison.OrdinalIgnoreCase))
+            string? methodText = GetString(root, "RequestMethod") ?? GetString(root, "RequestType");
+            CustomRequestMethod method = CustomRequestMethod.POST;
+            if (methodText is { Length: > 0 } && !Enum.TryParse(methodText.Trim(), ignoreCase: true, out method))
             {
-                throw new InvalidDataException(string.Format(Strings.Upload_UnsupportedMethod, method));
+                throw new InvalidDataException(string.Format(Strings.Upload_UnsupportedMethod, methodText));
             }
 
-            var config = new UploaderConfig
+            var config = new CustomUploaderDestination
             {
-                RequestUrl = GetString(root, "RequestURL")?.Trim() ?? string.Empty,
-                FileFormName = GetString(root, "FileFormName") is { Length: > 0 } field ? field : "file",
-                UrlPath = ExtractJsonPath(GetString(root, "URL")) ?? "files[0].url"
+                Version = GetString(root, "Version") ?? string.Empty,
+                DestinationType = destinationType is { Length: > 0 } ? destinationType : "ImageUploader, FileUploader",
+                RequestMethod = method,
+                RequestURL = GetString(root, "RequestURL")?.Trim() ?? string.Empty,
+                FileFormName = GetString(root, "FileFormName")?.Trim() ?? string.Empty,
+                Data = GetString(root, "Data") ?? string.Empty,
+                URL = GetString(root, "URL") ?? string.Empty,
+                ThumbnailURL = GetString(root, "ThumbnailURL") ?? string.Empty,
+                DeletionURL = GetString(root, "DeletionURL") ?? string.Empty,
+                ErrorMessage = GetString(root, "ErrorMessage") ?? string.Empty
             };
+            ReadDictionary(root, "Parameters", config.Parameters);
+            ReadDictionary(root, "Headers", config.Headers);
+            ReadDictionary(root, "Arguments", config.Arguments);
 
-            if (TryGetProperty(root, "Headers", out JsonElement headers) && headers.ValueKind == JsonValueKind.Object)
+            string? body = GetString(root, "Body");
+            if (body is { Length: > 0 })
             {
-                foreach (JsonProperty header in headers.EnumerateObject())
+                if (!Enum.TryParse(body.Trim(), ignoreCase: true, out CustomBodyType bodyType))
                 {
-                    config.Headers[header.Name] = header.Value.ValueKind == JsonValueKind.String
-                        ? header.Value.GetString() ?? string.Empty
-                        : header.Value.GetRawText();
+                    throw new InvalidDataException(string.Format(Strings.Upload_UnsupportedBody, body));
                 }
+
+                config.Body = bodyType;
+            }
+            else if (config.FileFormName.Length > 0)
+            {
+                config.Body = CustomBodyType.MultipartFormData;
+            }
+            else if (method == CustomRequestMethod.GET)
+            {
+                // Vóór ShareX 13 werden de argumenten bij GET als querystring verstuurd.
+                foreach ((string argument, string value) in config.Arguments)
+                {
+                    config.Parameters[argument] = value;
+                }
+
+                config.Arguments.Clear();
+                config.Body = CustomBodyType.None;
+            }
+            else
+            {
+                config.Body = config.Arguments.Count > 0 ? CustomBodyType.FormURLEncoded : CustomBodyType.None;
             }
 
+            if (IsLegacy(config))
+            {
+                ConvertLegacy(root, config);
+            }
+
+            if (config.Body == CustomBodyType.MultipartFormData && config.FileFormName.Length == 0)
+            {
+                config.FileFormName = "file";
+            }
+
+            config.Version = "17.0.0";
             config.Name = GetString(root, "Name") is { Length: > 0 } name ? name : config.DisplayName;
             return Validate(config);
         }
     }
 
-    /// <summary>Zet <c>{json:files[0].url}</c> (of het oudere <c>$json:files[0].url$</c>) om naar <c>files[0].url</c>.</summary>
-    private static string? ExtractJsonPath(string? url)
+    private static void ReadDictionary(JsonElement root, string name, Dictionary<string, string> target)
     {
-        if (string.IsNullOrWhiteSpace(url))
+        if (TryGetProperty(root, name, out JsonElement values) && values.ValueKind == JsonValueKind.Object)
         {
-            return null;
+            foreach (JsonProperty property in values.EnumerateObject())
+            {
+                target[property.Name] = property.Value.ValueKind == JsonValueKind.String
+                    ? property.Value.GetString() ?? string.Empty
+                    : property.Value.GetRawText();
+            }
+        }
+    }
+
+    private static IEnumerable<string> Templates(CustomUploaderDestination config) =>
+        new[] { config.RequestURL, config.Data, config.URL, config.ThumbnailURL, config.DeletionURL, config.ErrorMessage }
+            .Concat(config.Parameters.Values).Concat(config.Headers.Values).Concat(config.Arguments.Values);
+
+    /// <summary>
+    /// Vóór ShareX 13 was de syntax <c>$json:pad$</c> in plaats van <c>{json:pad}</c>. Zonder versienummer
+    /// beslist de syntax die in het bestand staat.
+    /// </summary>
+    private static bool IsLegacy(CustomUploaderDestination config)
+    {
+        if (Version.TryParse(config.Version, out Version? version))
+        {
+            return version.Major < 13;
         }
 
-        Match match = Regex.Match(url, @"\{json:([^}]+)\}|\$json:([^$]+)\$");
-        if (!match.Success)
+        string all = string.Join("\n", Templates(config));
+        string names = string.Join("|", LegacyFunctions);
+        return Regex.IsMatch(all, @"\$(" + names + @")(:[^$]*)?\$", RegexOptions.IgnoreCase)
+               && !Regex.IsMatch(all, @"\{(" + string.Join("|", CustomUploaderSyntax.Functions) + @")[:}]", RegexOptions.IgnoreCase);
+    }
+
+    private static void ConvertLegacy(JsonElement root, CustomUploaderDestination config)
+    {
+        var regexList = new List<string>();
+        if (TryGetProperty(root, "RegexList", out JsonElement list) && list.ValueKind == JsonValueKind.Array)
         {
-            return null;
+            regexList.AddRange(list.EnumerateArray().Select(r => r.ValueKind == JsonValueKind.String ? r.GetString() ?? string.Empty : string.Empty));
         }
 
-        string path = match.Groups[1].Success ? match.Groups[1].Value : match.Groups[2].Value;
-        return path.Trim().TrimStart('.');
+        string Convert(string text) => ConvertLegacySyntax(text, regexList);
+
+        config.RequestURL = Convert(config.RequestURL);
+        config.Data = Convert(config.Data);
+        config.URL = Convert(config.URL);
+        config.ThumbnailURL = Convert(config.ThumbnailURL);
+        config.DeletionURL = Convert(config.DeletionURL);
+        config.ErrorMessage = Convert(config.ErrorMessage);
+        foreach (Dictionary<string, string> values in new[] { config.Parameters, config.Headers, config.Arguments })
+        {
+            foreach (string key in values.Keys.ToList())
+            {
+                values[key] = Convert(values[key]);
+            }
+        }
+
+        if (config.URL.Length == 0 && GetString(root, "ResponseType") is { } responseType)
+        {
+            if (responseType.Equals("RedirectionURL", StringComparison.OrdinalIgnoreCase))
+            {
+                config.URL = "{responseurl}";
+            }
+            else if (responseType.Equals("LocationHeader", StringComparison.OrdinalIgnoreCase))
+            {
+                config.URL = "{header:Location}";
+            }
+        }
+    }
+
+    /// <summary>Zet <c>$naam:args$</c> om naar <c>{naam:args}</c>; <c>$regex:1,2$</c> verwijst naar de RegexList.</summary>
+    internal static string ConvertLegacySyntax(string text, IReadOnlyList<string> regexList)
+    {
+        if (text.Length == 0)
+        {
+            return text;
+        }
+
+        var result = new StringBuilder();
+        int last = 0;
+        string pattern = @"\$(" + string.Join("|", LegacyFunctions) + @")(?::([^$]*))?\$";
+        foreach (Match match in Regex.Matches(text, pattern, RegexOptions.IgnoreCase))
+        {
+            result.Append(EscapeLegacyLiteral(text[last..match.Index]));
+            last = match.Index + match.Length;
+
+            string name = match.Groups[1].Value.ToLowerInvariant();
+            string args = match.Groups[2].Success ? match.Groups[2].Value : string.Empty;
+            if (name == "prompt")
+            {
+                name = "inputbox";
+            }
+
+            if (name == "regex")
+            {
+                string[] parts = args.Split(new[] { ',', '|' }, 2);
+                if (int.TryParse(parts[0].Trim(), out int index) && index >= 1 && index <= regexList.Count)
+                {
+                    string group = parts.Length > 1 ? "|" + parts[1].Trim() : string.Empty;
+                    result.Append("{regex:").Append(CustomUploaderSyntax.EscapeLiteral(regexList[index - 1])).Append(group).Append('}');
+                }
+
+                continue;
+            }
+
+            result.Append('{').Append(name);
+            if (args.Length > 0)
+            {
+                result.Append(':').Append(EscapeLegacyLiteral(args));
+            }
+
+            result.Append('}');
+        }
+
+        result.Append(EscapeLegacyLiteral(text[last..]));
+        return result.ToString();
+    }
+
+    /// <summary>Accolades en backslashes waren vroeger gewone tekst; het sluisteken bleef ook in de argumenten een scheidingsteken.</summary>
+    private static string EscapeLegacyLiteral(string text) =>
+        Regex.Replace(text, @"[{}\\]", m => "\\" + m.Value);
+
+    // ---------------------------------------------------------------- Export
+
+    public static string ToSxcu(CustomUploaderDestination config)
+    {
+        using var stream = new MemoryStream();
+        using (var writer = new Utf8JsonWriter(stream, new JsonWriterOptions
+               {
+                   Indented = true,
+                   Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+               }))
+        {
+            writer.WriteStartObject();
+            writer.WriteString("Version", "17.0.0");
+            writer.WriteString("Name", config.Name);
+            writer.WriteString("DestinationType", config.DestinationType);
+            writer.WriteString("RequestMethod", config.RequestMethod.ToString());
+            writer.WriteString("RequestURL", config.RequestURL);
+            WriteDictionary(writer, "Parameters", config.Parameters);
+            WriteDictionary(writer, "Headers", config.Headers);
+            writer.WriteString("Body", config.Body.ToString());
+            if (config.Body is CustomBodyType.MultipartFormData or CustomBodyType.FormURLEncoded)
+            {
+                WriteDictionary(writer, "Arguments", config.Arguments);
+            }
+
+            if (config.Body == CustomBodyType.MultipartFormData)
+            {
+                writer.WriteString("FileFormName", config.FileFormName);
+            }
+
+            if (config.Body is CustomBodyType.JSON or CustomBodyType.XML)
+            {
+                writer.WriteString("Data", config.Data);
+            }
+
+            WriteIfSet(writer, "URL", config.URL);
+            WriteIfSet(writer, "ThumbnailURL", config.ThumbnailURL);
+            WriteIfSet(writer, "DeletionURL", config.DeletionURL);
+            WriteIfSet(writer, "ErrorMessage", config.ErrorMessage);
+            writer.WriteEndObject();
+        }
+
+        return Encoding.UTF8.GetString(stream.ToArray());
+    }
+
+    private static void WriteDictionary(Utf8JsonWriter writer, string name, Dictionary<string, string> values)
+    {
+        if (values.Count == 0)
+        {
+            return;
+        }
+
+        writer.WriteStartObject(name);
+        foreach ((string key, string value) in values)
+        {
+            writer.WriteString(key, value);
+        }
+
+        writer.WriteEndObject();
+    }
+
+    private static void WriteIfSet(Utf8JsonWriter writer, string name, string value)
+    {
+        if (value.Length > 0)
+        {
+            writer.WriteString(name, value);
+        }
     }
 
     private static string? GetString(JsonElement obj, string name) =>
@@ -118,7 +338,7 @@ public static class UploaderImporter
 
     // ---------------------------------------------------------------- Shellscript
 
-    public static UploaderConfig FromShellScript(string script)
+    public static CustomUploaderDestination FromShellScript(string script)
     {
         string text = Regex.Replace(script, @"\\\r?\n", " ");
         string[] lines = text.Split('\n').Select(l => l.TrimEnd('\r')).ToArray();
@@ -143,13 +363,21 @@ public static class UploaderImporter
         Match curl = Regex.Match(curlLine, @"(^|[\s(`|;])curl\s");
         List<string> tokens = Tokenize(curlLine[(curl.Index + curl.Length)..], variables);
 
-        var config = new UploaderConfig { FileFormName = string.Empty };
+        var config = new CustomUploaderDestination { FileFormName = string.Empty, URL = "{json:files[0].url}" };
         for (int i = 0; i < tokens.Count; i++)
         {
             string token = tokens[i];
             string? next = i + 1 < tokens.Count ? tokens[i + 1] : null;
             switch (token)
             {
+                case "-X" or "--request" when next != null:
+                    if (Enum.TryParse(next.Trim(), ignoreCase: true, out CustomRequestMethod method))
+                    {
+                        config.RequestMethod = method;
+                    }
+
+                    i++;
+                    break;
                 case "-H" or "--header" when next != null:
                     AddHeader(config, next);
                     i++;
@@ -159,7 +387,7 @@ public static class UploaderImporter
                     i++;
                     break;
                 case "--url" when next != null:
-                    config.RequestUrl = next;
+                    config.RequestURL = next;
                     i++;
                     break;
                 default:
@@ -171,11 +399,11 @@ public static class UploaderImporter
                     {
                         AddFormField(config, token[2..]);
                     }
-                    else if (config.RequestUrl.Length == 0
+                    else if (config.RequestURL.Length == 0
                              && (token.StartsWith("https://", StringComparison.OrdinalIgnoreCase)
                                  || token.StartsWith("http://", StringComparison.OrdinalIgnoreCase)))
                     {
-                        config.RequestUrl = token;
+                        config.RequestURL = token;
                     }
 
                     break;
@@ -191,14 +419,14 @@ public static class UploaderImporter
         Match jq = Regex.Match(text, @"\bjq\s+(?:-\w+\s+)*['""]?\.?([A-Za-z0-9_\[\]\.]+)['""]?");
         if (jq.Success && jq.Groups[1].Value.Length > 0)
         {
-            config.UrlPath = jq.Groups[1].Value;
+            config.URL = "{json:" + jq.Groups[1].Value + "}";
         }
 
         config.Name = config.DisplayName;
         return Validate(config);
     }
 
-    private static void AddHeader(UploaderConfig config, string header)
+    private static void AddHeader(CustomUploaderDestination config, string header)
     {
         int colon = header.IndexOf(':');
         if (colon <= 0)
@@ -212,15 +440,26 @@ public static class UploaderImporter
             return;
         }
 
-        config.Headers[name] = header[(colon + 1)..].Trim();
+        config.Headers[name] = CustomUploaderSyntax.EscapeLiteral(header[(colon + 1)..].Trim());
     }
 
-    private static void AddFormField(UploaderConfig config, string field)
+    private static void AddFormField(CustomUploaderDestination config, string field)
     {
-        int equals = field.IndexOf("=@", StringComparison.Ordinal);
-        if (equals > 0)
+        int equals = field.IndexOf('=');
+        if (equals <= 0)
         {
-            config.FileFormName = field[..equals].Trim();
+            return;
+        }
+
+        string name = field[..equals].Trim();
+        string value = field[(equals + 1)..];
+        if (value.StartsWith('@'))
+        {
+            config.FileFormName = name;
+        }
+        else
+        {
+            config.Arguments[name] = CustomUploaderSyntax.EscapeLiteral(value);
         }
     }
 
@@ -328,18 +567,13 @@ public static class UploaderImporter
         return tokens;
     }
 
-    private static UploaderConfig Validate(UploaderConfig config)
+    private static CustomUploaderDestination Validate(CustomUploaderDestination config)
     {
         if (!config.IsConfigured)
         {
-            throw new InvalidDataException(config.RequestUrl.Length == 0
+            throw new InvalidDataException(config.RequestURL.Length == 0
                 ? Strings.Upload_NoServer
-                : string.Format(Strings.Upload_BadServer, config.RequestUrl));
-        }
-
-        if (!config.Headers.Keys.Any(k => k.Equals("authorization", StringComparison.OrdinalIgnoreCase)))
-        {
-            throw new InvalidDataException(Strings.Upload_NoToken);
+                : string.Format(Strings.Upload_BadServer, config.RequestURL));
         }
 
         return config;

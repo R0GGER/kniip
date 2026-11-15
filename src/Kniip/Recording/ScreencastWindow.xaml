@@ -105,6 +105,9 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE898;" Style="{StaticResource IconText}" FontSize="14" Margin="0,0,6,0" />
                             <TextBlock Text="{x:Static res:Strings.Common_Upload}" VerticalAlignment="Center" />
+                            <TextBlock x:Name="UploadMenuChevron" Text="&#xE70D;" Style="{StaticResource IconText}" FontSize="9"
+                                       Background="Transparent" Padding="4,2,0,2" Margin="6,0,0,0" Visibility="Collapsed"
+                                       ToolTip="{x:Static res:Strings.Common_UploadTo}" PreviewMouseLeftButtonDown="UploadMenu_MouseDown" />
                         </StackPanel>
                     </Button>
                     <Button x:Name="SaveButton" Style="{StaticResource AccentButton}" Click="Save_Click" IsDefault="True"

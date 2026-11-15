@@ -1,0 +1,242 @@
+<Window x:Class="Kniip.Upload.UploaderEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="clr-namespace:Kniip.Resources"
+        Title="{x:Static res:Strings.UploaderEditor_Title}" Width="720" Height="720" MinWidth="560" MinHeight="420"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        Background="{DynamicResource WindowBrush}" Foreground="{DynamicResource InkBrush}"
+        FontFamily="Segoe UI" FontSize="13" Icon="pack://application:,,,/AppIcon.ico">
+    <Window.Resources>
+        <Style x:Key="CardTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource AccentTextBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0,14,0,8" />
+        </Style>
+        <Style x:Key="Hint" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource SubtleTextBrush}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Margin" Value="130,0,0,6" />
+        </Style>
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="Width" Value="130" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="Field" TargetType="DockPanel">
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="MinHeight" Value="26" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="PasswordBox">
+            <Setter Property="Height" Value="26" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Background" Value="{DynamicResource ControlBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource InkBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlStrongBorderBrush}" />
+            <Setter Property="CaretBrush" Value="{DynamicResource InkBrush}" />
+        </Style>
+        <Style x:Key="PairGrid" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="CanUserAddRows" Value="True" />
+            <Setter Property="CanUserDeleteRows" Value="True" />
+            <Setter Property="CanUserResizeRows" Value="False" />
+            <Setter Property="CanUserSortColumns" Value="False" />
+            <Setter Property="CanUserReorderColumns" Value="False" />
+            <Setter Property="HeadersVisibility" Value="Column" />
+            <Setter Property="SelectionUnit" Value="CellOrRowHeader" />
+            <Setter Property="GridLinesVisibility" Value="Horizontal" />
+            <Setter Property="MinHeight" Value="62" />
+            <Setter Property="MaxHeight" Value="150" />
+            <Setter Property="Margin" Value="0,0,0,8" />
+            <Setter Property="Background" Value="{DynamicResource ControlBrush}" />
+            <Setter Property="RowBackground" Value="{DynamicResource ControlBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource InkBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlStrongBorderBrush}" />
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource DividerBrush}" />
+            <Setter Property="ColumnHeaderStyle">
+                <Setter.Value>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="{DynamicResource CardBrush}" />
+                        <Setter Property="Foreground" Value="{DynamicResource SubtleTextBrush}" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource DividerBrush}" />
+                        <Setter Property="BorderThickness" Value="0,0,1,1" />
+                        <Setter Property="Padding" Value="6,4" />
+                        <Setter Property="FontSize" Value="12" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="CellStyle">
+                <Setter.Value>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Padding" Value="4,3" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridCell">
+                                    <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SelectedBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource InkBrush}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Margin="20,16,20,16">
+        <DockPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
+            <Button x:Name="TestButton" Style="{StaticResource SecondaryButton}" Content="{x:Static res:Strings.Settings_Test}" Click="Test_Click"
+                    Margin="0" ToolTip="{x:Static res:Strings.Settings_TestTip}" />
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button Style="{StaticResource SecondaryButton}" Content="{x:Static res:Strings.Common_Cancel}" IsCancel="True" />
+                <Button Style="{StaticResource AccentButton}" Content="OK" IsDefault="True" Click="Ok_Click" MinWidth="80" Margin="6,0,0,0" />
+            </StackPanel>
+            <TextBlock x:Name="TestStatus" Margin="10,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                       Foreground="{DynamicResource SubtleTextBrush}" />
+        </DockPanel>
+
+        <TextBox x:Name="TestOutput" DockPanel.Dock="Bottom" IsReadOnly="True" FontFamily="Consolas" FontSize="12" Height="130"
+                 TextWrapping="NoWrap" VerticalContentAlignment="Top" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                 Margin="0,10,0,0" Visibility="Collapsed" />
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,8,0">
+            <StackPanel>
+                <DockPanel Style="{StaticResource Field}">
+                    <TextBlock Text="{x:Static res:Strings.Common_Name}" Style="{StaticResource FieldLabel}" />
+                    <TextBlock x:Name="TypeText" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10,0,0,0"
+                               Foreground="{DynamicResource SubtleTextBrush}" />
+                    <TextBox x:Name="NameBox" />
+                </DockPanel>
+                <TextBlock Style="{StaticResource Hint}" Text="{x:Static res:Strings.UploaderEditor_NameHint}" />
+
+                <!-- Custom uploader (ShareX) -->
+                <StackPanel x:Name="CustomPanel">
+                    <TextBlock Text="{x:Static res:Strings.UploaderEditor_Request}" Style="{StaticResource CardTitle}" />
+                    <DockPanel Style="{StaticResource Field}">
+                        <TextBlock Text="{x:Static res:Strings.UploaderEditor_Method}" Style="{StaticResource FieldLabel}" />
+                        <ComboBox x:Name="MethodCombo" Style="{StaticResource PropCombo}" Width="100" Margin="0,0,6,0" />
+                        <TextBox x:Name="RequestUrlBox" ToolTip="https://example.com/upload.php" />
+                    </DockPanel>
+                    <TextBlock Text="{x:Static res:Strings.UploaderEditor_Parameters}" Margin="0,4,0,4" />
+                    <DataGrid x:Name="ParametersGrid" Style="{StaticResource PairGrid}" />
+                    <TextBlock Text="Headers" Margin="0,0,0,4" />
+                    <DataGrid x:Name="HeadersGrid" Style="{StaticResource PairGrid}" />
+
+                    <TextBlock Text="Body" Style="{StaticResource CardTitle}" />
+                    <DockPanel Style="{StaticResource Field}">
+                        <TextBlock Text="{x:Static res:Strings.UploaderEditor_BodyType}" Style="{StaticResource FieldLabel}" />
+                        <ComboBox x:Name="BodyCombo" Style="{StaticResource PropCombo}" Width="240" HorizontalAlignment="Left"
+                                  SelectionChanged="BodyCombo_SelectionChanged" />
+                    </DockPanel>
+                    <DockPanel x:Name="FileFormNameRow" Style="{StaticResource Field}">
+                        <TextBlock Text="{x:Static res:Strings.UploaderEditor_FileFormName}" Style="{StaticResource FieldLabel}" />
+                        <TextBox x:Name="FileFormNameBox" ToolTip="file" />
+                    </DockPanel>
+                    <StackPanel x:Name="ArgumentsRow">
+                        <TextBlock Text="{x:Static res:Strings.UploaderEditor_Arguments}" Margin="0,4,0,4" />
+                        <DataGrid x:Name="ArgumentsGrid" Style="{StaticResource PairGrid}" />
+                    </StackPanel>
+                    <StackPanel x:Name="DataRow">
+                        <TextBlock Text="{x:Static res:Strings.UploaderEditor_Data}" Margin="0,4,0,4" />
+                        <TextBox x:Name="DataBox" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" FontFamily="Consolas" FontSize="12"
+                                 MinHeight="90" MaxHeight="200" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" Margin="0,0,0,8" />
+                    </StackPanel>
+
+                    <TextBlock Text="{x:Static res:Strings.UploaderEditor_Response}" Style="{StaticResource CardTitle}" />
+                    <DockPanel Style="{StaticResource Field}">
+                        <TextBlock Text="URL" Style="{StaticResource FieldLabel}" />
+                        <TextBox x:Name="UrlBox" ToolTip="{}{json:files[0].url}" />
+                    </DockPanel>
+                    <TextBlock Style="{StaticResource Hint}" Text="{x:Static res:Strings.UploaderEditor_UrlHint}" />
+                    <DockPanel Style="{StaticResource Field}">
+                        <TextBlock Text="{x:Static res:Strings.UploaderEditor_ThumbnailUrl}" Style="{StaticResource FieldLabel}" />
+                        <TextBox x:Name="ThumbnailUrlBox" />
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource Field}">
+                        <TextBlock Text="{x:Static res:Strings.UploaderEditor_DeletionUrl}" Style="{StaticResource FieldLabel}" />
+                        <TextBox x:Name="DeletionUrlBox" />
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource Field}">
+                        <TextBlock Text="{x:Static res:Strings.UploaderEditor_ErrorMessage}" Style="{StaticResource FieldLabel}" />
+                        <TextBox x:Name="ErrorMessageBox" ToolTip="{}{json:error}" />
+                    </DockPanel>
+
+                    <Expander Header="{x:Static res:Strings.UploaderEditor_SyntaxHelp}" Margin="0,8,0,0" Foreground="{DynamicResource InkBrush}">
+                        <TextBlock x:Name="SyntaxHelpText" FontSize="12" TextWrapping="Wrap" Margin="0,6,0,0"
+                                   Foreground="{DynamicResource SubtleTextBrush}" />
+                    </Expander>
+                </StackPanel>
+
+                <!-- FTP, SFTP en SCP -->
+                <StackPanel x:Name="ServerPanel">
+                    <TextBlock Text="Server" Style="{StaticResource CardTitle}" />
+                    <DockPanel Style="{StaticResource Field}">
+                        <TextBlock Text="Host" Style="{StaticResource FieldLabel}" />
+                        <TextBox x:Name="PortBox" DockPanel.Dock="Right" Width="70" Margin="6,0,0,0" ToolTip="{x:Static res:Strings.UploaderEditor_Port}" />
+                        <TextBlock DockPanel.Dock="Right" Text="{x:Static res:Strings.UploaderEditor_Port}" VerticalAlignment="Center" Margin="10,0,0,0" />
+                        <TextBox x:Name="HostBox" ToolTip="example.com" />
+                    </DockPanel>
+                    <StackPanel x:Name="FtpOptions">
+                        <DockPanel Style="{StaticResource Field}">
+                            <TextBlock Text="{x:Static res:Strings.UploaderEditor_Encryption}" Style="{StaticResource FieldLabel}" />
+                            <CheckBox x:Name="PassiveBox" DockPanel.Dock="Right" Content="{x:Static res:Strings.UploaderEditor_Passive}" Margin="10,0,0,0"
+                                      VerticalAlignment="Center" />
+                            <ComboBox x:Name="EncryptionCombo" Style="{StaticResource PropCombo}" Width="260" HorizontalAlignment="Left"
+                                      SelectionChanged="EncryptionCombo_SelectionChanged" />
+                        </DockPanel>
+                    </StackPanel>
+                    <DockPanel Style="{StaticResource Field}">
+                        <TextBlock Text="{x:Static res:Strings.UploaderEditor_Username}" Style="{StaticResource FieldLabel}" />
+                        <TextBox x:Name="UsernameBox" />
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource Field}">
+                        <TextBlock Text="{x:Static res:Strings.UploaderEditor_Password}" Style="{StaticResource FieldLabel}" />
+                        <PasswordBox x:Name="PasswordBox" />
+                    </DockPanel>
+                    <StackPanel x:Name="SshOptions">
+                        <DockPanel Style="{StaticResource Field}">
+                            <TextBlock Text="{x:Static res:Strings.UploaderEditor_PrivateKey}" Style="{StaticResource FieldLabel}" />
+                            <Button DockPanel.Dock="Right" Style="{StaticResource SecondaryButton}" Content="{x:Static res:Strings.Common_Browse}"
+                                    Click="BrowseKey_Click" Margin="6,0,0,0" />
+                            <TextBox x:Name="PrivateKeyBox" />
+                        </DockPanel>
+                        <DockPanel Style="{StaticResource Field}">
+                            <TextBlock Text="{x:Static res:Strings.UploaderEditor_Passphrase}" Style="{StaticResource FieldLabel}" />
+                            <PasswordBox x:Name="PassphraseBox" />
+                        </DockPanel>
+                        <TextBlock Style="{StaticResource Hint}" Text="{x:Static res:Strings.UploaderEditor_KeyHint}" />
+                    </StackPanel>
+
+                    <TextBlock Text="{x:Static res:Strings.UploaderEditor_Location}" Style="{StaticResource CardTitle}" />
+                    <DockPanel Style="{StaticResource Field}">
+                        <TextBlock Text="{x:Static res:Strings.UploaderEditor_RemoteFolder}" Style="{StaticResource FieldLabel}" />
+                        <TextBox x:Name="RemoteFolderBox" ToolTip="/var/www/shots" />
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource Field}">
+                        <TextBlock Text="{x:Static res:Strings.UploaderEditor_PublicUrl}" Style="{StaticResource FieldLabel}" />
+                        <TextBox x:Name="PublicUrlBox" ToolTip="https://example.com/shots/{filename}" />
+                    </DockPanel>
+                    <TextBlock Style="{StaticResource Hint}" Text="{x:Static res:Strings.UploaderEditor_PublicUrlHint}" />
+
+                    <DockPanel x:Name="HostKeyRow" Style="{StaticResource Field}" Margin="0,6,0,0">
+                        <TextBlock Text="Host key" Style="{StaticResource FieldLabel}" />
+                        <Button x:Name="ForgetHostKeyButton" DockPanel.Dock="Right" Style="{StaticResource FlatButton}"
+                                Content="{x:Static res:Strings.UploaderEditor_ForgetHostKey}" Click="ForgetHostKey_Click" Margin="6,0,0,0" />
+                        <TextBlock x:Name="HostKeyText" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" FontFamily="Consolas" FontSize="12" />
+                    </DockPanel>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

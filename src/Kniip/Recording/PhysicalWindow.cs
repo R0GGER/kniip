@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using Kniip.Interop;
+using Kniip.Settings;
 
 namespace Kniip.Recording;
 
@@ -44,8 +45,8 @@ internal static class PhysicalWindow
     public static List<Rectangle> SnapshotWindows(bool includeOwn = false) =>
         Snapshot(includeOwn).Select(w => w.Bounds).ToList();
 
-    /// <summary>Programmanaam van het bovenste venster uit <paramref name="windows"/> onder het midden van <paramref name="area"/>.</summary>
-    public static string? ProgramNameAt(IEnumerable<SnappedWindow> windows, Rectangle area)
+    /// <summary>Programmanaam en titel van het bovenste venster uit <paramref name="windows"/> onder het midden van <paramref name="area"/>.</summary>
+    public static WindowInfo? WindowAt(IEnumerable<SnappedWindow> windows, Rectangle area)
     {
         var point = new System.Drawing.Point(area.X + area.Width / 2, area.Y + area.Height / 2);
         foreach (SnappedWindow window in windows)
@@ -58,7 +59,9 @@ internal static class PhysicalWindow
             try
             {
                 using Process process = Process.GetProcessById((int)window.ProcessId);
-                return process.ProcessName;
+                var title = new StringBuilder(512);
+                NativeMethods.GetWindowText(window.Handle, title, title.Capacity);
+                return new WindowInfo(process.ProcessName, title.Length > 0 ? title.ToString() : process.ProcessName);
             }
             catch (Exception)
             {
@@ -99,7 +102,7 @@ internal static class PhysicalWindow
             NativeMethods.RECT rect = NativeMethods.GetVisibleWindowRect(hwnd);
             if (rect.Width > 8 && rect.Height > 8)
             {
-                result.Add(new SnappedWindow(new Rectangle(rect.Left, rect.Top, rect.Width, rect.Height), pid));
+                result.Add(new SnappedWindow(new Rectangle(rect.Left, rect.Top, rect.Width, rect.Height), pid, hwnd));
             }
 
             return true;
@@ -109,4 +112,4 @@ internal static class PhysicalWindow
     }
 }
 
-internal sealed record SnappedWindow(Rectangle Bounds, uint ProcessId);
+internal sealed record SnappedWindow(Rectangle Bounds, uint ProcessId, IntPtr Handle);

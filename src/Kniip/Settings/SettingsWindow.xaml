@@ -163,13 +163,22 @@
                                 Margin="6,0,0,0" />
                         <TextBlock x:Name="SnipFolderText" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
                     </DockPanel>
+                    <DockPanel Margin="0,0,0,4">
+                        <TextBlock Text="{x:Static res:Strings.Settings_Subfolder}" VerticalAlignment="Center" Width="110" Padding="12,0,0,0" />
+                        <Button Tag="SnipFolder" DockPanel.Dock="Right" Style="{StaticResource SecondaryButton}" Margin="6,0,0,0"
+                                Content="{x:Static res:Strings.Settings_InsertToken}" Click="InsertToken_Click" />
+                        <TextBox x:Name="SnipFolderTemplateBox" Height="26" VerticalContentAlignment="Center" TextChanged="Template_TextChanged"
+                                 ToolTip="{x:Static res:Strings.Settings_SubfolderTip}" />
+                    </DockPanel>
                     <DockPanel Margin="0,0,0,2">
-                        <TextBlock Text="{x:Static res:Strings.Common_Name}" VerticalAlignment="Center" Width="110" Padding="12,0,0,0" />
+                        <TextBlock Text="{x:Static res:Strings.Settings_FileName}" VerticalAlignment="Center" Width="110" Padding="12,0,0,0" />
+                        <Button Tag="SnipFile" DockPanel.Dock="Right" Style="{StaticResource SecondaryButton}" Margin="6,0,0,0"
+                                Content="{x:Static res:Strings.Settings_InsertToken}" Click="InsertToken_Click" />
                         <TextBox x:Name="SnipTemplateBox" Height="26" VerticalContentAlignment="Center" TextChanged="Template_TextChanged"
                                  ToolTip="{x:Static res:Strings.Settings_SnipNameTip}" />
                     </DockPanel>
-                    <TextBlock x:Name="SnipTemplatePreview" Style="{StaticResource Hint}" Margin="110,0,0,8" TextTrimming="CharacterEllipsis" />
-                    <DockPanel Margin="0,0,0,4">
+                    <TextBlock x:Name="SnipTemplatePreview" Style="{StaticResource Hint}" Margin="110,0,0,0" TextTrimming="CharacterEllipsis" />
+                    <DockPanel Margin="0,8,0,4">
                         <TextBlock Text="Screencasts" VerticalAlignment="Center" Width="110" />
                         <Button Tag="Video" DockPanel.Dock="Right" Style="{StaticResource FlatButton}" Content="{x:Static res:Strings.Common_Ask}" Click="ClearSaveFolder_Click"
                                 Margin="6,0,0,0" ToolTip="{x:Static res:Strings.Settings_AskVideoTip}" />
@@ -177,39 +186,114 @@
                                 Margin="6,0,0,0" />
                         <TextBlock x:Name="VideoFolderText" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
                     </DockPanel>
+                    <DockPanel Margin="0,0,0,4">
+                        <TextBlock Text="{x:Static res:Strings.Settings_Subfolder}" VerticalAlignment="Center" Width="110" Padding="12,0,0,0" />
+                        <Button Tag="VideoFolder" DockPanel.Dock="Right" Style="{StaticResource SecondaryButton}" Margin="6,0,0,0"
+                                Content="{x:Static res:Strings.Settings_InsertToken}" Click="InsertToken_Click" />
+                        <TextBox x:Name="VideoFolderTemplateBox" Height="26" VerticalContentAlignment="Center" TextChanged="Template_TextChanged"
+                                 ToolTip="{x:Static res:Strings.Settings_SubfolderTip}" />
+                    </DockPanel>
                     <DockPanel Margin="0,0,0,2">
-                        <TextBlock Text="{x:Static res:Strings.Common_Name}" VerticalAlignment="Center" Width="110" Padding="12,0,0,0" />
+                        <TextBlock Text="{x:Static res:Strings.Settings_FileName}" VerticalAlignment="Center" Width="110" Padding="12,0,0,0" />
+                        <Button Tag="VideoFile" DockPanel.Dock="Right" Style="{StaticResource SecondaryButton}" Margin="6,0,0,0"
+                                Content="{x:Static res:Strings.Settings_InsertToken}" Click="InsertToken_Click" />
                         <TextBox x:Name="VideoTemplateBox" Height="26" VerticalContentAlignment="Center" TextChanged="Template_TextChanged"
                                  ToolTip="{x:Static res:Strings.Settings_VideoNameTip}" />
                     </DockPanel>
-                    <TextBlock x:Name="VideoTemplatePreview" Style="{StaticResource Hint}" Margin="110,0,0,8" TextTrimming="CharacterEllipsis" />
-                    <TextBlock x:Name="TemplateHelp" Style="{StaticResource Hint}" Margin="0,0,0,4" />
-                    <TextBlock Style="{StaticResource Hint}" Margin="0,4,0,8"
-                               Text="{x:Static res:Strings.Settings_SaveExplanation}" />
-                    <RadioButton x:Name="SaveOnlyRadio" GroupName="SaveButton" Content="{x:Static res:Strings.Common_Save}" />
+                    <TextBlock x:Name="VideoTemplatePreview" Style="{StaticResource Hint}" Margin="110,0,0,0" TextTrimming="CharacterEllipsis" />
+                    <RadioButton x:Name="SaveOnlyRadio" GroupName="SaveButton" Content="{x:Static res:Strings.Common_Save}" Margin="0,12,0,4" />
                     <RadioButton x:Name="SaveAndCopyRadio" GroupName="SaveButton" Content="{x:Static res:Strings.Settings_SaveAndCopy}" />
                     <TextBlock Style="{StaticResource Hint}"
                                Text="{x:Static res:Strings.Settings_SaveAndCopyExplanation}" />
+                    <TextBlock Style="{StaticResource Hint}" Margin="0,12,0,4"
+                               Text="{x:Static res:Strings.Settings_SaveExplanation}" />
                 </StackPanel>
             </TabItem>
 
             <TabItem Header="{x:Static res:Strings.Common_Upload}">
                 <StackPanel Style="{StaticResource TabPage}">
-                    <TextBlock Text="{x:Static res:Strings.Settings_UploadZipline}" Style="{StaticResource CardTitle}" />
-                    <DockPanel Margin="0,2,0,4">
-                        <TextBlock Text="Server" VerticalAlignment="Center" Width="110" />
-                        <Button DockPanel.Dock="Right" Style="{StaticResource FlatButton}" Content="{x:Static res:Strings.Settings_RemoveUpload}" Click="RemoveUploader_Click"
-                                x:Name="RemoveUploaderButton" Margin="6,0,0,0" ToolTip="{x:Static res:Strings.Settings_RemoveUploadTip}" />
-                        <Button DockPanel.Dock="Right" Style="{StaticResource SecondaryButton}" Content="{x:Static res:Strings.Settings_Test}" Click="TestUploader_Click"
-                                x:Name="TestUploaderButton" Margin="6,0,0,0" ToolTip="{x:Static res:Strings.Settings_TestTip}" />
-                        <Button DockPanel.Dock="Right" Style="{StaticResource SecondaryButton}" Content="{x:Static res:Strings.Settings_Import}" Click="ImportUploader_Click"
-                                Margin="6,0,0,0" ToolTip="{x:Static res:Strings.Settings_ImportTip}" />
-                        <TextBlock x:Name="UploaderText" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
-                    </DockPanel>
-                    <TextBlock x:Name="UploaderStatus" Style="{StaticResource Hint}" Margin="0,4,0,4" Visibility="Collapsed" />
-                    <TextBlock Style="{StaticResource Hint}" Margin="0,4,0,4"
+                    <TextBlock Text="{x:Static res:Strings.Settings_UploadDestinations}" Style="{StaticResource CardTitle}" />
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,6">
+                        <Button Style="{StaticResource AccentButton}" Content="{x:Static res:Strings.Settings_Import}" Click="ImportUploader_Click"
+                                Margin="0" ToolTip="{x:Static res:Strings.Settings_ImportTip}" />
+                        <TextBlock Text="{x:Static res:Strings.Settings_UploadOrNew}" Foreground="{DynamicResource SubtleTextBrush}"
+                                   VerticalAlignment="Center" Margin="14,0,6,0" />
+                        <Button Tag="ftp" Style="{StaticResource SecondaryButton}" Content="FTP" Click="NewUploader_Click" Margin="0,0,6,0"
+                                ToolTip="FTP / FTPS" />
+                        <Button Tag="sftp" Style="{StaticResource SecondaryButton}" Content="SFTP" Click="NewUploader_Click" Margin="0,0,6,0" />
+                        <Button Tag="scp" Style="{StaticResource SecondaryButton}" Content="SCP" Click="NewUploader_Click" Margin="0" />
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource Hint}" Margin="0,0,0,12"
                                Text="{x:Static res:Strings.Settings_ImportExplanation}" />
-                    <TextBlock Style="{StaticResource Hint}" Margin="0,0,0,4"
+
+                    <Border x:Name="NoUploadersText" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1" CornerRadius="6"
+                            Padding="14,16" Margin="0,0,0,6">
+                        <TextBlock Text="{x:Static res:Strings.Settings_NoUploaders}" Foreground="{DynamicResource SubtleTextBrush}"
+                                   TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center" />
+                    </Border>
+                    <ScrollViewer MaxHeight="216" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
+                        <ItemsControl x:Name="UploaderList" Focusable="False">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border x:Name="Row" Background="Transparent" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
+                                            CornerRadius="6" Padding="10,7,4,7" Margin="0,0,0,6" SnapsToDevicePixels="True"
+                                            MouseLeftButtonDown="UploaderRow_MouseLeftButtonDown">
+                                        <DockPanel>
+                                            <Border DockPanel.Dock="Left" Width="32" Height="32" CornerRadius="6" Margin="0,0,10,0"
+                                                    Background="{DynamicResource ControlBrush}" BorderBrush="{DynamicResource ControlBorderBrush}" BorderThickness="1">
+                                                <TextBlock Text="{Binding Glyph}" Style="{StaticResource IconText}" FontSize="15"
+                                                           Foreground="{DynamicResource AccentTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Border>
+                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Button x:Name="StarButton" Style="{StaticResource FlatButton}" MinWidth="30" MinHeight="30" Padding="6"
+                                                        Click="DefaultUploader_Click" ToolTip="{x:Static res:Strings.Settings_UploadMakeDefault}">
+                                                    <TextBlock x:Name="Star" Text="&#xE734;" Style="{StaticResource IconText}" FontSize="14"
+                                                               Foreground="{DynamicResource SubtleTextBrush}" />
+                                                </Button>
+                                                <Button Style="{StaticResource FlatButton}" MinWidth="30" MinHeight="30" Padding="6"
+                                                        Click="EditUploader_Click" ToolTip="{x:Static res:Strings.Settings_UploadEdit}">
+                                                    <TextBlock Text="&#xE70F;" Style="{StaticResource IconText}" FontSize="14" />
+                                                </Button>
+                                                <Button Style="{StaticResource FlatButton}" MinWidth="30" MinHeight="30" Padding="6"
+                                                        Click="UploaderMore_Click" ToolTip="{x:Static res:Strings.Settings_UploadMore}">
+                                                    <TextBlock Text="&#xE712;" Style="{StaticResource IconText}" FontSize="14" />
+                                                </Button>
+                                            </StackPanel>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" MaxWidth="250" />
+                                                    <Border x:Name="DefaultBadge" Grid.Column="1" Background="{DynamicResource AccentBrush}" CornerRadius="8"
+                                                            Padding="7,0,7,1" Margin="8,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="Collapsed">
+                                                        <TextBlock Text="{x:Static res:Strings.Settings_UploadDefault}" Foreground="White" FontSize="11" />
+                                                    </Border>
+                                                </Grid>
+                                                <TextBlock Text="{Binding Subtitle}" Foreground="{DynamicResource SubtleTextBrush}" FontSize="12"
+                                                           TextTrimming="CharacterEllipsis" Margin="0,1,0,0" />
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </Border>
+                                    <DataTemplate.Triggers>
+                                        <Trigger SourceName="Row" Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Row" Property="Background" Value="{DynamicResource HoverBrush}" />
+                                        </Trigger>
+                                        <DataTrigger Binding="{Binding IsDefault}" Value="True">
+                                            <Setter TargetName="Row" Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+                                            <Setter TargetName="DefaultBadge" Property="Visibility" Value="Visible" />
+                                            <Setter TargetName="Star" Property="Text" Value="&#xE735;" />
+                                            <Setter TargetName="Star" Property="Foreground" Value="{DynamicResource AccentTextBrush}" />
+                                            <Setter TargetName="StarButton" Property="ToolTip" Value="{x:Static res:Strings.Settings_UploadIsDefault}" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <TextBlock x:Name="UploaderStatus" Style="{StaticResource Hint}" Margin="0,2,0,4" Visibility="Collapsed" />
+                    <TextBlock Style="{StaticResource Hint}" Margin="0,8,0,4"
                                Text="{x:Static res:Strings.Settings_UploadExplanation}" />
                 </StackPanel>
             </TabItem>
@@ -295,6 +379,26 @@
                     <CheckBox x:Name="OpenWithBox" Content="{x:Static res:Strings.Settings_OpenWith}" />
                     <TextBlock Style="{StaticResource Hint}"
                                Text="{x:Static res:Strings.Settings_IntegrationExplanation}" />
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="{x:Static res:Strings.Settings_Backup}">
+                <StackPanel Style="{StaticResource TabPage}">
+                    <TextBlock Text="{x:Static res:Strings.Settings_BackupTitle}" Style="{StaticResource CardTitle}" />
+                    <TextBlock Style="{StaticResource Hint}" Margin="0,0,0,8"
+                               Text="{x:Static res:Strings.Settings_BackupExplanation}" />
+                    <Button Style="{StaticResource SecondaryButton}" Content="{x:Static res:Strings.Settings_BackupCreate}" Click="BackupSettings_Click"
+                            HorizontalAlignment="Left" Margin="0,0,0,8" />
+                    <CheckBox x:Name="PlainTokenBox" Content="{x:Static res:Strings.Settings_BackupPlainToken}" />
+                    <TextBlock Style="{StaticResource Hint}"
+                               Text="{x:Static res:Strings.Settings_BackupPlainTokenExplanation}" />
+                    <TextBlock x:Name="BackupStatus" Style="{StaticResource Hint}" Margin="0,4,0,0" Visibility="Collapsed" />
+
+                    <TextBlock Text="{x:Static res:Strings.Settings_Restore}" Style="{StaticResource CardTitle}" Margin="0,16,0,6" />
+                    <TextBlock Style="{StaticResource Hint}" Margin="0,0,0,8"
+                               Text="{x:Static res:Strings.Settings_RestoreExplanation}" />
+                    <Button Style="{StaticResource SecondaryButton}" Content="{x:Static res:Strings.Settings_RestoreButton}" Click="RestoreSettings_Click"
+                            HorizontalAlignment="Left" />
                 </StackPanel>
             </TabItem>
 

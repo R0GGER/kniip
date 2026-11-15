@@ -216,9 +216,9 @@ public partial class App : Application
         }
     }
 
-    /// <param name="windowName">Programmanaam van het geknipte venster, voor %V in het naamsjabloon.</param>
-    public void OpenEditor(BitmapSource image, string? windowName = null) =>
-        AddEditorTab(new EditorView(image, Settings, windowName: windowName));
+    /// <param name="window">Programmanaam en titel van het geknipte venster, voor %pn en %t in het naamsjabloon.</param>
+    public void OpenEditor(BitmapSource image, WindowInfo? window = null) =>
+        AddEditorTab(new EditorView(image, Settings, window: window));
 
     private void AddEditorTab(EditorView view)
     {
@@ -434,8 +434,8 @@ public partial class App : Application
         }
         else if (image != null)
         {
-            string? windowName = area is { } a ? PhysicalWindow.ProgramNameAt(snapshot, a) : null;
-            OpenEditor(image, windowName);
+            WindowInfo? window = area is { } a ? PhysicalWindow.WindowAt(snapshot, a) : null;
+            OpenEditor(image, window);
         }
     }
 
@@ -511,9 +511,9 @@ public partial class App : Application
     private void UpdateCapturePaused() =>
         Capture.Paused = (_tray?.IsPaused ?? false) || Recorder.Stage != RecordingStage.Idle;
 
-    private void OpenScreencast(string path, ScreencastFormat? format, string? windowName)
+    private void OpenScreencast(string path, ScreencastFormat? format, WindowInfo? recordedWindow)
     {
-        var window = new ScreencastWindow(path, Settings, format, windowName);
+        var window = new ScreencastWindow(path, Settings, format, recordedWindow);
         window.Show();
         BringToFront(window);
     }
@@ -628,6 +628,13 @@ public partial class App : Application
     };
 
     public void ShowBalloon(string title, string text) => _tray?.ShowBalloon(title, text);
+
+    /// <summary>Vervangt alle instellingen (herstel uit backup); daarna herstarten, want vensters houden de oude instantie vast.</summary>
+    internal void ReplaceSettings(AppSettings settings)
+    {
+        Settings = settings;
+        SettingsStore.Save(Settings);
+    }
 
     public void SaveSettings()
     {

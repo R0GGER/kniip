@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Windows.Media;
 using Kniip.Infrastructure;
+using Kniip.Upload;
 
 namespace Kniip.Settings;
 
@@ -26,7 +27,7 @@ public static class SettingsStore
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             AppIdentity.IsTest ? "Kniip" : "KnipPlus", "settings.json");
 
-    private static readonly JsonSerializerOptions Options = new()
+    internal static readonly JsonSerializerOptions Options = new()
     {
         WriteIndented = true,
         Converters = { new JsonStringEnumConverter(), new ColorJsonConverter() }
@@ -44,7 +45,10 @@ public static class SettingsStore
 
             if (File.Exists(FilePath))
             {
-                return JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(FilePath), Options) ?? new AppSettings();
+                AppSettings settings = JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(FilePath), Options) ?? new AppSettings();
+                MigrateTemplates(settings);
+                MigrateUploaders(settings);
+                return settings;
             }
         }
         catch (Exception)
@@ -53,6 +57,81 @@ public static class SettingsStore
         }
 
         return new AppSettings();
+    }
+
+    /// <summary>
+    /// Van vóór de aparte submapvelden stonden de mappen in het naamsjabloon: alles vóór de laatste / of \
+    /// gaat naar het submappatroon, zodat het pad gelijk blijft.
+    /// </summary>
+    private static void MigrateTemplates(AppSettings settings)
+    {
+        if (settings.SnipFolderTemplate is null)
+        {
+            (settings.SnipFolderTemplate, settings.SnipFileNameTemplate) = SplitTemplate(settings.SnipFileNameTemplate);
+        }
+
+        if (settings.VideoFolderTemplate is null)
+        {
+            (settings.VideoFolderTemplate, settings.VideoFileNameTemplate) = SplitTemplate(settings.VideoFileNameTemplate);
+        }
+    }
+
+    /// <summary>De ene Zipline-uploader van vroeger wordt een custom uploader in de lijst, en de standaard.</summary>
+    private static void MigrateUploaders(AppSettings settings)
+    {
+        settings.Uploaders.RemoveAll(u => u is null);
+        if (settings.LegacyUploader is not { } legacy)
+        {
+            return;
+        }
+
+        settings.LegacyUploader = null;
+        if (legacy.RequestUrl.Length == 0)
+        {
+            return;
+        }
+
+        var custom = new CustomUploaderDestination
+        {
+            Name = legacy.Name,
+            RequestURL = legacy.RequestUrl,
+            FileFormName = legacy.FileFormName.Length > 0 ? legacy.FileFormName : "file",
+            URL = "{json:" + (legacy.UrlPath.Length > 0 ? legacy.UrlPath : "files[0].url") + "}"
+        };
+        foreach ((string name, string value) in legacy.Headers)
+        {
+            custom.Headers[name] = value;
+        }
+
+        settings.Uploaders.Insert(0, custom);
+        settings.DefaultUploaderId = custom.Id;
+    }
+
+    /// <summary>Losse kopie, bijvoorbeeld om een bestemming te bewerken zonder het origineel te raken.</summary>
+    public static T DeepCopy<T>(T value)
+    {
+        ProtectedHeadersConverter.WritePlain = true;
+        try
+        {
+            return JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(value, Options), Options)!;
+        }
+        finally
+        {
+            ProtectedHeadersConverter.WritePlain = false;
+        }
+    }
+
+    private static (string? Folder, string? File) SplitTemplate(string? template)
+    {
+        int split = template?.LastIndexOfAny(new[] { '/', '\\' }) ?? -1;
+        if (split < 0)
+        {
+            return (null, template);
+        }
+
+        string folder = template![..split].Trim();
+        string file = template[(split + 1)..].Trim();
+        return (folder.Length > 0 ? folder : null, file.Length > 0 ? file : null);
     }
 
     public static void Save(AppSettings settings)
@@ -69,15 +148,58 @@ public static class SettingsStore
     }
 
     /// <summary>
+    /// Schrijft een backup; met <paramref name="plainHeaders"/> staan de upload-tokens en wachtwoorden leesbaar in het bestand,
+    /// zodat de backup ook voor een andere Windows-gebruiker of pc bruikbaar is.
+    /// </summary>
+    public static void Export(AppSettings settings, string path, bool plainHeaders)
+    {
+        ProtectedHeadersConverter.WritePlain = plainHeaders;
+        try
+        {
+            File.WriteAllText(path, JsonSerializer.Serialize(settings, Options));
+        }
+        finally
+        {
+            ProtectedHeadersConverter.WritePlain = false;
+        }
+    }
+
+    public static AppSettings Import(string path)
+    {
+        AppSettings settings = JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(path), Options)
+                               ?? throw new InvalidDataException();
+        MigrateTemplates(settings);
+        MigrateUploaders(settings);
+        return settings;
+    }
+
+    /// <summary>
     /// Slaat de uploadheaders (met de token) met DPAPI versleuteld op, alleen leesbaar voor deze Windows-gebruiker.
     /// </summary>
     public sealed class ProtectedHeadersConverter : JsonConverter<Dictionary<string, string>>
     {
         private static readonly byte[] Entropy = Encoding.UTF8.GetBytes("kniip-uploader");
 
+        [ThreadStatic]
+        internal static bool WritePlain;
+
         public override Dictionary<string, string> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            if (reader.TokenType == JsonTokenType.StartObject)
+            {
+                // Onversleutelde backup: bij de volgende Save wordt het weer versleuteld.
+                if (JsonSerializer.Deserialize<Dictionary<string, string>>(ref reader) is { } plainHeaders)
+                {
+                    foreach ((string name, string value) in plainHeaders)
+                    {
+                        result[name] = value;
+                    }
+                }
+
+                return result;
+            }
+
             if (reader.TokenType != JsonTokenType.String)
             {
                 reader.Skip();
@@ -106,8 +228,71 @@ public static class SettingsStore
 
         public override void Write(Utf8JsonWriter writer, Dictionary<string, string> value, JsonSerializerOptions options)
         {
+            if (WritePlain)
+            {
+                JsonSerializer.Serialize(writer, value);
+                return;
+            }
+
             byte[] plain = JsonSerializer.SerializeToUtf8Bytes(value);
             writer.WriteStringValue(Convert.ToBase64String(ProtectedData.Protect(plain, Entropy, DataProtectionScope.CurrentUser)));
+        }
+    }
+
+    /// <summary>
+    /// Een wachtwoord of wachtzin, net als de headers met DPAPI versleuteld. Onversleuteld staat het als
+    /// <c>{"plain": "..."}</c> in een backup, zodat het niet met een versleutelde waarde te verwarren is.
+    /// </summary>
+    public sealed class ProtectedStringConverter : JsonConverter<string>
+    {
+        private static readonly byte[] Entropy = Encoding.UTF8.GetBytes("kniip-uploader-secret");
+
+        public override bool HandleNull => true;
+
+        public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            if (reader.TokenType == JsonTokenType.StartObject)
+            {
+                return JsonSerializer.Deserialize<Dictionary<string, string>>(ref reader) is { } plain
+                       && plain.TryGetValue("plain", out string? value)
+                    ? value
+                    : string.Empty;
+            }
+
+            if (reader.TokenType != JsonTokenType.String || reader.GetString() is not { Length: > 0 } text)
+            {
+                reader.Skip();
+                return string.Empty;
+            }
+
+            try
+            {
+                return Encoding.UTF8.GetString(ProtectedData.Unprotect(Convert.FromBase64String(text), Entropy, DataProtectionScope.CurrentUser));
+            }
+            catch (Exception)
+            {
+                // Van een andere gebruiker of pc: het wachtwoord moet opnieuw worden ingevuld.
+                return string.Empty;
+            }
+        }
+
+        public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
+        {
+            if (value.Length == 0)
+            {
+                writer.WriteStringValue(string.Empty);
+            }
+            else if (ProtectedHeadersConverter.WritePlain)
+            {
+                writer.WriteStartObject();
+                writer.WriteString("plain", value);
+                writer.WriteEndObject();
+            }
+            else
+            {
+                byte[] secret = ProtectedData.Protect(Encoding.UTF8.GetBytes(value), Entropy, DataProtectionScope.CurrentUser);
+                writer.WriteStringValue(Convert.ToBase64String(secret));
+            }
         }
     }
 

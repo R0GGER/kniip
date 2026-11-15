@@ -86,6 +86,8 @@
   <data name="Common_Top" xml:space="preserve"><value>Top</value></data>
   <data name="Common_Upload" xml:space="preserve"><value>Upload</value></data>
   <data name="Common_UploadFailed" xml:space="preserve"><value>Upload failed.&#xA;&#xA;{0}</value></data>
+  <data name="Common_UploadTo" xml:space="preserve"><value>Upload to...</value></data>
+  <data name="Common_UploadToNamed" xml:space="preserve"><value>Upload to {0}</value></data>
   <data name="Common_Window" xml:space="preserve"><value>Window</value></data>
   <data name="Corner_Square" xml:space="preserve"><value>Square</value></data>
   <data name="Countdown_ClickToCancel" xml:space="preserve"><value>Click to cancel</value></data>
@@ -124,6 +126,7 @@
   <data name="Editor_SettingsUpdateTip" xml:space="preserve"><value>Settings - new version available</value></data>
   <data name="Editor_SnipTabTitle" xml:space="preserve"><value>Snip {0:HH:mm}</value></data>
   <data name="Editor_ToolbarsHidden" xml:space="preserve"><value>Toolbars hidden. Press Ctrl+H or right-click the canvas to bring them back.</value></data>
+  <data name="Editor_UploadCancelled" xml:space="preserve"><value>Upload cancelled.</value></data>
   <data name="Editor_UploadedCopied" xml:space="preserve"><value>Uploaded, link copied: {0}</value></data>
   <data name="Editor_UploadedCopyFailed" xml:space="preserve"><value>Uploaded: {0}. Copying failed: the clipboard is busy.</value></data>
   <data name="Editor_UploadFailedShort" xml:space="preserve"><value>Upload failed.</value></data>
@@ -310,6 +313,17 @@
   <data name="Settings_AskVideoTip" xml:space="preserve"><value>Ask every time where to save the screencast</value></data>
   <data name="Settings_AutoCheck" xml:space="preserve"><value>Automatically check for new versions</value></data>
   <data name="Settings_Autostart" xml:space="preserve"><value>Start kniip with Windows</value></data>
+  <data name="Settings_Backup" xml:space="preserve"><value>Backup</value></data>
+  <data name="Settings_BackupCreate" xml:space="preserve"><value>Create backup...</value></data>
+  <data name="Settings_BackupExplanation" xml:space="preserve"><value>Saves all saved settings (shortcuts, folders, upload destination, tool styles and toolbar) to a file. Changes you have not saved yet are not included.</value></data>
+  <data name="Settings_BackupFailed" xml:space="preserve"><value>The backup could not be saved:&#xA;{0}&#xA;&#xA;{1}</value></data>
+  <data name="Settings_BackupFileName" xml:space="preserve"><value>settings</value></data>
+  <data name="Settings_BackupFilter" xml:space="preserve"><value>kniip settings (*.json)|*.json|All files (*.*)|*.*</value></data>
+  <data name="Settings_BackupPlainToken" xml:space="preserve"><value>Include upload tokens and passwords unencrypted (for another PC)</value></data>
+  <data name="Settings_BackupPlainTokenExplanation" xml:space="preserve"><value>By default they stay encrypted and can only be restored by this Windows user on this PC; elsewhere you will need to enter them again or import the uploader again.</value></data>
+  <data name="Settings_BackupPlainTokenWarning" xml:space="preserve"><value>The upload tokens and passwords are readable in this backup. Keep the file private and do not share it.</value></data>
+  <data name="Settings_BackupSaved" xml:space="preserve"><value>Backup saved: {0}</value></data>
+  <data name="Settings_BackupTitle" xml:space="preserve"><value>Back up and restore settings</value></data>
   <data name="Settings_CheckAgain" xml:space="preserve"><value>Check again</value></data>
   <data name="Settings_CheckingUpdates" xml:space="preserve"><value>Checking for updates...</value></data>
   <data name="Settings_ChooseSnipFolder" xml:space="preserve"><value>Choose a folder for snips</value></data>
@@ -325,6 +339,8 @@
   <data name="Settings_EveryHour" xml:space="preserve"><value>Every hour</value></data>
   <data name="Settings_EveryHours" xml:space="preserve"><value>Every {0} hours</value></data>
   <data name="Settings_Example" xml:space="preserve"><value>Example: </value></data>
+  <data name="Settings_ExportFilter" xml:space="preserve"><value>ShareX uploader (*.sxcu)|*.sxcu|All files (*.*)|*.*</value></data>
+  <data name="Settings_FileName" xml:space="preserve"><value>File name</value></data>
   <data name="Settings_Fps" xml:space="preserve"><value>{0} frames/s</value></data>
   <data name="Settings_FromClipboard" xml:space="preserve"><value>From clipboard</value></data>
   <data name="Settings_HighlightClicks" xml:space="preserve"><value>Highlight mouse clicks (yellow = left, blue = right)</value></data>
@@ -346,11 +362,12 @@
   <data name="Settings_HotkeyTyping" xml:space="preserve"><value>{0} is used for typing. Choose Print Screen, Pause, an F key or a combination with Ctrl, Alt or Win.</value></data>
   <data name="Settings_Import" xml:space="preserve"><value>Import...</value></data>
   <data name="Settings_Imported" xml:space="preserve"><value>Imported: {0}. Click Save to keep it.</value></data>
-  <data name="Settings_ImportExplanation" xml:space="preserve"><value>Create the file in Zipline via Settings &gt; Generate Uploaders (ShareX or Shell Script) and import it here. kniip only reads the address and the token; the script is not run.</value></data>
+  <data name="Settings_ImportExplanation" xml:space="preserve"><value>Import reads a ShareX custom uploader (.sxcu), such as the one Zipline creates via Settings &gt; Generate Uploaders, or Zipline&apos;s Shell Script (.sh). The script is not run; kniip only reads the address, the headers and the fields.</value></data>
   <data name="Settings_ImportFailed" xml:space="preserve"><value>This file can&apos;t be used:&#xA;{0}&#xA;&#xA;{1}</value></data>
-  <data name="Settings_ImportFilter" xml:space="preserve"><value>Zipline uploader (*.sxcu;*.sh)|*.sxcu;*.sh|ShareX uploader (*.sxcu)|*.sxcu|Shell script (*.sh)|*.sh|All files (*.*)|*.*</value></data>
-  <data name="Settings_ImportTip" xml:space="preserve"><value>Choose a ShareX uploader (.sxcu) or Shell Script (.sh) from Zipline</value></data>
-  <data name="Settings_ImportTitle" xml:space="preserve"><value>Import Zipline uploader</value></data>
+  <data name="Settings_ImportFilter" xml:space="preserve"><value>Uploaders (*.sxcu;*.sh)|*.sxcu;*.sh|ShareX uploader (*.sxcu)|*.sxcu|Shell script (*.sh)|*.sh|All files (*.*)|*.*</value></data>
+  <data name="Settings_ImportTip" xml:space="preserve"><value>Choose a ShareX uploader (.sxcu) or Zipline&apos;s Shell Script (.sh)</value></data>
+  <data name="Settings_ImportTitle" xml:space="preserve"><value>Import uploader</value></data>
+  <data name="Settings_InsertToken" xml:space="preserve"><value>Insert</value></data>
   <data name="Settings_InstalledVersion" xml:space="preserve"><value>Installed version: {0}</value></data>
   <data name="Settings_InstallTip" xml:space="preserve"><value>Download the installer; kniip closes, updates and restarts</value></data>
   <data name="Settings_IntegrationExplanation" xml:space="preserve"><value>Only for your user account; no administrator is needed and the Snipping Tool itself is not changed.</value></data>
@@ -367,7 +384,7 @@
   <data name="Settings_NoHotkey" xml:space="preserve"><value>Don&apos;t use a shortcut</value></data>
   <data name="Settings_NoHotkeyShort" xml:space="preserve"><value>(none)</value></data>
   <data name="Settings_NoReleases" xml:space="preserve"><value>No releases have been published yet.</value></data>
-  <data name="Settings_NotConfigured" xml:space="preserve"><value>Not configured</value></data>
+  <data name="Settings_NoUploaders" xml:space="preserve"><value>No destinations yet. Import an uploader or create one yourself.</value></data>
   <data name="Settings_OcrHotkey" xml:space="preserve"><value>OCR (recognize text)</value></data>
   <data name="Settings_OnlySnippingTool" xml:space="preserve"><value>Only images from the Snipping Tool</value></data>
   <data name="Settings_OnNewSnip" xml:space="preserve"><value>On a new snip</value></data>
@@ -379,7 +396,11 @@
   <data name="Settings_PressKeyHint" xml:space="preserve"><value>Esc = cancel  ·  Delete = no shortcut</value></data>
   <data name="Settings_ReleasePage" xml:space="preserve"><value>Release page</value></data>
   <data name="Settings_RemoveUpload" xml:space="preserve"><value>Remove</value></data>
-  <data name="Settings_RemoveUploadTip" xml:space="preserve"><value>Stop using an upload destination</value></data>
+  <data name="Settings_Restore" xml:space="preserve"><value>Restore</value></data>
+  <data name="Settings_RestoreButton" xml:space="preserve"><value>Restore...</value></data>
+  <data name="Settings_RestoreConfirm" xml:space="preserve"><value>All current settings will be replaced by those from the backup and kniip will restart. Continue?</value></data>
+  <data name="Settings_RestoreExplanation" xml:space="preserve"><value>Choose a backup file to replace all current settings. kniip restarts afterwards.</value></data>
+  <data name="Settings_RestoreFailed" xml:space="preserve"><value>This file is not a valid settings backup:&#xA;{0}&#xA;&#xA;{1}</value></data>
   <data name="Settings_SaveAndCopy" xml:space="preserve"><value>Save and copy</value></data>
   <data name="Settings_SaveAndCopyExplanation" xml:space="preserve"><value>Save and copy also puts the file on the clipboard, so you can paste it right away.</value></data>
   <data name="Settings_SaveExplanation" xml:space="preserve"><value>With a folder set, Save (Ctrl+S) saves right away, using the name above. Shift+click or Ctrl+Shift+S still asks where the file should go.</value></data>
@@ -394,6 +415,8 @@
   <data name="Settings_SnippingToolTip" xml:space="preserve"><value>Tip: turn off &apos;Automatically copy changes&apos; in the Snipping Tool, otherwise kniip sees every pen stroke in the Snipping Tool as a new snip.</value></data>
   <data name="Settings_SplitLayout" xml:space="preserve"><value>Split view: tools at the top, saving at the bottom</value></data>
   <data name="Settings_StartingInstaller" xml:space="preserve"><value>Starting installer...</value></data>
+  <data name="Settings_Subfolder" xml:space="preserve"><value>Subfolder</value></data>
+  <data name="Settings_SubfolderTip" xml:space="preserve"><value>Empty: directly in the folder</value></data>
   <data name="Settings_System" xml:space="preserve"><value>System</value></data>
   <data name="Settings_SystemAudio" xml:space="preserve"><value>Record system audio (default)</value></data>
   <data name="Settings_SystemExplanation" xml:space="preserve"><value>System follows the Windows app mode (Settings &gt; Personalization &gt; Colors) and switches along when you change it.</value></data>
@@ -417,9 +440,22 @@
   <data name="Settings_UpdateNotInstalled" xml:space="preserve"><value>This kniip wasn&apos;t started from the installer; the new version will be installed in {0}.</value></data>
   <data name="Settings_UpdateTestBuild" xml:space="preserve"><value>Version {0} is available. This test build doesn&apos;t update itself; the installer would overwrite the regular kniip.</value></data>
   <data name="Settings_UpdateTo" xml:space="preserve"><value>Update to {0}</value></data>
-  <data name="Settings_UploadExplanation" xml:space="preserve"><value>After that there is an Upload button in the editor (Ctrl+U) and for screencasts. The link goes to the clipboard. The token is stored encrypted for your Windows account.</value></data>
-  <data name="Settings_UploadZipline" xml:space="preserve"><value>Upload to Zipline</value></data>
+  <data name="Settings_UploadAdded" xml:space="preserve"><value>Added: {0}. Click Save to keep it.</value></data>
+  <data name="Settings_UploadCopyName" xml:space="preserve"><value>{0} (copy)</value></data>
+  <data name="Settings_UploadDefault" xml:space="preserve"><value>Default</value></data>
+  <data name="Settings_UploadDestinations" xml:space="preserve"><value>Upload destinations</value></data>
+  <data name="Settings_UploadDuplicate" xml:space="preserve"><value>Duplicate</value></data>
+  <data name="Settings_UploadEdit" xml:space="preserve"><value>Edit...</value></data>
+  <data name="Settings_UploadExplanation" xml:space="preserve"><value>With a destination there is an Upload button in the editor (Ctrl+U) and for screencasts. It uploads to the default destination; the arrow next to it lets you choose another one. The link goes to the clipboard. Tokens and passwords are stored encrypted for your Windows account.</value></data>
   <data name="Settings_UpToDate" xml:space="preserve"><value>You are using the latest version ({0}).</value></data>
+  <data name="Settings_UploadExport" xml:space="preserve"><value>Export...</value></data>
+  <data name="Settings_UploadExportTip" xml:space="preserve"><value>Save as a ShareX uploader (.sxcu)</value></data>
+  <data name="Settings_UploadExportWarning" xml:space="preserve"><value>The token and the other headers are readable in this file. Keep it private and do not share it.</value></data>
+  <data name="Settings_UploadExported" xml:space="preserve"><value>Saved: {0}</value></data>
+  <data name="Settings_UploadIsDefault" xml:space="preserve"><value>Default destination</value></data>
+  <data name="Settings_UploadMakeDefault" xml:space="preserve"><value>Use as default destination</value></data>
+  <data name="Settings_UploadMore" xml:space="preserve"><value>More actions</value></data>
+  <data name="Settings_UploadOrNew" xml:space="preserve"><value>or new:</value></data>
   <data name="Settings_VersionHeading" xml:space="preserve"><value>Version {0}</value></data>
   <data name="Settings_VideoNameTip" xml:space="preserve"><value>Empty: Screencast with date and time</value></data>
   <data name="Settings_WatchClipboard" xml:space="preserve"><value>Watch the clipboard</value></data>
@@ -445,13 +481,38 @@
   <data name="SkinTone_ToolTip" xml:space="preserve"><value>Skin tone: {0}</value></data>
   <data name="Snip_DefaultName" xml:space="preserve"><value>Snip {0:yyyy-MM-dd HHmmss}</value></data>
   <data name="Snip_Name" xml:space="preserve"><value>Snip</value></data>
-  <data name="Template_Help" xml:space="preserve"><value>%Y year, %M month, %D day, %V program name of the window, %R6 six random characters, %N3 sequence number with three digits (001). Use / to create subfolders. kniip adds the extension itself.</value></data>
+  <data name="Template_CategoryComputer" xml:space="preserve"><value>Computer</value></data>
+  <data name="Template_CategoryIncremental" xml:space="preserve"><value>Incremental</value></data>
+  <data name="Template_CategoryTime" xml:space="preserve"><value>Time</value></data>
+  <data name="Template_CategoryWindow" xml:space="preserve"><value>Window</value></data>
   <data name="TextShape_Box" xml:space="preserve"><value>Box</value></data>
   <data name="TextShape_None" xml:space="preserve"><value>No box</value></data>
   <data name="TextShape_OvalBalloon" xml:space="preserve"><value>Oval balloon</value></data>
   <data name="Toast_ClickToAnnotate" xml:space="preserve"><value>click to add annotations</value></data>
   <data name="Toast_Dismiss" xml:space="preserve"><value>Dismiss</value></data>
   <data name="Toast_Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Token_Counter" xml:space="preserve"><value>sequence number, {3} = number of digits (001)</value></data>
+  <data name="Token_Day" xml:space="preserve"><value>day of the month</value></data>
+  <data name="Token_Domain" xml:space="preserve"><value>domain name</value></data>
+  <data name="Token_Guid" xml:space="preserve"><value>random GUID</value></data>
+  <data name="Token_Hour12" xml:space="preserve"><value>hour, 12-hour clock</value></data>
+  <data name="Token_Hour24" xml:space="preserve"><value>hour, 24-hour clock</value></data>
+  <data name="Token_MachineName" xml:space="preserve"><value>computer name</value></data>
+  <data name="Token_Milliseconds" xml:space="preserve"><value>milliseconds</value></data>
+  <data name="Token_Minutes" xml:space="preserve"><value>minutes</value></data>
+  <data name="Token_Month" xml:space="preserve"><value>month (number)</value></data>
+  <data name="Token_MonthName" xml:space="preserve"><value>month (name)</value></data>
+  <data name="Token_ProcessName" xml:space="preserve"><value>process name of the window</value></data>
+  <data name="Token_RandomAlphaNumeric" xml:space="preserve"><value>random letters and digits, {n} = how many</value></data>
+  <data name="Token_RandomDigit" xml:space="preserve"><value>random digits (0-9), {n} = how many</value></data>
+  <data name="Token_RandomHex" xml:space="preserve"><value>random hexadecimal characters, {n} = how many</value></data>
+  <data name="Token_RandomUnambiguous" xml:space="preserve"><value>random characters that can&apos;t be confused (no 0/o, 1/l/i), {n} = how many</value></data>
+  <data name="Token_Seconds" xml:space="preserve"><value>seconds</value></data>
+  <data name="Token_Title" xml:space="preserve"><value>title of the active window</value></data>
+  <data name="Token_UserName" xml:space="preserve"><value>user name</value></data>
+  <data name="Token_Week" xml:space="preserve"><value>week number</value></data>
+  <data name="Token_Year" xml:space="preserve"><value>year</value></data>
+  <data name="Token_YearShort" xml:space="preserve"><value>year (two digits)</value></data>
   <data name="Tool_ArrowTip" xml:space="preserve"><value>Arrow (A) - Shift for 45° angles</value></data>
   <data name="Tool_Blur" xml:space="preserve"><value>Blur / pixelate</value></data>
   <data name="Tool_BlurTip" xml:space="preserve"><value>Blur / pixelate (B)</value></data>
@@ -548,19 +609,73 @@
   <data name="Update_Timeout" xml:space="preserve"><value>GitHub isn&apos;t responding (time-out).</value></data>
   <data name="Update_Unreachable" xml:space="preserve"><value>Can&apos;t reach GitHub. Check the internet connection.</value></data>
   <data name="Upload_BadServer" xml:space="preserve"><value>The server address can&apos;t be used:&#xA;{0}</value></data>
+  <data name="Upload_FtpTlsFailed" xml:space="preserve"><value>A secure connection to {0} can&apos;t be made. Does the server support this kind of FTPS, and is its certificate valid? Otherwise choose a different encryption.&#xA;&#xA;{1}</value></data>
+  <data name="Upload_HostKeyChanged" xml:space="preserve"><value>The host key of {0} has changed.&#xA;&#xA;Expected: {1}&#xA;Received: {2}&#xA;&#xA;Someone may be intercepting the connection. If the server was reinstalled, choose &apos;Forget&apos; for the destination and connect again.</value></data>
+  <data name="Upload_HostKeyConfirm" xml:space="preserve"><value>This is the first connection to {0}.&#xA;&#xA;Server fingerprint ({1}):&#xA;{2}&#xA;&#xA;Do you trust this server? kniip remembers the fingerprint and refuses the server if it ever changes.</value></data>
+  <data name="Upload_HostKeyConfirmTitle" xml:space="preserve"><value>Unknown server</value></data>
+  <data name="Upload_HostKeyDeclined" xml:space="preserve"><value>The connection was closed because the server was not trusted.</value></data>
+  <data name="Upload_InputPrompt" xml:space="preserve"><value>This uploader asks for input:</value></data>
   <data name="Upload_InvalidShareX" xml:space="preserve"><value>This isn&apos;t a valid ShareX uploader file.</value></data>
+  <data name="Upload_LoginFailed" xml:space="preserve"><value>Signing in to {0} failed. Check the user name, the password or the key.&#xA;&#xA;{1}</value></data>
   <data name="Upload_NoCurl" xml:space="preserve"><value>This script has no curl command. Choose the Shell Script uploader for files in Zipline.</value></data>
-  <data name="Upload_NoLink" xml:space="preserve"><value>The upload succeeded, but there&apos;s no link in the response at &apos;{0}&apos;.</value></data>
+  <data name="Upload_NoLink" xml:space="preserve"><value>The upload succeeded, but the response doesn&apos;t produce a link (URL: &apos;{0}&apos;).</value></data>
   <data name="Upload_NoServer" xml:space="preserve"><value>This file has no server address.</value></data>
   <data name="Upload_NotConfigured" xml:space="preserve"><value>No upload destination has been set up yet (Settings &gt; Upload).</value></data>
-  <data name="Upload_NotFileUploader" xml:space="preserve"><value>This uploader doesn&apos;t send files (maybe it&apos;s the URL shortener). Choose the file uploader in Zipline.</value></data>
-  <data name="Upload_NoToken" xml:space="preserve"><value>This file has no token (authorization header).</value></data>
+  <data name="Upload_NotFileUploader" xml:space="preserve"><value>This uploader is meant for {0}, not for images or files.</value></data>
+  <data name="Upload_PrivateKeyInvalid" xml:space="preserve"><value>The key can&apos;t be read:&#xA;{0}&#xA;&#xA;{1}&#xA;&#xA;Is the passphrase correct?</value></data>
   <data name="Upload_Rejected" xml:space="preserve"><value>The server rejected the upload ({0}): {1}</value></data>
   <data name="Upload_ScriptNotFileUploader" xml:space="preserve"><value>This script doesn&apos;t upload a file (maybe it&apos;s the URL shortener). Choose the Shell Script uploader for files in Zipline.</value></data>
+  <data name="Upload_SelectPrompt" xml:space="preserve"><value>This uploader asks you to choose:</value></data>
+  <data name="Upload_SelectTitle" xml:space="preserve"><value>Choose</value></data>
+  <data name="Upload_ServerFailed" xml:space="preserve"><value>{0} couldn&apos;t store the file.&#xA;&#xA;{1}</value></data>
   <data name="Upload_Timeout" xml:space="preserve"><value>The server isn&apos;t responding (time-out).</value></data>
-  <data name="Upload_TokenInvalid" xml:space="preserve"><value>The token is invalid or expired; import the uploader again.</value></data>
+  <data name="Upload_TokenInvalid" xml:space="preserve"><value>Check the token or the headers of this uploader.</value></data>
+  <data name="Upload_TypeCustom" xml:space="preserve"><value>Custom uploader</value></data>
   <data name="Upload_Unreachable" xml:space="preserve"><value>Can&apos;t reach {0}.&#xA;&#xA;{1}</value></data>
-  <data name="Upload_UnsupportedMethod" xml:space="preserve"><value>This uploader uses {0}; kniip only supports POST.</value></data>
+  <data name="Upload_UnsupportedBody" xml:space="preserve"><value>Unknown body type: {0}.</value></data>
+  <data name="Upload_UnsupportedMethod" xml:space="preserve"><value>Unknown method: {0}.</value></data>
+  <data name="UploaderEditor_Arguments" xml:space="preserve"><value>Form fields</value></data>
+  <data name="UploaderEditor_BadPort" xml:space="preserve"><value>The port must be a number between 1 and 65535.</value></data>
+  <data name="UploaderEditor_BadPublicUrl" xml:space="preserve"><value>The public URL isn&apos;t a valid web address.</value></data>
+  <data name="UploaderEditor_BodyNone" xml:space="preserve"><value>No body</value></data>
+  <data name="UploaderEditor_BodyType" xml:space="preserve"><value>Type</value></data>
+  <data name="UploaderEditor_Data" xml:space="preserve"><value>Content (JSON or XML)</value></data>
+  <data name="UploaderEditor_DeletionUrl" xml:space="preserve"><value>Deletion URL</value></data>
+  <data name="UploaderEditor_Encryption" xml:space="preserve"><value>Encryption</value></data>
+  <data name="UploaderEditor_EncryptionExplicit" xml:space="preserve"><value>FTPS, explicit (AUTH TLS)</value></data>
+  <data name="UploaderEditor_EncryptionImplicit" xml:space="preserve"><value>FTPS, implicit (port 990)</value></data>
+  <data name="UploaderEditor_EncryptionNone" xml:space="preserve"><value>None (plain FTP)</value></data>
+  <data name="UploaderEditor_ErrorMessage" xml:space="preserve"><value>Error message</value></data>
+  <data name="UploaderEditor_FileFormName" xml:space="preserve"><value>File form name</value></data>
+  <data name="UploaderEditor_ForgetHostKey" xml:space="preserve"><value>Forget</value></data>
+  <data name="UploaderEditor_HostKeyUnknown" xml:space="preserve"><value>Not known yet; you&apos;ll be asked on the first connection</value></data>
+  <data name="UploaderEditor_KeyFilter" xml:space="preserve"><value>All files (*.*)|*.*|PuTTY key (*.ppk)|*.ppk|PEM (*.pem)|*.pem</value></data>
+  <data name="UploaderEditor_KeyHint" xml:space="preserve"><value>An OpenSSH or PuTTY key; leave empty to sign in with the password.</value></data>
+  <data name="UploaderEditor_Location" xml:space="preserve"><value>Location</value></data>
+  <data name="UploaderEditor_Method" xml:space="preserve"><value>Method and URL</value></data>
+  <data name="UploaderEditor_NameHint" xml:space="preserve"><value>Optional; empty uses the server name.</value></data>
+  <data name="UploaderEditor_NeedFileFormName" xml:space="preserve"><value>For form data, enter the name of the file field (usually &apos;file&apos;).</value></data>
+  <data name="UploaderEditor_NeedHost" xml:space="preserve"><value>Enter the host.</value></data>
+  <data name="UploaderEditor_NeedUrl" xml:space="preserve"><value>Enter a request URL that starts with https:// or http://.</value></data>
+  <data name="UploaderEditor_Parameters" xml:space="preserve"><value>URL parameters</value></data>
+  <data name="UploaderEditor_Passive" xml:space="preserve"><value>Passive mode</value></data>
+  <data name="UploaderEditor_Passphrase" xml:space="preserve"><value>Passphrase</value></data>
+  <data name="UploaderEditor_Password" xml:space="preserve"><value>Password</value></data>
+  <data name="UploaderEditor_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="UploaderEditor_PortDefault" xml:space="preserve"><value>Empty: {0}</value></data>
+  <data name="UploaderEditor_PrivateKey" xml:space="preserve"><value>Key file</value></data>
+  <data name="UploaderEditor_PublicUrl" xml:space="preserve"><value>Public URL</value></data>
+  <data name="UploaderEditor_PublicUrlHint" xml:space="preserve"><value>Web address of the file; {filename} becomes the file name, without {filename} it is appended. Empty: the ftp:// or sftp:// address.</value></data>
+  <data name="UploaderEditor_RemoteFolder" xml:space="preserve"><value>Folder on the server</value></data>
+  <data name="UploaderEditor_Request" xml:space="preserve"><value>Request</value></data>
+  <data name="UploaderEditor_Response" xml:space="preserve"><value>Response</value></data>
+  <data name="UploaderEditor_SyntaxHelp" xml:space="preserve"><value>Syntax</value></data>
+  <data name="UploaderEditor_SyntaxHelpText" xml:space="preserve"><value>{response} the whole response  ·  {responseurl} address after redirects  ·  {header:name} a response header&#xA;{json:path} or {json:input|path}, for example {json:files[0].url}  ·  {xml:xpath}&#xA;{regex:pattern}, {regex:pattern|group} or {regex:input|pattern|group}&#xA;{filename} file name  ·  {input} text or URL (empty for files)  ·  {base64:text}&#xA;{random:a|b} random  ·  {select:a|b} choose when uploading  ·  {inputbox:title|default} ask  ·  {outputbox:title|text} show&#xA;In the request also: %y %yy %mo %d %h %mi %s %ms %unix %guid %rn %ra&#xA;Write \{ \} \| and \\ for the characters themselves. Leave URL empty if the response is just the link.</value></data>
+  <data name="UploaderEditor_ThumbnailUrl" xml:space="preserve"><value>Thumbnail URL</value></data>
+  <data name="UploaderEditor_Title" xml:space="preserve"><value>Upload destination</value></data>
+  <data name="UploaderEditor_UrlHint" xml:space="preserve"><value>Empty: the whole response is the link. For example {json:files[0].url}.</value></data>
+  <data name="UploaderEditor_Username" xml:space="preserve"><value>User name</value></data>
+  <data name="UploaderEditor_Value" xml:space="preserve"><value>Value</value></data>
   <data name="Video_SaveFailed" xml:space="preserve"><value>Windows couldn&apos;t save the video ({0}).</value></data>
   <data name="Window_Maximize" xml:space="preserve"><value>Maximize</value></data>
   <data name="Window_Minimize" xml:space="preserve"><value>Minimize</value></data>

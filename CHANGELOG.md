@@ -2,6 +2,35 @@
 
 All notable changes to kniip are listed in this file. The newest version is at the top.
 
+## 2.5.2 - 2026-11-14
+
+### Added
+
+- **Multiple upload destinations.**\
+  Under **Settings > Upload** you now keep a list of destinations instead of a single Zipline server. Add one with **Import...** or create one with **FTP**, **SFTP** or **SCP**. Click the star to make a destination the default; the **Upload** button (Ctrl+U) in the editor and for screencasts uploads there. With more than one destination, the arrow next to **Upload** lets you choose another one. Each destination has the pencil to edit it and **More actions** for **Test**, **Duplicate**, **Export...** and **Remove**.
+- **Upload with FTP, SFTP and SCP.**\
+  Enter the server, port, user name and password, the remote folder and the web address where the files can be seen; `{filename}` in that address becomes the file name. FTP can use explicit or implicit FTPS, or no encryption. SFTP and SCP can sign in with an OpenSSH or PuTTY key. On the first connection kniip shows the server's fingerprint and asks if you trust it; if it ever changes, kniip refuses the server until you choose **Forget**.
+- **Any ShareX custom uploader.**\
+  **Import...** now reads every ShareX custom uploader (`.sxcu`), including the format from before ShareX 13, not only the one from Zipline. Zipline's Shell Script (`.sh`) still works too; the script is never run. In the editor for a custom uploader you set the method, address, parameters, headers, body and how the link is read from the response, with the ShareX syntax such as `{json:files[0].url}`, `{regex:...}`, `{select:...}` and `{inputbox:...}`. **Export...** saves it as a `.sxcu` file again.
+- **Easier file name patterns.**\
+  Under **Settings > Save**, snips and screencasts each get two fields: **Subfolder** and **File name**. Next to each field, the **Insert** button opens a menu per category (Window, Time, Incremental, Computer). Each code shows an example and an explanation; click it to insert it at the cursor. The codes are the same in Dutch and English:
+  - Window (file name only): `%t` title of the window, `%pn` process name
+  - Time: `%yy` 2026, `%y` 26, `%m` 11, `%mm` november, `%wy` week number, `%d` day, `%h` 08am, `%hh` 20, `%mi` minutes, `%s` seconds, `%ms` milliseconds
+  - Incremental: `%n{3}` sequence number (001), `%rn` random digit, `%ra` random letter or digit, `%rna` random character that can't be confused (no 0/o, 1/l/i), `%rx` random hexadecimal character, `%guid`. Add `{n}` for more characters, for example `%rx{8}`.
+  - Computer: `%un` user name, `%uln` domain name, `%cn` computer name
+
+  For example, subfolder `%yy/%m-%d` with file name `%pn_%n{3}` becomes `2026/11-14/chrome_001.png`.
+- **Back up and restore settings.**\
+  The new **Settings > Backup** tab saves all your saved settings (shortcuts, folders, file name patterns, upload destinations, tool styles and toolbar) to a `.json` file with **Create backup...**. **Restore...** replaces all current settings with those from a backup, after you confirm, and then restarts kniip. An invalid file is refused and leaves your settings unchanged.
+
+  Upload tokens and passwords stay encrypted by default, so only the same Windows user on the same PC can restore them; elsewhere you enter them again or import the uploader again. Check **Include upload tokens and passwords unencrypted (for another PC)** to take them along to another PC; keep that file private. Autostart and 'Open with' are stored in Windows and aren't part of the backup.
+- The test build (`KniipTest-<version>.exe`) has its own orange icon, so you can tell it apart from the regular kniip in the taskbar, the system tray and the 'Open with' menu.
+
+### Changed
+
+- Your existing Zipline uploader is moved to the new list of destinations automatically and becomes the default, so **Upload** keeps working as before.
+- The old codes (`%J`, `%Y`, `%M`, `%D`, `%V`, `%R6`, `%N3`) keep working. An existing template with folders, such as `%J/%M-%D/%V_%N3`, is split automatically into the subfolder `%J/%M-%D` and the file name `%V_%N3`, so files end up in the same place. The new codes are case-sensitive; only a lowercase `%y` now gives the year in two digits (26) instead of four.
+
 ## 2.5.1 - 2026-11-13
 
 ### Added

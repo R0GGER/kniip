@@ -18,7 +18,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Product>kniip</Product>
     <Description>Annotation editor alongside the Windows Snipping Tool</Description>
-    <Version>2.5.1</Version>
+    <Version>2.5.2</Version>
     <Authors>Rogier Meijer</Authors>
     <Copyright>Copyright © 2026 Rogier Meijer</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
@@ -34,11 +34,20 @@
   <PropertyGroup Condition="'$(KniipTest)' == 'true'">
     <DefineConstants>$(DefineConstants);KNIIP_TEST</DefineConstants>
     <Product>kniip test</Product>
+    <ApplicationIcon>AppIconTest.ico</ApplicationIcon>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!-- De testbuild krijgt de oranje iconen (tools\make-test-icon.ps1) onder dezelfde pack-URI's. -->
+  <ItemGroup Condition="'$(KniipTest)' != 'true'">
     <Resource Include="AppIcon.ico" />
     <Resource Include="TrayIcon.ico" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(KniipTest)' == 'true'">
+    <Resource Include="AppIconTest.ico" Link="AppIcon.ico" />
+    <Resource Include="TrayIconTest.ico" Link="TrayIcon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Assets\Emoji\emoji.json;Assets\Emoji\twemoji-64.png" />
   </ItemGroup>
 
@@ -61,8 +70,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentFTP" Version="55.1.0" />
     <PackageReference Include="Markdig" Version="1.6.0" />
     <PackageReference Include="ScreenRecorderLib" Version="7.0.1" />
+    <PackageReference Include="SSH.NET" Version="2026.0.1" />
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
   </ItemGroup>
 

@@ -36,7 +36,9 @@ public partial class SettingsWindow : Window
     private string? _listeningFor;
     private string? _snipFolder;
     private string? _videoFolder;
-    private UploaderConfig? _uploader;
+    private readonly List<UploadDestination> _uploaders;
+    private Guid? _defaultUploaderId;
+    private bool _testingUploader;
     private bool _resetEditor;
     private bool _updateChecked;
     private ReleaseInfo? _update;
@@ -56,8 +58,9 @@ public partial class SettingsWindow : Window
         WatchClipboardBox.Checked += (_, _) => OnlySnippingToolBox.IsEnabled = true;
         WatchClipboardBox.Unchecked += (_, _) => OnlySnippingToolBox.IsEnabled = false;
 
-        _uploader = settings.Uploader;
-        ShowUploader();
+        _uploaders = settings.Uploaders.Select(SettingsStore.DeepCopy).ToList();
+        _defaultUploaderId = settings.DefaultUploader?.Id;
+        ShowUploaders();
 
         _hotkeys = new Dictionary<string, string>();
         _hotkeyButtons = new Dictionary<string, Button>
@@ -123,7 +126,9 @@ public partial class SettingsWindow : Window
         _snipFolder = settings.SnipSaveFolder;
         _videoFolder = settings.VideoSaveFolder;
         ShowSaveFolders();
+        SnipFolderTemplateBox.Text = settings.SnipFolderTemplate ?? string.Empty;
         SnipTemplateBox.Text = settings.SnipFileNameTemplate ?? string.Empty;
+        VideoFolderTemplateBox.Text = settings.VideoFolderTemplate ?? string.Empty;
         VideoTemplateBox.Text = settings.VideoFileNameTemplate ?? string.Empty;
         ShowTemplatePreviews();
         SaveAndCopyRadio.IsChecked = settings.SaveButton == SaveButtonChoice.SaveAndCopy;
@@ -299,11 +304,86 @@ public partial class SettingsWindow : Window
 
     private void ShowTemplatePreviews()
     {
-        TemplateHelp.Text = FileNameTemplate.Help;
-        SnipTemplatePreview.Text = Strings.Settings_Example + FileNameTemplate.Preview(NullIfBlank(SnipTemplateBox.Text), "Cursor",
-            string.Format(Strings.Snip_DefaultName, DateTime.Now), ".png");
-        VideoTemplatePreview.Text = Strings.Settings_Example + FileNameTemplate.Preview(NullIfBlank(VideoTemplateBox.Text), "Cursor",
-            string.Format(Strings.Screencast_DefaultName, DateTime.Now), ".mp4");
+        ShowTemplatePreview(SnipTemplatePreview, SnipFolderTemplateBox, SnipTemplateBox, Strings.Snip_DefaultName, ".png");
+        ShowTemplatePreview(VideoTemplatePreview, VideoFolderTemplateBox, VideoTemplateBox, Strings.Screencast_DefaultName, ".mp4");
+    }
+
+    private static void ShowTemplatePreview(TextBlock preview, TextBox folderBox, TextBox fileBox, string defaultNameFormat, string extension)
+    {
+        string? folder = NullIfBlank(folderBox.Text);
+        string? file = NullIfBlank(fileBox.Text);
+        preview.Visibility = folder is null && file is null ? Visibility.Collapsed : Visibility.Visible;
+        preview.Text = Strings.Settings_Example + FileNameTemplate.Preview(folder, file, FileNameTemplate.SampleWindow,
+            string.Format(defaultNameFormat, DateTime.Now), extension);
+    }
+
+    /// <summary>Dropdown met de tokens per categorie; bij een submap ontbreekt Venster.</summary>
+    private void InsertToken_Click(object sender, RoutedEventArgs e)
+    {
+        var button = (Button)sender;
+        string tag = (string)button.Tag;
+        TextBox box = tag switch
+        {
+            "SnipFolder" => SnipFolderTemplateBox,
+            "SnipFile" => SnipTemplateBox,
+            "VideoFolder" => VideoFolderTemplateBox,
+            _ => VideoTemplateBox
+        };
+        bool folder = tag.EndsWith("Folder", StringComparison.Ordinal);
+
+        var menu = new ContextMenu { PlacementTarget = button, Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom };
+        foreach (IGrouping<TemplateCategory, TemplateToken> group in FileNameTemplate.Tokens
+                     .Where(t => !folder || t.Category != TemplateCategory.Window)
+                     .GroupBy(t => t.Category))
+        {
+            var category = new MenuItem { Header = CategoryName(group.Key) };
+            foreach (TemplateToken token in group)
+            {
+                var item = new MenuItem { Header = TokenRow(token) };
+                item.Click += (_, _) => InsertToken(box, token.Insert);
+                category.Items.Add(item);
+            }
+
+            menu.Items.Add(category);
+        }
+
+        menu.IsOpen = true;
+    }
+
+    private static string CategoryName(TemplateCategory category) => category switch
+    {
+        TemplateCategory.Window => Strings.Template_CategoryWindow,
+        TemplateCategory.Time => Strings.Template_CategoryTime,
+        TemplateCategory.Incremental => Strings.Template_CategoryIncremental,
+        _ => Strings.Template_CategoryComputer
+    };
+
+    /// <summary>Token, voorbeeldwaarde en uitleg in drie uitgelijnde kolommen.</summary>
+    private static Grid TokenRow(TemplateToken token)
+    {
+        var grid = new Grid();
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto, SharedSizeGroup = "TokenCode" });
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto, SharedSizeGroup = "TokenSample" });
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto, SharedSizeGroup = "TokenHelp" });
+
+        var code = new TextBlock { Text = token.Insert, FontFamily = new FontFamily("Consolas"), Margin = new Thickness(0, 0, 16, 0) };
+        var sample = new TextBlock { Text = token.Sample, MaxWidth = 220, TextTrimming = TextTrimming.CharacterEllipsis, Margin = new Thickness(0, 0, 16, 0) };
+        sample.SetResourceReference(TextBlock.ForegroundProperty, "SubtleTextBrush");
+        var help = new TextBlock { Text = token.Help };
+        Grid.SetColumn(sample, 1);
+        Grid.SetColumn(help, 2);
+        grid.Children.Add(code);
+        grid.Children.Add(sample);
+        grid.Children.Add(help);
+        return grid;
+    }
+
+    private static void InsertToken(TextBox box, string token)
+    {
+        int caret = box.SelectionStart;
+        box.SelectedText = token;
+        box.CaretIndex = caret + token.Length;
+        box.Focus();
     }
 
     private static string? NullIfBlank(string text) => string.IsNullOrWhiteSpace(text) ? null : text.Trim();
@@ -350,14 +430,157 @@ public partial class SettingsWindow : Window
         ShowSaveFolders();
     }
 
-    private void ShowUploader()
+    private sealed record UploaderRow(UploadDestination Destination, bool IsDefault)
     {
-        bool configured = _uploader is { IsConfigured: true };
-        UploaderText.Text = configured ? _uploader!.DisplayName : Strings.Settings_NotConfigured;
-        UploaderText.ToolTip = configured ? _uploader!.RequestUrl : null;
-        UploaderText.SetResourceReference(TextBlock.ForegroundProperty, configured ? "InkBrush" : "SubtleTextBrush");
-        TestUploaderButton.IsEnabled = configured;
-        RemoveUploaderButton.IsEnabled = configured;
+        public string Title => Destination.Title;
+
+        public string Subtitle => Destination.DisplayName == Destination.Title
+            ? UploaderEditorWindow.TypeLabel(Destination)
+            : UploaderEditorWindow.TypeLabel(Destination) + "  ·  " + Destination.DisplayName;
+
+        public string Glyph => Destination switch
+        {
+            CustomUploaderDestination => "\uE774",
+            _ => "\uE8B7"
+        };
+    }
+
+    private static UploadDestination? RowOf(object sender) =>
+        (sender as FrameworkElement)?.DataContext is UploaderRow row ? row.Destination : null;
+
+    private void ShowUploaders()
+    {
+        if (_defaultUploaderId is not Guid id || _uploaders.All(u => u.Id != id))
+        {
+            _defaultUploaderId = _uploaders.FirstOrDefault()?.Id;
+        }
+
+        UploaderList.ItemsSource = _uploaders.Select(u => new UploaderRow(u, u.Id == _defaultUploaderId)).ToList();
+        NoUploadersText.Visibility = _uploaders.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    private void UploaderRow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ClickCount == 2 && RowOf(sender) is { } destination)
+        {
+            EditUploader(destination);
+        }
+    }
+
+    private void NewUploader_Click(object sender, RoutedEventArgs e) =>
+        NewUploader((sender as FrameworkElement)?.Tag switch
+        {
+            "sftp" => new SftpDestination(),
+            "scp" => new ScpDestination(),
+            _ => new FtpDestination()
+        });
+
+    private void NewUploader(UploadDestination destination)
+    {
+        var editor = new UploaderEditorWindow(destination) { Owner = this };
+        if (editor.ShowDialog() != true)
+        {
+            return;
+        }
+
+        _uploaders.Add(editor.Destination);
+        ShowUploaders();
+        ShowUploaderStatus(string.Format(Strings.Settings_UploadAdded, editor.Destination.Title));
+    }
+
+    private void EditUploader_Click(object sender, RoutedEventArgs e)
+    {
+        if (RowOf(sender) is { } destination)
+        {
+            EditUploader(destination);
+        }
+    }
+
+    private void EditUploader(UploadDestination destination)
+    {
+        var editor = new UploaderEditorWindow(destination) { Owner = this };
+        if (editor.ShowDialog() != true)
+        {
+            return;
+        }
+
+        _uploaders[_uploaders.IndexOf(destination)] = editor.Destination;
+        ShowUploaders();
+        ShowUploaderStatus(null);
+    }
+
+    private void DefaultUploader_Click(object sender, RoutedEventArgs e)
+    {
+        if (RowOf(sender) is { } destination)
+        {
+            _defaultUploaderId = destination.Id;
+            ShowUploaders();
+        }
+    }
+
+    private void UploaderMore_Click(object sender, RoutedEventArgs e)
+    {
+        if (RowOf(sender) is not { } destination)
+        {
+            return;
+        }
+
+        var menu = new ContextMenu { PlacementTarget = (UIElement)sender, Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom };
+        void Add(string header, string? tip, bool enabled, Action action)
+        {
+            var item = new MenuItem { Header = header, ToolTip = tip, IsEnabled = enabled };
+            item.Click += (_, _) => action();
+            menu.Items.Add(item);
+        }
+
+        Add(Strings.Settings_Test, Strings.Settings_TestTip, destination.IsConfigured && !_testingUploader, () => TestUploader(destination));
+        Add(Strings.Settings_UploadDuplicate, null, true, () => DuplicateUploader(destination));
+        Add(Strings.Settings_UploadExport, Strings.Settings_UploadExportTip, destination is CustomUploaderDestination,
+            () => ExportUploader((CustomUploaderDestination)destination));
+        menu.Items.Add(new Separator());
+        Add(Strings.Settings_RemoveUpload, null, true, () => RemoveUploader(destination));
+        menu.IsOpen = true;
+    }
+
+    private void DuplicateUploader(UploadDestination destination)
+    {
+        UploadDestination copy = SettingsStore.DeepCopy(destination);
+        copy.Id = Guid.NewGuid();
+        copy.Name = string.Format(Strings.Settings_UploadCopyName, destination.Title);
+        _uploaders.Insert(_uploaders.IndexOf(destination) + 1, copy);
+        ShowUploaders();
+    }
+
+    private void ExportUploader(CustomUploaderDestination custom)
+    {
+
+        var dialog = new Microsoft.Win32.SaveFileDialog
+        {
+            Title = Strings.Settings_UploadExport,
+            Filter = Strings.Settings_ExportFilter,
+            FileName = string.Concat(custom.Title.Split(System.IO.Path.GetInvalidFileNameChars())) + ".sxcu"
+        };
+        if (dialog.ShowDialog(this) != true)
+        {
+            return;
+        }
+
+        try
+        {
+            System.IO.File.WriteAllText(dialog.FileName, UploaderImporter.ToSxcu(custom));
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(this, string.Format(Strings.Settings_BackupFailed, dialog.FileName, ex.Message), "kniip",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        ShowUploaderStatus(string.Format(Strings.Settings_UploadExported, dialog.FileName));
+        if (custom.HasSecrets)
+        {
+            MessageBox.Show(this, Strings.Settings_UploadExportWarning, "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
     }
 
     private void ShowUploaderStatus(string? message, string? url = null, string? suffix = null)
@@ -405,9 +628,10 @@ public partial class SettingsWindow : Window
 
         try
         {
-            _uploader = UploaderImporter.FromFile(dialog.FileName);
-            ShowUploader();
-            ShowUploaderStatus(string.Format(Strings.Settings_Imported, _uploader.Name));
+            CustomUploaderDestination imported = UploaderImporter.FromFile(dialog.FileName);
+            _uploaders.Add(imported);
+            ShowUploaders();
+            ShowUploaderStatus(string.Format(Strings.Settings_Imported, imported.Title));
         }
         catch (Exception ex)
         {
@@ -416,21 +640,87 @@ public partial class SettingsWindow : Window
         }
     }
 
-    private async void TestUploader_Click(object sender, RoutedEventArgs e)
+    private void BackupSettings_Click(object sender, RoutedEventArgs e)
     {
-        if (_uploader is not { IsConfigured: true } config)
+        var dialog = new Microsoft.Win32.SaveFileDialog
+        {
+            Title = Strings.Settings_BackupCreate,
+            Filter = Strings.Settings_BackupFilter,
+            FileName = $"{AppIdentity.Key.ToLowerInvariant()}-{Strings.Settings_BackupFileName}-{DateTime.Now:yyyyMMdd}.json"
+        };
+        if (dialog.ShowDialog(this) != true)
         {
             return;
         }
 
-        TestUploaderButton.IsEnabled = false;
+        bool plain = PlainTokenBox.IsChecked == true;
+        try
+        {
+            SettingsStore.Export(App.Instance.Settings, dialog.FileName, plain);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(this, string.Format(Strings.Settings_BackupFailed, dialog.FileName, ex.Message), "kniip",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        BackupStatus.Text = string.Format(Strings.Settings_BackupSaved, dialog.FileName);
+        BackupStatus.Visibility = Visibility.Visible;
+        if (plain && App.Instance.Settings.Uploaders.Any(u => u.HasSecrets))
+        {
+            MessageBox.Show(this, Strings.Settings_BackupPlainTokenWarning, "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+    }
+
+    private void RestoreSettings_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new Microsoft.Win32.OpenFileDialog
+        {
+            Title = Strings.Settings_Restore,
+            Filter = Strings.Settings_BackupFilter
+        };
+        if (dialog.ShowDialog(this) != true)
+        {
+            return;
+        }
+
+        AppSettings restored;
+        try
+        {
+            restored = SettingsStore.Import(dialog.FileName);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(this, string.Format(Strings.Settings_RestoreFailed, dialog.FileName, ex.Message), "kniip",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        if (MessageBox.Show(this, Strings.Settings_RestoreConfirm, "kniip", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
+        App.Instance.ReplaceSettings(restored);
+        Close();
+        App.Instance.Restart();
+    }
+
+    private async void TestUploader(UploadDestination config)
+    {
+        _testingUploader = true;
         ShowUploaderStatus(Strings.Settings_TestUploading);
         try
         {
-            using System.IO.MemoryStream png = ImageExporter.EncodePng(CreateTestImage());
-            string url = await ZiplineUploader.UploadAsync(config, png, "kniip-test.png", "image/png");
-            bool copied = ClipboardWriter.SetText(url);
-            ShowUploaderStatus(Strings.Settings_TestSucceeded, url, copied ? Strings.Settings_TestCopied : null);
+            using System.IO.MemoryStream png = ImageExporter.EncodePng(UploadTestImage.Create());
+            UploadResult result = await UploaderFactory.UploadAsync(config, png, "kniip-test.png", "image/png");
+            bool copied = ClipboardWriter.SetText(result.Url);
+            ShowUploaderStatus(Strings.Settings_TestSucceeded, result.Url, copied ? Strings.Settings_TestCopied : null);
+        }
+        catch (OperationCanceledException)
+        {
+            ShowUploaderStatus(null);
         }
         catch (Exception ex)
         {
@@ -439,39 +729,26 @@ public partial class SettingsWindow : Window
         }
         finally
         {
-            TestUploaderButton.IsEnabled = _uploader is { IsConfigured: true };
+            _testingUploader = false;
         }
     }
 
-    private static BitmapSource CreateTestImage()
+    private void RemoveUploader(UploadDestination destination)
     {
-        const int size = 64;
-        Color accent = Application.Current.Resources["AccentBrush"] is SolidColorBrush brush ? brush.Color : Colors.SteelBlue;
-        var pixels = new byte[size * size * 4];
-        for (int i = 0; i < pixels.Length; i += 4)
-        {
-            pixels[i] = accent.B;
-            pixels[i + 1] = accent.G;
-            pixels[i + 2] = accent.R;
-            pixels[i + 3] = 255;
-        }
-
-        return BitmapSource.Create(size, size, 96, 96, PixelFormats.Bgra32, null, pixels, size * 4);
-    }
-
-    private void RemoveUploader_Click(object sender, RoutedEventArgs e)
-    {
-        _uploader = null;
-        ShowUploader();
+        _uploaders.Remove(destination);
+        ShowUploaders();
         ShowUploaderStatus(null);
     }
 
     private void Save_Click(object sender, RoutedEventArgs e)
     {
-        _settings.Uploader = _uploader;
+        _settings.Uploaders = _uploaders;
+        _settings.DefaultUploaderId = _defaultUploaderId;
         _settings.SnipSaveFolder = _snipFolder;
         _settings.VideoSaveFolder = _videoFolder;
+        _settings.SnipFolderTemplate = NullIfBlank(SnipFolderTemplateBox.Text);
         _settings.SnipFileNameTemplate = NullIfBlank(SnipTemplateBox.Text);
+        _settings.VideoFolderTemplate = NullIfBlank(VideoFolderTemplateBox.Text);
         _settings.VideoFileNameTemplate = NullIfBlank(VideoTemplateBox.Text);
         _settings.SaveButton = SaveAndCopyRadio.IsChecked == true
             ? SaveButtonChoice.SaveAndCopy

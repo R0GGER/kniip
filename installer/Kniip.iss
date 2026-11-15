@@ -5,7 +5,7 @@
 #define AppName "kniip"
 #define AppExe "Kniip.exe"
 #ifndef AppVersion
-  #define AppVersion "2.5.1"
+  #define AppVersion "2.5.2"
 #endif
 #ifndef PublishDir
   #define PublishDir "..\obj\publish"

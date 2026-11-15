@@ -53,11 +53,11 @@ internal sealed class RecordingController
 
     public event Action<RecordingStage>? StageChanged;
 
-    /// <summary>Pad van een geslaagde opname (tijdelijk MP4-bestand), het voorgestelde formaat en de programmanaam van het opgenomen venster.</summary>
-    public event Action<string, ScreencastFormat?, string?>? RecordingFinished;
+    /// <summary>Pad van een geslaagde opname (tijdelijk MP4-bestand), het voorgestelde formaat en het opgenomen venster.</summary>
+    public event Action<string, ScreencastFormat?, WindowInfo?>? RecordingFinished;
 
     private List<SnappedWindow> _snapshot = new();
-    private string? _windowName;
+    private WindowInfo? _window;
 
     public event Action<string, string>? Notify;
 
@@ -168,7 +168,7 @@ internal sealed class RecordingController
         }
 
         _region = region;
-        _windowName = PhysicalWindow.ProgramNameAt(snapshot, region.Bounds);
+        _window = PhysicalWindow.WindowAt(snapshot, region.Bounds);
         Screen screen = Screen.AllScreens.FirstOrDefault(s => s.DeviceName == region.DeviceName) ?? Screen.PrimaryScreen!;
 
         _frame = new RegionFrameWindow(region.Bounds);
@@ -311,7 +311,7 @@ internal sealed class RecordingController
     {
         bool discard = _discard;
         ScreencastFormat? format = _format;
-        string? windowName = _windowName;
+        WindowInfo? window = _window;
         EndAll();
         if (discard)
         {
@@ -319,7 +319,7 @@ internal sealed class RecordingController
             return;
         }
 
-        RecordingFinished?.Invoke(path, format, windowName);
+        RecordingFinished?.Invoke(path, format, window);
     }
 
     private void OnFailed(string error, bool started)
@@ -373,7 +373,7 @@ internal sealed class RecordingController
         _frame?.Close();
         _frame = null;
         _region = null;
-        _windowName = null;
+        _window = null;
         _format = null;
         _discard = false;
         _retriedWithoutAudio = false;

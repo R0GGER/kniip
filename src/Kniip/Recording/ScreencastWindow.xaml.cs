@@ -36,7 +36,7 @@ public partial class ScreencastWindow : Window
 
     private readonly string _path;
     private readonly AppSettings _settings;
-    private readonly string? _windowName;
+    private readonly WindowInfo? _window;
     private readonly DispatcherTimer _playTimer = new() { Interval = TimeSpan.FromMilliseconds(40) };
     private TimeSpan _duration;
     private TimeSpan _start;
@@ -48,14 +48,14 @@ public partial class ScreencastWindow : Window
     private bool _kept;
     private string? _lastSaved;
 
-    /// <param name="windowName">Programmanaam van het opgenomen venster, voor %V in het naamsjabloon.</param>
-    internal ScreencastWindow(string path, AppSettings settings, ScreencastFormat? format = null, string? windowName = null)
+    /// <param name="window">Programmanaam en titel van het opgenomen venster, voor %pn en %t in het naamsjabloon.</param>
+    internal ScreencastWindow(string path, AppSettings settings, ScreencastFormat? format = null, WindowInfo? window = null)
     {
         InitializeComponent();
         Infrastructure.ThemeManager.Attach(this);
         _path = path;
         _settings = settings;
-        _windowName = windowName;
+        _window = window;
 
         int[] fpsChoices = FpsChoices.Contains(settings.GifFps) ? FpsChoices : FpsChoices.Append(settings.GifFps).Order().ToArray();
         foreach (int fps in fpsChoices)
@@ -354,7 +354,8 @@ public partial class ScreencastWindow : Window
         SaveButton.ToolTip = copy
             ? Strings.Screencast_SaveAndCopyTip
             : Strings.Screencast_SaveButtonTip;
-        UploadButton.Visibility = _settings.Uploader is { IsConfigured: true } ? Visibility.Visible : Visibility.Collapsed;
+        UploadButton.Visibility = _settings.DefaultUploader != null ? Visibility.Visible : Visibility.Collapsed;
+        UploadMenuChevron.Visibility = _settings.Uploaders.Count(u => u.IsConfigured) > 1 ? Visibility.Visible : Visibility.Collapsed;
         UpdateInfo();
     }
 
@@ -392,6 +393,8 @@ public partial class ScreencastWindow : Window
     private static string DefaultName => string.Format(Strings.Screencast_DefaultName, DateTime.Now);
 
     private string DefaultFileName => DefaultName + Extension;
+
+    private WindowInfo TemplateWindow => _window ?? new WindowInfo(Strings.Screencast_Name, Strings.Screencast_Name);
 
     private static string DefaultFolder =>
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "kniip");
@@ -471,7 +474,7 @@ public partial class ScreencastWindow : Window
 
         try
         {
-            return FileNameTemplate.Resolve(folder, _settings.VideoFileNameTemplate, _windowName ?? Strings.Screencast_Name, DefaultName, Extension);
+            return FileNameTemplate.Resolve(folder, _settings.VideoFolderTemplate, _settings.VideoFileNameTemplate, TemplateWindow, DefaultName, Extension);
         }
         catch (Exception ex)
         {
@@ -490,7 +493,7 @@ public partial class ScreencastWindow : Window
         {
             Title = Strings.Screencast_SaveDialogTitle,
             Filter = gif ? Strings.Screencast_GifFilter : Strings.Screencast_Mp4Filter,
-            FileName = FileNameTemplate.SuggestedName(_settings.VideoFileNameTemplate, _windowName ?? Strings.Screencast_Name, DefaultName) + Extension,
+            FileName = FileNameTemplate.SuggestedName(_settings.VideoFileNameTemplate, TemplateWindow, DefaultName) + Extension,
             InitialDirectory = folder,
             AddExtension = true
         };
@@ -525,9 +528,31 @@ public partial class ScreencastWindow : Window
         }
     }
 
-    private async void Upload_Click(object sender, RoutedEventArgs e)
+    private async void Upload_Click(object sender, RoutedEventArgs e) => await UploadAsync(_settings.DefaultUploader);
+
+    private void UploadMenu_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (IsBusy || _settings.Uploader is not { IsConfigured: true } config)
+        e.Handled = true;
+        if (IsBusy || !UploadButton.IsEnabled)
+        {
+            return;
+        }
+
+        var menu = new ContextMenu { PlacementTarget = UploadButton, Placement = PlacementMode.Bottom };
+        foreach (UploadDestination destination in _settings.Uploaders.Where(u => u.IsConfigured))
+        {
+            UploadDestination target = destination;
+            var item = new MenuItem { Header = string.Format(Strings.Common_UploadToNamed, target.Title) };
+            item.Click += async (_, _) => await UploadAsync(target);
+            menu.Items.Add(item);
+        }
+
+        menu.IsOpen = true;
+    }
+
+    private async Task UploadAsync(UploadDestination? config)
+    {
+        if (IsBusy || config is not { IsConfigured: true })
         {
             return;
         }
@@ -549,7 +574,12 @@ public partial class ScreencastWindow : Window
             await using (FileStream stream = File.OpenRead(target))
             {
                 string contentType = Format == ScreencastFormat.Gif ? "image/gif" : "video/mp4";
-                url = await ZiplineUploader.UploadAsync(config, stream, Path.GetFileName(target), contentType, progress, _export.Token);
+                UploadResult result = await UploaderFactory.UploadAsync(config, stream, Path.GetFileName(target), contentType, progress, _export.Token);
+                url = result.Url;
+                if (result.DestinationChanged)
+                {
+                    App.Instance.SaveSettings();
+                }
             }
 
             _kept = true;
