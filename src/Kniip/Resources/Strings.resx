@@ -233,6 +233,10 @@
   <data name="Prop_FreehandEraserTip" xml:space="preserve"><value>Freehand: drag to erase</value></data>
   <data name="Prop_Numbering" xml:space="preserve"><value>Sequence</value></data>
   <data name="Prop_Shadow" xml:space="preserve"><value>Shadow</value></data>
+  <data name="Prop_TextOutline" xml:space="preserve"><value>Border around the letters</value></data>
+  <data name="Prop_TextOutlineColor" xml:space="preserve"><value>Letter border color</value></data>
+  <data name="Prop_TextOutlineWidth" xml:space="preserve"><value>Letter border thickness</value></data>
+  <data name="Prop_WindowShadow" xml:space="preserve"><value>Window shadow: soft shadow on a transparent background</value></data>
   <data name="Prop_Shape" xml:space="preserve"><value>Shape</value></data>
   <data name="Prop_Size" xml:space="preserve"><value>Size</value></data>
   <data name="Prop_SmartEraserTip" xml:space="preserve"><value>Smart eraser: click a color to remove all adjacent pixels of that color</value></data>
@@ -409,6 +413,7 @@
   <data name="Settings_SelectArea" xml:space="preserve"><value>Selecting an area</value></data>
   <data name="Settings_ShowCursor" xml:space="preserve"><value>Show the mouse pointer</value></data>
   <data name="Settings_ShowMagnifier" xml:space="preserve"><value>Show a magnifier when selecting an area (snip and screencast)</value></data>
+  <data name="Settings_WindowShadow" xml:space="preserve"><value>Add a soft shadow with a transparent background to window snips</value></data>
   <data name="Settings_ShowNotification" xml:space="preserve"><value>Show a notification (click to edit)</value></data>
   <data name="Settings_SingleLayout" xml:space="preserve"><value>One toolbar with tools and actions</value></data>
   <data name="Settings_SnipNameTip" xml:space="preserve"><value>Empty: Snip with date and time</value></data>
@@ -680,4 +685,37 @@
   <data name="Window_Maximize" xml:space="preserve"><value>Maximize</value></data>
   <data name="Window_Minimize" xml:space="preserve"><value>Minimize</value></data>
   <data name="Window_Restore" xml:space="preserve"><value>Restore Down</value></data>
+  <data name="History_KindFile" xml:space="preserve"><value>File</value></data>
+  <data name="History_KindImage" xml:space="preserve"><value>Image</value></data>
+  <data name="History_KindText" xml:space="preserve"><value>Text</value></data>
+  <data name="Settings_HotkeyNameUploadClipboard" xml:space="preserve"><value>upload clipboard</value></data>
+  <data name="Settings_HotkeyTipUploadClipboard" xml:space="preserve"><value>Click, then press the key combination you want; uploads the text, image or files on the clipboard and copies the link</value></data>
+  <data name="Settings_SendTo" xml:space="preserve"><value>Show kniip in &apos;Send to&apos; in Explorer, to upload files and copy the link</value></data>
+  <data name="Settings_UploadClipboardHotkey" xml:space="preserve"><value>Upload clipboard</value></data>
+  <data name="Settings_UploadKindDefault" xml:space="preserve"><value>Default ({0})</value></data>
+  <data name="Settings_UploadKindFile" xml:space="preserve"><value>Other files</value></data>
+  <data name="Settings_UploadKindMedia" xml:space="preserve"><value>Images and videos</value></data>
+  <data name="Settings_UploadKindText" xml:space="preserve"><value>Text</value></data>
+  <data name="Settings_UploadPerKind" xml:space="preserve"><value>Destination per type</value></data>
+  <data name="Settings_UploadPerKindHint" xml:space="preserve"><value>Used by Upload clipboard, Upload files and &apos;Send to&apos;. Images and videos also go here from the editor and screencasts. Default is the destination with the star.</value></data>
+  <data name="Shell_SendToDescription" xml:space="preserve"><value>Upload with {0} and copy the link</value></data>
+  <data name="Tray_Upload" xml:space="preserve"><value>Upload</value></data>
+  <data name="Tray_UploadClipboard" xml:space="preserve"><value>Upload clipboard</value></data>
+  <data name="Tray_UploadClipboardTip" xml:space="preserve"><value>Uploads the text, image or files on the clipboard and copies the link</value></data>
+  <data name="Tray_UploadFiles" xml:space="preserve"><value>Upload files...</value></data>
+  <data name="Tray_UploadNoDestination" xml:space="preserve"><value>Add an upload destination first in Settings &gt; Upload</value></data>
+  <data name="Upload_PickFilesTitle" xml:space="preserve"><value>Upload files</value></data>
+  <data name="Upload_QuickBusy" xml:space="preserve"><value>An upload is already in progress. Try again when it&apos;s done.</value></data>
+  <data name="Upload_QuickCancelled" xml:space="preserve"><value>Upload cancelled.</value></data>
+  <data name="Upload_QuickCopiedMany" xml:space="preserve"><value>{0} links copied to the clipboard.</value></data>
+  <data name="Upload_QuickCopiedOne" xml:space="preserve"><value>Link copied: {0}</value></data>
+  <data name="Upload_QuickCopyFailed" xml:space="preserve"><value>Uploaded, but the clipboard was busy. Find the link in the history: {0}</value></data>
+  <data name="Upload_QuickDoneTitle" xml:space="preserve"><value>Uploaded</value></data>
+  <data name="Upload_QuickFailedTitle" xml:space="preserve"><value>Upload failed</value></data>
+  <data name="Upload_QuickNoDestination" xml:space="preserve"><value>There&apos;s no upload destination yet. Add one in Settings &gt; Upload.</value></data>
+  <data name="Upload_QuickNothing" xml:space="preserve"><value>There&apos;s no text, image or file on the clipboard to upload.</value></data>
+  <data name="Upload_QuickPartlyFailed" xml:space="preserve"><value>{0} failed: {1}</value></data>
+  <data name="Upload_QuickTitle" xml:space="preserve"><value>Upload</value></data>
+  <data name="Upload_QuickUploadingMany" xml:space="preserve"><value>Uploading {0} files...</value></data>
+  <data name="Upload_QuickUploadingOne" xml:space="preserve"><value>Uploading {0}...</value></data>
 </root>

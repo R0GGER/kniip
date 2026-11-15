@@ -19,6 +19,8 @@ internal sealed class TrayIcon : IDisposable
     private static string RecordText => Strings.Tray_RecordMp4;
 
     private readonly ToolStripMenuItem _clipboardItem;
+    private readonly ToolStripMenuItem _uploadItem;
+    private readonly ToolStripMenuItem _uploadClipboardItem;
     private readonly ToolStripMenuItem _pauseItem;
     private readonly ToolStripMenuItem _snipItem;
     private readonly ToolStripMenuItem _windowItem;
@@ -47,6 +49,11 @@ internal sealed class TrayIcon : IDisposable
     public event Action? RecordRequested;
     public event Action? GifRequested;
     public event Action? OpenFileRequested;
+    public event Action? UploadClipboardRequested;
+    public event Action? UploadFilesRequested;
+
+    /// <summary>Er is een uploadbestemming ingesteld; opgevraagd bij het openen van het menu.</summary>
+    public Func<bool>? CanUpload { get; set; }
     public event Action? SettingsRequested;
     public event Action? ExitRequested;
     public event Action<bool>? PauseChanged;
@@ -68,6 +75,20 @@ internal sealed class TrayIcon : IDisposable
         _clipboardItem = WithGlyph(new ToolStripMenuItem(Strings.Tray_EditFromClipboard, null, (_, _) => OpenFromClipboardRequested?.Invoke()), "\uE77F");
         menu.Items.Add(_clipboardItem);
         menu.Items.Add(WithGlyph(new ToolStripMenuItem(Strings.Tray_OpenImage, null, (_, _) => OpenFileRequested?.Invoke()), "\uE8E5"));
+        _uploadItem = WithGlyph(new ToolStripMenuItem(Strings.Tray_Upload), "\uE898");
+        _uploadClipboardItem = WithGlyph(new ToolStripMenuItem(Strings.Tray_UploadClipboard, null, (_, _) => UploadClipboardRequested?.Invoke())
+        {
+            ToolTipText = Strings.Tray_UploadClipboardTip
+        }, "\uE77F");
+        _uploadItem.DropDownItems.Add(_uploadClipboardItem);
+        _uploadItem.DropDownItems.Add(WithGlyph(new ToolStripMenuItem(Strings.Tray_UploadFiles, null, (_, _) => UploadFilesRequested?.Invoke()), "\uE8E5"));
+        menu.Items.Add(_uploadItem);
+        menu.Opening += (_, _) =>
+        {
+            bool canUpload = CanUpload?.Invoke() ?? false;
+            _uploadItem.Enabled = canUpload;
+            _uploadItem.ToolTipText = canUpload ? null : Strings.Tray_UploadNoDestination;
+        };
         menu.Items.Add(new ToolStripSeparator());
         _snipItem = WithGlyph(new ToolStripMenuItem(Strings.Tray_SnipRectangle, null, (_, _) => SnipRequested?.Invoke())
         {
@@ -130,9 +151,10 @@ internal sealed class TrayIcon : IDisposable
     public bool IsPaused => _pauseItem.Checked;
 
     /// <summary>Toont de sneltoetsen naast de menu-items; null = geen sneltoets.</summary>
-    public void SetHotkeys(string? snip, string? window, string? record, string? gif, string? clipboard, string? ocr)
+    public void SetHotkeys(string? snip, string? window, string? record, string? gif, string? clipboard, string? ocr, string? uploadClipboard)
     {
         _clipboardItem.ShortcutKeyDisplayString = clipboard;
+        _uploadClipboardItem.ShortcutKeyDisplayString = uploadClipboard;
         _ocrItem.ShortcutKeyDisplayString = ocr;
         _snipItem.ShortcutKeyDisplayString = snip;
         _windowItem.ShortcutKeyDisplayString = window;

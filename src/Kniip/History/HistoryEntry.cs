@@ -9,7 +9,19 @@ public enum HistoryKind
 {
     Snip,
     Mp4,
-    Gif
+    Gif,
+
+    /// <summary>Geüploade afbeelding, via het klembord of "Kopiëren naar".</summary>
+    Image,
+
+    /// <summary>Geüploade video die niet in kniip is opgenomen.</summary>
+    Video,
+
+    /// <summary>Geüploade tekst van het klembord.</summary>
+    Text,
+
+    /// <summary>Overig geüpload bestand.</summary>
+    File
 }
 
 public sealed class HistoryEntry
@@ -40,9 +52,26 @@ public sealed class HistoryEntry
     {
         HistoryKind.Mp4 => "Screencast (MP4)",
         HistoryKind.Gif => "Screencast (GIF)",
+        HistoryKind.Image => Strings.History_KindImage,
+        HistoryKind.Video => "Video",
+        HistoryKind.Text => Strings.History_KindText,
+        HistoryKind.File => Strings.History_KindFile,
         _ => Strings.Snip_Name
     };
 
+    /// <summary>Teken uit Segoe Fluent Icons voor items zonder miniatuur.</summary>
     [JsonIgnore]
-    public bool FileExists => FilePath is { Length: > 0 } && File.Exists(FilePath);
+    public string Glyph => Kind switch
+    {
+        HistoryKind.Text => "\uE8A5",
+        HistoryKind.File => "\uE7C3",
+        HistoryKind.Image or HistoryKind.Snip => "\uEB9F",
+        _ => "\uE714"
+    };
+
+    [JsonIgnore]
+    public bool IsImage => Kind is HistoryKind.Snip or HistoryKind.Image;
+
+    [JsonIgnore]
+    public bool FileExists => FilePath is { Length: > 0 } && System.IO.File.Exists(FilePath);
 }

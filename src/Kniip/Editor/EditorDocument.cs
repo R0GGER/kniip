@@ -9,7 +9,7 @@ using Kniip.Infrastructure;
 
 namespace Kniip.Editor;
 
-public sealed record DocumentState(BitmapSource Image, byte[] Pixels, List<Annotation> Items, CanvasBackground Background);
+public sealed record DocumentState(BitmapSource Image, byte[] Pixels, List<Annotation> Items, CanvasBackground Background, int ShadowMargin);
 
 /// <summary>Het knipsel (als Bgra32-pixels, 96 dpi zodat 1 DIP = 1 pixel) plus de annotaties erop.</summary>
 public sealed class EditorDocument
@@ -38,6 +38,14 @@ public sealed class EditorDocument
     public bool HasTransparency { get; private set; }
 
     public List<Annotation> Items { get; private set; } = new();
+
+    /// <summary>Breedte van de transparante rand met vensterschaduw; 0 = geen schaduw (of niet meer los te halen).</summary>
+    public int ShadowMargin { get; private set; }
+
+    /// <summary>Straal van de afgeronde vensterhoeken in pixels, als het knipsel een venster is; anders 0.</summary>
+    public int CornerRadius { get; set; }
+
+    public bool HasShadow => ShadowMargin > 0;
 
     public CanvasBackground Background
     {
@@ -89,7 +97,7 @@ public sealed class EditorDocument
         return _composite.Value;
     }
 
-    public DocumentState CaptureState() => new(Image, Pixels, Items.Select(i => i.Clone()).ToList(), Background);
+    public DocumentState CaptureState() => new(Image, Pixels, Items.Select(i => i.Clone()).ToList(), Background, ShadowMargin);
 
     public void Restore(DocumentState state)
     {
@@ -98,10 +106,42 @@ public sealed class EditorDocument
         HasTransparency = PixelUtil.HasTransparency(state.Pixels);
         Items = state.Items.Select(i => i.Clone()).ToList();
         Background = state.Background;
+        ShadowMargin = state.ShadowMargin;
+    }
+
+    public void AddShadow()
+    {
+        if (HasShadow)
+        {
+            return;
+        }
+
+        (byte[] pixels, int width, int height) = WindowShadow.Apply(Pixels, Width, Height, CornerRadius);
+        SetPixels(pixels, width, height);
+        var offset = new Vector(WindowShadow.Margin, WindowShadow.Margin);
+        foreach (Annotation item in Items)
+        {
+            item.Move(offset);
+        }
+
+        ShadowMargin = WindowShadow.Margin;
+    }
+
+    /// <summary>Haalt de rand met schaduw weg; afgeronde hoeken blijven transparant.</summary>
+    public void RemoveShadow()
+    {
+        int margin = ShadowMargin;
+        if (margin <= 0 || Width <= 2 * margin || Height <= 2 * margin)
+        {
+            return;
+        }
+
+        Crop(new Int32Rect(margin, margin, Width - 2 * margin, Height - 2 * margin));
     }
 
     public void Crop(Int32Rect area)
     {
+        ShadowMargin = 0;
         var cropped = new byte[area.Width * area.Height * 4];
         for (int y = 0; y < area.Height; y++)
         {

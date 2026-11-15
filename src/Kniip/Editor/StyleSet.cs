@@ -60,7 +60,8 @@ public enum StyleProps
     TextShape = 16384,
     ShapeKind = 32768,
     Tolerance = 65536,
-    EraserMode = 131072
+    EraserMode = 131072,
+    TextOutline = 262144
 }
 
 public sealed class StyleSet
@@ -77,6 +78,11 @@ public sealed class StyleSet
 
     /// <summary>Uitlijning van de tekst in een tekstvorm: links, midden of rechts.</summary>
     public TextAlignment TextAlign { get; set; } = TextAlignment.Left;
+
+    /// <summary>Rand om de letters zelf, los van de rand van de tekstvorm.</summary>
+    public bool TextOutline { get; set; }
+    public Color TextOutlineColor { get; set; } = Colors.White;
+    public double TextOutlineWidth { get; set; } = 3;
     public StepNumbering StepNumbering { get; set; } = StepNumbering.Numbers;
     public double Size { get; set; } = 32;
     public BlurMode BlurMode { get; set; } = BlurMode.Pixelate;
@@ -127,7 +133,7 @@ public sealed class StyleSet
         ToolKind.Shape => StyleProps.Stroke | StyleProps.Fill | StyleProps.Thickness | StyleProps.Dash | StyleProps.Shadow | StyleProps.ShapeKind,
         ToolKind.Line or ToolKind.Arrow => StyleProps.Stroke | StyleProps.Thickness | StyleProps.Dash | StyleProps.Shadow,
         ToolKind.Text => StyleProps.Stroke | StyleProps.Fill | StyleProps.Foreground | StyleProps.Thickness | StyleProps.Dash
-                         | StyleProps.Corner | StyleProps.Shadow | StyleProps.Font | StyleProps.TextShape,
+                         | StyleProps.Corner | StyleProps.Shadow | StyleProps.Font | StyleProps.TextShape | StyleProps.TextOutline,
         ToolKind.Step => StyleProps.Fill | StyleProps.Foreground | StyleProps.Numbering | StyleProps.Size | StyleProps.Shadow,
         ToolKind.Cursor => StyleProps.CursorKind | StyleProps.Size | StyleProps.Shadow,
         ToolKind.Emoji => StyleProps.Emoji | StyleProps.Size | StyleProps.Shadow,

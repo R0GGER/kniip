@@ -139,6 +139,13 @@
                         <Button Tag="Clipboard" Style="{StaticResource FlatButton}" Content="{x:Static res:Strings.Common_None}" Click="ClearHotkey_Click" Margin="6,0,0,0"
                                 ToolTip="{x:Static res:Strings.Settings_NoHotkey}" />
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="{x:Static res:Strings.Settings_UploadClipboardHotkey}" VerticalAlignment="Center" Width="150" />
+                        <Button x:Name="UploadClipboardHotkeyButton" Tag="UploadClipboard" Style="{StaticResource SecondaryButton}" Width="170" Margin="0"
+                                Click="HotkeyButton_Click" ToolTip="{x:Static res:Strings.Settings_HotkeyTipUploadClipboard}" />
+                        <Button Tag="UploadClipboard" Style="{StaticResource FlatButton}" Content="{x:Static res:Strings.Common_None}" Click="ClearHotkey_Click" Margin="6,0,0,0"
+                                ToolTip="{x:Static res:Strings.Settings_NoHotkey}" />
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                         <TextBlock Text="{x:Static res:Strings.Settings_OcrHotkey}" VerticalAlignment="Center" Width="150" />
                         <Button x:Name="OcrHotkeyButton" Tag="Ocr" Style="{StaticResource SecondaryButton}" Width="170" Margin="0"
@@ -149,6 +156,7 @@
                     <TextBlock x:Name="HotkeyHint" Style="{StaticResource Hint}" Margin="0,0,0,4" />
                     <TextBlock Text="{x:Static res:Strings.Settings_SelectArea}" Style="{StaticResource CardTitle}" Margin="0,12,0,8" />
                     <CheckBox x:Name="MagnifierBox" Content="{x:Static res:Strings.Settings_ShowMagnifier}" />
+                    <CheckBox x:Name="WindowShadowBox" Content="{x:Static res:Strings.Settings_WindowShadow}" Margin="0,8,0,0" />
                 </StackPanel>
             </TabItem>
 
@@ -293,6 +301,25 @@
                         </ItemsControl>
                     </ScrollViewer>
                     <TextBlock x:Name="UploaderStatus" Style="{StaticResource Hint}" Margin="0,2,0,4" Visibility="Collapsed" />
+                    <StackPanel x:Name="PerKindPanel">
+                        <TextBlock Text="{x:Static res:Strings.Settings_UploadPerKind}" Style="{StaticResource CardTitle}" Margin="0,12,0,8" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="{x:Static res:Strings.Settings_UploadKindMedia}" VerticalAlignment="Center" Width="170" />
+                            <ComboBox x:Name="MediaUploaderCombo" Tag="Media" Style="{StaticResource PropCombo}" Width="260"
+                                      SelectionChanged="KindUploader_SelectionChanged" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="{x:Static res:Strings.Settings_UploadKindText}" VerticalAlignment="Center" Width="170" />
+                            <ComboBox x:Name="TextUploaderCombo" Tag="Text" Style="{StaticResource PropCombo}" Width="260"
+                                      SelectionChanged="KindUploader_SelectionChanged" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="{x:Static res:Strings.Settings_UploadKindFile}" VerticalAlignment="Center" Width="170" />
+                            <ComboBox x:Name="FileUploaderCombo" Tag="File" Style="{StaticResource PropCombo}" Width="260"
+                                      SelectionChanged="KindUploader_SelectionChanged" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource Hint}" Text="{x:Static res:Strings.Settings_UploadPerKindHint}" />
+                    </StackPanel>
                     <TextBlock Style="{StaticResource Hint}" Margin="0,8,0,4"
                                Text="{x:Static res:Strings.Settings_UploadExplanation}" />
                 </StackPanel>
@@ -377,6 +404,7 @@
                     <TextBlock Text="{x:Static res:Strings.Settings_WindowsIntegration}" Style="{StaticResource CardTitle}" Margin="0,16,0,6" />
                     <CheckBox x:Name="AutostartBox" Content="{x:Static res:Strings.Settings_Autostart}" />
                     <CheckBox x:Name="OpenWithBox" Content="{x:Static res:Strings.Settings_OpenWith}" />
+                    <CheckBox x:Name="SendToBox" Content="{x:Static res:Strings.Settings_SendTo}" />
                     <TextBlock Style="{StaticResource Hint}"
                                Text="{x:Static res:Strings.Settings_IntegrationExplanation}" />
                 </StackPanel>

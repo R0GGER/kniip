@@ -29,6 +29,7 @@ public partial class EditorView : UserControl
     private enum ZOrder { Front, Forward, Backward, Back }
 
     private static readonly double[] ThicknessValues = { 0, 1, 2, 3, 4, 6, 8, 12, 16, 20, 24, 32 };
+    private static readonly double[] TextOutlineWidthValues = { 1, 2, 3, 4, 6, 8 };
     private static readonly double[] EraserThicknessValues = { 4, 8, 12, 16, 20, 24, 32, 48, 64, 96 };
     private static readonly double[] FontSizeValues = { 10, 12, 14, 16, 18, 20, 24, 28, 32, 40, 48, 64 };
     private static readonly double[] SizeValues = { 16, 20, 24, 28, 32, 40, 48, 56, 64, 80 };
@@ -120,20 +121,26 @@ public partial class EditorView : UserControl
     public event EventHandler? DirtyChanged;
 
     /// <param name="window">Programmanaam en titel van het geknipte venster, voor %pn en %t in het naamsjabloon.</param>
-    public EditorView(BitmapSource image, AppSettings settings, bool isBlank = false, WindowInfo? window = null)
+    /// <param name="windowCornerRadius">Alleen bij een vensterknipsel: straal van de vensterhoeken; dan komt er meteen een schaduw omheen als dat is ingesteld.</param>
+    public EditorView(BitmapSource image, AppSettings settings, bool isBlank = false, WindowInfo? window = null, int? windowCornerRadius = null)
     {
         InitializeComponent();
         _settings = settings;
         _isBlank = isBlank;
         _window = window;
         TabTitle = window?.ProcessName ?? (isBlank ? Strings.Editor_BlankCanvas : string.Format(Strings.Editor_SnipTabTitle, DateTime.Now));
-        _doc = new EditorDocument(image, isBlank);
+        _doc = new EditorDocument(image, isBlank) { CornerRadius = windowCornerRadius ?? 0 };
+        if (windowCornerRadius != null && settings.WindowShadow)
+        {
+            _doc.AddShadow();
+        }
 
         Surface.Document = _doc;
         Surface.GuidesX = _guidesX;
         Surface.GuidesY = _guidesY;
         Scroller.ScrollChanged += (_, _) => UpdateRulers();
         ThicknessCombo.ItemsSource = ThicknessValues;
+        TextOutlineWidthCombo.ItemsSource = TextOutlineWidthValues;
         FontSizeCombo.ItemsSource = FontSizeValues;
         SizeCombo.ItemsSource = SizeValues;
         CornerCombo.ItemsSource = CornerValues;
@@ -150,6 +157,7 @@ public partial class EditorView : UserControl
         StrokePicker.ColorChanged += c => ChangeStyle("stroke", s => s.Stroke = c);
         FillPicker.ColorChanged += c => ChangeStyle("fill", s => s.Fill = c);
         ForegroundPicker.ColorChanged += c => ChangeStyle("foreground", s => s.Foreground = c);
+        TextOutlinePicker.ColorChanged += c => ChangeStyle("textoutlinecolor", s => s.TextOutlineColor = c);
         BackgroundColorPicker.ColorChanged += c => ChangeBackground(b => b with { Color = c });
         BackgroundColor2Picker.ColorChanged += c => ChangeBackground(b => b with { Color2 = c });
         GradientDial.AngleChanging += PreviewGradientAngle;
@@ -2149,6 +2157,9 @@ public partial class EditorView : UserControl
         SetVisible(DashGroup, props.HasFlag(StyleProps.Dash) && !frameless);
         SetVisible(CornerGroup, props.HasFlag(StyleProps.Corner) && !frameless);
         SetVisible(FontGroup, props.HasFlag(StyleProps.Font));
+        SetVisible(TextOutlineGroup, props.HasFlag(StyleProps.TextOutline));
+        SetVisible(TextOutlinePicker, style.TextOutline);
+        SetVisible(TextOutlineWidthCombo, style.TextOutline);
         SetVisible(NumberingGroup, props.HasFlag(StyleProps.Numbering));
         SetVisible(CursorGroup, props.HasFlag(StyleProps.CursorKind));
         SetVisible(EmojiGroup, props.HasFlag(StyleProps.Emoji));
@@ -2171,7 +2182,10 @@ public partial class EditorView : UserControl
             _ => string.Empty
         };
         SetVisible(NoPropsText, props == StyleProps.None);
-        UpdateBackgroundGroup(kind == ToolKind.Select && _selected == null);
+        bool canvasProps = kind == ToolKind.Select && _selected == null;
+        SetVisible(WindowShadowGroup, canvasProps);
+        WindowShadowToggle.IsChecked = _doc.HasShadow;
+        UpdateBackgroundGroup(canvasProps);
 
         bool strokeIsLine = kind is ToolKind.Line or ToolKind.Arrow or ToolKind.Highlight;
         StrokePicker.ShowAsOutline = !strokeIsLine;
@@ -2227,6 +2241,9 @@ public partial class EditorView : UserControl
             ToleranceText.Text = style.Tolerance.ToString();
             BoldToggle.IsChecked = style.Bold;
             SyncTextAlignToggles(style.TextAlign);
+            TextOutlineToggle.IsChecked = style.TextOutline;
+            TextOutlinePicker.SelectedColor = style.TextOutlineColor;
+            TextOutlineWidthCombo.SelectedItem = Nearest(TextOutlineWidthValues, style.TextOutlineWidth);
             ShadowCheck.IsChecked = style.Shadow;
             StraightCheck.IsChecked = _settings.StraightHighlight;
         }
@@ -2271,6 +2288,26 @@ public partial class EditorView : UserControl
         {
             _suppressStyleEvents = suppress;
         }
+    }
+
+    private void WindowShadow_Click(object sender, RoutedEventArgs e)
+    {
+        CommitTextEdit();
+        _doc.EndPixelEdit();
+        Commit(_doc.CaptureState());
+        if (_doc.HasShadow)
+        {
+            _doc.RemoveShadow();
+        }
+        else
+        {
+            _doc.AddShadow();
+        }
+
+        SetSelected(null);
+        OnDocumentSizeChanged();
+        UpdatePropsPanel();
+        Surface.InvalidateVisual();
     }
 
     private void ChangeBackground(Func<CanvasBackground, CanvasBackground> change)
@@ -2541,6 +2578,24 @@ public partial class EditorView : UserControl
         ChangeStyle("bold", s => s.Bold = bold);
     }
 
+    private void TextOutline_Changed(object sender, RoutedEventArgs e)
+    {
+        bool outline = TextOutlineToggle.IsChecked == true;
+        ChangeStyle("textoutline", s => s.TextOutline = outline);
+        if (!_suppressStyleEvents)
+        {
+            UpdatePropsPanel();
+        }
+    }
+
+    private void TextOutlineWidth_Changed(object sender, SelectionChangedEventArgs e)
+    {
+        if (TextOutlineWidthCombo.SelectedItem is double value)
+        {
+            ChangeStyle("textoutlinewidth", s => s.TextOutlineWidth = value);
+        }
+    }
+
     private void TextAlign_Click(object sender, RoutedEventArgs e)
     {
         TextAlignment align = sender == TextAlignCenterToggle ? TextAlignment.Center
@@ -2696,7 +2751,7 @@ public partial class EditorView : UserControl
             ? Visibility.Visible
             : Visibility.Collapsed;
         UploadMenuChevron.Visibility = _settings.Uploaders.Count(u => u.IsConfigured) > 1 ? Visibility.Visible : Visibility.Collapsed;
-        UploadButton.ToolTip = _settings.DefaultUploader is { } target
+        UploadButton.ToolTip = _settings.UploaderFor(UploadKind.Media) is { } target
             ? Strings.Tool_UploadTip + " (" + target.Title + ")"
             : Strings.Tool_UploadTip;
         if (UploadButton.Visibility != visibility)
@@ -2715,7 +2770,7 @@ public partial class EditorView : UserControl
         }
 
         var menu = new ContextMenu { PlacementTarget = UploadButton, Placement = PlacementMode.Bottom };
-        UploadDestination? standard = _settings.DefaultUploader;
+        UploadDestination? standard = _settings.UploaderFor(UploadKind.Media);
         foreach (UploadDestination destination in _settings.Uploaders.Where(u => u.IsConfigured))
         {
             UploadDestination target = destination;
@@ -2729,7 +2784,7 @@ public partial class EditorView : UserControl
 
     private async void Upload(UploadDestination? target = null)
     {
-        if ((target ?? _settings.DefaultUploader) is not { IsConfigured: true } config || !UploadButton.IsEnabled)
+        if ((target ?? _settings.UploaderFor(UploadKind.Media)) is not { IsConfigured: true } config || !UploadButton.IsEnabled)
         {
             return;
         }

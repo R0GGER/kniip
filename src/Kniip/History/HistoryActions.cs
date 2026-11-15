@@ -20,7 +20,7 @@ public static class HistoryActions
     {
         bool file = entry.FileExists;
         bool url = entry.Url is { Length: > 0 };
-        bool image = file && entry.Kind == HistoryKind.Snip;
+        bool image = file && entry.IsImage;
         return new HistoryCommand?[]
         {
             new(Strings.History_Open, "\uE8E5", file || url, () => Open(entry)),

@@ -6,7 +6,7 @@ using Kniip.Resources;
 namespace Kniip.Infrastructure;
 
 /// <summary>
-/// Registratie per gebruiker (HKCU, geen beheerdersrechten nodig) voor "Openen met" en autostart.
+/// Registratie per gebruiker (HKCU, geen beheerdersrechten nodig) voor "Openen met", "Kopiëren naar" en autostart.
 /// </summary>
 internal static class ShellIntegration
 {
@@ -150,6 +150,38 @@ internal static class ShellIntegration
         else
         {
             key.DeleteValue(RunValueName, false);
+        }
+    }
+
+    /// <summary>Snelkoppeling in "Kopiëren naar" van Verkenner; die start kniip met --upload en de gekozen bestanden.</summary>
+    private static string SendToPath => System.IO.Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.SendTo), AppIdentity.DisplayName + ".lnk");
+
+    public static bool IsSendToEnabled() => System.IO.File.Exists(SendToPath);
+
+    public static void SetSendTo(bool enabled)
+    {
+        if (!enabled)
+        {
+            System.IO.File.Delete(SendToPath);
+            return;
+        }
+
+        Type shellType = Type.GetTypeFromProgID("WScript.Shell") ?? throw new InvalidOperationException("WScript.Shell");
+        dynamic shell = Activator.CreateInstance(shellType)!;
+        try
+        {
+            dynamic link = shell.CreateShortcut(SendToPath);
+            link.TargetPath = ExePath;
+            link.Arguments = "--upload";
+            link.IconLocation = ExePath + ",0";
+            link.Description = string.Format(Strings.Shell_SendToDescription, AppIdentity.DisplayName);
+            link.Save();
+            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(link);
+        }
+        finally
+        {
+            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell);
         }
     }
 

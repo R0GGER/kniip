@@ -69,6 +69,15 @@ public enum ColorMode
     System
 }
 
+/// <summary>Soort inhoud bij het uploaden; elke soort kan een eigen bestemming hebben.</summary>
+public enum UploadKind
+{
+    /// <summary>Afbeeldingen en video's.</summary>
+    Media,
+    Text,
+    File
+}
+
 public enum AppLanguage
 {
     /// <summary>Nederlands als de Windows-weergavetaal Nederlands is, anders Engels.</summary>
@@ -120,6 +129,9 @@ public sealed class AppSettings
 
     /// <summary>Sneltoets om een rechthoek te kiezen en de tekst erin te herkennen; standaard geen.</summary>
     public string OcrHotkey { get; set; } = "";
+
+    /// <summary>Sneltoets om de inhoud van het klembord te uploaden en de link te kopiëren; standaard geen.</summary>
+    public string UploadClipboardHotkey { get; set; } = "";
     public bool RecordSystemAudio { get; set; } = true;
     public bool RecordMicrophone { get; set; }
     public bool RecordShowCursor { get; set; } = true;
@@ -198,6 +210,27 @@ public sealed class AppSettings
     public UploadDestination? DefaultUploader =>
         Uploaders.FirstOrDefault(u => u.Id == DefaultUploaderId && u.IsConfigured) ?? Uploaders.FirstOrDefault(u => u.IsConfigured);
 
+    /// <summary>Bestemming voor afbeeldingen en video's; leeg betekent de standaardbestemming.</summary>
+    public Guid? MediaUploaderId { get; set; }
+
+    /// <summary>Bestemming voor tekst; leeg betekent de standaardbestemming.</summary>
+    public Guid? TextUploaderId { get; set; }
+
+    /// <summary>Bestemming voor overige bestanden; leeg betekent de standaardbestemming.</summary>
+    public Guid? FileUploaderId { get; set; }
+
+    /// <summary>De bestemming voor een soort upload: de gekozen als die bestaat en is ingesteld, anders de standaard.</summary>
+    public UploadDestination? UploaderFor(UploadKind kind)
+    {
+        Guid? id = kind switch
+        {
+            UploadKind.Media => MediaUploaderId,
+            UploadKind.Text => TextUploaderId,
+            _ => FileUploaderId
+        };
+        return Uploaders.FirstOrDefault(u => u.Id == id && u.IsConfigured) ?? DefaultUploader;
+    }
+
     /// <summary>Bij het starten en daarna elke UpdateCheckHours op de achtergrond kijken of er een nieuwere versie is.</summary>
     public bool CheckForUpdates { get; set; } = true;
 
@@ -212,6 +245,9 @@ public sealed class AppSettings
 
     /// <summary>Vergrootglas met kruisdraad en coördinaten tonen bij het kiezen van een gebied (knipsel en screencast).</summary>
     public bool ShowMagnifier { get; set; } = true;
+
+    /// <summary>Bij een vensterknipsel de hoeken transparant maken en een zachte schaduw op een transparante rand toevoegen.</summary>
+    public bool WindowShadow { get; set; } = true;
 
     private int _captureDelaySeconds;
 

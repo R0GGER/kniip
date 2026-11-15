@@ -268,6 +268,37 @@ internal static class NativeMethods
     public static bool IsCloaked(IntPtr hwnd) =>
         DwmGetWindowAttribute(hwnd, DWMWA_CLOAKED, out int cloaked, sizeof(int)) == 0 && cloaked != 0;
 
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool IsZoomed(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    public static extern uint GetDpiForWindow(IntPtr hwnd);
+
+    private const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
+    private const int DWMWCP_DONOTROUND = 1;
+    private const int DWMWCP_ROUNDSMALL = 3;
+
+    /// <summary>Straal van de afgeronde hoeken die Windows 11 om het venster tekent, in fysieke pixels; 0 = rechte hoeken.</summary>
+    public static int GetWindowCornerRadius(IntPtr hwnd)
+    {
+        if (Environment.OSVersion.Version.Build < 22000 || IsZoomed(hwnd))
+        {
+            return 0;
+        }
+
+        int preference = 0;
+        DwmGetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, out preference, sizeof(int));
+        if (preference == DWMWCP_DONOTROUND)
+        {
+            return 0;
+        }
+
+        uint dpi = GetDpiForWindow(hwnd);
+        double scale = dpi > 0 ? dpi / 96.0 : 1;
+        return (int)Math.Round((preference == DWMWCP_ROUNDSMALL ? 4 : 8) * scale);
+    }
+
     public static string? GetKnownFolderPath(Guid folderId)
     {
         if (SHGetKnownFolderPath(folderId, 0, IntPtr.Zero, out IntPtr path) != 0)

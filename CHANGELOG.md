@@ -2,6 +2,27 @@
 
 All notable changes to kniip are listed in this file. The newest version is at the top.
 
+## 2.5.3 - 2026-11-15
+
+### Added
+
+- **Border around the letters.**\
+  The text tool has a new button that puts a border around the letters themselves, with its own color and thickness. It works with every shape, also with **No shape** for text that stays readable on any background.
+- **Window shadow.**\
+  When you snip a window by clicking it, kniip now makes the rounded Windows 11 corners transparent and adds a soft shadow on a transparent edge. Save as PNG (or copy) to keep the transparency. Turn this off under **Settings > Shortcuts > Selecting an area**. In the editor, with the select tool and nothing selected, the **Window shadow** button adds or removes the shadow on any image; undo works as usual. Behind the shadow you can still choose a background color, gradient or image.
+- **Upload the clipboard.**\
+  In the system tray menu, **Upload > Upload clipboard** uploads whatever is on the clipboard and copies the link: files you copied in Explorer, an image, or text. Text is uploaded as a `.txt` file. Under **Settings > Shortcuts** you can give **Upload clipboard** its own shortcut; there is none by default.
+- **Upload files.**\
+  **Upload > Upload files...** in the system tray menu lets you pick one or more files. With several files, every link goes on its own line on the clipboard.
+- **Send to > kniip.**\
+  Right-click one or more files in Explorer and choose **Send to > kniip** (on Windows 11 under **Show more options**). kniip uploads them and copies the link(s), also if it wasn't running yet. Folders are skipped. The installer adds this shortcut by default; you can turn it on or off under **Settings > System**. Uninstalling kniip removes the shortcut.
+
+  The test build (`KniipTest-<version>.exe`) isn't installed, so it never adds the shortcut by itself. Turn it on under **Settings > System** in the test build; it then shows as **Send to > kniip test**. The shortcut points to that exe, so after a new build with a different version, turn the option off and on again.
+- **Destination per type.**\
+  Under **Settings > Upload**, choose a separate destination for **Images and videos**, **Text** and **Other files**. **Default** follows the destination with the star. The **Upload** button in the editor and for screencasts uses the destination for images and videos. If you remove a destination that a type uses, that type goes back to **Default**.
+- A notification shows when the upload starts and when it's done. If some files fail, the links that did work are still copied and the notification says how many failed. One quick upload runs at a time; if you start another one, kniip says an upload is already in progress.
+- The history shows uploaded images, videos, text and files with their own type and icon. For a file you uploaded from your PC, **Open** opens the local file and **Copy link** copies the link.
+
 ## 2.5.2 - 2026-11-14
 
 ### Added

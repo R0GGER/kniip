@@ -233,6 +233,10 @@
   <data name="Prop_FreehandEraserTip" xml:space="preserve"><value>Vrije hand: sleep om weg te poetsen</value></data>
   <data name="Prop_Numbering" xml:space="preserve"><value>Reeks</value></data>
   <data name="Prop_Shadow" xml:space="preserve"><value>Schaduw</value></data>
+  <data name="Prop_TextOutline" xml:space="preserve"><value>Rand om de letters</value></data>
+  <data name="Prop_TextOutlineColor" xml:space="preserve"><value>Kleur van de letterrand</value></data>
+  <data name="Prop_TextOutlineWidth" xml:space="preserve"><value>Dikte van de letterrand</value></data>
+  <data name="Prop_WindowShadow" xml:space="preserve"><value>Vensterschaduw: zachte schaduw op een transparante achtergrond</value></data>
   <data name="Prop_Shape" xml:space="preserve"><value>Vorm</value></data>
   <data name="Prop_Size" xml:space="preserve"><value>Grootte</value></data>
   <data name="Prop_SmartEraserTip" xml:space="preserve"><value>Smart-gum: klik op een kleur om alle aangrenzende pixels met die kleur weg te halen</value></data>
@@ -409,6 +413,7 @@
   <data name="Settings_SelectArea" xml:space="preserve"><value>Gebied kiezen</value></data>
   <data name="Settings_ShowCursor" xml:space="preserve"><value>Muisaanwijzer tonen</value></data>
   <data name="Settings_ShowMagnifier" xml:space="preserve"><value>Vergrootglas tonen bij het kiezen van een gebied (knipsel en screencast)</value></data>
+  <data name="Settings_WindowShadow" xml:space="preserve"><value>Vensterknipsels een zachte schaduw met transparante achtergrond geven</value></data>
   <data name="Settings_ShowNotification" xml:space="preserve"><value>Melding tonen (klik om te bewerken)</value></data>
   <data name="Settings_SingleLayout" xml:space="preserve"><value>Eén werkbalk met gereedschappen en acties</value></data>
   <data name="Settings_SnipNameTip" xml:space="preserve"><value>Leeg: Knipsel met datum en tijd</value></data>
@@ -680,4 +685,37 @@
   <data name="Window_Maximize" xml:space="preserve"><value>Maximaliseren</value></data>
   <data name="Window_Minimize" xml:space="preserve"><value>Minimaliseren</value></data>
   <data name="Window_Restore" xml:space="preserve"><value>Vorige grootte</value></data>
+  <data name="History_KindFile" xml:space="preserve"><value>Bestand</value></data>
+  <data name="History_KindImage" xml:space="preserve"><value>Afbeelding</value></data>
+  <data name="History_KindText" xml:space="preserve"><value>Tekst</value></data>
+  <data name="Settings_HotkeyNameUploadClipboard" xml:space="preserve"><value>klembord uploaden</value></data>
+  <data name="Settings_HotkeyTipUploadClipboard" xml:space="preserve"><value>Klik en druk daarna de gewenste toetscombinatie in; uploadt de tekst, afbeelding of bestanden op het klembord en kopieert de link</value></data>
+  <data name="Settings_SendTo" xml:space="preserve"><value>kniip tonen in &apos;Kopiëren naar&apos; in Verkenner, om bestanden te uploaden en de link te kopiëren</value></data>
+  <data name="Settings_UploadClipboardHotkey" xml:space="preserve"><value>Klembord uploaden</value></data>
+  <data name="Settings_UploadKindDefault" xml:space="preserve"><value>Standaard ({0})</value></data>
+  <data name="Settings_UploadKindFile" xml:space="preserve"><value>Overige bestanden</value></data>
+  <data name="Settings_UploadKindMedia" xml:space="preserve"><value>Afbeeldingen en video&apos;s</value></data>
+  <data name="Settings_UploadKindText" xml:space="preserve"><value>Tekst</value></data>
+  <data name="Settings_UploadPerKind" xml:space="preserve"><value>Bestemming per soort</value></data>
+  <data name="Settings_UploadPerKindHint" xml:space="preserve"><value>Voor Klembord uploaden, Bestanden uploaden en &apos;Kopiëren naar&apos;. Afbeeldingen en video&apos;s gaan ook vanuit de editor en bij screencasts hierheen. Standaard is de bestemming met de ster.</value></data>
+  <data name="Shell_SendToDescription" xml:space="preserve"><value>Uploaden met {0} en de link kopiëren</value></data>
+  <data name="Tray_Upload" xml:space="preserve"><value>Uploaden</value></data>
+  <data name="Tray_UploadClipboard" xml:space="preserve"><value>Klembord uploaden</value></data>
+  <data name="Tray_UploadClipboardTip" xml:space="preserve"><value>Uploadt de tekst, afbeelding of bestanden op het klembord en kopieert de link</value></data>
+  <data name="Tray_UploadFiles" xml:space="preserve"><value>Bestanden uploaden...</value></data>
+  <data name="Tray_UploadNoDestination" xml:space="preserve"><value>Voeg eerst een uploadbestemming toe in Instellingen &gt; Uploaden</value></data>
+  <data name="Upload_PickFilesTitle" xml:space="preserve"><value>Bestanden uploaden</value></data>
+  <data name="Upload_QuickBusy" xml:space="preserve"><value>Er loopt al een upload. Probeer het opnieuw als die klaar is.</value></data>
+  <data name="Upload_QuickCancelled" xml:space="preserve"><value>Uploaden geannuleerd.</value></data>
+  <data name="Upload_QuickCopiedMany" xml:space="preserve"><value>{0} links gekopieerd naar het klembord.</value></data>
+  <data name="Upload_QuickCopiedOne" xml:space="preserve"><value>Link gekopieerd: {0}</value></data>
+  <data name="Upload_QuickCopyFailed" xml:space="preserve"><value>Geüpload, maar het klembord was bezet. De link staat in de geschiedenis: {0}</value></data>
+  <data name="Upload_QuickDoneTitle" xml:space="preserve"><value>Geüpload</value></data>
+  <data name="Upload_QuickFailedTitle" xml:space="preserve"><value>Uploaden mislukt</value></data>
+  <data name="Upload_QuickNoDestination" xml:space="preserve"><value>Er is nog geen uploadbestemming. Voeg er een toe in Instellingen &gt; Uploaden.</value></data>
+  <data name="Upload_QuickNothing" xml:space="preserve"><value>Er staat geen tekst, afbeelding of bestand op het klembord om te uploaden.</value></data>
+  <data name="Upload_QuickPartlyFailed" xml:space="preserve"><value>{0} mislukt: {1}</value></data>
+  <data name="Upload_QuickTitle" xml:space="preserve"><value>Uploaden</value></data>
+  <data name="Upload_QuickUploadingMany" xml:space="preserve"><value>{0} bestanden uploaden...</value></data>
+  <data name="Upload_QuickUploadingOne" xml:space="preserve"><value>{0} uploaden...</value></data>
 </root>

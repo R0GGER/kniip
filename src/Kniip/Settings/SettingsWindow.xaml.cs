@@ -27,6 +27,7 @@ public partial class SettingsWindow : Window
         ["Record"] = Strings.Settings_HotkeyNameRecord,
         ["Gif"] = Strings.Settings_HotkeyNameGif,
         ["Clipboard"] = Strings.Settings_HotkeyNameClipboard,
+        ["UploadClipboard"] = Strings.Settings_HotkeyNameUploadClipboard,
         ["Ocr"] = "OCR",
     };
 
@@ -38,6 +39,8 @@ public partial class SettingsWindow : Window
     private string? _videoFolder;
     private readonly List<UploadDestination> _uploaders;
     private Guid? _defaultUploaderId;
+    private readonly Dictionary<UploadKind, Guid?> _kindUploaderIds;
+    private bool _fillingKindCombos;
     private bool _testingUploader;
     private bool _resetEditor;
     private bool _updateChecked;
@@ -54,12 +57,19 @@ public partial class SettingsWindow : Window
         FolderText.Text = CaptureCoordinator.ScreenshotsFolder ?? Strings.Settings_ScreenshotsFolderMissing;
         AutostartBox.IsChecked = ShellIntegration.IsAutostartEnabled();
         OpenWithBox.IsChecked = ShellIntegration.IsOpenWithRegistered();
+        SendToBox.IsChecked = ShellIntegration.IsSendToEnabled();
 
         WatchClipboardBox.Checked += (_, _) => OnlySnippingToolBox.IsEnabled = true;
         WatchClipboardBox.Unchecked += (_, _) => OnlySnippingToolBox.IsEnabled = false;
 
         _uploaders = settings.Uploaders.Select(SettingsStore.DeepCopy).ToList();
         _defaultUploaderId = settings.DefaultUploader?.Id;
+        _kindUploaderIds = new Dictionary<UploadKind, Guid?>
+        {
+            [UploadKind.Media] = settings.MediaUploaderId,
+            [UploadKind.Text] = settings.TextUploaderId,
+            [UploadKind.File] = settings.FileUploaderId,
+        };
         ShowUploaders();
 
         _hotkeys = new Dictionary<string, string>();
@@ -70,6 +80,7 @@ public partial class SettingsWindow : Window
             ["Record"] = RecordHotkeyButton,
             ["Gif"] = GifHotkeyButton,
             ["Clipboard"] = ClipboardHotkeyButton,
+            ["UploadClipboard"] = UploadClipboardHotkeyButton,
             ["Ocr"] = OcrHotkeyButton,
         };
 
@@ -122,6 +133,7 @@ public partial class SettingsWindow : Window
         UpdateIntervalSlider.Value = Math.Min(settings.UpdateCheckHours, UpdateIntervalSlider.Maximum);
         ShowUpdateInterval();
         MagnifierBox.IsChecked = settings.ShowMagnifier;
+        WindowShadowBox.IsChecked = settings.WindowShadow;
 
         _snipFolder = settings.SnipSaveFolder;
         _videoFolder = settings.VideoSaveFolder;
@@ -139,6 +151,7 @@ public partial class SettingsWindow : Window
         _hotkeys["Record"] = settings.RecordHotkey;
         _hotkeys["Gif"] = settings.GifHotkey;
         _hotkeys["Clipboard"] = settings.ClipboardHotkey;
+        _hotkeys["UploadClipboard"] = settings.UploadClipboardHotkey;
         _hotkeys["Ocr"] = settings.OcrHotkey;
         foreach (string id in _hotkeys.Keys)
         {
@@ -457,6 +470,61 @@ public partial class SettingsWindow : Window
 
         UploaderList.ItemsSource = _uploaders.Select(u => new UploaderRow(u, u.Id == _defaultUploaderId)).ToList();
         NoUploadersText.Visibility = _uploaders.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        ShowKindUploaders();
+    }
+
+    private ComboBox KindCombo(UploadKind kind) => kind switch
+    {
+        UploadKind.Media => MediaUploaderCombo,
+        UploadKind.Text => TextUploaderCombo,
+        _ => FileUploaderCombo
+    };
+
+    /// <summary>Keuzelijsten per soort: "Standaard" plus alle bestemmingen; een verwijderde bestemming valt terug op Standaard.</summary>
+    private void ShowKindUploaders()
+    {
+        PerKindPanel.Visibility = _uploaders.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
+        string? standard = _uploaders.FirstOrDefault(u => u.Id == _defaultUploaderId)?.Title;
+        _fillingKindCombos = true;
+        foreach (UploadKind kind in _kindUploaderIds.Keys.ToList())
+        {
+            if (_kindUploaderIds[kind] is Guid id && _uploaders.All(u => u.Id != id))
+            {
+                _kindUploaderIds[kind] = null;
+            }
+
+            ComboBox combo = KindCombo(kind);
+            combo.Items.Clear();
+            var defaultItem = new ComboBoxItem
+            {
+                Content = standard == null ? Strings.Settings_UploadDefault : string.Format(Strings.Settings_UploadKindDefault, standard),
+                Tag = null
+            };
+            combo.Items.Add(defaultItem);
+            combo.SelectedItem = defaultItem;
+            foreach (UploadDestination destination in _uploaders)
+            {
+                var item = new ComboBoxItem { Content = destination.Title, Tag = destination.Id };
+                combo.Items.Add(item);
+                if (destination.Id == _kindUploaderIds[kind])
+                {
+                    combo.SelectedItem = item;
+                }
+            }
+        }
+
+        _fillingKindCombos = false;
+    }
+
+    private void KindUploader_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        e.Handled = true;
+        if (_fillingKindCombos || sender is not ComboBox { Tag: string tag } combo || !Enum.TryParse(tag, out UploadKind kind))
+        {
+            return;
+        }
+
+        _kindUploaderIds[kind] = combo.SelectedItem is ComboBoxItem { Tag: Guid id } ? id : null;
     }
 
     private void UploaderRow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -744,6 +812,9 @@ public partial class SettingsWindow : Window
     {
         _settings.Uploaders = _uploaders;
         _settings.DefaultUploaderId = _defaultUploaderId;
+        _settings.MediaUploaderId = _kindUploaderIds[UploadKind.Media];
+        _settings.TextUploaderId = _kindUploaderIds[UploadKind.Text];
+        _settings.FileUploaderId = _kindUploaderIds[UploadKind.File];
         _settings.SnipSaveFolder = _snipFolder;
         _settings.VideoSaveFolder = _videoFolder;
         _settings.SnipFolderTemplate = NullIfBlank(SnipFolderTemplateBox.Text);
@@ -780,12 +851,14 @@ public partial class SettingsWindow : Window
         _settings.CheckForUpdates = AutoUpdateCheckBox.IsChecked == true;
         _settings.UpdateCheckHours = (int)UpdateIntervalSlider.Value;
         _settings.ShowMagnifier = MagnifierBox.IsChecked == true;
+        _settings.WindowShadow = WindowShadowBox.IsChecked == true;
         StopListening();
         _settings.SnipHotkey = _hotkeys["Snip"];
         _settings.WindowHotkey = _hotkeys["Window"];
         _settings.RecordHotkey = _hotkeys["Record"];
         _settings.GifHotkey = _hotkeys["Gif"];
         _settings.ClipboardHotkey = _hotkeys["Clipboard"];
+        _settings.UploadClipboardHotkey = _hotkeys["UploadClipboard"];
         _settings.OcrHotkey = _hotkeys["Ocr"];
         _settings.RecordSystemAudio = SystemAudioBox.IsChecked == true;
         _settings.RecordMicrophone = MicrophoneBox.IsChecked == true;
@@ -822,6 +895,12 @@ public partial class SettingsWindow : Window
             else if (!openWith && ShellIntegration.IsOpenWithRegistered())
             {
                 ShellIntegration.UnregisterOpenWith();
+            }
+
+            bool sendTo = SendToBox.IsChecked == true;
+            if (sendTo != ShellIntegration.IsSendToEnabled())
+            {
+                ShellIntegration.SetSendTo(sendTo);
             }
         }
         catch (Exception ex)

@@ -528,7 +528,7 @@ public partial class ScreencastWindow : Window
         }
     }
 
-    private async void Upload_Click(object sender, RoutedEventArgs e) => await UploadAsync(_settings.DefaultUploader);
+    private async void Upload_Click(object sender, RoutedEventArgs e) => await UploadAsync(_settings.UploaderFor(UploadKind.Media));
 
     private void UploadMenu_MouseDown(object sender, MouseButtonEventArgs e)
     {

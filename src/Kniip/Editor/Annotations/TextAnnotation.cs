@@ -117,6 +117,15 @@ public sealed class TextAnnotation : Annotation
             r.Union(box);
             double half = Math.Max(0, Style.Thickness) / 2;
             r.Inflate(half, half);
+            if (HasOutline)
+            {
+                // Zonder vorm kan de rand om de letters buiten het tekstvlak uitsteken.
+                Layout layout = GetLayout();
+                Rect text = new(layout.Origin, new Size(Math.Max(layout.Text.WidthIncludingTrailingWhitespace, layout.Text.MaxTextWidth), layout.Text.Height));
+                text.Inflate(Style.TextOutlineWidth + 2, Style.TextOutlineWidth + 2);
+                r.Union(text);
+            }
+
             return r;
         }
     }
@@ -144,14 +153,45 @@ public sealed class TextAnnotation : Annotation
 
         Layout layout = GetLayout();
         bool hasShape = RenderShape(dc, layout.Box);
+        Geometry? outline = HasOutline ? layout.Text.BuildGeometry(layout.Origin) : null;
         if (!hasShape && Style.Shadow)
         {
-            FormattedText shadow = Format(Text, Color.FromArgb(90, 0, 0, 0));
-            shadow.MaxTextWidth = layout.Text.MaxTextWidth;
-            dc.DrawText(shadow, new Point(layout.Origin.X + 1.5, layout.Origin.Y + 1.5));
+            var shadowColor = Color.FromArgb(90, 0, 0, 0);
+            if (outline != null)
+            {
+                dc.PushTransform(new TranslateTransform(1.5, 1.5));
+                dc.DrawGeometry(new SolidColorBrush(shadowColor), OutlinePen(shadowColor), outline);
+                dc.Pop();
+            }
+            else
+            {
+                FormattedText shadow = Format(Text, shadowColor);
+                shadow.MaxTextWidth = layout.Text.MaxTextWidth;
+                dc.DrawText(shadow, new Point(layout.Origin.X + 1.5, layout.Origin.Y + 1.5));
+            }
+        }
+
+        if (outline != null)
+        {
+            dc.DrawGeometry(null, OutlinePen(Style.TextOutlineColor), outline);
         }
 
         dc.DrawText(layout.Text, layout.Origin);
+    }
+
+    private bool HasOutline => Style.TextOutline && Style.TextOutlineWidth > 0 && Style.TextOutlineColor.A > 0;
+
+    /// <summary>Half van de pen valt over de letters, de tekst eroverheen houdt alleen de buitenste helft over.</summary>
+    private Pen OutlinePen(Color color)
+    {
+        var pen = new Pen(new SolidColorBrush(color), 2 * Style.TextOutlineWidth)
+        {
+            LineJoin = PenLineJoin.Round,
+            StartLineCap = PenLineCap.Round,
+            EndLineCap = PenLineCap.Round
+        };
+        pen.Freeze();
+        return pen;
     }
 
     /// <summary>Alleen de vorm, zonder tekst; wordt getekend terwijl de tekst in een tekstvak wordt bewerkt.</summary>

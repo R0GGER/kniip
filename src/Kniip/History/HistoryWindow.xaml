@@ -47,7 +47,7 @@
         <DataTemplate x:Key="SmallThumb">
             <Grid Width="40" Height="28">
                 <Image Source="{Binding Thumbnail}" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" />
-                <TextBlock Text="&#xE714;" Style="{StaticResource IconText}" Foreground="{DynamicResource SubtleTextBrush}"
+                <TextBlock Text="{Binding Entry.Glyph}" Style="{StaticResource IconText}" Foreground="{DynamicResource SubtleTextBrush}"
                            Visibility="{Binding NoThumbnailVisibility}" />
             </Grid>
         </DataTemplate>
@@ -119,7 +119,7 @@
                         <StackPanel Width="180" ToolTip="{Binding ToolTip}">
                             <Grid Height="120" Background="{DynamicResource WindowBrush}">
                                 <Image Source="{Binding Thumbnail}" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" />
-                                <TextBlock Text="&#xE714;" Style="{StaticResource IconText}" FontSize="32"
+                                <TextBlock Text="{Binding Entry.Glyph}" Style="{StaticResource IconText}" FontSize="32"
                                            Foreground="{DynamicResource SubtleTextBrush}" Visibility="{Binding NoThumbnailVisibility}" />
                             </Grid>
                             <TextBlock Text="{Binding Entry.Name}" Margin="0,6,0,0" TextTrimming="CharacterEllipsis" />

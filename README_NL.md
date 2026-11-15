@@ -31,6 +31,7 @@ kniip is een annotatie-editor die naast het Windows Knipprogramma werkt. Maak ee
 - **Tabbladen.** Elk knipsel opent als tabblad in één editorvenster. Bij het sluiten kies je of de tabbladen dicht gaan of bewaard blijven.
 - **Screencasts.** Neem een deel van je scherm op en exporteer als video of GIF.
 - **Delen.** Opslaan, kopiëren naar het klembord, printen of uploaden en de link meteen delen.
+- **Snel uploaden.** Upload de tekst, afbeelding of bestanden op het klembord vanuit het systeemvak of met een sneltoets, of klik in Verkenner met rechts op bestanden en kies **Kopiëren naar > kniip**. De link staat meteen op het klembord. Afbeeldingen en video's, tekst en overige bestanden kunnen elk naar een eigen bestemming.
 - **Geschiedenis.** Vind eerdere knipsels en uploads terug, met miniaturen en zoeken.
 - **Jouw werkbalk.** Kies een of twee werkbalken, versleep knoppen en verberg wat je niet gebruikt.
 - **Altijd bij.** kniip meldt zelf wanneer er een nieuwe versie is en werkt zichzelf bij met een klik.
@@ -50,9 +51,10 @@ Oudere versies vind je bij [alle releases](https://github.com/R0GGER/kniip/relea
 3. Kies tijdens de installatie welke integraties je wilt:
    - **kniip starten met Windows** (aanbevolen): kniip draait dan op de achtergrond in het systeemvak.
    - **kniip tonen in 'Openen met'** voor afbeeldingen (`.png`, `.jpg`, `.jpeg`, `.bmp`, `.gif`), ook vanuit het Knipprogramma.
+   - **kniip tonen in 'Kopiëren naar'** in Verkenner, om bestanden te uploaden en de link te kopiëren.
    - **Snelkoppeling op het bureaublad**.
 
-Beide integraties kun je later ook in- of uitschakelen via de instellingen van kniip.
+Deze integraties kun je later ook in- of uitschakelen via de instellingen van kniip.
 
 Een losse .NET-installatie is niet nodig; de installer bevat alles wat kniip nodig heeft.
 
@@ -63,7 +65,7 @@ Een losse .NET-installatie is niet nodig; de installer bevat alles wat kniip nod
 
 ### Verwijderen
 
-Verwijder kniip via **Instellingen > Apps > Geïnstalleerde apps**. Autostart en de 'Openen met'-registratie worden daarbij ook opgeruimd.
+Verwijder kniip via **Instellingen > Apps > Geïnstalleerde apps**. Autostart, de 'Openen met'-registratie en de snelkoppeling in 'Kopiëren naar' worden daarbij ook opgeruimd.
 
 Heb je alleen `Kniip.exe` gestart en geen installer gebruikt, dan staat kniip mogelijk nog bij **Instellingen > Apps > Opstarten**. Die regel wijst naar de map waar de exe toen stond. De schakelaar daar uitzetten verbergt kniip niet: Windows bewaart de regel en zet hem alleen op uit.
 
@@ -85,7 +87,7 @@ Vereisten:
 Bouwen:
 
 ```powershell
-.\build.ps1                  # versie 2.5.2
+.\build.ps1                  # versie 2.5.3
 .\build.ps1 -Version 1.2.0   # andere versie
 ```
 

@@ -29,6 +29,7 @@
 - **Tabs.** Every snip opens as a tab in one editor window. When closing, you choose whether the tabs close or are kept.
 - **Screencasts.** Record part of your screen and export it as a video or GIF.
 - **Share.** Save, copy to the clipboard, print, or upload and share the link right away.
+- **Quick upload.** Upload the text, image or files on the clipboard from the system tray or with a shortcut, or right-click files in Explorer and choose **Send to > kniip**. The link goes straight to the clipboard. Images and videos, text and other files can each go to their own destination.
 - **History.** Find earlier snips and uploads again, with thumbnails and search.
 - **Your toolbar.** Choose one or two toolbars, drag buttons around and hide what you don't use.
 - **Always up to date.** **kniip** tells you when a new version is available and updates itself with one click.
@@ -49,9 +50,10 @@ Older versions are available under [all releases](https://github.com/R0GGER/knii
 3. During installation, choose which integrations you want:
    - **Start kniip with Windows** (recommended): kniip then runs in the background in the system tray.
    - **Show kniip in 'Open with'** for images (`.png`, `.jpg`, `.jpeg`, `.bmp`, `.gif`), also from the Snipping Tool.
+   - **Show kniip in 'Send to'** in Explorer, to upload files and copy the link.
    - **Desktop shortcut**.
 
-You can also turn both integrations on or off later in the kniip settings.
+You can also turn these integrations on or off later in the kniip settings.
 
 A separate .NET installation is not needed; the installer contains everything kniip needs.
 
@@ -62,7 +64,7 @@ A separate .NET installation is not needed; the installer contains everything kn
 
 ### Uninstall
 
-Uninstall **kniip** via **Settings > Apps > Installed apps**. Autostart and the 'Open with' registration are cleaned up as well.
+Uninstall **kniip** via **Settings > Apps > Installed apps**. Autostart, the 'Open with' registration and the 'Send to' shortcut are cleaned up as well.
 
 If you only ran `Kniip.exe` and never used the installer, **kniip** may still be listed under **Settings > Apps > Startup**. That entry points to the folder where the exe was at the time. Turning off the switch there doesn't hide **kniip**: Windows keeps the entry and only sets it to off.
 
@@ -84,7 +86,7 @@ Requirements:
 Build:
 
 ```powershell
-.\build.ps1                  # version 2.5.2
+.\build.ps1                  # version 2.5.3
 .\build.ps1 -Version 1.2.0   # another version
 ```
 

@@ -34,6 +34,9 @@ public partial class RegionCaptureWindow : Window
     /// <summary>Geknipt gebied in fysieke schermcoördinaten, gezet vlak voor Finished.</summary>
     internal Rectangle? SelectedArea { get; private set; }
 
+    /// <summary>True als er op een venster is geklikt, niet bij een zelf gesleept gebied of het hele scherm.</summary>
+    internal bool PickedWindow { get; private set; }
+
     /// <param name="windows">Vensterrechthoeken van boven naar onder; gezet = venster aanklikken in plaats van slepen.</param>
     /// <param name="showMagnifier">Vergrootglas bij de muisaanwijzer tonen; niet bij venster aanklikken.</param>
     internal RegionCaptureWindow(Screen screen, BitmapSource frozen, IReadOnlyList<Rectangle>? windows = null, bool showMagnifier = false)
@@ -128,7 +131,9 @@ public partial class RegionCaptureWindow : Window
         if (PicksWindow)
         {
             _dragStart = null;
-            Finish(FindWindowAt(ToPhysical(e.GetPosition(this))) ?? _screen.Bounds);
+            Rectangle? window = FindWindowAt(ToPhysical(e.GetPosition(this)));
+            PickedWindow = window != null;
+            Finish(window ?? _screen.Bounds);
             return;
         }
 

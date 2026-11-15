@@ -16,6 +16,7 @@ using Kniip.Recording;
 using Kniip.Resources;
 using Kniip.Settings;
 using Kniip.Update;
+using Kniip.Upload;
 using Microsoft.Win32;
 using Screen = System.Windows.Forms.Screen;
 
@@ -103,6 +104,9 @@ public partial class App : Application
         _tray.OpenFromClipboardRequested += OpenFromClipboard;
         _tray.OpenRequested += OpenKniip;
         _tray.OpenFileRequested += OpenFileWithDialog;
+        _tray.UploadClipboardRequested += () => _ = QuickUploader.UploadClipboardAsync();
+        _tray.UploadFilesRequested += UploadFilesWithDialog;
+        _tray.CanUpload = () => Settings.DefaultUploader != null;
         _tray.SnipRequested += BeginRegionSnip;
         _tray.WindowSnipRequested += BeginWindowSnip;
         _tray.TextRecognitionRequested += () => BeginTextSnip();
@@ -153,6 +157,7 @@ public partial class App : Application
         {
             ShellIntegration.UnregisterOpenWith();
             ShellIntegration.SetAutostart(false);
+            ShellIntegration.SetSendTo(false);
             return true;
         }
 
@@ -162,6 +167,12 @@ public partial class App : Application
     private void HandleArguments(string[] args, bool isFirstStart)
     {
         string[] files = args.Where(a => !a.StartsWith("--", StringComparison.Ordinal)).ToArray();
+        if (args.Contains("--upload", StringComparer.OrdinalIgnoreCase))
+        {
+            _ = QuickUploader.UploadFilesAsync(files);
+            return;
+        }
+
         foreach (string file in files)
         {
             OpenFile(file);
@@ -217,8 +228,9 @@ public partial class App : Application
     }
 
     /// <param name="window">Programmanaam en titel van het geknipte venster, voor %pn en %t in het naamsjabloon.</param>
-    public void OpenEditor(BitmapSource image, WindowInfo? window = null) =>
-        AddEditorTab(new EditorView(image, Settings, window: window));
+    /// <param name="windowCornerRadius">Alleen bij een vensterknipsel: straal van de vensterhoeken, voor de vensterschaduw.</param>
+    public void OpenEditor(BitmapSource image, WindowInfo? window = null, int? windowCornerRadius = null) =>
+        AddEditorTab(new EditorView(image, Settings, window: window, windowCornerRadius: windowCornerRadius));
 
     private void AddEditorTab(EditorView view)
     {
@@ -416,6 +428,7 @@ public partial class App : Application
         }
 
         System.Drawing.Rectangle? area = _snipWindows.Select(w => w.SelectedArea).FirstOrDefault(a => a != null);
+        bool pickedWindow = _snipWindows.Any(w => w.PickedWindow);
         foreach (RegionCaptureWindow window in _snipWindows)
         {
             window.Finished -= OnRegionSnipFinished;
@@ -435,7 +448,8 @@ public partial class App : Application
         else if (image != null)
         {
             WindowInfo? window = area is { } a ? PhysicalWindow.WindowAt(snapshot, a) : null;
-            OpenEditor(image, window);
+            int? cornerRadius = pickedWindow && area is { } picked ? PhysicalWindow.CornerRadiusAt(snapshot, picked) : null;
+            OpenEditor(image, window, cornerRadius);
         }
     }
 
@@ -463,6 +477,7 @@ public partial class App : Application
             Bind(Settings.GifHotkey, () => Recorder.Toggle(ScreencastFormat.Gif));
             Bind(Settings.ClipboardHotkey, OpenFromClipboard);
             Bind(Settings.OcrHotkey, () => BeginTextSnip());
+            Bind(Settings.UploadClipboardHotkey, () => _ = QuickUploader.UploadClipboardAsync());
             if (_snipCountdown is { } countdown)
             {
                 // Alleen tijdens het aftellen; daarna moet Esc gewoon naar het actieve programma.
@@ -474,7 +489,7 @@ public partial class App : Application
 
         _tray?.SetHotkeys(HotkeyDisplay(Settings.SnipHotkey), HotkeyDisplay(Settings.WindowHotkey),
             HotkeyDisplay(Settings.RecordHotkey), HotkeyDisplay(Settings.GifHotkey), HotkeyDisplay(Settings.ClipboardHotkey),
-            HotkeyDisplay(Settings.OcrHotkey));
+            HotkeyDisplay(Settings.OcrHotkey), HotkeyDisplay(Settings.UploadClipboardHotkey));
     }
 
     /// <summary>Start een screencast: eerst het gebied kiezen, daarna de knoppenbalk.</summary>
@@ -564,6 +579,15 @@ public partial class App : Application
         if (PickImageFile(null) is { } path)
         {
             OpenFile(path);
+        }
+    }
+
+    private void UploadFilesWithDialog()
+    {
+        var dialog = new OpenFileDialog { Title = Strings.Upload_PickFilesTitle, Multiselect = true };
+        if (dialog.ShowDialog() == true)
+        {
+            _ = QuickUploader.UploadFilesAsync(dialog.FileNames);
         }
     }
 

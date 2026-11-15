@@ -72,6 +72,14 @@ internal static class PhysicalWindow
         return null;
     }
 
+    /// <summary>Hoekstraal van het venster dat precies <paramref name="area"/> beslaat; 0 als het afgesneden is of niet gevonden.</summary>
+    public static int CornerRadiusAt(IEnumerable<SnappedWindow> windows, Rectangle area)
+    {
+        var point = new System.Drawing.Point(area.X + area.Width / 2, area.Y + area.Height / 2);
+        SnappedWindow? window = windows.FirstOrDefault(w => w.Bounds.Contains(point));
+        return window != null && window.Bounds == area ? NativeMethods.GetWindowCornerRadius(window.Handle) : 0;
+    }
+
     public static List<SnappedWindow> Snapshot(bool includeOwn = false)
     {
         var result = new List<SnappedWindow>();

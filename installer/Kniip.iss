@@ -1,11 +1,11 @@
-; Inno Setup-script voor kniip (per-gebruiker installatie, geen beheerdersrechten nodig).
+﻿; Inno Setup-script voor kniip (per-gebruiker installatie, geen beheerdersrechten nodig).
 ; Bouwen: eerst .\build.ps1 (publiceert naar obj\publish), daarna compileert build.ps1 dit script
 ; automatisch als Inno Setup 6 (https://jrsoftware.org/isinfo.php) is geïnstalleerd.
 
 #define AppName "kniip"
 #define AppExe "Kniip.exe"
 #ifndef AppVersion
-  #define AppVersion "2.5.2"
+  #define AppVersion "2.5.3"
 #endif
 #ifndef PublishDir
   #define PublishDir "..\obj\publish"
@@ -43,18 +43,23 @@ english.GroupIntegration=Integration:
 english.GroupShortcuts=Shortcuts:
 english.TaskAutostart=Start kniip with Windows (recommended)
 english.TaskOpenWith=Show kniip in 'Open with' for images (also in the Snipping Tool)
+english.TaskSendTo=Show kniip in 'Send to' in Explorer, to upload files and copy the link
+english.SendToDescription=Upload with kniip and copy the link
 english.TaskDesktopIcon=Desktop shortcut
 english.ImageType=kniip image
 dutch.GroupIntegration=Integratie:
 dutch.GroupShortcuts=Snelkoppelingen:
 dutch.TaskAutostart=kniip starten met Windows (aanbevolen)
 dutch.TaskOpenWith=kniip tonen in 'Openen met' voor afbeeldingen (ook in het Knipprogramma)
+dutch.TaskSendTo=kniip tonen in 'Kopiëren naar' in Verkenner, om bestanden te uploaden en de link te kopiëren
+dutch.SendToDescription=Uploaden met kniip en de link kopiëren
 dutch.TaskDesktopIcon=Snelkoppeling op het bureaublad
 dutch.ImageType=kniip afbeelding
 
 [Tasks]
 Name: "autostart"; Description: "{cm:TaskAutostart}"; GroupDescription: "{cm:GroupIntegration}"
 Name: "openwith"; Description: "{cm:TaskOpenWith}"; GroupDescription: "{cm:GroupIntegration}"
+Name: "sendto"; Description: "{cm:TaskSendTo}"; GroupDescription: "{cm:GroupIntegration}"
 Name: "desktopicon"; Description: "{cm:TaskDesktopIcon}"; GroupDescription: "{cm:GroupShortcuts}"; Flags: unchecked
 
 [InstallDelete]
@@ -71,6 +76,7 @@ Source: "..\src\Kniip\Assets\Emoji\NOTICE.txt"; DestDir: "{app}"; DestName: "NOT
 [Icons]
 Name: "{autoprograms}\{#AppName}"; Filename: "{app}\{#AppExe}"
 Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExe}"; Tasks: desktopicon
+Name: "{usersendto}\{#AppName}"; Filename: "{app}\{#AppExe}"; Parameters: "--upload"; Comment: "{cm:SendToDescription}"; Tasks: sendto
 
 [Registry]
 ; Autostart
@@ -100,5 +106,5 @@ Filename: "{app}\{#AppExe}"; Parameters: "--updated"; Flags: nowait; Check: Wiza
 
 [UninstallRun]
 Filename: "{cmd}"; Parameters: "/C taskkill /IM {#AppExe} /F"; Flags: runhidden; RunOnceId: "StopKniip"
-; Autostart en "Openen met" kunnen ook via de instellingen van kniip zelf aangezet zijn.
+; Autostart, "Openen met" en "Kopiëren naar" kunnen ook via de instellingen van kniip zelf aangezet zijn.
 Filename: "{app}\{#AppExe}"; Parameters: "--unregister"; Flags: runhidden waituntilterminated; RunOnceId: "UnregisterKniip"

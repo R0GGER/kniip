@@ -606,6 +606,20 @@
                         <TextBlock Text="&#xE8E2;" Style="{StaticResource IconText}" FontSize="14" />
                     </ToggleButton>
                 </StackPanel>
+                <StackPanel x:Name="TextOutlineGroup" Style="{StaticResource PropGroup}">
+                    <ToggleButton x:Name="TextOutlineToggle" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Prop_TextOutline}"
+                                  Checked="TextOutline_Changed" Unchecked="TextOutline_Changed">
+                        <Grid Width="18" Height="18">
+                            <Path Data="M3.5,15.5 L9,2.5 L14.5,15.5 M5.8,10.5 H12.2" Stroke="{DynamicResource InkBrush}" StrokeThickness="4"
+                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" />
+                            <Path Data="M3.5,15.5 L9,2.5 L14.5,15.5 M5.8,10.5 H12.2" Stroke="{DynamicResource ControlBrush}" StrokeThickness="1.6"
+                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" />
+                        </Grid>
+                    </ToggleButton>
+                    <local:ColorPickerButton x:Name="TextOutlinePicker" ToolTip="{x:Static res:Strings.Prop_TextOutlineColor}" />
+                    <ComboBox x:Name="TextOutlineWidthCombo" Style="{StaticResource MiniCombo}" ItemTemplate="{StaticResource ThicknessTemplate}"
+                              ToolTip="{x:Static res:Strings.Prop_TextOutlineWidth}" SelectionChanged="TextOutlineWidth_Changed" />
+                </StackPanel>
                 <StackPanel x:Name="NumberingGroup" Style="{StaticResource PropGroup}">
                     <ComboBox x:Name="NumberingCombo" Style="{StaticResource MiniCombo}" ItemTemplate="{StaticResource NumberingTemplate}"
                               ToolTip="{x:Static res:Strings.Prop_Numbering}" SelectionChanged="Numbering_Changed" />
@@ -759,6 +773,23 @@
                     </StackPanel>
                 </StackPanel>
                 <TextBlock x:Name="NoPropsText" Style="{StaticResource PropLabel}" VerticalAlignment="Center" />
+                <StackPanel x:Name="WindowShadowGroup" Style="{StaticResource PropGroup}">
+                    <Rectangle Style="{StaticResource ArrangeDivider}" />
+                    <ToggleButton x:Name="WindowShadowToggle" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Prop_WindowShadow}"
+                                  Click="WindowShadow_Click">
+                        <Grid Width="20" Height="18">
+                            <Rectangle Width="14" Height="11" RadiusX="2.5" RadiusY="2.5" Fill="#9A9A9A" Opacity="0.6" Margin="3,5,0,0"
+                                       HorizontalAlignment="Left" VerticalAlignment="Top">
+                                <Rectangle.Effect>
+                                    <BlurEffect Radius="2" />
+                                </Rectangle.Effect>
+                            </Rectangle>
+                            <Rectangle Width="14" Height="11" RadiusX="2" RadiusY="2" Fill="{DynamicResource ControlBrush}" Stroke="{DynamicResource InkBrush}"
+                                       StrokeThickness="1" Margin="3,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                            <Path Data="M3.5,5.5 H16.5" Stroke="{DynamicResource InkBrush}" StrokeThickness="1" />
+                        </Grid>
+                    </ToggleButton>
+                </StackPanel>
                 <StackPanel x:Name="BackgroundGroup" Style="{StaticResource PropGroup}">
                     <Rectangle Style="{StaticResource ArrangeDivider}" />
                     <TextBlock Text="{x:Static res:Strings.Background_Label}" Style="{StaticResource PropLabel}" Margin="4,0,4,0" />
