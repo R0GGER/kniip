@@ -13,6 +13,7 @@ using Kniip.Infrastructure;
 using Kniip.Update;
 using Kniip.Upload;
 using Kniip.Resources;
+using Kniip.Workflows;
 
 namespace Kniip.Settings;
 
@@ -47,6 +48,12 @@ public partial class SettingsWindow : Window
     private ReleaseInfo? _update;
     private System.Threading.CancellationTokenSource? _updateCts;
 
+    private const string WorkflowHotkeyPrefix = "wf:";
+    private readonly List<WorkflowDefinition> _workflows;
+    private WorkflowDefinition? _selectedWorkflow;
+    private int _selectedStep = -1;
+    private bool _fillingWorkflow;
+
     public SettingsWindow(AppSettings settings)
     {
         InitializeComponent();
@@ -70,6 +77,7 @@ public partial class SettingsWindow : Window
             [UploadKind.Text] = settings.TextUploaderId,
             [UploadKind.File] = settings.FileUploaderId,
         };
+        _workflows = settings.Workflows.Select(w => w.Clone()).ToList();
         ShowUploaders();
 
         _hotkeys = new Dictionary<string, string>();
@@ -99,6 +107,7 @@ public partial class SettingsWindow : Window
 
         CurrentVersionText.Text = string.Format(Strings.Settings_InstalledVersion, UpdateChecker.CurrentVersion);
         LoadFrom(settings);
+        SelectWorkflow(_workflows.FirstOrDefault());
 
         MaxHeight = SystemParameters.WorkArea.Height;
     }
@@ -107,6 +116,7 @@ public partial class SettingsWindow : Window
     private void LoadFrom(AppSettings settings)
     {
         WatchClipboardBox.IsChecked = settings.WatchClipboard;
+        WorkflowBarVisibleBox.IsChecked = settings.WorkflowBarVisible;
         OnlySnippingToolBox.IsChecked = settings.OnlyFromSnippingTool;
         OnlySnippingToolBox.IsEnabled = settings.WatchClipboard;
         WatchFolderBox.IsChecked = settings.WatchScreenshotsFolder;
@@ -213,8 +223,57 @@ public partial class SettingsWindow : Window
     private static int SelectedValue(ComboBox combo, int fallback) =>
         combo.SelectedItem is ComboBoxItem { Tag: int value } ? value : fallback;
 
-    private void ShowHotkey(string id) =>
-        _hotkeyButtons[id].Content = HotkeyGesture.TryParse(_hotkeys[id], out HotkeyGesture gesture) ? gesture.DisplayText : Strings.Settings_NoHotkeyShort;
+    private void ShowHotkey(string id)
+    {
+        if (HotkeyButtonFor(id) is { } button)
+        {
+            button.Content = HotkeyGesture.TryParse(GetHotkey(id), out HotkeyGesture gesture) ? gesture.DisplayText : Strings.Settings_NoHotkeyShort;
+        }
+    }
+
+    /// <summary>Workflow achter een sneltoets-id van de vorm "wf:{Id}"; null voor de vaste sneltoetsen.</summary>
+    private WorkflowDefinition? WorkflowForHotkey(string id) =>
+        id.StartsWith(WorkflowHotkeyPrefix, StringComparison.Ordinal) && Guid.TryParse(id[WorkflowHotkeyPrefix.Length..], out Guid guid)
+            ? _workflows.FirstOrDefault(w => w.Id == guid)
+            : null;
+
+    private string GetHotkey(string id) =>
+        WorkflowForHotkey(id)?.Hotkey ?? (_hotkeys.TryGetValue(id, out string? hotkey) ? hotkey : string.Empty);
+
+    private void SetHotkey(string id, string hotkey)
+    {
+        if (WorkflowForHotkey(id) is { } workflow)
+        {
+            workflow.Hotkey = hotkey;
+            ShowWorkflows();
+        }
+        else
+        {
+            _hotkeys[id] = hotkey;
+        }
+    }
+
+    /// <summary>De knop van een sneltoets; voor een workflow alleen als die geselecteerd is.</summary>
+    private Button? HotkeyButtonFor(string id) => WorkflowForHotkey(id) is { } workflow
+        ? workflow == _selectedWorkflow ? WorkflowHotkeyButton : null
+        : _hotkeyButtons.GetValueOrDefault(id);
+
+    private IEnumerable<(string Id, string Hotkey, string Name)> AllHotkeys() =>
+        _hotkeys.Select(pair => (pair.Key, pair.Value, HotkeyNames[pair.Key]))
+            .Concat(_workflows.Select(w => (WorkflowHotkeyPrefix + w.Id, w.Hotkey, string.Format(Strings.Settings_HotkeyNameWorkflow, w.Title))));
+
+    private void ShowHotkeyHint(string id, string text)
+    {
+        if (WorkflowForHotkey(id) != null)
+        {
+            WorkflowHotkeyHint.Text = text;
+            WorkflowHotkeyHint.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            HotkeyHint.Text = text;
+        }
+    }
 
     private void HotkeyButton_Click(object sender, RoutedEventArgs e)
     {
@@ -228,8 +287,12 @@ public partial class SettingsWindow : Window
         // Via de haak, niet via WPF: Print Screen komt nooit als KeyDown bij een venster aan.
         _listeningFor = id;
         hook.Capture = OnHotkeyPressed;
-        _hotkeyButtons[id].Content = Strings.Settings_PressKey;
-        HotkeyHint.Text = Strings.Settings_PressKeyHint;
+        if (HotkeyButtonFor(id) is { } button)
+        {
+            button.Content = Strings.Settings_PressKey;
+        }
+
+        ShowHotkeyHint(id, Strings.Settings_PressKeyHint);
     }
 
     private void OnHotkeyPressed(HotkeyGesture pressed)
@@ -247,27 +310,27 @@ public partial class SettingsWindow : Window
 
         if (pressed.Modifiers == ModifierKeys.None && pressed.Key is Key.Delete or Key.Back)
         {
-            _hotkeys[id] = string.Empty;
+            SetHotkey(id, string.Empty);
             StopListening();
             return;
         }
 
         if (!pressed.IsAllowed)
         {
-            HotkeyHint.Text = string.Format(Strings.Settings_HotkeyTyping, pressed.DisplayText);
+            ShowHotkeyHint(id, string.Format(Strings.Settings_HotkeyTyping, pressed.DisplayText));
             return;
         }
 
-        foreach ((string other, string hotkey) in _hotkeys)
+        foreach ((string other, string hotkey, string name) in AllHotkeys())
         {
             if (other != id && HotkeyGesture.TryParse(hotkey, out HotkeyGesture taken) && taken == pressed)
             {
-                HotkeyHint.Text = string.Format(Strings.Settings_HotkeyTaken, pressed.DisplayText, HotkeyNames[other]);
+                ShowHotkeyHint(id, string.Format(Strings.Settings_HotkeyTaken, pressed.DisplayText, name));
                 return;
             }
         }
 
-        _hotkeys[id] = pressed.ToString();
+        SetHotkey(id, pressed.ToString());
         StopListening();
     }
 
@@ -286,6 +349,7 @@ public partial class SettingsWindow : Window
 
         ShowHotkey(id);
         HotkeyHint.Text = HotkeyHintText;
+        WorkflowHotkeyHint.Visibility = Visibility.Collapsed;
     }
 
     private void ClearHotkey_Click(object sender, RoutedEventArgs e)
@@ -296,7 +360,7 @@ public partial class SettingsWindow : Window
         }
 
         StopListening();
-        _hotkeys[id] = string.Empty;
+        SetHotkey(id, string.Empty);
         ShowHotkey(id);
     }
 
@@ -471,6 +535,8 @@ public partial class SettingsWindow : Window
         UploaderList.ItemsSource = _uploaders.Select(u => new UploaderRow(u, u.Id == _defaultUploaderId)).ToList();
         NoUploadersText.Visibility = _uploaders.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         ShowKindUploaders();
+        ShowWorkflows();
+        ShowSteps();
     }
 
     private ComboBox KindCombo(UploadKind kind) => kind switch
@@ -860,6 +926,8 @@ public partial class SettingsWindow : Window
         _settings.ClipboardHotkey = _hotkeys["Clipboard"];
         _settings.UploadClipboardHotkey = _hotkeys["UploadClipboard"];
         _settings.OcrHotkey = _hotkeys["Ocr"];
+        _settings.Workflows = _workflows.Select(w => w.Clone()).ToList();
+        _settings.WorkflowBarVisible = WorkflowBarVisibleBox.IsChecked == true;
         _settings.RecordSystemAudio = SystemAudioBox.IsChecked == true;
         _settings.RecordMicrophone = MicrophoneBox.IsChecked == true;
         _settings.RecordShowCursor = ShowCursorBox.IsChecked == true;

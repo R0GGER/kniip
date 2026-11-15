@@ -15,6 +15,7 @@ using Kniip.Infrastructure;
 using Kniip.Settings;
 using Kniip.Upload;
 using Kniip.Resources;
+using Kniip.Workflows;
 
 namespace Kniip.Editor;
 
@@ -31,7 +32,7 @@ public partial class EditorView : UserControl
     private static readonly double[] ThicknessValues = { 0, 1, 2, 3, 4, 6, 8, 12, 16, 20, 24, 32 };
     private static readonly double[] TextOutlineWidthValues = { 1, 2, 3, 4, 6, 8 };
     private static readonly double[] EraserThicknessValues = { 4, 8, 12, 16, 20, 24, 32, 48, 64, 96 };
-    private static readonly double[] FontSizeValues = { 10, 12, 14, 16, 18, 20, 24, 28, 32, 40, 48, 64 };
+    private static readonly double[] FontSizeValues = { 10, 12, 14, 16, 18, 20, 24, 28, 32, 40, 48, 64, 80, 96, 128, 160, 200 };
     private static readonly double[] SizeValues = { 16, 20, 24, 28, 32, 40, 48, 56, 64, 80 };
     private static readonly double[] EmojiSizeValues = { 24, 32, 48, 64, 96, 128 };
     private static readonly double[] CornerValues = { 0, 4, 10, 20 };
@@ -116,6 +117,7 @@ public partial class EditorView : UserControl
     private bool _toolbarsHidden;
     private readonly bool _isBlank;
     private readonly WindowInfo? _window;
+    private WorkflowContinuation? _workflow;
 
     /// <summary>Aantekeningen zijn gewijzigd sinds het laatste kopiëren, opslaan of uploaden.</summary>
     public event EventHandler? DirtyChanged;
@@ -597,6 +599,17 @@ public partial class EditorView : UserControl
             floatLock.Click += (_, _) => SetCaptureFloatLocked(floatLock.IsChecked);
             menu.Items.Add(floatLock);
         }
+
+        App app = App.Instance;
+        var workflowBar = new MenuItem
+        {
+            Header = Strings.Tray_WorkflowBar,
+            IsCheckable = true,
+            IsChecked = app.WorkflowBarShown,
+            IsEnabled = app.WorkflowBarShown || app.CanShowWorkflowBar
+        };
+        workflowBar.Click += (_, _) => app.ToggleWorkflowBar();
+        menu.Items.Add(workflowBar);
 
         var layout = new MenuItem { Header = Strings.Toolbar_Layout };
         foreach ((EditorLayout value, string label) in new[]
@@ -1979,7 +1992,7 @@ public partial class EditorView : UserControl
         ApplyTextEditorStyle(editor, text);
         editor.TextChanged += (_, _) =>
         {
-            text.Text = editor.Text;
+            text.KeepingPlace(() => text.Text = editor.Text);
             ApplyTextEditorStyle(editor, text);
             Surface.InvalidateVisual();
         };
@@ -2075,14 +2088,20 @@ public partial class EditorView : UserControl
         // De vorm zelf wordt eronder getekend; zonder rand en vulling toont het tekstvak waar je typt.
         bool shapeVisible = s.TextShape != TextShape.None && (s.Fill.A > 0 || (s.Thickness > 0 && s.Stroke.A > 0));
         double border = shapeVisible ? 0 : 1;
-        editor.Background = shapeVisible ? Brushes.Transparent : new SolidColorBrush(Color.FromArgb(60, 255, 255, 255));
+        editor.Background = shapeVisible || text.HasOutline ? Brushes.Transparent : new SolidColorBrush(Color.FromArgb(60, 255, 255, 255));
         editor.BorderBrush = shapeVisible ? Brushes.Transparent : new SolidColorBrush(Palette.Accent);
         editor.BorderThickness = new Thickness(border);
 
         // Het tekstvak heeft zelf 2 px marge links en rechts van de tekst.
         Point origin = text.TextOrigin;
-        Canvas.SetLeft(editor, origin.X - 2 - border);
-        Canvas.SetTop(editor, origin.Y - border);
+        double left = origin.X - 2 - border;
+        double top = origin.Y - border;
+        Canvas.SetLeft(editor, left);
+        Canvas.SetTop(editor, top);
+        Point pivot = text.Pivot;
+        editor.RenderTransform = text.Angle == 0
+            ? Transform.Identity
+            : new RotateTransform(text.Angle, pivot.X - left, pivot.Y - top);
         if (text.WrapWidth is double wrap)
         {
             editor.TextWrapping = TextWrapping.Wrap;
@@ -2124,7 +2143,7 @@ public partial class EditorView : UserControl
         }
         else
         {
-            text.Text = value;
+            text.KeepingPlace(() => text.Text = value);
             if (_textIsNew || value != _textOriginal)
             {
                 Commit(_textPending);
@@ -2431,7 +2450,15 @@ public partial class EditorView : UserControl
             _lastStyleTarget = _selected;
             _lastStyleProp = prop;
             _lastStyleTime = DateTime.Now;
-            apply(_selected.Style);
+            if (_selected is TextAnnotation text)
+            {
+                text.KeepingPlace(() => apply(text.Style));
+            }
+            else
+            {
+                apply(_selected.Style);
+            }
+
             apply(StyleFor(_selected.Kind));
             SetDirty(true);
 
@@ -2795,20 +2822,14 @@ public partial class EditorView : UserControl
         ShowTemporaryHint(string.Format(Strings.Editor_Uploading, config.Title));
         try
         {
-            using System.IO.MemoryStream png = ImageExporter.EncodePng(image);
-            UploadResult result = await UploaderFactory.UploadAsync(config, png, DefaultName + ".png", "image/png");
-            if (result.DestinationChanged)
-            {
-                App.Instance.SaveSettings();
-            }
-
-            string url = result.Url;
-            Kniip.History.HistoryStore.Add(Kniip.History.HistoryKind.Snip, null, url, image);
+            string url = await WorkflowActions.UploadSnipAsync(config, image, DefaultName + ".png");
             SetDirty(false);
             _exported = true;
-            ShowTemporaryHint(ClipboardWriter.SetText(url)
+            bool copied = ClipboardWriter.SetText(url);
+            ShowTemporaryHint(copied
                 ? string.Format(Strings.Editor_UploadedCopied, url)
                 : string.Format(Strings.Editor_UploadedCopyFailed, url));
+            App.Instance.ShowLinkBalloon(copied ? Strings.Upload_DoneCopiedTitle : Strings.Upload_QuickDoneTitle, url);
         }
         catch (OperationCanceledException)
         {
@@ -2880,34 +2901,29 @@ public partial class EditorView : UserControl
         timer.Start();
     }
 
-    private static string DefaultName => string.Format(Strings.Snip_DefaultName, DateTime.Now);
+    private static string DefaultName => WorkflowActions.SnipDefaultName;
 
     private bool Save() => Save(CopiesOnSave);
 
     private bool Save(bool copy)
     {
-        if (_settings.SnipSaveFolder is not { Length: > 0 } target)
-        {
-            return SaveAs(copy);
-        }
-
         CommitTextEdit();
-        string path;
+        string? path;
         try
         {
-            path = FileNameTemplate.Resolve(target, _settings.SnipFolderTemplate, _settings.SnipFileNameTemplate, TemplateWindow, DefaultName, ".png");
+            path = WorkflowActions.SnipTarget(_settings, _window);
         }
         catch (Exception ex)
         {
-            ShowMessage(string.Format(Strings.Editor_SaveFolderUnusable, target, ex.Message),
+            ShowMessage(string.Format(Strings.Editor_SaveFolderUnusable, _settings.SnipSaveFolder, ex.Message),
                 MessageBoxButton.OK, MessageBoxImage.Warning);
             return SaveAs(copy);
         }
 
-        return WriteTo(path, copy);
+        return path == null ? SaveAs(copy) : WriteTo(path, copy);
     }
 
-    private WindowInfo TemplateWindow => _window ?? new WindowInfo(Strings.Snip_Name, Strings.Snip_Name);
+    private WindowInfo TemplateWindow => WorkflowActions.SnipTemplateWindow(_window);
 
     private bool SaveAs() => SaveAs(CopiesOnSave);
 
@@ -2945,12 +2961,16 @@ public partial class EditorView : UserControl
     {
         try
         {
-            App.Instance.Capture.IgnorePath(path);
             BitmapSource image = DocumentRenderer.Export(_doc);
-            ImageExporter.Save(image, path);
-            Kniip.History.HistoryStore.Add(Kniip.History.HistoryKind.Snip, path, null, image);
+            WorkflowActions.SaveSnip(image, path);
             SetDirty(false);
             _exported = true;
+            if (_workflow is { IsDone: false, NextIsSave: true } workflow)
+            {
+                EndWorkflow();
+                workflow.Continue(new WorkflowEditResult(image, null, null, path));
+            }
+
             string name = System.IO.Path.GetFileName(path);
             if (copy)
             {
@@ -3227,7 +3247,52 @@ public partial class EditorView : UserControl
         SettingsStore.Save(_settings);
         App.Instance.Updates.AvailabilityChanged -= OnUpdateAvailabilityChanged;
         _hintResetTimer.Stop();
+        WorkflowContinuation? workflow = _workflow;
+        _workflow = null;
+        workflow?.Cancel();
         return true;
+    }
+
+    // ---------------------------------------------------------------- Workflow
+
+    /// <summary>Dit tabblad is de stap Bewerken van een workflow; de balk onderaan zet hem voort.</summary>
+    internal void AttachWorkflow(WorkflowContinuation workflow)
+    {
+        _workflow = workflow;
+        WorkflowTitle.Text = string.Format(Strings.Workflow_BannerTitle, workflow.WorkflowName);
+        WorkflowNext.Text = string.Format(Strings.Workflow_BannerNext, workflow.RemainingSteps)
+                            + (workflow.NextIsSave ? "  ·  " + Strings.Workflow_BannerSaveContinues : string.Empty);
+        WorkflowBanner.Visibility = Visibility.Visible;
+    }
+
+    private void EndWorkflow()
+    {
+        _workflow = null;
+        WorkflowBanner.Visibility = Visibility.Collapsed;
+    }
+
+    private void WorkflowContinue_Click(object sender, RoutedEventArgs e)
+    {
+        if (_workflow is not { } workflow)
+        {
+            return;
+        }
+
+        CommitTextEdit();
+        CancelDrag();
+        BitmapSource image = DocumentRenderer.Export(_doc);
+        SetDirty(false);
+        _exported = true;
+        EndWorkflow();
+        ShowTemporaryHint(string.Format(Strings.Workflow_Continued, workflow.WorkflowName));
+        workflow.Continue(new WorkflowEditResult(image, null, null, null));
+    }
+
+    private void WorkflowStop_Click(object sender, RoutedEventArgs e)
+    {
+        WorkflowContinuation? workflow = _workflow;
+        EndWorkflow();
+        workflow?.Cancel();
     }
 
     // ---------------------------------------------------------------- Toetsenbord

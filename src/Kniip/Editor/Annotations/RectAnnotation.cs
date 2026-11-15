@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Kniip.Editor.Annotations;
 
@@ -10,9 +12,18 @@ public abstract class RectAnnotation : Annotation
 
     public Rect Rect { get; set; }
 
-    public override Rect Bounds => Rect;
+    public override Rect Frame => Rect;
+
+    public override Rect Bounds => RotatedBounds(Rect);
 
     public override bool IsDegenerate => Rect.Width < 3 || Rect.Height < 3;
+
+    public override bool HitTest(Point point, double tolerance)
+    {
+        Rect r = Rect;
+        r.Inflate(tolerance, tolerance);
+        return r.Contains(ToLocal(point));
+    }
 
     public override void Move(Vector delta) => Rect = Rect.Offset(Rect, delta);
 
@@ -21,19 +32,28 @@ public abstract class RectAnnotation : Annotation
         Rect r = Rect;
         double cx = r.Left + r.Width / 2;
         double cy = r.Top + r.Height / 2;
-        return new[]
+        var handles = new[]
         {
             r.TopLeft, new Point(cx, r.Top), r.TopRight, new Point(r.Right, cy),
             r.BottomRight, new Point(cx, r.Bottom), r.BottomLeft, new Point(r.Left, cy)
         };
+
+        Matrix m = RotationMatrix;
+        return Angle == 0 ? handles : handles.Select(p => m.Transform(p)).ToArray();
     }
 
     public override void BeginHandleDrag(int index) => DragOrigin = Rect;
 
+    /// <summary>Rekent de muis terug naar het ongedraaide kader; daarna wordt het kader zo verschoven dat de tegenoverliggende greep op zijn plek blijft.</summary>
     public override void MoveHandle(int index, Point p, bool constrain)
     {
         Rect o = DragOrigin;
-        Rect = index switch
+        var c = new Point(o.Left + o.Width / 2, o.Top + o.Height / 2);
+        Matrix toLocal = Matrix.Identity;
+        toLocal.RotateAt(-Angle, c.X, c.Y);
+        p = toLocal.Transform(p);
+
+        Rect r = index switch
         {
             0 => FromAnchor(o.BottomRight, p, constrain),
             1 => new Rect(new Point(o.Left, p.Y), o.BottomRight),
@@ -45,6 +65,11 @@ public abstract class RectAnnotation : Annotation
             7 => new Rect(new Point(p.X, o.Top), o.BottomRight),
             _ => Rect
         };
+
+        var rc = new Point(r.Left + r.Width / 2, r.Top + r.Height / 2);
+        Matrix toWorld = Matrix.Identity;
+        toWorld.RotateAt(Angle, c.X, c.Y);
+        Rect = Rect.Offset(r, toWorld.Transform(rc) - rc);
     }
 
     /// <summary>Rechthoek tussen een vast ankerpunt en de muis; met Shift een vierkant.</summary>

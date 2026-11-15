@@ -48,6 +48,7 @@ public static class SettingsStore
                 AppSettings settings = JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(FilePath), Options) ?? new AppSettings();
                 MigrateTemplates(settings);
                 MigrateUploaders(settings);
+                CleanWorkflows(settings);
                 return settings;
             }
         }
@@ -170,7 +171,26 @@ public static class SettingsStore
                                ?? throw new InvalidDataException();
         MigrateTemplates(settings);
         MigrateUploaders(settings);
+        CleanWorkflows(settings);
         return settings;
+    }
+
+    /// <summary>Lege of half ingevulde workflows uit een met de hand bewerkt bestand.</summary>
+    private static void CleanWorkflows(AppSettings settings)
+    {
+        settings.Workflows ??= new();
+        settings.Workflows.RemoveAll(w => w is null);
+        foreach (Workflows.WorkflowDefinition workflow in settings.Workflows)
+        {
+            workflow.Steps ??= new();
+            workflow.Steps.RemoveAll(s => s is null);
+            workflow.Hotkey ??= string.Empty;
+            workflow.Name ??= string.Empty;
+            if (string.IsNullOrEmpty(workflow.Glyph))
+            {
+                workflow.Glyph = Workflows.WorkflowDefinition.DefaultGlyph;
+            }
+        }
     }
 
     /// <summary>

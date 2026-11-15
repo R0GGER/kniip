@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using System.Windows.Controls;
 using Kniip.Editor;
 using Kniip.Upload;
+using Kniip.Workflows;
 
 namespace Kniip.Settings;
 
@@ -230,6 +231,20 @@ public sealed class AppSettings
         };
         return Uploaders.FirstOrDefault(u => u.Id == id && u.IsConfigured) ?? DefaultUploader;
     }
+
+    /// <summary>Eigen workflows, in de volgorde van het menu en de workflowbalk.</summary>
+    public List<WorkflowDefinition> Workflows { get; set; } = new();
+
+    /// <summary>De voorbeeldworkflows zijn al eens toegevoegd; daarna niet opnieuw, ook niet als de lijst leeg is.</summary>
+    public bool WorkflowExamplesAdded { get; set; }
+
+    /// <summary>De zwevende balk met workflowknoppen staat open.</summary>
+    public bool WorkflowBarVisible { get; set; }
+
+    /// <summary>Positie van de workflowbalk op het scherm (DIP); leeg betekent rechtsboven.</summary>
+    public double? WorkflowBarLeft { get; set; }
+
+    public double? WorkflowBarTop { get; set; }
 
     /// <summary>Bij het starten en daarna elke UpdateCheckHours op de achtergrond kijken of er een nieuwere versie is.</summary>
     public bool CheckForUpdates { get; set; } = true;

@@ -28,6 +28,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Border Background="#1E1E1E" CornerRadius="6" ClipToBounds="True" MouseLeftButtonDown="Video_MouseLeftButtonDown">
@@ -142,6 +143,30 @@
                         <Run x:Name="SavedRun" Foreground="{DynamicResource InkBrush}" />
                         <Hyperlink Click="OpenFolder_Click"><Run x:Name="OpenRun" Text="{x:Static res:Strings.Common_OpenFolder}" /></Hyperlink>
                     </TextBlock>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Workflow die op deze screencast wacht -->
+        <Border x:Name="WorkflowBanner" Grid.Row="4" Margin="0,8,0,0" Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource AccentBrush}"
+                BorderThickness="1" CornerRadius="6" Padding="14,8" Visibility="Collapsed">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="WorkflowStopButton" Style="{StaticResource FlatButton}" Content="{x:Static res:Strings.Workflow_Stop}"
+                            Click="WorkflowStop_Click" ToolTip="{x:Static res:Strings.Workflow_StopTip}" />
+                    <Button x:Name="WorkflowContinueButton" Style="{StaticResource AccentButton}" Click="WorkflowContinue_Click" Margin="6,0,0,0"
+                            ToolTip="{x:Static res:Strings.Workflow_ContinueTip}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE768;" Style="{StaticResource IconText}" FontSize="14" Foreground="White" Margin="0,0,6,0" />
+                            <TextBlock Text="{x:Static res:Strings.Workflow_Continue}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <TextBlock Text="&#xE945;" Style="{StaticResource IconText}" FontSize="16" Foreground="{DynamicResource AccentTextBrush}"
+                           VerticalAlignment="Center" Margin="0,0,10,0" />
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock x:Name="WorkflowTitle" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                    <TextBlock x:Name="WorkflowNext" Foreground="{DynamicResource SubtleTextBrush}" FontSize="12" TextTrimming="CharacterEllipsis" />
                 </StackPanel>
             </DockPanel>
         </Border>

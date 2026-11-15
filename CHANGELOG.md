@@ -2,6 +2,34 @@
 
 All notable changes to kniip are listed in this file. The newest version is at the top.
 
+## 2.5.4 - 2026-11-15
+
+### Added
+
+- **Workflows.**\
+  Under **Settings > Workflows** you make your own workflows, each with a name, an icon and an optional shortcut. A workflow starts with a step that captures something (**Snip rectangle**, **Snip window**, **Screencast (MP4)**, **Screencast (GIF)** or **Image from clipboard**) and then runs its steps in order: **Edit**, **Save**, **Copy**, **Upload**, **Copy link**, **Open with...** and **Open folder**. For example: snip, save, upload, or snip, edit, save, upload, copy link. Add steps with **+** and change the order with the arrows. Problems, such as **Copy link** without an **Upload** step before it, show below the steps and next to the workflow in the list.
+- **Edit in a workflow.**\
+  The **Edit** step opens the snip in the editor, or the screencast in the screencast window, with a bar at the bottom that shows the next steps. Click **Continue workflow** to run them with the result as it is then. If the next step is **Save**, the normal **Save** button continues the workflow as well. **Stop** ends the workflow and keeps the snip or screencast open; closing the tab or window stops it too.
+- **Open with a program.**\
+  **Open with...** starts a program of your choice with the file. In the arguments, `%f` is the file and `%u` the link of an earlier upload. Without an earlier **Save** step, kniip uses a temporary file, also for **Open folder**.
+- **Start a workflow from the tray, a shortcut or the workflow bar.**\
+  The system tray menu has a **Workflows** submenu. **Show workflow bar** there opens a small floating bar with a button per workflow. You can also turn the bar on or off under **Settings > Workflows**, or in the editor by right-clicking a toolbar or the floating buttons; drag it by the grip, and it remembers its place. Per workflow you choose whether it shows in the menu and in the bar. The bar doesn't show up in snips and screencasts.
+- When a workflow with an **Upload** step is done, the notification shows the workflow name and the link; click the notification to open the link in your browser. **Upload** in the editor and the screencast window now shows the same notification. If a step fails, a notification with an error icon says which step failed and why.
+- The first time, kniip adds two example workflows: **Snip, save, upload** and **Snip, edit, share**. Workflows are part of the backup.
+
+- **Rotate rectangles, ellipses and text.**\
+  Rectangles, ellipses and text now have the round handle above them too, just like shapes and emoji. Text rotates with its shape: frame, balloon, oval, cloud or no shape. The tail of a balloon or cloud rotates along; drag its tip to point it elsewhere.
+  - While you type in rotated text, the text box is rotated as well. The text grows from its top left corner without moving, also when you change the font size.
+  - The buttons to rotate 90° under **Align** and in the right-click menu now work for rectangles, ellipses and text as well.
+
+### Changed
+
+- The text tool has larger font sizes: 80, 96, 128, 160 and 200.
+
+### Fixed
+
+- While you type or edit text, the border around the letters and the shadow now show as well.
+
 ## 2.5.3 - 2026-11-15
 
 ### Added

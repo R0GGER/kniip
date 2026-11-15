@@ -340,6 +340,30 @@
             </DockPanel>
         </Border>
 
+        <!-- Workflow die op dit knipsel wacht -->
+        <Border x:Name="WorkflowBanner" DockPanel.Dock="Bottom" Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource AccentBrush}"
+                BorderThickness="0,2,0,0" Padding="12,6" Visibility="Collapsed">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Style="{StaticResource FlatButton}" Content="{x:Static res:Strings.Workflow_Stop}" Click="WorkflowStop_Click"
+                            ToolTip="{x:Static res:Strings.Workflow_StopTip}" />
+                    <Button Style="{StaticResource AccentButton}" Click="WorkflowContinue_Click" Margin="6,0,0,0"
+                            ToolTip="{x:Static res:Strings.Workflow_ContinueTip}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE768;" Style="{StaticResource IconText}" FontSize="14" Foreground="White" />
+                            <TextBlock Text="{x:Static res:Strings.Workflow_Continue}" Margin="6,0,0,0" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <TextBlock Text="&#xE945;" Style="{StaticResource IconText}" FontSize="16" Foreground="{DynamicResource AccentTextBrush}"
+                           VerticalAlignment="Center" Margin="0,0,10,0" />
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock x:Name="WorkflowTitle" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                    <TextBlock x:Name="WorkflowNext" Foreground="{DynamicResource SubtleTextBrush}" FontSize="12" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
         <!-- Onderste werkbalk in de gesplitste indeling; de code verplaatst de acties hierheen -->
         <Border x:Name="ActionBar" DockPanel.Dock="Bottom" Background="{DynamicResource ToolbarBrush}" BorderBrush="{DynamicResource DividerBrush}"
                 BorderThickness="0,1,0,0" Padding="8,6" Visibility="Collapsed"

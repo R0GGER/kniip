@@ -23,7 +23,7 @@ internal static class DocumentRenderer
             }
             else if (item is TextAnnotation text)
             {
-                text.RenderOutline(dc);
+                text.RenderWithoutText(dc);
             }
         }
     }

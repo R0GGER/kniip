@@ -17,6 +17,7 @@ using Kniip.Resources;
 using Kniip.Settings;
 using Kniip.Update;
 using Kniip.Upload;
+using Kniip.Workflows;
 using Microsoft.Win32;
 using Screen = System.Windows.Forms.Screen;
 
@@ -24,8 +25,8 @@ namespace Kniip;
 
 public partial class App : Application
 {
-    /// <summary>Waar een rechthoekknipsel heen gaat: naar de editor of naar tekstherkenning.</summary>
-    private enum SnipTarget { Editor, Ocr }
+    /// <summary>Waar een rechthoekknipsel heen gaat: naar de editor, naar tekstherkenning of naar een workflow.</summary>
+    private enum SnipTarget { Editor, Ocr, Workflow }
 
     private SingleInstance? _singleInstance;
     private TrayIcon? _tray;
@@ -37,6 +38,9 @@ public partial class App : Application
     private CountdownWindow? _snipCountdown;
     private SnipTarget _snipTarget;
     private Action? _snipFinished;
+    private Action<BitmapSource, WindowInfo?, int?>? _workflowSnip;
+    private Action<string, WindowInfo?>? _workflowRecording;
+    private WorkflowBarWindow? _workflowBar;
     private uint? _ignoredClipboardSequence;
 
     public static App Instance => (App)Current;
@@ -46,6 +50,8 @@ public partial class App : Application
     internal CaptureCoordinator Capture { get; private set; } = null!;
 
     internal RecordingController Recorder { get; private set; } = null!;
+
+    internal WorkflowRunner Workflows { get; private set; } = null!;
 
     /// <summary>Toetsenbordhaak voor alle sneltoetsen (knipsels en screencasts).</summary>
     internal GlobalHotkeyHook? HotkeyHook { get; private set; }
@@ -89,6 +95,8 @@ public partial class App : Application
         Settings = SettingsStore.Load();
         UiLanguage.Apply(Settings.Language);
         ThemeManager.Apply(Settings.ColorMode);
+        AddExampleWorkflows();
+        Workflows = new WorkflowRunner(this);
 
         Capture = new CaptureCoordinator(Dispatcher);
         Capture.ApplySettings(Settings);
@@ -97,7 +105,7 @@ public partial class App : Application
         RecordingSession.CleanupTempFolder();
         Recorder = new RecordingController(Settings, Dispatcher);
         Recorder.StageChanged += OnRecordingStageChanged;
-        Recorder.RecordingFinished += OpenScreencast;
+        Recorder.RecordingFinished += OnRecordingFinished;
         Recorder.Notify += (title, text) => _tray?.ShowBalloon(title, text);
 
         _tray = new TrayIcon();
@@ -131,6 +139,11 @@ public partial class App : Application
         _tray.SettingsRequested += ShowSettings;
         _tray.HistoryRequested += ShowHistory;
         _tray.FoldersProvider = TrayFolders;
+        _tray.WorkflowsProvider = TrayWorkflows;
+        _tray.WorkflowRequested += id => RunWorkflow(id);
+        _tray.WorkflowBarRequested += ToggleWorkflowBar;
+        _tray.WorkflowSettingsRequested += ShowWorkflowSettings;
+        _tray.CanUseWorkflowBar = () => CanShowWorkflowBar;
         _tray.ExitRequested += ExitApplication;
         _tray.PauseChanged += _ => UpdateCapturePaused();
         _tray.ApplyTheme(ThemeManager.IsDark);
@@ -138,6 +151,7 @@ public partial class App : Application
 
         HotkeyHook = new GlobalHotkeyHook(Dispatcher);
         ApplyHotkeys();
+        ApplyWorkflowBar();
         Updates.AvailabilityChanged += (_, _) => _tray?.SetUpdateAvailable(Updates.Available?.Tag);
         Updates.Apply(Settings.CheckForUpdates, TimeSpan.FromHours(Settings.UpdateCheckHours));
 
@@ -440,6 +454,8 @@ public partial class App : Application
         _snipSnapshot = new();
         SnipTarget target = _snipTarget;
         _snipTarget = SnipTarget.Editor;
+        Action<BitmapSource, WindowInfo?, int?>? workflow = _workflowSnip;
+        _workflowSnip = null;
         RunSnipFinished();
         if (image != null && target == SnipTarget.Ocr)
         {
@@ -449,8 +465,155 @@ public partial class App : Application
         {
             WindowInfo? window = area is { } a ? PhysicalWindow.WindowAt(snapshot, a) : null;
             int? cornerRadius = pickedWindow && area is { } picked ? PhysicalWindow.CornerRadiusAt(snapshot, picked) : null;
-            OpenEditor(image, window, cornerRadius);
+            if (target == SnipTarget.Workflow && workflow != null)
+            {
+                workflow(image, window, cornerRadius);
+            }
+            else
+            {
+                OpenEditor(image, window, cornerRadius);
+            }
         }
+    }
+
+    /// <summary>Knipsel voor een workflow; het resultaat gaat naar <paramref name="captured"/> in plaats van de editor.</summary>
+    /// <param name="finished">Na het kiezen of annuleren, ook als het aftellen wordt afgebroken.</param>
+    /// <returns>False als er al een knipsel of screencast wordt gekozen.</returns>
+    internal bool BeginWorkflowSnip(bool pickWindow, Action<BitmapSource, WindowInfo?, int?> captured, Action finished)
+    {
+        if (_snipCountdown != null || _snipWindows.Count > 0 || Recorder.Stage == RecordingStage.Selecting)
+        {
+            return false;
+        }
+
+        _workflowSnip = captured;
+        _snipFinished = () =>
+        {
+            _workflowSnip = null;
+            finished();
+        };
+        BeginDelayedSnip(pickWindow, SnipTarget.Workflow);
+        return true;
+    }
+
+    /// <summary>Screencast voor een workflow; de opname gaat naar <paramref name="finished"/> in plaats van het screencastvenster.</summary>
+    /// <returns>False als er al een screencast loopt.</returns>
+    internal bool BeginWorkflowRecording(ScreencastFormat format, Action<string, WindowInfo?> finished)
+    {
+        if (Recorder.Stage != RecordingStage.Idle || _snipWindows.Count > 0)
+        {
+            return false;
+        }
+
+        _workflowRecording = finished;
+        Recorder.Toggle(format);
+        return true;
+    }
+
+    private void OnRecordingFinished(string path, ScreencastFormat? format, WindowInfo? recordedWindow)
+    {
+        if (_workflowRecording is { } workflow)
+        {
+            _workflowRecording = null;
+            workflow(path, recordedWindow);
+            return;
+        }
+
+        OpenScreencast(path, format, recordedWindow);
+    }
+
+    /// <summary>Stap Bewerken van een workflow: het knipsel als tabblad met een knop Doorgaan.</summary>
+    internal void OpenWorkflowEditor(BitmapSource image, WindowInfo? window, int? windowCornerRadius, WorkflowContinuation continuation)
+    {
+        var view = new EditorView(image, Settings, window: window, windowCornerRadius: windowCornerRadius);
+        view.AttachWorkflow(continuation);
+        AddEditorTab(view);
+    }
+
+    /// <summary>Stap Bewerken van een workflow: de opname in het screencastvenster met een knop Doorgaan.</summary>
+    internal void OpenWorkflowScreencast(string path, ScreencastFormat? format, WindowInfo? recordedWindow, WorkflowContinuation continuation)
+    {
+        var window = new ScreencastWindow(path, Settings, format, recordedWindow);
+        window.AttachWorkflow(continuation);
+        window.Show();
+        BringToFront(window);
+    }
+
+    public void RunWorkflow(Guid id)
+    {
+        if (Settings.Workflows.FirstOrDefault(w => w.Id == id) is { } workflow)
+        {
+            Workflows.Run(workflow);
+        }
+    }
+
+    /// <summary>Bij de eerste start met workflows twee voorbeelden toevoegen, in de taal van dat moment.</summary>
+    private void AddExampleWorkflows()
+    {
+        if (Settings.WorkflowExamplesAdded)
+        {
+            return;
+        }
+
+        if (Settings.Workflows.Count == 0)
+        {
+            Settings.Workflows.AddRange(WorkflowDefinition.Examples());
+        }
+
+        Settings.WorkflowExamplesAdded = true;
+        SettingsStore.Save(Settings);
+    }
+
+    private IReadOnlyList<TrayWorkflow> TrayWorkflows() => Settings.Workflows
+        .Where(w => w.ShowInTray)
+        .Select(w => new TrayWorkflow(w.Id, w.Title, w.Glyph, w.IconFile, HotkeyDisplay(w.Hotkey), w.Summary(Settings.Uploaders)))
+        .ToList();
+
+    internal bool WorkflowBarShown => _workflowBar != null;
+
+    /// <summary>De balk heeft alleen zin als er een workflow met "In de workflowbalk" is.</summary>
+    internal bool CanShowWorkflowBar => Settings.Workflows.Any(w => w.ShowInBar);
+
+    internal void ToggleWorkflowBar()
+    {
+        Settings.WorkflowBarVisible = _workflowBar == null;
+        SettingsStore.Save(Settings);
+        ApplyWorkflowBar();
+    }
+
+    /// <summary>Workflowbalk tonen of verbergen volgens de instellingen, en de knoppen bijwerken.</summary>
+    private void ApplyWorkflowBar()
+    {
+        bool show = Settings.WorkflowBarVisible && Settings.Workflows.Any(w => w.ShowInBar);
+        if (!show)
+        {
+            _workflowBar?.Close();
+            _workflowBar = null;
+            _tray?.SetWorkflowBarShown(false);
+            return;
+        }
+
+        if (_workflowBar == null)
+        {
+            _workflowBar = new WorkflowBarWindow(Settings);
+            _workflowBar.Closed += (_, _) =>
+            {
+                if (_workflowBar == null)
+                {
+                    return;
+                }
+
+                // Met het kruisje gesloten.
+                _workflowBar = null;
+                Settings.WorkflowBarVisible = false;
+                SettingsStore.Save(Settings);
+                _tray?.SetWorkflowBarShown(false);
+            };
+            _workflowBar.Show();
+        }
+
+        _workflowBar.ShowWorkflows(Settings.Workflows.Where(w => w.ShowInBar).ToList(), HotkeyDisplay);
+        _tray?.SetWorkflowBarShown(true);
     }
 
     private string? HotkeyDisplay(string? hotkey) =>
@@ -478,6 +641,12 @@ public partial class App : Application
             Bind(Settings.ClipboardHotkey, OpenFromClipboard);
             Bind(Settings.OcrHotkey, () => BeginTextSnip());
             Bind(Settings.UploadClipboardHotkey, () => _ = QuickUploader.UploadClipboardAsync());
+            foreach (WorkflowDefinition workflow in Settings.Workflows)
+            {
+                Guid id = workflow.Id;
+                Bind(workflow.Hotkey, () => RunWorkflow(id));
+            }
+
             if (_snipCountdown is { } countdown)
             {
                 // Alleen tijdens het aftellen; daarna moet Esc gewoon naar het actieve programma.
@@ -520,6 +689,17 @@ public partial class App : Application
         };
         _tray?.SetRecordItem(text, stage is RecordingStage.Recording or RecordingStage.Paused);
         UpdateCapturePaused();
+        if (stage == RecordingStage.Idle && _workflowRecording != null)
+        {
+            // Een geslaagde opname meldt zich direct na Idle; daarna is de workflow geannuleerd of weggegooid.
+            Dispatcher.BeginInvoke(() =>
+            {
+                if (Recorder.Stage == RecordingStage.Idle)
+                {
+                    _workflowRecording = null;
+                }
+            });
+        }
     }
 
     /// <summary>Tijdens een screencast geen knipsels oppikken.</summary>
@@ -615,6 +795,13 @@ public partial class App : Application
         BringToFront(_settingsWindow);
     }
 
+    /// <summary>Instellingen openen op het tabblad Workflows.</summary>
+    public void ShowWorkflowSettings()
+    {
+        ShowSettings();
+        _settingsWindow?.ShowWorkflowsTab();
+    }
+
     public void ShowHistory(bool images)
     {
         if (_historyWindow == null)
@@ -651,7 +838,30 @@ public partial class App : Application
         ("Screencasts", VideoFolder)
     };
 
-    public void ShowBalloon(string title, string text) => _tray?.ShowBalloon(title, text);
+    public void ShowBalloon(string title, string text, bool error = false, Action? onClick = null) =>
+        _tray?.ShowBalloon(title, text, error, onClick);
+
+    /// <summary>Melding na een upload; klikken opent de link in de browser.</summary>
+    public void ShowLinkBalloon(string title, string url) =>
+        ShowBalloon(title, string.Format(Strings.Workflow_DoneUrl, ShortUrl(url)), onClick: () => OpenUrl(url));
+
+    /// <summary>Zonder https:// past de link beter in de melding; klikken opent de volledige link.</summary>
+    private static string ShortUrl(string url) =>
+        Uri.TryCreate(url, UriKind.Absolute, out Uri? uri) && (uri.Scheme == Uri.UriSchemeHttps || uri.Scheme == Uri.UriSchemeHttp)
+            ? url[(uri.Scheme.Length + 3)..]
+            : url;
+
+    private void OpenUrl(string url)
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+        }
+        catch (Exception ex)
+        {
+            ShowBalloon(AppIdentity.DisplayName, ex.Message, error: true);
+        }
+    }
 
     /// <summary>Vervangt alle instellingen (herstel uit backup); daarna herstarten, want vensters houden de oude instantie vast.</summary>
     internal void ReplaceSettings(AppSettings settings)
@@ -666,6 +876,7 @@ public partial class App : Application
         ThemeManager.Apply(Settings.ColorMode);
         Capture.ApplySettings(Settings);
         ApplyHotkeys();
+        ApplyWorkflowBar();
         Updates.Apply(Settings.CheckForUpdates, TimeSpan.FromHours(Settings.UpdateCheckHours));
     }
 
@@ -706,12 +917,22 @@ public partial class App : Application
             return false;
         }
 
+        // Eerst loskoppelen: de balk blijft dan bij de volgende start open.
+        WorkflowBarWindow? bar = _workflowBar;
+        _workflowBar = null;
+        bar?.Close();
         foreach (Window window in Windows.Cast<Window>().ToList())
         {
             window.Close();
         }
 
-        return _editorShell == null;
+        if (_editorShell != null)
+        {
+            ApplyWorkflowBar();
+            return false;
+        }
+
+        return true;
     }
 
     /// <summary>Sluit kniip en start het opnieuw met de instellingen open, bijvoorbeeld na het wijzigen van de taal.</summary>

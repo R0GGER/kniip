@@ -711,6 +711,7 @@
   <data name="Upload_QuickCopiedOne" xml:space="preserve"><value>Link gekopieerd: {0}</value></data>
   <data name="Upload_QuickCopyFailed" xml:space="preserve"><value>Geüpload, maar het klembord was bezet. De link staat in de geschiedenis: {0}</value></data>
   <data name="Upload_QuickDoneTitle" xml:space="preserve"><value>Geüpload</value></data>
+  <data name="Upload_DoneCopiedTitle" xml:space="preserve"><value>Geüpload, link gekopieerd</value></data>
   <data name="Upload_QuickFailedTitle" xml:space="preserve"><value>Uploaden mislukt</value></data>
   <data name="Upload_QuickNoDestination" xml:space="preserve"><value>Er is nog geen uploadbestemming. Voeg er een toe in Instellingen &gt; Uploaden.</value></data>
   <data name="Upload_QuickNothing" xml:space="preserve"><value>Er staat geen tekst, afbeelding of bestand op het klembord om te uploaden.</value></data>
@@ -718,4 +719,91 @@
   <data name="Upload_QuickTitle" xml:space="preserve"><value>Uploaden</value></data>
   <data name="Upload_QuickUploadingMany" xml:space="preserve"><value>{0} bestanden uploaden...</value></data>
   <data name="Upload_QuickUploadingOne" xml:space="preserve"><value>{0} uploaden...</value></data>
+  <data name="Settings_HotkeyNameWorkflow" xml:space="preserve"><value>workflow "{0}"</value></data>
+  <data name="Settings_MoveDown" xml:space="preserve"><value>Omlaag</value></data>
+  <data name="Settings_MoveUp" xml:space="preserve"><value>Omhoog</value></data>
+  <data name="Settings_NoWorkflows" xml:space="preserve"><value>Nog geen workflows. Klik op + om er een te maken.</value></data>
+  <data name="Settings_WorkflowActionGroup" xml:space="preserve"><value>Daarna</value></data>
+  <data name="Settings_WorkflowAddStep" xml:space="preserve"><value>Stap toevoegen</value></data>
+  <data name="Settings_WorkflowArguments" xml:space="preserve"><value>Argumenten</value></data>
+  <data name="Settings_WorkflowArgumentsTip" xml:space="preserve"><value>%f is het bestand, %u de link van een eerdere upload. Standaard: "%f"</value></data>
+  <data name="Settings_WorkflowAskLocation" xml:space="preserve"><value>Elke keer map en naam vragen</value></data>
+  <data name="Settings_WorkflowCaptureGroup" xml:space="preserve"><value>Begin met</value></data>
+  <data name="Settings_WorkflowDestination" xml:space="preserve"><value>Bestemming</value></data>
+  <data name="Settings_WorkflowDuplicate" xml:space="preserve"><value>Workflow dupliceren</value></data>
+  <data name="Settings_WorkflowEditHint" xml:space="preserve"><value>Het knipsel opent in de editor (een screencast in het screencastvenster). Klik op Workflow voortzetten als je klaar bent; is de volgende stap Opslaan, dan zet ook de knop Opslaan hem voort.</value></data>
+  <data name="Settings_WorkflowHotkey" xml:space="preserve"><value>Sneltoets</value></data>
+  <data name="Settings_WorkflowIcon" xml:space="preserve"><value>Icoon</value></data>
+  <data name="Settings_WorkflowIconClear" xml:space="preserve"><value>Weer een symbool gebruiken</value></data>
+  <data name="Settings_WorkflowIconFile" xml:space="preserve"><value>Afbeelding kiezen...</value></data>
+  <data name="Settings_WorkflowIconFilter" xml:space="preserve"><value>Afbeeldingen (*.png;*.ico;*.jpg;*.bmp;*.gif)|*.png;*.ico;*.jpg;*.jpeg;*.bmp;*.gif|Alle bestanden (*.*)|*.*</value></data>
+  <data name="Settings_WorkflowIconInvalid" xml:space="preserve"><value>{0} is niet te gebruiken als icoon.</value></data>
+  <data name="Settings_WorkflowIconTip" xml:space="preserve"><value>Symbool of eigen afbeelding voor het menu en de workflowbalk</value></data>
+  <data name="Settings_WorkflowInBar" xml:space="preserve"><value>In de workflowbalk</value></data>
+  <data name="Settings_WorkflowBarHint" xml:space="preserve"><value>Een zwevende balk met een knop voor elke workflow waarbij "In de workflowbalk" aan staat. Je zet hem ook aan of uit via het systeemvakmenu of met rechtsklikken op een werkbalk in de editor.</value></data>
+  <data name="Settings_WorkflowInTray" xml:space="preserve"><value>In het systeemvakmenu</value></data>
+  <data name="Settings_WorkflowName" xml:space="preserve"><value>Naam</value></data>
+  <data name="Settings_WorkflowNew" xml:space="preserve"><value>Nieuwe workflow</value></data>
+  <data name="Settings_WorkflowNewName" xml:space="preserve"><value>Nieuwe workflow</value></data>
+  <data name="Settings_WorkflowNoSteps" xml:space="preserve"><value>Geen stappen</value></data>
+  <data name="Settings_WorkflowOpenFolderHint" xml:space="preserve"><value>Opent Verkenner met het opgeslagen bestand geselecteerd; zonder eerdere stap Opslaan gebruikt kniip een tijdelijk bestand.</value></data>
+  <data name="Settings_WorkflowProgram" xml:space="preserve"><value>Programma</value></data>
+  <data name="Settings_WorkflowProgramFilter" xml:space="preserve"><value>Programma's (*.exe;*.bat;*.cmd)|*.exe;*.bat;*.cmd|Alle bestanden (*.*)|*.*</value></data>
+  <data name="Settings_WorkflowRecordHint" xml:space="preserve"><value>Zonder stap Bewerken wordt de hele opname gebruikt, met de GIF-instellingen van het tabblad Screencasts.</value></data>
+  <data name="Settings_WorkflowRemove" xml:space="preserve"><value>Workflow verwijderen</value></data>
+  <data name="Settings_WorkflowRemoveConfirm" xml:space="preserve"><value>De workflow "{0}" verwijderen?</value></data>
+  <data name="Settings_WorkflowRemoveStep" xml:space="preserve"><value>Stap verwijderen</value></data>
+  <data name="Settings_Workflows" xml:space="preserve"><value>Workflows</value></data>
+  <data name="Settings_WorkflowSaveHint" xml:space="preserve"><value>Slaat op in de map en met de naam van het tabblad Opslaan; is daar geen map ingesteld, dan vraagt kniip ernaar.</value></data>
+  <data name="Settings_WorkflowsExplanation" xml:space="preserve"><value>Een workflow begint met een knipsel, screencast of het klembord en doet daarna de stappen op volgorde, bijvoorbeeld knippen, opslaan, uploaden en de link kopiëren. Start hem vanuit het systeemvakmenu, met zijn sneltoets of vanuit de workflowbalk.</value></data>
+  <data name="Settings_WorkflowSteps" xml:space="preserve"><value>Stappen</value></data>
+  <data name="Tray_EditWorkflows" xml:space="preserve"><value>Workflows bewerken...</value></data>
+  <data name="Tray_NoWorkflows" xml:space="preserve"><value>Nog geen workflows</value></data>
+  <data name="Tray_WorkflowBar" xml:space="preserve"><value>Workflowbalk tonen</value></data>
+  <data name="Tray_Workflows" xml:space="preserve"><value>Workflows</value></data>
+  <data name="Workflow_BannerNext" xml:space="preserve"><value>Hierna: {0}</value></data>
+  <data name="Workflow_BannerSaveContinues" xml:space="preserve"><value>Opslaan zet hem ook voort</value></data>
+  <data name="Workflow_BannerTitle" xml:space="preserve"><value>Workflow "{0}" wacht op je</value></data>
+  <data name="Workflow_Continue" xml:space="preserve"><value>Workflow voortzetten</value></data>
+  <data name="Workflow_Continued" xml:space="preserve"><value>Workflow "{0}" gaat verder...</value></data>
+  <data name="Workflow_ContinueTip" xml:space="preserve"><value>De overige stappen uitvoeren met het resultaat zoals het nu is</value></data>
+  <data name="Workflow_Done" xml:space="preserve"><value>Klaar.</value></data>
+  <data name="Workflow_DoneSaved" xml:space="preserve"><value>Klaar. Opgeslagen als {0}</value></data>
+  <data name="Workflow_DoneUrl" xml:space="preserve"><value>Link: {0}
+Klik hier om de link in je browser te openen.</value></data>
+  <data name="Workflow_ExampleEditShare" xml:space="preserve"><value>Knippen, bewerken, delen</value></data>
+  <data name="Workflow_ExampleSaveUpload" xml:space="preserve"><value>Knippen, opslaan, uploaden</value></data>
+  <data name="Workflow_ExportingGif" xml:space="preserve"><value>GIF maken...</value></data>
+  <data name="Workflow_FailedTitle" xml:space="preserve"><value>Workflow "{0}" gestopt</value></data>
+  <data name="Workflow_NoClipboardImage" xml:space="preserve"><value>Er staat geen afbeelding op het klembord.</value></data>
+  <data name="Workflow_NothingAfterEdit" xml:space="preserve"><value>niets (de workflow is klaar)</value></data>
+  <data name="Workflow_ProblemCaptureLater" xml:space="preserve"><value>Alleen de eerste stap kan een knipsel, screencast of het klembord zijn.</value></data>
+  <data name="Workflow_ProblemCopyUrl" xml:space="preserve"><value>Link kopiëren heeft een stap Uploaden ervoor nodig.</value></data>
+  <data name="Workflow_ProblemFirstCapture" xml:space="preserve"><value>Begin met een knipsel, screencast of het klembord.</value></data>
+  <data name="Workflow_ProblemNoProgram" xml:space="preserve"><value>Kies een programma voor Openen met.</value></data>
+  <data name="Workflow_ProblemNoUploader" xml:space="preserve"><value>De uploadbestemming bestaat (niet meer). Voeg er een toe in Instellingen &gt; Uploaden.</value></data>
+  <data name="Workflow_ProblemOneEdit" xml:space="preserve"><value>Een workflow kan maar één stap Bewerken hebben.</value></data>
+  <data name="Workflow_RecordingBusy" xml:space="preserve"><value>Er loopt al een screencast.</value></data>
+  <data name="Workflow_StepCaptureRegion" xml:space="preserve"><value>Rechthoek knippen</value></data>
+  <data name="Workflow_StepCaptureWindow" xml:space="preserve"><value>Venster knippen</value></data>
+  <data name="Workflow_StepCopy" xml:space="preserve"><value>Kopiëren</value></data>
+  <data name="Workflow_StepCopyUrl" xml:space="preserve"><value>Link kopiëren</value></data>
+  <data name="Workflow_StepEdit" xml:space="preserve"><value>Bewerken</value></data>
+  <data name="Workflow_StepFailed" xml:space="preserve"><value>{0} mislukt: {1}</value></data>
+  <data name="Workflow_StepFromClipboard" xml:space="preserve"><value>Afbeelding van klembord</value></data>
+  <data name="Workflow_StepOpenFolder" xml:space="preserve"><value>Map openen</value></data>
+  <data name="Workflow_StepOpenWith" xml:space="preserve"><value>Openen met...</value></data>
+  <data name="Workflow_StepOpenWithNamed" xml:space="preserve"><value>Openen met {0}</value></data>
+  <data name="Workflow_StepRecordGif" xml:space="preserve"><value>Screencast (GIF)</value></data>
+  <data name="Workflow_StepRecordMp4" xml:space="preserve"><value>Screencast (MP4)</value></data>
+  <data name="Workflow_StepSave" xml:space="preserve"><value>Opslaan</value></data>
+  <data name="Workflow_StepSaveAs" xml:space="preserve"><value>Opslaan als...</value></data>
+  <data name="Workflow_StepUpload" xml:space="preserve"><value>Uploaden</value></data>
+  <data name="Workflow_StepUploadTo" xml:space="preserve"><value>Uploaden naar {0}</value></data>
+  <data name="Workflow_Stop" xml:space="preserve"><value>Stoppen</value></data>
+  <data name="Workflow_StopTip" xml:space="preserve"><value>De workflow stoppen; het knipsel blijft open</value></data>
+  <data name="Workflow_Untitled" xml:space="preserve"><value>Workflow</value></data>
+  <data name="WorkflowBar_Close" xml:space="preserve"><value>Workflowbalk verbergen (weer tonen via het systeemvakmenu)</value></data>
+  <data name="WorkflowBar_Drag" xml:space="preserve"><value>Slepen om te verplaatsen</value></data>
+  <data name="WorkflowBar_Title" xml:space="preserve"><value>kniip-workflows</value></data>
 </root>

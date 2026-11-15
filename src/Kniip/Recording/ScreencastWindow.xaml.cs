@@ -14,6 +14,7 @@ using System.Windows.Threading;
 using Kniip.Editor;
 using Kniip.Settings;
 using Kniip.Upload;
+using Kniip.Workflows;
 using Microsoft.Win32;
 using Kniip.Resources;
 
@@ -47,6 +48,7 @@ public partial class ScreencastWindow : Window
     private CancellationTokenSource? _export;
     private bool _kept;
     private string? _lastSaved;
+    private WorkflowContinuation? _workflow;
 
     /// <param name="window">Programmanaam en titel van het opgenomen venster, voor %pn en %t in het naamsjabloon.</param>
     internal ScreencastWindow(string path, AppSettings settings, ScreencastFormat? format = null, WindowInfo? window = null)
@@ -388,13 +390,13 @@ public partial class ScreencastWindow : Window
         }
     }
 
-    private string Extension => Format == ScreencastFormat.Gif ? ".gif" : ".mp4";
+    private string Extension => WorkflowActions.VideoExtension(Format);
 
-    private static string DefaultName => string.Format(Strings.Screencast_DefaultName, DateTime.Now);
+    private static string DefaultName => WorkflowActions.VideoDefaultName;
 
     private string DefaultFileName => DefaultName + Extension;
 
-    private WindowInfo TemplateWindow => _window ?? new WindowInfo(Strings.Screencast_Name, Strings.Screencast_Name);
+    private WindowInfo TemplateWindow => WorkflowActions.VideoTemplateWindow(_window);
 
     private static string DefaultFolder =>
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "kniip");
@@ -461,24 +463,25 @@ public partial class ScreencastWindow : Window
                     "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
+            if (_workflow is { IsDone: false, NextIsSave: true } workflow)
+            {
+                EndWorkflow();
+                workflow.Continue(new WorkflowEditResult(null, target, Format, target));
+            }
+
             Close();
         }
     }
 
     private string? FixedTarget()
     {
-        if (_settings.VideoSaveFolder is not { Length: > 0 } folder)
-        {
-            return null;
-        }
-
         try
         {
-            return FileNameTemplate.Resolve(folder, _settings.VideoFolderTemplate, _settings.VideoFileNameTemplate, TemplateWindow, DefaultName, Extension);
+            return WorkflowActions.VideoTarget(_settings, _window, Format);
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, string.Format(Strings.Screencast_SaveFolderUnusable, folder, ex.Message),
+            MessageBox.Show(this, string.Format(Strings.Screencast_SaveFolderUnusable, _settings.VideoSaveFolder, ex.Message),
                 "kniip", MessageBoxButton.OK, MessageBoxImage.Warning);
             return null;
         }
@@ -570,26 +573,15 @@ public partial class ScreencastWindow : Window
         var progress = new Progress<double>(value => Progress.Value = value * 100);
         try
         {
-            string url;
-            await using (FileStream stream = File.OpenRead(target))
-            {
-                string contentType = Format == ScreencastFormat.Gif ? "image/gif" : "video/mp4";
-                UploadResult result = await UploaderFactory.UploadAsync(config, stream, Path.GetFileName(target), contentType, progress, _export.Token);
-                url = result.Url;
-                if (result.DestinationChanged)
-                {
-                    App.Instance.SaveSettings();
-                }
-            }
-
+            string url = await WorkflowActions.UploadVideoAsync(config, target, Format, progress, _export.Token);
             _kept = true;
             RememberChoices();
-            AddToHistory(null, url, target);
             bool copied = ClipboardWriter.SetText(url);
             SavedRun.Text = string.Format(copied ? Strings.Screencast_UploadedCopied : Strings.Screencast_Uploaded, url) + "  ";
             OpenRun.Text = Strings.History_OpenLink;
             _lastSaved = url;
             SavedText.Visibility = Visibility.Visible;
+            App.Instance.ShowLinkBalloon(copied ? Strings.Upload_DoneCopiedTitle : Strings.Upload_QuickDoneTitle, url);
         }
         catch (OperationCanceledException)
         {
@@ -615,12 +607,8 @@ public partial class ScreencastWindow : Window
     }
 
     /// <param name="exported">Het geëxporteerde bestand, voor de miniatuur van een GIF.</param>
-    private void AddToHistory(string? file, string? url, string exported)
-    {
-        bool gif = Format == ScreencastFormat.Gif;
-        Kniip.History.HistoryStore.Add(gif ? Kniip.History.HistoryKind.Gif : Kniip.History.HistoryKind.Mp4, file, url,
-            gif ? Kniip.History.HistoryStore.PreviewOf(exported) : null);
-    }
+    private void AddToHistory(string? file, string? url, string exported) =>
+        WorkflowActions.AddVideoHistory(Format, file, url, exported);
 
     private void RememberChoices()
     {
@@ -675,7 +663,56 @@ public partial class ScreencastWindow : Window
         Mp4Toggle.IsEnabled = !busy;
         GifToggle.IsEnabled = !busy;
         GifOptions.IsEnabled = !busy;
+        WorkflowContinueButton.IsEnabled = !busy;
+        WorkflowStopButton.IsEnabled = !busy;
         Cursor = busy ? Cursors.AppStarting : null;
+    }
+
+    // ---------- Workflow ----------
+
+    /// <summary>Dit venster is de stap Bewerken van een workflow; de balk onderaan zet hem voort.</summary>
+    internal void AttachWorkflow(WorkflowContinuation workflow)
+    {
+        _workflow = workflow;
+        WorkflowTitle.Text = string.Format(Strings.Workflow_BannerTitle, workflow.WorkflowName);
+        WorkflowNext.Text = string.Format(Strings.Workflow_BannerNext, workflow.RemainingSteps)
+                            + (workflow.NextIsSave ? "  ·  " + Strings.Workflow_BannerSaveContinues : string.Empty);
+        WorkflowBanner.Visibility = Visibility.Visible;
+    }
+
+    private void EndWorkflow()
+    {
+        _workflow = null;
+        WorkflowBanner.Visibility = Visibility.Collapsed;
+    }
+
+    /// <summary>Exporteert met het gekozen formaat en de inkorting naar een tijdelijk bestand en geeft dat aan de workflow.</summary>
+    private async void WorkflowContinue_Click(object sender, RoutedEventArgs e)
+    {
+        if (IsBusy || _workflow is null)
+        {
+            return;
+        }
+
+        SetPlaying(false);
+        string target = Path.Combine(WorkflowActions.NewTempFolder("Workflows"), DefaultFileName);
+        if (!await ExportAsync(target) || _workflow is not { } workflow)
+        {
+            return;
+        }
+
+        _kept = true;
+        RememberChoices();
+        EndWorkflow();
+        workflow.Continue(new WorkflowEditResult(null, target, Format, null));
+        Close();
+    }
+
+    private void WorkflowStop_Click(object sender, RoutedEventArgs e)
+    {
+        WorkflowContinuation? workflow = _workflow;
+        EndWorkflow();
+        workflow?.Cancel();
     }
 
     private void CancelExport_Click(object sender, RoutedEventArgs e) => _export?.Cancel();
@@ -722,6 +759,9 @@ public partial class ScreencastWindow : Window
     protected override void OnClosed(EventArgs e)
     {
         base.OnClosed(e);
+        WorkflowContinuation? workflow = _workflow;
+        _workflow = null;
+        workflow?.Cancel();
         _playTimer.Stop();
         Player.Close();
         DeleteLater(_path, attempts: 5);

@@ -711,6 +711,7 @@
   <data name="Upload_QuickCopiedOne" xml:space="preserve"><value>Link copied: {0}</value></data>
   <data name="Upload_QuickCopyFailed" xml:space="preserve"><value>Uploaded, but the clipboard was busy. Find the link in the history: {0}</value></data>
   <data name="Upload_QuickDoneTitle" xml:space="preserve"><value>Uploaded</value></data>
+  <data name="Upload_DoneCopiedTitle" xml:space="preserve"><value>Uploaded, link copied</value></data>
   <data name="Upload_QuickFailedTitle" xml:space="preserve"><value>Upload failed</value></data>
   <data name="Upload_QuickNoDestination" xml:space="preserve"><value>There&apos;s no upload destination yet. Add one in Settings &gt; Upload.</value></data>
   <data name="Upload_QuickNothing" xml:space="preserve"><value>There&apos;s no text, image or file on the clipboard to upload.</value></data>
@@ -718,4 +719,91 @@
   <data name="Upload_QuickTitle" xml:space="preserve"><value>Upload</value></data>
   <data name="Upload_QuickUploadingMany" xml:space="preserve"><value>Uploading {0} files...</value></data>
   <data name="Upload_QuickUploadingOne" xml:space="preserve"><value>Uploading {0}...</value></data>
+  <data name="Settings_HotkeyNameWorkflow" xml:space="preserve"><value>workflow "{0}"</value></data>
+  <data name="Settings_MoveDown" xml:space="preserve"><value>Move down</value></data>
+  <data name="Settings_MoveUp" xml:space="preserve"><value>Move up</value></data>
+  <data name="Settings_NoWorkflows" xml:space="preserve"><value>No workflows yet. Click + to create one.</value></data>
+  <data name="Settings_WorkflowActionGroup" xml:space="preserve"><value>Then</value></data>
+  <data name="Settings_WorkflowAddStep" xml:space="preserve"><value>Add step</value></data>
+  <data name="Settings_WorkflowArguments" xml:space="preserve"><value>Arguments</value></data>
+  <data name="Settings_WorkflowArgumentsTip" xml:space="preserve"><value>%f is the file, %u the link of an earlier upload. Default: "%f"</value></data>
+  <data name="Settings_WorkflowAskLocation" xml:space="preserve"><value>Ask for folder and name every time</value></data>
+  <data name="Settings_WorkflowCaptureGroup" xml:space="preserve"><value>Start with</value></data>
+  <data name="Settings_WorkflowDestination" xml:space="preserve"><value>Destination</value></data>
+  <data name="Settings_WorkflowDuplicate" xml:space="preserve"><value>Duplicate workflow</value></data>
+  <data name="Settings_WorkflowEditHint" xml:space="preserve"><value>The snip opens in the editor (a screencast in the screencast window). Click Continue workflow when you&apos;re done; if the next step is Save, the Save button continues it too.</value></data>
+  <data name="Settings_WorkflowHotkey" xml:space="preserve"><value>Shortcut</value></data>
+  <data name="Settings_WorkflowIcon" xml:space="preserve"><value>Icon</value></data>
+  <data name="Settings_WorkflowIconClear" xml:space="preserve"><value>Use a symbol again</value></data>
+  <data name="Settings_WorkflowIconFile" xml:space="preserve"><value>Choose an image...</value></data>
+  <data name="Settings_WorkflowIconFilter" xml:space="preserve"><value>Images (*.png;*.ico;*.jpg;*.bmp;*.gif)|*.png;*.ico;*.jpg;*.jpeg;*.bmp;*.gif|All files (*.*)|*.*</value></data>
+  <data name="Settings_WorkflowIconInvalid" xml:space="preserve"><value>{0} can&apos;t be used as an icon.</value></data>
+  <data name="Settings_WorkflowIconTip" xml:space="preserve"><value>Symbol or your own image for the menu and the workflow bar</value></data>
+  <data name="Settings_WorkflowInBar" xml:space="preserve"><value>In the workflow bar</value></data>
+  <data name="Settings_WorkflowBarHint" xml:space="preserve"><value>A floating bar with a button for each workflow that has "In the workflow bar" on. You can also turn it on or off from the tray menu or by right-clicking a toolbar in the editor.</value></data>
+  <data name="Settings_WorkflowInTray" xml:space="preserve"><value>In the tray menu</value></data>
+  <data name="Settings_WorkflowName" xml:space="preserve"><value>Name</value></data>
+  <data name="Settings_WorkflowNew" xml:space="preserve"><value>New workflow</value></data>
+  <data name="Settings_WorkflowNewName" xml:space="preserve"><value>New workflow</value></data>
+  <data name="Settings_WorkflowNoSteps" xml:space="preserve"><value>No steps</value></data>
+  <data name="Settings_WorkflowOpenFolderHint" xml:space="preserve"><value>Opens Explorer with the saved file selected; without an earlier Save step, kniip uses a temporary file.</value></data>
+  <data name="Settings_WorkflowProgram" xml:space="preserve"><value>Program</value></data>
+  <data name="Settings_WorkflowProgramFilter" xml:space="preserve"><value>Programs (*.exe;*.bat;*.cmd)|*.exe;*.bat;*.cmd|All files (*.*)|*.*</value></data>
+  <data name="Settings_WorkflowRecordHint" xml:space="preserve"><value>Without an Edit step, the whole recording is used with the GIF settings from the Screencasts tab.</value></data>
+  <data name="Settings_WorkflowRemove" xml:space="preserve"><value>Remove workflow</value></data>
+  <data name="Settings_WorkflowRemoveConfirm" xml:space="preserve"><value>Remove the workflow "{0}"?</value></data>
+  <data name="Settings_WorkflowRemoveStep" xml:space="preserve"><value>Remove step</value></data>
+  <data name="Settings_Workflows" xml:space="preserve"><value>Workflows</value></data>
+  <data name="Settings_WorkflowSaveHint" xml:space="preserve"><value>Saves to the folder and with the name from the Save tab; if no folder is set there, kniip asks.</value></data>
+  <data name="Settings_WorkflowsExplanation" xml:space="preserve"><value>A workflow starts with a snip, screencast or the clipboard and then runs its steps in order, for example snip, save, upload and copy link. Start it from the tray menu, its shortcut or the workflow bar.</value></data>
+  <data name="Settings_WorkflowSteps" xml:space="preserve"><value>Steps</value></data>
+  <data name="Tray_EditWorkflows" xml:space="preserve"><value>Edit workflows...</value></data>
+  <data name="Tray_NoWorkflows" xml:space="preserve"><value>No workflows yet</value></data>
+  <data name="Tray_WorkflowBar" xml:space="preserve"><value>Show workflow bar</value></data>
+  <data name="Tray_Workflows" xml:space="preserve"><value>Workflows</value></data>
+  <data name="Workflow_BannerNext" xml:space="preserve"><value>Next: {0}</value></data>
+  <data name="Workflow_BannerSaveContinues" xml:space="preserve"><value>Save continues too</value></data>
+  <data name="Workflow_BannerTitle" xml:space="preserve"><value>Workflow "{0}" is waiting for you</value></data>
+  <data name="Workflow_Continue" xml:space="preserve"><value>Continue workflow</value></data>
+  <data name="Workflow_Continued" xml:space="preserve"><value>Workflow "{0}" continues...</value></data>
+  <data name="Workflow_ContinueTip" xml:space="preserve"><value>Run the remaining steps with the result as it is now</value></data>
+  <data name="Workflow_Done" xml:space="preserve"><value>Done.</value></data>
+  <data name="Workflow_DoneSaved" xml:space="preserve"><value>Done. Saved as {0}</value></data>
+  <data name="Workflow_DoneUrl" xml:space="preserve"><value>Link: {0}
+Click here to open the link in your browser.</value></data>
+  <data name="Workflow_ExampleEditShare" xml:space="preserve"><value>Snip, edit, share</value></data>
+  <data name="Workflow_ExampleSaveUpload" xml:space="preserve"><value>Snip, save, upload</value></data>
+  <data name="Workflow_ExportingGif" xml:space="preserve"><value>Creating GIF...</value></data>
+  <data name="Workflow_FailedTitle" xml:space="preserve"><value>Workflow "{0}" stopped</value></data>
+  <data name="Workflow_NoClipboardImage" xml:space="preserve"><value>There&apos;s no image on the clipboard.</value></data>
+  <data name="Workflow_NothingAfterEdit" xml:space="preserve"><value>nothing (the workflow ends)</value></data>
+  <data name="Workflow_ProblemCaptureLater" xml:space="preserve"><value>Only the first step can be a snip, screencast or clipboard.</value></data>
+  <data name="Workflow_ProblemCopyUrl" xml:space="preserve"><value>Copy link needs an Upload step before it.</value></data>
+  <data name="Workflow_ProblemFirstCapture" xml:space="preserve"><value>Start with a snip, screencast or the clipboard.</value></data>
+  <data name="Workflow_ProblemNoProgram" xml:space="preserve"><value>Choose a program for Open with.</value></data>
+  <data name="Workflow_ProblemNoUploader" xml:space="preserve"><value>The upload destination doesn&apos;t exist (anymore). Add one in Settings &gt; Upload.</value></data>
+  <data name="Workflow_ProblemOneEdit" xml:space="preserve"><value>A workflow can have only one Edit step.</value></data>
+  <data name="Workflow_RecordingBusy" xml:space="preserve"><value>A screencast is already running.</value></data>
+  <data name="Workflow_StepCaptureRegion" xml:space="preserve"><value>Snip rectangle</value></data>
+  <data name="Workflow_StepCaptureWindow" xml:space="preserve"><value>Snip window</value></data>
+  <data name="Workflow_StepCopy" xml:space="preserve"><value>Copy</value></data>
+  <data name="Workflow_StepCopyUrl" xml:space="preserve"><value>Copy link</value></data>
+  <data name="Workflow_StepEdit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Workflow_StepFailed" xml:space="preserve"><value>{0} failed: {1}</value></data>
+  <data name="Workflow_StepFromClipboard" xml:space="preserve"><value>Image from clipboard</value></data>
+  <data name="Workflow_StepOpenFolder" xml:space="preserve"><value>Open folder</value></data>
+  <data name="Workflow_StepOpenWith" xml:space="preserve"><value>Open with...</value></data>
+  <data name="Workflow_StepOpenWithNamed" xml:space="preserve"><value>Open with {0}</value></data>
+  <data name="Workflow_StepRecordGif" xml:space="preserve"><value>Screencast (GIF)</value></data>
+  <data name="Workflow_StepRecordMp4" xml:space="preserve"><value>Screencast (MP4)</value></data>
+  <data name="Workflow_StepSave" xml:space="preserve"><value>Save</value></data>
+  <data name="Workflow_StepSaveAs" xml:space="preserve"><value>Save as...</value></data>
+  <data name="Workflow_StepUpload" xml:space="preserve"><value>Upload</value></data>
+  <data name="Workflow_StepUploadTo" xml:space="preserve"><value>Upload to {0}</value></data>
+  <data name="Workflow_Stop" xml:space="preserve"><value>Stop</value></data>
+  <data name="Workflow_StopTip" xml:space="preserve"><value>Stop the workflow; the snip stays open</value></data>
+  <data name="Workflow_Untitled" xml:space="preserve"><value>Workflow</value></data>
+  <data name="WorkflowBar_Close" xml:space="preserve"><value>Hide the workflow bar (show it again from the tray menu)</value></data>
+  <data name="WorkflowBar_Drag" xml:space="preserve"><value>Drag to move</value></data>
+  <data name="WorkflowBar_Title" xml:space="preserve"><value>kniip workflows</value></data>
 </root>

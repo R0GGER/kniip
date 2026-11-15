@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
@@ -15,10 +13,6 @@ public sealed class FigureAnnotation : RectAnnotation
     public override ToolKind Kind => ToolKind.Shape;
 
     public override bool CanRotate => true;
-
-    public override Rect Frame => Rect;
-
-    public override Rect Bounds => RotatedBounds(Rect);
 
     private bool IsOpen => ShapeGeometries.IsOpen(Style.ShapeKind);
 
@@ -64,28 +58,6 @@ public sealed class FigureAnnotation : RectAnnotation
 
         var pen = new Pen(Brushes.Black, Style.Thickness + 2 * tolerance);
         return geometry.StrokeContains(pen, point);
-    }
-
-    public override IReadOnlyList<Point> GetHandles()
-    {
-        Matrix m = RotationMatrix;
-        return base.GetHandles().Select(p => m.Transform(p)).ToArray();
-    }
-
-    /// <summary>Rekent de muis terug naar het ongedraaide kader; daarna wordt het kader zo verschoven dat de tegenoverliggende greep op zijn plek blijft.</summary>
-    public override void MoveHandle(int index, Point p, bool constrain)
-    {
-        Rect o = DragOrigin;
-        var c = new Point(o.Left + o.Width / 2, o.Top + o.Height / 2);
-        Matrix toLocal = Matrix.Identity;
-        toLocal.RotateAt(-Angle, c.X, c.Y);
-        base.MoveHandle(index, toLocal.Transform(p), constrain);
-
-        Rect r = Rect;
-        var rc = new Point(r.Left + r.Width / 2, r.Top + r.Height / 2);
-        Matrix toWorld = Matrix.Identity;
-        toWorld.RotateAt(Angle, c.X, c.Y);
-        Rect = Rect.Offset(r, toWorld.Transform(rc) - rc);
     }
 
     public override bool CanFlip => true;

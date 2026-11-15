@@ -14,6 +14,7 @@ public sealed class TextAnnotation : Annotation
     private const int TailHandle = 8;
 
     private Rect _dragOrigin;
+    private Point _dragTail;
     private ShapeKey _cachedKey;
     private Geometry? _cachedShape;
 
@@ -108,7 +109,14 @@ public sealed class TextAnnotation : Annotation
 
     private Point Tip(Rect box) => TailTip ?? DefaultTailTip(box);
 
-    public override Rect Bounds
+    public override bool CanRotate => true;
+
+    public override Rect Frame => GetLayout().Box;
+
+    public override Rect Bounds => RotatedBounds(LocalBounds);
+
+    /// <summary>Het omhullende kader zonder draaiing, met staart en letterrand.</summary>
+    private Rect LocalBounds
     {
         get
         {
@@ -134,6 +142,7 @@ public sealed class TextAnnotation : Annotation
 
     public override bool HitTest(Point point, double tolerance)
     {
+        point = ToLocal(point);
         Geometry shape = ShapeFor(GetLayout().Box);
         if (shape.FillContains(point))
         {
@@ -153,13 +162,26 @@ public sealed class TextAnnotation : Annotation
 
         Layout layout = GetLayout();
         bool hasShape = RenderShape(dc, layout.Box);
+        dc.PushTransform(new MatrixTransform(RotationMatrix));
+        RenderLetterEffects(dc, layout, hasShape);
+        dc.DrawText(layout.Text, layout.Origin);
+        dc.Pop();
+    }
+
+    /// <summary>Schaduw en rand om de letters, in het ongedraaide kader; de letters zelf komen er daarna overheen.</summary>
+    private void RenderLetterEffects(DrawingContext dc, Layout layout, bool hasShape)
+    {
         Geometry? outline = HasOutline ? layout.Text.BuildGeometry(layout.Origin) : null;
         if (!hasShape && Style.Shadow)
         {
+            // De schaduw valt altijd rechtsonder, ook als de tekst gedraaid is.
+            Matrix unrotate = Matrix.Identity;
+            unrotate.Rotate(-Angle);
+            Vector offset = unrotate.Transform(new Vector(1.5, 1.5));
             var shadowColor = Color.FromArgb(90, 0, 0, 0);
             if (outline != null)
             {
-                dc.PushTransform(new TranslateTransform(1.5, 1.5));
+                dc.PushTransform(new TranslateTransform(offset.X, offset.Y));
                 dc.DrawGeometry(new SolidColorBrush(shadowColor), OutlinePen(shadowColor), outline);
                 dc.Pop();
             }
@@ -167,7 +189,7 @@ public sealed class TextAnnotation : Annotation
             {
                 FormattedText shadow = Format(Text, shadowColor);
                 shadow.MaxTextWidth = layout.Text.MaxTextWidth;
-                dc.DrawText(shadow, new Point(layout.Origin.X + 1.5, layout.Origin.Y + 1.5));
+                dc.DrawText(shadow, layout.Origin + offset);
             }
         }
 
@@ -175,11 +197,9 @@ public sealed class TextAnnotation : Annotation
         {
             dc.DrawGeometry(null, OutlinePen(Style.TextOutlineColor), outline);
         }
-
-        dc.DrawText(layout.Text, layout.Origin);
     }
 
-    private bool HasOutline => Style.TextOutline && Style.TextOutlineWidth > 0 && Style.TextOutlineColor.A > 0;
+    public bool HasOutline => Style.TextOutline && Style.TextOutlineWidth > 0 && Style.TextOutlineColor.A > 0;
 
     /// <summary>Half van de pen valt over de letters, de tekst eroverheen houdt alleen de buitenste helft over.</summary>
     private Pen OutlinePen(Color color)
@@ -194,8 +214,18 @@ public sealed class TextAnnotation : Annotation
         return pen;
     }
 
-    /// <summary>Alleen de vorm, zonder tekst; wordt getekend terwijl de tekst in een tekstvak wordt bewerkt.</summary>
-    public void RenderOutline(DrawingContext dc) => RenderShape(dc, GetLayout().Box);
+    /// <summary>Alles behalve de letters zelf; wordt getekend terwijl de tekst in een tekstvak wordt bewerkt.</summary>
+    public void RenderWithoutText(DrawingContext dc)
+    {
+        Layout layout = GetLayout();
+        bool hasShape = RenderShape(dc, layout.Box);
+        if (!string.IsNullOrEmpty(Text))
+        {
+            dc.PushTransform(new MatrixTransform(RotationMatrix));
+            RenderLetterEffects(dc, layout, hasShape);
+            dc.Pop();
+        }
+    }
 
     /// <summary>True als er een rand of vulling is getekend.</summary>
     private bool RenderShape(DrawingContext dc, Rect box)
@@ -212,7 +242,16 @@ public sealed class TextAnnotation : Annotation
             return false;
         }
 
-        RenderHelpers.DrawWithShadow(dc, ShapeFor(box), fill, pen, Style.Shadow);
+        Geometry shape = ShapeFor(box);
+        if (Angle != 0)
+        {
+            var rotated = new GeometryGroup { Transform = new MatrixTransform(RotationMatrix) };
+            rotated.Children.Add(shape);
+            rotated.Freeze();
+            shape = rotated;
+        }
+
+        RenderHelpers.DrawWithShadow(dc, shape, fill, pen, Style.Shadow);
         return true;
     }
 
@@ -423,6 +462,15 @@ public sealed class TextAnnotation : Annotation
             handles.Add(Tip(r));
         }
 
+        if (Angle != 0)
+        {
+            Matrix m = RotationMatrix;
+            for (int i = 0; i < handles.Count; i++)
+            {
+                handles[i] = m.Transform(handles[i]);
+            }
+        }
+
         return handles;
     }
 
@@ -430,17 +478,23 @@ public sealed class TextAnnotation : Annotation
     {
         _dragOrigin = GetLayout().Box;
         TailTip ??= DefaultTailTip(_dragOrigin);
+        _dragTail = TailTip.Value;
     }
 
     public override void MoveHandle(int index, Point p, bool constrain)
     {
         if (index == TailHandle)
         {
-            TailTip = p;
+            TailTip = ToLocal(p);
             return;
         }
 
         Rect o = _dragOrigin;
+        var pivot = new Point(o.Left + o.Width / 2, o.Top + o.Height / 2);
+        Matrix toLocal = Matrix.Identity;
+        toLocal.RotateAt(-Angle, pivot.X, pivot.Y);
+        p = toLocal.Transform(p);
+
         Rect r = index switch
         {
             0 => RectAnnotation.FromAnchor(o.BottomRight, p, constrain),
@@ -464,6 +518,8 @@ public sealed class TextAnnotation : Annotation
         Position = r.TopLeft;
         BoxWidth = r.Width;
         BoxHeight = r.Height;
+        TailTip = _dragTail;
+        KeepPlace(pivot);
     }
 
     /// <summary>Dubbelklik op een formaatgreep: terug naar een vorm die met de tekst meegroeit.</summary>
@@ -474,9 +530,42 @@ public sealed class TextAnnotation : Annotation
             return false;
         }
 
-        BoxWidth = null;
-        BoxHeight = null;
+        KeepingPlace(() =>
+        {
+            BoxWidth = null;
+            BoxHeight = null;
+        });
         return true;
+    }
+
+    /// <summary>Voert een wijziging uit die de vorm groter of kleiner kan maken, zonder dat een gedraaide tekst verschuift.</summary>
+    public void KeepingPlace(Action change)
+    {
+        Point pivot = Pivot;
+        change();
+        KeepPlace(pivot);
+    }
+
+    /// <summary>
+    /// Na een andere grootte draait de tekst rond een ander midden. Verschuif hem zo dat hij op dezelfde plek staat
+    /// als wanneer hij nog rond <paramref name="oldPivot"/> zou draaien; de linkerbovenhoek blijft dan staan.
+    /// </summary>
+    private void KeepPlace(Point oldPivot)
+    {
+        if (Angle == 0)
+        {
+            return;
+        }
+
+        Point center = Pivot;
+        Matrix m = Matrix.Identity;
+        m.RotateAt(Angle, oldPivot.X, oldPivot.Y);
+        Vector shift = m.Transform(center) - center;
+        Position += shift;
+        if (TailTip is Point tip)
+        {
+            TailTip = tip + shift;
+        }
     }
 
     public override Annotation Clone()

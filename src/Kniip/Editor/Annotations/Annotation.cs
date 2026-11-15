@@ -91,6 +91,19 @@ public abstract class Annotation
 
     protected Rect RotatedBounds(Rect frame) => Angle == 0 ? frame : Rect.Transform(frame, RotationMatrix);
 
+    /// <summary>Van beeldcoördinaten naar het ongedraaide object.</summary>
+    protected Point ToLocal(Point point)
+    {
+        if (Angle == 0)
+        {
+            return point;
+        }
+
+        Matrix m = RotationMatrix;
+        m.Invert();
+        return m.Transform(point);
+    }
+
     /// <summary>Hoek tussen -180 en 180 graden.</summary>
     public static double NormalizeAngle(double angle)
     {

@@ -9,9 +9,13 @@ using Kniip.Resources;
 
 namespace Kniip.Infrastructure;
 
+/// <summary>Een workflow in het submenu Workflows.</summary>
+internal sealed record TrayWorkflow(Guid Id, string Title, string Glyph, string? IconFile, string? Hotkey, string Summary);
+
 internal sealed class TrayIcon : IDisposable
 {
     private readonly NotifyIcon _icon;
+    private Action? _balloonClick;
     private readonly Icon _baseIcon;
     private Icon? _badgeIcon;
     private bool _recording;
@@ -30,7 +34,10 @@ internal sealed class TrayIcon : IDisposable
     private readonly ToolStripMenuItem _foldersItem;
     private readonly ToolStripMenuItem _recentItem;
     private readonly ToolStripMenuItem _delayItem;
+    private readonly ToolStripMenuItem _workflowsItem;
     private readonly List<(ToolStripItem Item, string Glyph)> _glyphItems = new();
+    private Color _menuTextColor = SystemColors.ControlText;
+    private bool _workflowBarShown;
     private Panel _delayPanel = null!;
     private TrackBar _delaySlider = null!;
     private NumericUpDown _delayNumber = null!;
@@ -63,6 +70,16 @@ internal sealed class TrayIcon : IDisposable
 
     /// <summary>Mappen voor het submenu Map openen, opgevraagd bij het openen; een pad van null staat grijs.</summary>
     public Func<IReadOnlyList<(string Label, string? Path)>>? FoldersProvider { get; set; }
+
+    /// <summary>Workflows voor het submenu, opgevraagd bij het openen.</summary>
+    public Func<IReadOnlyList<TrayWorkflow>>? WorkflowsProvider { get; set; }
+
+    /// <summary>Er is minstens één workflow voor de workflowbalk.</summary>
+    public Func<bool>? CanUseWorkflowBar { get; set; }
+
+    public event Action<Guid>? WorkflowRequested;
+    public event Action? WorkflowBarRequested;
+    public event Action? WorkflowSettingsRequested;
 
     public TrayIcon()
     {
@@ -108,6 +125,10 @@ internal sealed class TrayIcon : IDisposable
         menu.Items.Add(_recordItem);
         _gifItem = WithGlyph(new ToolStripMenuItem(Strings.Tray_RecordGif, null, (_, _) => GifRequested?.Invoke()), "\uF4A9");
         menu.Items.Add(_gifItem);
+        _workflowsItem = WithGlyph(new ToolStripMenuItem(Strings.Tray_Workflows), "\uE945");
+        _workflowsItem.DropDownItems.Add(new ToolStripMenuItem("..."));
+        _workflowsItem.DropDownOpening += (_, _) => BuildWorkflows();
+        menu.Items.Add(_workflowsItem);
         menu.Items.Add(new ToolStripSeparator());
 
         _foldersItem = WithGlyph(new ToolStripMenuItem(Strings.Common_OpenFolder), "\uE838");
@@ -145,6 +166,12 @@ internal sealed class TrayIcon : IDisposable
             {
                 SnipRequested?.Invoke();
             }
+        };
+        _icon.BalloonTipClicked += (_, _) =>
+        {
+            Action? click = _balloonClick;
+            _balloonClick = null;
+            click?.Invoke();
         };
     }
 
@@ -319,6 +346,7 @@ internal sealed class TrayIcon : IDisposable
         _delayUnit.ForeColor = fore;
         _delayNumber.BackColor = dark ? DarkMenuColors.Input : SystemColors.Window;
         _delayNumber.ForeColor = dark ? DarkMenuColors.Text : SystemColors.WindowText;
+        _menuTextColor = fore;
         if (_icon.ContextMenuStrip is { } menu)
         {
             RenderGlyphs(menu.ImageScalingSize, fore);
@@ -394,6 +422,79 @@ internal sealed class TrayIcon : IDisposable
         }
     }
 
+    /// <summary>Vinkje bij "Workflowbalk tonen".</summary>
+    public void SetWorkflowBarShown(bool shown) => _workflowBarShown = shown;
+
+    private void BuildWorkflows()
+    {
+        foreach (ToolStripItem old in _workflowsItem.DropDownItems)
+        {
+            old.Image?.Dispose();
+        }
+
+        _workflowsItem.DropDownItems.Clear();
+        IReadOnlyList<TrayWorkflow> workflows = WorkflowsProvider?.Invoke() ?? Array.Empty<TrayWorkflow>();
+        if (workflows.Count == 0)
+        {
+            _workflowsItem.DropDownItems.Add(new ToolStripMenuItem(Strings.Tray_NoWorkflows) { Enabled = false });
+        }
+
+        Size size = _icon.ContextMenuStrip?.ImageScalingSize ?? SystemInformation.SmallIconSize;
+        using Font? font = CreateIconFont(size.Height);
+        foreach (TrayWorkflow workflow in workflows)
+        {
+            Guid id = workflow.Id;
+            var item = new ToolStripMenuItem(workflow.Title)
+            {
+                Image = LoadWorkflowIcon(workflow.IconFile, size) ?? (font == null ? null : RenderGlyph(workflow.Glyph, font, size, _menuTextColor)),
+                ShortcutKeyDisplayString = workflow.Hotkey,
+                ToolTipText = workflow.Summary
+            };
+            item.Click += (_, _) => WorkflowRequested?.Invoke(id);
+            _workflowsItem.DropDownItems.Add(item);
+        }
+
+        _workflowsItem.DropDownItems.Add(new ToolStripSeparator());
+        _workflowsItem.DropDownItems.Add(new ToolStripMenuItem(Strings.Tray_WorkflowBar, null, (_, _) => WorkflowBarRequested?.Invoke())
+        {
+            Checked = _workflowBarShown,
+            Enabled = _workflowBarShown || (CanUseWorkflowBar?.Invoke() ?? false)
+        });
+        _workflowsItem.DropDownItems.Add(new ToolStripMenuItem(Strings.Tray_EditWorkflows, null, (_, _) => WorkflowSettingsRequested?.Invoke()));
+    }
+
+    /// <summary>Eigen icoon van een workflow (.ico of afbeelding), passend in <paramref name="size"/>; null als het niet te laden is.</summary>
+    internal static Bitmap? LoadWorkflowIcon(string? path, Size size)
+    {
+        if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+        {
+            return null;
+        }
+
+        try
+        {
+            if (string.Equals(Path.GetExtension(path), ".ico", StringComparison.OrdinalIgnoreCase))
+            {
+                using var icon = new Icon(path, size);
+                return icon.ToBitmap();
+            }
+
+            using var stream = new MemoryStream(File.ReadAllBytes(path));
+            using var image = Image.FromStream(stream);
+            double scale = Math.Min((double)size.Width / image.Width, (double)size.Height / image.Height);
+            var bitmap = new Bitmap(size.Width, size.Height);
+            using Graphics g = Graphics.FromImage(bitmap);
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            int w = Math.Max(1, (int)(image.Width * scale)), h = Math.Max(1, (int)(image.Height * scale));
+            g.DrawImage(image, (size.Width - w) / 2, (size.Height - h) / 2, w, h);
+            return bitmap;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
     private void BuildRecent()
     {
         foreach (ToolStripItem old in _recentItem.DropDownItems)
@@ -463,8 +564,13 @@ internal sealed class TrayIcon : IDisposable
         }
     }
 
-    public void ShowBalloon(string title, string text) =>
-        _icon.ShowBalloonTip(4000, title, text, ToolTipIcon.Info);
+    /// <summary>Toont een melding; <paramref name="onClick"/> loopt als de gebruiker op deze melding klikt.</summary>
+    public void ShowBalloon(string title, string text, bool error = false, Action? onClick = null)
+    {
+        // Windows toont één melding tegelijk van dit icoon; een nieuwe melding vervangt dus ook de klikactie.
+        _balloonClick = onClick;
+        _icon.ShowBalloonTip(4000, title, text, error ? ToolTipIcon.Error : ToolTipIcon.Info);
+    }
 
     private static Icon LoadIcon()
     {

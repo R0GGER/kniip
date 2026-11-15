@@ -1,0 +1,35 @@
+<Window x:Class="Kniip.Workflows.WorkflowBarWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="clr-namespace:Kniip.Resources"
+        Title="{x:Static res:Strings.WorkflowBar_Title}" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ResizeMode="NoResize" SizeToContent="WidthAndHeight" ShowInTaskbar="False" Topmost="True" ShowActivated="False"
+        FontFamily="Segoe UI" FontSize="13" Foreground="{DynamicResource InkBrush}">
+    <Border Margin="10" Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource ControlStrongBorderBrush}" BorderThickness="1"
+            CornerRadius="8" Padding="4">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="14" ShadowDepth="2" Opacity="0.25" />
+        </Border.Effect>
+        <StackPanel Orientation="Horizontal">
+            <!-- Greep om de balk te verslepen -->
+            <Border Background="Transparent" Cursor="SizeAll" Padding="4,0" MouseLeftButtonDown="Grip_MouseLeftButtonDown"
+                    ToolTip="{x:Static res:Strings.WorkflowBar_Drag}">
+                <TextBlock Text="&#xE76F;" Style="{StaticResource IconText}" FontSize="12" Foreground="{DynamicResource SubtleTextBrush}"
+                           VerticalAlignment="Center" />
+            </Border>
+            <ItemsControl x:Name="WorkflowItems" Focusable="False">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+            <Button Style="{StaticResource FlatButton}" Click="Settings_Click" ToolTip="{x:Static res:Strings.Tray_EditWorkflows}" Margin="2,0,0,0">
+                <TextBlock Text="&#xE713;" Style="{StaticResource IconText}" FontSize="12" Foreground="{DynamicResource SubtleTextBrush}" />
+            </Button>
+            <Button Style="{StaticResource FlatButton}" Click="Close_Click" ToolTip="{x:Static res:Strings.WorkflowBar_Close}">
+                <TextBlock Text="&#xE711;" Style="{StaticResource IconText}" FontSize="12" Foreground="{DynamicResource SubtleTextBrush}" />
+            </Button>
+        </StackPanel>
+    </Border>
+</Window>
