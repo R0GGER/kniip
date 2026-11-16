@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Kniip.Capture;
 using Kniip.Editor;
 using Kniip.Infrastructure;
@@ -44,6 +46,11 @@ public partial class SettingsWindow : Window
     private bool _fillingKindCombos;
     private bool _testingUploader;
     private bool _resetEditor;
+    private bool _ready;
+    private bool _discard;
+    private bool _closing;
+    private readonly DispatcherTimer _saveTimer = new() { Interval = TimeSpan.FromMilliseconds(400) };
+    private readonly DispatcherTimer _statusTimer = new() { Interval = TimeSpan.FromSeconds(2) };
     private bool _updateChecked;
     private ReleaseInfo? _update;
     private System.Threading.CancellationTokenSource? _updateCts;
@@ -100,6 +107,8 @@ public partial class SettingsWindow : Window
         Closed += (_, _) =>
         {
             StopListening();
+            _saveTimer.Stop();
+            _statusTimer.Stop();
             _updateCts?.Cancel();
             App.Instance.Updates.AvailabilityChanged -= OnUpdateAvailabilityChanged;
         };
@@ -109,7 +118,57 @@ public partial class SettingsWindow : Window
         LoadFrom(settings);
         SelectWorkflow(_workflows.FirstOrDefault());
 
+        _saveTimer.Tick += (_, _) => Commit();
+        _statusTimer.Tick += (_, _) =>
+        {
+            _statusTimer.Stop();
+            SaveStatus.Text = Strings.Settings_AutoSaveHint;
+        };
+        AddHandler(ToggleButton.CheckedEvent, new RoutedEventHandler((_, _) => ScheduleSave()), true);
+        AddHandler(ToggleButton.UncheckedEvent, new RoutedEventHandler((_, _) => ScheduleSave()), true);
+        AddHandler(TextBoxBase.TextChangedEvent, new TextChangedEventHandler((_, _) => ScheduleSave()), true);
+        AddHandler(Selector.SelectionChangedEvent, new SelectionChangedEventHandler((_, e) =>
+        {
+            if (e.OriginalSource is not TabControl)
+            {
+                ScheduleSave();
+            }
+        }), true);
+        AddHandler(RangeBase.ValueChangedEvent, new RoutedPropertyChangedEventHandler<double>((_, e) =>
+        {
+            if (e.OriginalSource is Slider)
+            {
+                ScheduleSave();
+            }
+        }), true);
+        Loaded += (_, _) => _ready = true;
+        Closing += (_, _) =>
+        {
+            _closing = true;
+            Flush();
+        };
+
         MaxHeight = SystemParameters.WorkArea.Height;
+    }
+
+    /// <summary>Bewaart de wijzigingen na een korte pauze, zodat typen niet bij elke toets opslaat.</summary>
+    private void ScheduleSave()
+    {
+        if (!_ready || _discard)
+        {
+            return;
+        }
+
+        _saveTimer.Stop();
+        _saveTimer.Start();
+    }
+
+    private void Flush()
+    {
+        if (_saveTimer.IsEnabled)
+        {
+            Commit();
+        }
     }
 
     /// <summary>Vult het formulier; de uploader en de Windows-integratie blijven ongemoeid.</summary>
@@ -188,9 +247,15 @@ public partial class SettingsWindow : Window
     private void ResetDefaults_Click(object sender, RoutedEventArgs e)
     {
         StopListening();
+        if (MessageBox.Show(this, Strings.Settings_DefaultsConfirm, "kniip", MessageBoxButton.YesNo, MessageBoxImage.Question,
+                MessageBoxResult.No) != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
         LoadFrom(new AppSettings());
         _resetEditor = true;
-        ResetStatus.Visibility = Visibility.Visible;
+        ScheduleSave();
     }
 
     private static void FillChoices(ComboBox combo, int[] values, int current, Func<int, string> label)
@@ -251,6 +316,8 @@ public partial class SettingsWindow : Window
         {
             _hotkeys[id] = hotkey;
         }
+
+        ScheduleSave();
     }
 
     /// <summary>De knop van een sneltoets; voor een workflow alleen als die geselecteerd is.</summary>
@@ -368,6 +435,7 @@ public partial class SettingsWindow : Window
     {
         ShowSaveFolder(SnipFolderText, _snipFolder);
         ShowSaveFolder(VideoFolderText, _videoFolder);
+        ScheduleSave();
     }
 
     private static void ShowSaveFolder(TextBlock text, string? folder)
@@ -537,6 +605,7 @@ public partial class SettingsWindow : Window
         ShowKindUploaders();
         ShowWorkflows();
         ShowSteps();
+        ScheduleSave();
     }
 
     private ComboBox KindCombo(UploadKind kind) => kind switch
@@ -591,6 +660,7 @@ public partial class SettingsWindow : Window
         }
 
         _kindUploaderIds[kind] = combo.SelectedItem is ComboBoxItem { Tag: Guid id } ? id : null;
+        ScheduleSave();
     }
 
     private void UploaderRow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -787,6 +857,7 @@ public partial class SettingsWindow : Window
             return;
         }
 
+        Flush();
         bool plain = PlainTokenBox.IsChecked == true;
         try
         {
@@ -836,6 +907,8 @@ public partial class SettingsWindow : Window
             return;
         }
 
+        _saveTimer.Stop();
+        _discard = true;
         App.Instance.ReplaceSettings(restored);
         Close();
         App.Instance.Restart();
@@ -874,9 +947,17 @@ public partial class SettingsWindow : Window
         ShowUploaderStatus(null);
     }
 
-    private void Save_Click(object sender, RoutedEventArgs e)
+    /// <summary>Zet het formulier over naar de instellingen en voert ze direct door.</summary>
+    private void Commit()
     {
-        _settings.Uploaders = _uploaders;
+        _saveTimer.Stop();
+        if (_discard)
+        {
+            return;
+        }
+
+        AppLanguage previousLanguage = _settings.Language;
+        _settings.Uploaders = _uploaders.ToList();
         _settings.DefaultUploaderId = _defaultUploaderId;
         _settings.MediaUploaderId = _kindUploaderIds[UploadKind.Media];
         _settings.TextUploaderId = _kindUploaderIds[UploadKind.Text];
@@ -918,7 +999,6 @@ public partial class SettingsWindow : Window
         _settings.UpdateCheckHours = (int)UpdateIntervalSlider.Value;
         _settings.ShowMagnifier = MagnifierBox.IsChecked == true;
         _settings.WindowShadow = WindowShadowBox.IsChecked == true;
-        StopListening();
         _settings.SnipHotkey = _hotkeys["Snip"];
         _settings.WindowHotkey = _hotkeys["Window"];
         _settings.RecordHotkey = _hotkeys["Record"];
@@ -951,24 +1031,48 @@ public partial class SettingsWindow : Window
             _settings.ToolbarHidden = defaults.ToolbarHidden;
         }
 
+        App.Instance.SaveSettings();
+        SaveStatus.Text = _resetEditor ? Strings.Settings_DefaultsFilled : Strings.Settings_Saved;
+        _resetEditor = false;
+        _statusTimer.Stop();
+        _statusTimer.Start();
+
+        if (_settings.Language != previousLanguage
+            && UiLanguage.IsDutchFor(_settings.Language) != UiLanguage.IsDutch
+            && MessageBox.Show(this, Strings.Settings_LanguageRestart, "kniip", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+        {
+            _discard = true;
+            if (!_closing)
+            {
+                Close();
+            }
+
+            Dispatcher.BeginInvoke(App.Instance.Restart);
+        }
+    }
+
+    private void ShellOption_Click(object sender, RoutedEventArgs e)
+    {
         try
         {
-            ShellIntegration.SetAutostart(AutostartBox.IsChecked == true);
-
-            bool openWith = OpenWithBox.IsChecked == true;
-            if (openWith && !ShellIntegration.IsOpenWithRegistered())
+            if (sender == AutostartBox)
             {
-                ShellIntegration.RegisterOpenWith();
+                ShellIntegration.SetAutostart(AutostartBox.IsChecked == true);
             }
-            else if (!openWith && ShellIntegration.IsOpenWithRegistered())
+            else if (sender == OpenWithBox)
             {
-                ShellIntegration.UnregisterOpenWith();
+                if (OpenWithBox.IsChecked == true)
+                {
+                    ShellIntegration.RegisterOpenWith();
+                }
+                else
+                {
+                    ShellIntegration.UnregisterOpenWith();
+                }
             }
-
-            bool sendTo = SendToBox.IsChecked == true;
-            if (sendTo != ShellIntegration.IsSendToEnabled())
+            else if (sender == SendToBox)
             {
-                ShellIntegration.SetSendTo(sendTo);
+                ShellIntegration.SetSendTo(SendToBox.IsChecked == true);
             }
         }
         catch (Exception ex)
@@ -977,17 +1081,12 @@ public partial class SettingsWindow : Window
                 MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
-        App.Instance.SaveSettings();
-        Close();
-
-        if (UiLanguage.IsDutchFor(_settings.Language) != UiLanguage.IsDutch
-            && MessageBox.Show(Strings.Settings_LanguageRestart, "kniip", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-        {
-            App.Instance.Restart();
-        }
+        AutostartBox.IsChecked = ShellIntegration.IsAutostartEnabled();
+        OpenWithBox.IsChecked = ShellIntegration.IsOpenWithRegistered();
+        SendToBox.IsChecked = ShellIntegration.IsSendToEnabled();
     }
 
-    private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
+    private void Close_Click(object sender, RoutedEventArgs e) => Close();
 
     private void Tabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {

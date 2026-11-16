@@ -40,7 +40,7 @@ kniip is een annotatie-editor die naast het Windows Knipprogramma werkt. Maak ee
 
 | Versie | Installer |
 | ------ | --------- |
-| 2.5.4 | [Kniip-Setup-2.5.4.exe](https://github.com/R0GGER/kniip/releases/download/2.5.4/Kniip-Setup-2.5.4.exe) |
+| 2.5.5 | [Kniip-Setup-2.5.5.exe](https://github.com/R0GGER/kniip/releases/download/2.5.5/Kniip-Setup-2.5.5.exe) |
 
 Oudere versies vind je bij [alle releases](https://github.com/R0GGER/kniip/releases).
 

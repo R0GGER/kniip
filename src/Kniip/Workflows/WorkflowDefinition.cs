@@ -157,4 +157,39 @@ public sealed class WorkflowDefinition
             }
         };
     }
+
+    private static readonly string[] ExampleNameKeys = { nameof(Strings.Workflow_ExampleSaveUpload), nameof(Strings.Workflow_ExampleEditShare) };
+
+    private static readonly System.Globalization.CultureInfo[] ExampleCultures =
+        { System.Globalization.CultureInfo.GetCultureInfo("nl-NL"), System.Globalization.CultureInfo.GetCultureInfo("en-US") };
+
+    /// <summary>
+    /// Zet de naam van een niet-hernoemd voorbeeld in de huidige taal; de naam staat als tekst in de instellingen.
+    /// Geeft true als er iets veranderd is.
+    /// </summary>
+    public static bool LocalizeExampleNames(IEnumerable<WorkflowDefinition> workflows)
+    {
+        bool changed = false;
+        foreach (var workflow in workflows)
+        {
+            foreach (string key in ExampleNameKeys)
+            {
+                if (!ExampleCultures.Any(c => Strings.ResourceManager.GetString(key, c) == workflow.Name))
+                {
+                    continue;
+                }
+
+                string? current = Strings.ResourceManager.GetString(key, Strings.Culture);
+                if (current != null && current != workflow.Name)
+                {
+                    workflow.Name = current;
+                    changed = true;
+                }
+
+                break;
+            }
+        }
+
+        return changed;
+    }
 }

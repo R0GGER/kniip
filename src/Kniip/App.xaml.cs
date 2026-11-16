@@ -547,11 +547,16 @@ public partial class App : Application
         }
     }
 
-    /// <summary>Bij de eerste start met workflows twee voorbeelden toevoegen, in de taal van dat moment.</summary>
+    /// <summary>Bij de eerste start met workflows twee voorbeelden toevoegen; niet-hernoemde voorbeelden volgen de taal.</summary>
     private void AddExampleWorkflows()
     {
         if (Settings.WorkflowExamplesAdded)
         {
+            if (WorkflowDefinition.LocalizeExampleNames(Settings.Workflows))
+            {
+                SettingsStore.Save(Settings);
+            }
+
             return;
         }
 

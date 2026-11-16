@@ -2,6 +2,21 @@
 
 All notable changes to kniip are listed in this file. The newest version is at the top.
 
+## 2.5.5 - 2026-11-16
+
+### Changed
+
+- **Settings save automatically.**\
+  Every change in **Settings** is saved and takes effect right away, without closing the window: the color mode changes immediately and a new shortcut works at once. The **Save** and **Cancel** buttons are gone; **Close** (or Esc) closes the window. At the bottom, the window shows that changes are saved automatically, and briefly says **Saved** after each change. When you type in a text box, kniip waits a moment before saving.
+  - **Defaults** now asks for confirmation first, because the defaults are saved right away.
+  - When you choose another language, kniip asks right away whether to restart, not when you close the window.
+  - The options under **Settings > System** for starting kniip with Windows, **Open with** and **Send to** are set as soon as you tick or untick them. If that fails, you see a message and the checkbox shows the actual state again.
+  - **Create backup** first saves any pending change, so the backup is complete.
+
+### Fixed
+
+- The example workflows **Snip, save, upload** and **Snip, edit, share** now follow the language of kniip. Before, they kept the language they were created in. A workflow you renamed keeps your name.
+
 ## 2.5.4 - 2026-11-15
 
 ### Added

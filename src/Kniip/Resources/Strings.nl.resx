@@ -337,8 +337,11 @@
   <data name="Settings_ColorMode" xml:space="preserve"><value>Kleurmodus</value></data>
   <data name="Settings_Dark" xml:space="preserve"><value>Donker</value></data>
   <data name="Settings_Defaults" xml:space="preserve"><value>Standaardinstellingen</value></data>
-  <data name="Settings_DefaultsFilled" xml:space="preserve"><value>Standaardwaarden ingevuld; klik op Opslaan om ze te bewaren.</value></data>
-  <data name="Settings_DefaultsTip" xml:space="preserve"><value>Instellingen, toolstijlen, werkbalk en laatst gebruikte mappen terugzetten; pas bij Opslaan worden ze bewaard</value></data>
+  <data name="Settings_DefaultsFilled" xml:space="preserve"><value>Standaardinstellingen hersteld</value></data>
+  <data name="Settings_DefaultsTip" xml:space="preserve"><value>Instellingen, toolstijlen, werkbalk en laatst gebruikte mappen terugzetten</value></data>
+  <data name="Settings_DefaultsConfirm" xml:space="preserve"><value>Alle instellingen, toolstijlen, de werkbalk en de laatst gebruikte mappen terugzetten naar de standaardwaarden? Dit wordt direct opgeslagen.</value></data>
+  <data name="Settings_AutoSaveHint" xml:space="preserve"><value>Wijzigingen worden automatisch opgeslagen</value></data>
+  <data name="Settings_Saved" xml:space="preserve"><value>Opgeslagen</value></data>
   <data name="Settings_DoNothing" xml:space="preserve"><value>Niets doen (openen via systeemvak of &apos;Openen met&apos;)</value></data>
   <data name="Settings_EveryHour" xml:space="preserve"><value>Elk uur</value></data>
   <data name="Settings_EveryHours" xml:space="preserve"><value>Elke {0} uur</value></data>

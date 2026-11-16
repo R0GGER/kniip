@@ -67,6 +67,7 @@ public partial class SettingsWindow
         RemoveWorkflowButton.IsEnabled = index >= 0;
         WorkflowUpButton.IsEnabled = index > 0;
         WorkflowDownButton.IsEnabled = index >= 0 && index < _workflows.Count - 1;
+        ScheduleSave();
     }
 
     private void SelectWorkflow(WorkflowDefinition? workflow)

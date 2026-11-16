@@ -337,8 +337,11 @@
   <data name="Settings_ColorMode" xml:space="preserve"><value>Color mode</value></data>
   <data name="Settings_Dark" xml:space="preserve"><value>Dark</value></data>
   <data name="Settings_Defaults" xml:space="preserve"><value>Defaults</value></data>
-  <data name="Settings_DefaultsFilled" xml:space="preserve"><value>Defaults filled in; click Save to keep them.</value></data>
-  <data name="Settings_DefaultsTip" xml:space="preserve"><value>Reset settings, tool styles, toolbar and recently used folders; they are only kept when you click Save</value></data>
+  <data name="Settings_DefaultsFilled" xml:space="preserve"><value>Defaults restored</value></data>
+  <data name="Settings_DefaultsTip" xml:space="preserve"><value>Reset settings, tool styles, toolbar and recently used folders</value></data>
+  <data name="Settings_DefaultsConfirm" xml:space="preserve"><value>Reset all settings, tool styles, the toolbar and recently used folders to their defaults? This is saved immediately.</value></data>
+  <data name="Settings_AutoSaveHint" xml:space="preserve"><value>Changes are saved automatically</value></data>
+  <data name="Settings_Saved" xml:space="preserve"><value>Saved</value></data>
   <data name="Settings_DoNothing" xml:space="preserve"><value>Do nothing (open via the system tray or &apos;Open with&apos;)</value></data>
   <data name="Settings_EveryHour" xml:space="preserve"><value>Every hour</value></data>
   <data name="Settings_EveryHours" xml:space="preserve"><value>Every {0} hours</value></data>
