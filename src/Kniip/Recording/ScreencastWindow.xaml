@@ -95,20 +95,42 @@
 
         <Border Grid.Row="3" Margin="0,12,0,0" Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
                 CornerRadius="6" Padding="14,10">
-            <DockPanel LastChildFill="True">
-                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.Resources>
+                    <!-- Alle bedieningselementen in deze balk even hoog, zodat ze op één lijn staan -->
+                    <Style x:Key="BarToggle" TargetType="ToggleButton" BasedOn="{StaticResource MiniToggle}">
+                        <Setter Property="Height" Value="32" />
+                    </Style>
+                    <Style x:Key="BarCombo" TargetType="ComboBox" BasedOn="{StaticResource PropCombo}">
+                        <Setter Property="Height" Value="32" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                    <Style x:Key="BarButton" TargetType="Button" BasedOn="{StaticResource SecondaryButton}">
+                        <Setter Property="Height" Value="32" />
+                    </Style>
+                </Grid.Resources>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" Margin="8,2,0,2">
                     <StackPanel x:Name="BusyPanel" Orientation="Horizontal" Visibility="Collapsed" Margin="0,0,8,0">
                         <ProgressBar x:Name="Progress" Width="140" Height="6" Minimum="0" Maximum="100" VerticalAlignment="Center" />
-                        <Button Style="{StaticResource FlatButton}" Content="{x:Static res:Strings.Common_Cancel}" Click="CancelExport_Click" Margin="6,0,0,0" />
+                        <Button Style="{StaticResource FlatButton}" Height="32" MinHeight="0" Content="{x:Static res:Strings.Common_Cancel}" Click="CancelExport_Click" Margin="6,0,0,0" />
                     </StackPanel>
-                    <Button x:Name="CopyButton" Style="{StaticResource SecondaryButton}" Click="Copy_Click"
+                    <Button x:Name="CopyButton" Style="{StaticResource BarButton}" Click="Copy_Click"
                             ToolTip="{x:Static res:Strings.Screencast_CopyTip}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE8C8;" Style="{StaticResource IconText}" FontSize="14" Margin="0,0,6,0" />
                             <TextBlock Text="{x:Static res:Strings.Common_Copy}" VerticalAlignment="Center" />
                         </StackPanel>
                     </Button>
-                    <Button x:Name="UploadButton" Style="{StaticResource SecondaryButton}" Click="Upload_Click" Visibility="Collapsed"
+                    <Button x:Name="UploadButton" Style="{StaticResource BarButton}" Click="Upload_Click" Visibility="Collapsed"
                             ToolTip="{x:Static res:Strings.Screencast_UploadTip}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE898;" Style="{StaticResource IconText}" FontSize="14" Margin="0,0,6,0" />
@@ -118,7 +140,7 @@
                                        ToolTip="{x:Static res:Strings.Common_UploadTo}" PreviewMouseLeftButtonDown="UploadMenu_MouseDown" />
                         </StackPanel>
                     </Button>
-                    <Button x:Name="SaveButton" Style="{StaticResource AccentButton}" Click="Save_Click" IsDefault="True"
+                    <Button x:Name="SaveButton" Style="{StaticResource AccentButton}" Height="32" Click="Save_Click" IsDefault="True"
                             ToolTip="{x:Static res:Strings.Screencast_SaveTip}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE74E;" Style="{StaticResource IconText}" FontSize="14" Margin="0,0,6,0" />
@@ -130,38 +152,41 @@
                     </Button>
                 </StackPanel>
 
-                <StackPanel VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal">
+                <WrapPanel Orientation="Horizontal" VerticalAlignment="Top">
+                    <StackPanel Orientation="Horizontal" Height="32" Margin="0,2,14,2">
                         <TextBlock Text="{x:Static res:Strings.Screencast_Format}" Style="{StaticResource PropLabel}" />
-                        <ToggleButton x:Name="Mp4Toggle" Style="{StaticResource MiniToggle}" Content="MP4" MinWidth="54"
+                        <ToggleButton x:Name="Mp4Toggle" Style="{StaticResource BarToggle}" Content="MP4" MinWidth="54"
                                       Click="Format_Click" ToolTip="{x:Static res:Strings.Screencast_Mp4Tip}" />
-                        <ToggleButton x:Name="GifToggle" Style="{StaticResource MiniToggle}" Content="GIF" MinWidth="54"
+                        <ToggleButton x:Name="GifToggle" Style="{StaticResource BarToggle}" Content="GIF" MinWidth="54"
                                       Click="Format_Click" ToolTip="{x:Static res:Strings.Screencast_GifTip}" />
-
-                        <StackPanel x:Name="GifOptions" Orientation="Horizontal" Margin="14,0,0,0">
-                            <TextBlock Text="{x:Static res:Strings.Screencast_Fps}" Style="{StaticResource PropLabel}" />
-                            <ComboBox x:Name="FpsCombo" Style="{StaticResource PropCombo}" MinWidth="60" />
-                            <TextBlock Text="{x:Static res:Strings.Screencast_Width}" Style="{StaticResource PropLabel}" Margin="12,0,6,0" />
-                            <ComboBox x:Name="WidthCombo" Style="{StaticResource PropCombo}" MinWidth="100" />
-                        </StackPanel>
-
-                        <ToggleButton x:Name="WatermarkToggle" Style="{StaticResource MiniToggle}" Margin="14,0,0,0" Padding="8,0"
-                                      Click="Watermark_Click" ToolTip="{x:Static res:Strings.Screencast_WatermarkTip}">
-                            <StackPanel Orientation="Horizontal">
-                                <Path Width="10" Height="13" Stretch="Uniform" VerticalAlignment="Center"
-                                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ToggleButton}}"
-                                      Data="M10,6 C10,6 6.8,9.6 6.8,11.8 A3.2,3.2 0 0 0 13.2,11.8 C13.2,9.6 10,6 10,6 Z" />
-                                <TextBlock Text="{x:Static res:Strings.Watermark_Title}" FontSize="12" VerticalAlignment="Center" Margin="6,0,0,0" />
-                            </StackPanel>
-                        </ToggleButton>
                     </StackPanel>
-                    <TextBlock x:Name="InfoText" Style="{StaticResource PropLabel}" Margin="0,6,0,0" TextWrapping="Wrap" />
+
+                    <StackPanel x:Name="GifOptions" Orientation="Horizontal" Height="32" Margin="0,2,14,2">
+                        <TextBlock Text="{x:Static res:Strings.Screencast_Fps}" Style="{StaticResource PropLabel}" />
+                        <ComboBox x:Name="FpsCombo" Style="{StaticResource BarCombo}" MinWidth="60" />
+                        <TextBlock Text="{x:Static res:Strings.Screencast_Width}" Style="{StaticResource PropLabel}" Margin="12,0,6,0" />
+                        <ComboBox x:Name="WidthCombo" Style="{StaticResource BarCombo}" MinWidth="100" />
+                    </StackPanel>
+
+                    <ToggleButton x:Name="WatermarkToggle" Style="{StaticResource BarToggle}" Margin="0,2,0,2" Padding="8,0"
+                                  Click="Watermark_Click" ToolTip="{x:Static res:Strings.Screencast_WatermarkTip}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Width="10" Height="13" Stretch="Uniform" VerticalAlignment="Center"
+                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ToggleButton}}"
+                                  Data="M10,6 C10,6 6.8,9.6 6.8,11.8 A3.2,3.2 0 0 0 13.2,11.8 C13.2,9.6 10,6 10,6 Z" />
+                            <TextBlock Text="{x:Static res:Strings.Watermark_Title}" FontSize="12" VerticalAlignment="Center" Margin="6,0,0,0" />
+                        </StackPanel>
+                    </ToggleButton>
+                </WrapPanel>
+
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
+                    <TextBlock x:Name="InfoText" Style="{StaticResource PropLabel}" Margin="0,4,0,0" TextWrapping="Wrap" />
                     <TextBlock x:Name="SavedText" Margin="0,4,0,0" Visibility="Collapsed" FontSize="12" TextWrapping="Wrap">
                         <Run x:Name="SavedRun" Foreground="{DynamicResource InkBrush}" />
                         <Hyperlink Click="OpenFolder_Click"><Run x:Name="OpenRun" Text="{x:Static res:Strings.Common_OpenFolder}" /></Hyperlink>
                     </TextBlock>
                 </StackPanel>
-            </DockPanel>
+            </Grid>
         </Border>
 
         <!-- Workflow die op deze screencast wacht -->

@@ -2,6 +2,15 @@
 
 All notable changes to kniip are listed in this file. The newest version is at the top.
 
+## 2.5.7 - 2026-11-18
+
+### Fixed
+
+- **Screencast window: Watermark button no longer disappears.**\
+  In a narrow screencast window, the **Watermark** button slid behind **Copy**, **Upload** and **Save**. The options now move to a second line when there isn't enough room.
+- **Screencast window: buttons and fields line up.**\
+  The format buttons, the frame rate and width fields, the **Watermark** button and the **Copy**, **Upload** and **Save** buttons now have the same height and sit on one line.
+
 ## 2.5.6 - 2026-11-17
 
 ### Added
