@@ -236,6 +236,8 @@
   <data name="Prop_TextOutline" xml:space="preserve"><value>Border around the letters</value></data>
   <data name="Prop_TextOutlineColor" xml:space="preserve"><value>Letter border color</value></data>
   <data name="Prop_TextOutlineWidth" xml:space="preserve"><value>Letter border thickness</value></data>
+  <data name="Prop_WatermarkImageTip" xml:space="preserve"><value>Image: choose an image or logo for this watermark</value></data>
+  <data name="Prop_WatermarkSettingsTip" xml:space="preserve"><value>Set up the watermark in Settings (applies to the next one you add)</value></data>
   <data name="Prop_WindowShadow" xml:space="preserve"><value>Window shadow: soft shadow on a transparent background</value></data>
   <data name="Prop_Shape" xml:space="preserve"><value>Shape</value></data>
   <data name="Prop_Size" xml:space="preserve"><value>Size</value></data>
@@ -308,6 +310,7 @@
   <data name="Screencast_Uploaded" xml:space="preserve"><value>Uploaded: {0}</value></data>
   <data name="Screencast_UploadedCopied" xml:space="preserve"><value>Uploaded; the link is on the clipboard: {0}</value></data>
   <data name="Screencast_UploadTip" xml:space="preserve"><value>Upload to Zipline and copy the link to the clipboard</value></data>
+  <data name="Screencast_WatermarkTip" xml:space="preserve"><value>Put the watermark from Settings on the screencast when you save, copy or upload. An MP4 is then encoded again, which takes a little longer.</value></data>
   <data name="Screencast_Width" xml:space="preserve"><value>Width</value></data>
   <data name="Screencast_WithoutSound" xml:space="preserve"><value>without sound</value></data>
   <data name="Screencast_WithSound" xml:space="preserve"><value>with sound</value></data>
@@ -567,6 +570,7 @@
   <data name="Tool_Undo" xml:space="preserve"><value>Undo</value></data>
   <data name="Tool_UndoTip" xml:space="preserve"><value>Undo (Ctrl+Z)</value></data>
   <data name="Tool_UploadTip" xml:space="preserve"><value>Upload and copy the link (Ctrl+U)</value></data>
+  <data name="Tool_WatermarkTip" xml:space="preserve"><value>Add the watermark from Settings; then move, resize or change it</value></data>
   <data name="Tool_Zoom" xml:space="preserve"><value>Zoom percentage</value></data>
   <data name="Tool_ZoomIn" xml:space="preserve"><value>Zoom in</value></data>
   <data name="Tool_ZoomInTip" xml:space="preserve"><value>Zoom in (Ctrl++)</value></data>
@@ -685,6 +689,39 @@
   <data name="UploaderEditor_Username" xml:space="preserve"><value>User name</value></data>
   <data name="UploaderEditor_Value" xml:space="preserve"><value>Value</value></data>
   <data name="Video_SaveFailed" xml:space="preserve"><value>Windows couldn&apos;t save the video ({0}).</value></data>
+  <data name="Watermark_Angle" xml:space="preserve"><value>Angle</value></data>
+  <data name="Watermark_Explanation" xml:space="preserve"><value>A text or logo on snips and screencasts, to show where they come from. Add it with the Watermark button in the editor or the screencast window, or with the Watermark step in a workflow.</value></data>
+  <data name="Watermark_Font" xml:space="preserve"><value>Font</value></data>
+  <data name="Watermark_Image" xml:space="preserve"><value>Image</value></data>
+  <data name="Watermark_ImageMissing" xml:space="preserve"><value>This image can&apos;t be found or read.</value></data>
+  <data name="Watermark_ImageUnreadable" xml:space="preserve"><value>This isn&apos;t an image kniip can read.</value></data>
+  <data name="Watermark_Kind" xml:space="preserve"><value>Type</value></data>
+  <data name="Watermark_KindImage" xml:space="preserve"><value>Image</value></data>
+  <data name="Watermark_KindText" xml:space="preserve"><value>Text</value></data>
+  <data name="Watermark_Margin" xml:space="preserve"><value>Margin</value></data>
+  <data name="Watermark_MarginTip" xml:space="preserve"><value>Distance to the edge, as a percentage of the shortest side</value></data>
+  <data name="Watermark_NoImage" xml:space="preserve"><value>No image chosen</value></data>
+  <data name="Watermark_NotSet" xml:space="preserve"><value>There is no watermark set up yet: the text is empty or the image can&apos;t be found. Open Settings &gt; Watermark now?</value></data>
+  <data name="Watermark_Opacity" xml:space="preserve"><value>Opacity</value></data>
+  <data name="Watermark_Pattern" xml:space="preserve"><value>Repeat as a pattern</value></data>
+  <data name="Watermark_PatternExplanation" xml:space="preserve"><value>Covers the whole snip or screencast with the tilted watermark, so it can&apos;t simply be cropped away. Position and margin don&apos;t apply then.</value></data>
+  <data name="Watermark_PosBottomCenter" xml:space="preserve"><value>Bottom center</value></data>
+  <data name="Watermark_PosBottomLeft" xml:space="preserve"><value>Bottom left</value></data>
+  <data name="Watermark_PosBottomRight" xml:space="preserve"><value>Bottom right</value></data>
+  <data name="Watermark_PosCenter" xml:space="preserve"><value>Center</value></data>
+  <data name="Watermark_PosMiddleLeft" xml:space="preserve"><value>Middle left</value></data>
+  <data name="Watermark_PosMiddleRight" xml:space="preserve"><value>Middle right</value></data>
+  <data name="Watermark_PosTopCenter" xml:space="preserve"><value>Top center</value></data>
+  <data name="Watermark_PosTopLeft" xml:space="preserve"><value>Top left</value></data>
+  <data name="Watermark_PosTopRight" xml:space="preserve"><value>Top right</value></data>
+  <data name="Watermark_Position" xml:space="preserve"><value>Position</value></data>
+  <data name="Watermark_Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="Watermark_SizeTip" xml:space="preserve"><value>Width of the watermark, as a percentage of the width of the snip or screencast</value></data>
+  <data name="Watermark_Spacing" xml:space="preserve"><value>Spacing</value></data>
+  <data name="Watermark_Text" xml:space="preserve"><value>Text</value></data>
+  <data name="Watermark_TextTip" xml:space="preserve"><value>Text of the watermark; press Enter for a new line</value></data>
+  <data name="Watermark_Title" xml:space="preserve"><value>Watermark</value></data>
+  <data name="Watermark_UsageExplanation" xml:space="preserve"><value>In the editor, the watermark becomes an object that you can still move, resize and change. In the screencast window, turn on Watermark before you save, copy or upload; an MP4 is then encoded again, which takes a little longer.</value></data>
   <data name="Window_Maximize" xml:space="preserve"><value>Maximize</value></data>
   <data name="Window_Minimize" xml:space="preserve"><value>Minimize</value></data>
   <data name="Window_Restore" xml:space="preserve"><value>Restore Down</value></data>
@@ -760,6 +797,7 @@
   <data name="Settings_WorkflowSaveHint" xml:space="preserve"><value>Saves to the folder and with the name from the Save tab; if no folder is set there, kniip asks.</value></data>
   <data name="Settings_WorkflowsExplanation" xml:space="preserve"><value>A workflow starts with a snip, screencast or the clipboard and then runs its steps in order, for example snip, save, upload and copy link. Start it from the tray menu, its shortcut or the workflow bar.</value></data>
   <data name="Settings_WorkflowSteps" xml:space="preserve"><value>Steps</value></data>
+  <data name="Settings_WorkflowWatermarkHint" xml:space="preserve"><value>Adds the watermark from the Watermark tab. Put it before Save, Copy, Upload and Open. Behind Edit, a screencast window opens with the watermark already turned on.</value></data>
   <data name="Tray_EditWorkflows" xml:space="preserve"><value>Edit workflows...</value></data>
   <data name="Tray_NoWorkflows" xml:space="preserve"><value>No workflows yet</value></data>
   <data name="Tray_WorkflowBar" xml:space="preserve"><value>Show workflow bar</value></data>
@@ -777,6 +815,7 @@ Click here to open the link in your browser.</value></data>
   <data name="Workflow_ExampleEditShare" xml:space="preserve"><value>Snip, edit, share</value></data>
   <data name="Workflow_ExampleSaveUpload" xml:space="preserve"><value>Snip, save, upload</value></data>
   <data name="Workflow_ExportingGif" xml:space="preserve"><value>Creating GIF...</value></data>
+  <data name="Workflow_ExportingMp4" xml:space="preserve"><value>Adding watermark to MP4...</value></data>
   <data name="Workflow_FailedTitle" xml:space="preserve"><value>Workflow "{0}" stopped</value></data>
   <data name="Workflow_NoClipboardImage" xml:space="preserve"><value>There&apos;s no image on the clipboard.</value></data>
   <data name="Workflow_NothingAfterEdit" xml:space="preserve"><value>nothing (the workflow ends)</value></data>
@@ -786,6 +825,10 @@ Click here to open the link in your browser.</value></data>
   <data name="Workflow_ProblemNoProgram" xml:space="preserve"><value>Choose a program for Open with.</value></data>
   <data name="Workflow_ProblemNoUploader" xml:space="preserve"><value>The upload destination doesn&apos;t exist (anymore). Add one in Settings &gt; Upload.</value></data>
   <data name="Workflow_ProblemOneEdit" xml:space="preserve"><value>A workflow can have only one Edit step.</value></data>
+  <data name="Workflow_ProblemOneWatermark" xml:space="preserve"><value>A workflow can have only one Watermark step.</value></data>
+  <data name="Workflow_ProblemWatermarkLate" xml:space="preserve"><value>Put Watermark before Save, Copy, Upload and Open; the steps before it don&apos;t get the watermark.</value></data>
+  <data name="Workflow_ProblemWatermarkNotSet" xml:space="preserve"><value>No watermark is set up yet. Set one up in Settings &gt; Watermark.</value></data>
+  <data name="Workflow_ProblemWatermarkUnused" xml:space="preserve"><value>Watermark needs a step after it, such as Save, Copy or Upload.</value></data>
   <data name="Workflow_RecordingBusy" xml:space="preserve"><value>A screencast is already running.</value></data>
   <data name="Workflow_StepCaptureRegion" xml:space="preserve"><value>Snip rectangle</value></data>
   <data name="Workflow_StepCaptureWindow" xml:space="preserve"><value>Snip window</value></data>
@@ -803,6 +846,7 @@ Click here to open the link in your browser.</value></data>
   <data name="Workflow_StepSaveAs" xml:space="preserve"><value>Save as...</value></data>
   <data name="Workflow_StepUpload" xml:space="preserve"><value>Upload</value></data>
   <data name="Workflow_StepUploadTo" xml:space="preserve"><value>Upload to {0}</value></data>
+  <data name="Workflow_StepWatermark" xml:space="preserve"><value>Watermark</value></data>
   <data name="Workflow_Stop" xml:space="preserve"><value>Stop</value></data>
   <data name="Workflow_StopTip" xml:space="preserve"><value>Stop the workflow; the snip stays open</value></data>
   <data name="Workflow_Untitled" xml:space="preserve"><value>Workflow</value></data>

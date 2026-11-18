@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:res="clr-namespace:Kniip.Resources"
+        xmlns:editor="clr-namespace:Kniip.Editor"
         Title="{x:Static res:Strings.Settings_Title}" Width="820" Height="760" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen" Background="{DynamicResource WindowBrush}" Foreground="{DynamicResource InkBrush}"
         FontFamily="Segoe UI" FontSize="13" Icon="pack://application:,,,/AppIcon.ico">
@@ -530,6 +531,123 @@
                         <ComboBox x:Name="GifWidthCombo" Style="{StaticResource PropCombo}" Width="150" Margin="6,0,0,0" />
                     </StackPanel>
                 </StackPanel>
+            </TabItem>
+
+            <TabItem x:Name="WatermarkTab" Header="{x:Static res:Strings.Watermark_Title}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False" Margin="0,0,-10,0">
+                    <StackPanel x:Name="WatermarkPage" Style="{StaticResource TabPage}" Margin="0,0,10,0">
+                        <TextBlock Text="{x:Static res:Strings.Watermark_Title}" Style="{StaticResource CardTitle}" />
+                        <TextBlock Style="{StaticResource Hint}" Margin="0,0,0,8" Text="{x:Static res:Strings.Watermark_Explanation}" />
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <TextBlock Text="{x:Static res:Strings.Watermark_Kind}" VerticalAlignment="Center" Width="110" />
+                            <RadioButton x:Name="WatermarkTextRadio" GroupName="WatermarkKind" Content="{x:Static res:Strings.Watermark_KindText}" Margin="0,0,16,0" />
+                            <RadioButton x:Name="WatermarkImageRadio" GroupName="WatermarkKind" Content="{x:Static res:Strings.Watermark_KindImage}" />
+                        </StackPanel>
+
+                        <StackPanel x:Name="WatermarkTextPanel">
+                            <DockPanel Margin="0,0,0,6">
+                                <TextBlock Text="{x:Static res:Strings.Watermark_Text}" VerticalAlignment="Top" Margin="0,4,0,0" Width="110" />
+                                <TextBox x:Name="WatermarkTextBox" MinHeight="26" VerticalContentAlignment="Center" AcceptsReturn="True" TextWrapping="Wrap"
+                                         MaxLength="200" ToolTip="{x:Static res:Strings.Watermark_TextTip}" />
+                            </DockPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                <TextBlock Text="{x:Static res:Strings.Watermark_Font}" VerticalAlignment="Center" Width="110" />
+                                <ComboBox x:Name="WatermarkFontCombo" Style="{StaticResource PropCombo}" Width="200" />
+                                <ToggleButton x:Name="WatermarkBoldToggle" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Prop_Bold}" Margin="6,0,0,0">
+                                    <TextBlock Text="B" FontWeight="Bold" FontSize="13" />
+                                </ToggleButton>
+                                <editor:ColorPickerButton x:Name="WatermarkColorPicker" ShowAsText="True" Margin="4,0,0,0"
+                                                          ToolTip="{x:Static res:Strings.Prop_TextColor}" />
+                                <CheckBox x:Name="WatermarkShadowBox" Content="{x:Static res:Strings.Prop_Shadow}" Margin="12,0,0,0" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel x:Name="WatermarkImagePanel">
+                            <DockPanel Margin="0,0,0,2">
+                                <TextBlock Text="{x:Static res:Strings.Watermark_Image}" VerticalAlignment="Center" Width="110" />
+                                <Button DockPanel.Dock="Right" Style="{StaticResource SecondaryButton}" Content="{x:Static res:Strings.Common_Browse}"
+                                        Click="WatermarkBrowse_Click" Margin="6,0,0,0" />
+                                <TextBlock x:Name="WatermarkImageText" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                            </DockPanel>
+                            <TextBlock x:Name="WatermarkImageWarning" Style="{StaticResource Hint}" Margin="110,0,0,6"
+                                       Text="{x:Static res:Strings.Watermark_ImageMissing}" />
+                        </StackPanel>
+
+                        <Grid Margin="0,6,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{x:Static res:Strings.Watermark_Position}" VerticalAlignment="Top" Margin="0,4,0,0" Width="110" />
+                                    <UniformGrid x:Name="WatermarkPositionGrid" Rows="3" Columns="3" Width="108">
+                                        <RadioButton Tag="TopLeft" GroupName="WatermarkPosition" Style="{StaticResource MiniToggle}" Margin="1" Height="26"
+                                                     ToolTip="{x:Static res:Strings.Watermark_PosTopLeft}" Content="&#x25E4;" />
+                                        <RadioButton Tag="TopCenter" GroupName="WatermarkPosition" Style="{StaticResource MiniToggle}" Margin="1" Height="26"
+                                                     ToolTip="{x:Static res:Strings.Watermark_PosTopCenter}" Content="&#x25B2;" />
+                                        <RadioButton Tag="TopRight" GroupName="WatermarkPosition" Style="{StaticResource MiniToggle}" Margin="1" Height="26"
+                                                     ToolTip="{x:Static res:Strings.Watermark_PosTopRight}" Content="&#x25E5;" />
+                                        <RadioButton Tag="MiddleLeft" GroupName="WatermarkPosition" Style="{StaticResource MiniToggle}" Margin="1" Height="26"
+                                                     ToolTip="{x:Static res:Strings.Watermark_PosMiddleLeft}" Content="&#x25C0;" />
+                                        <RadioButton Tag="Center" GroupName="WatermarkPosition" Style="{StaticResource MiniToggle}" Margin="1" Height="26"
+                                                     ToolTip="{x:Static res:Strings.Watermark_PosCenter}" Content="&#x25CF;" />
+                                        <RadioButton Tag="MiddleRight" GroupName="WatermarkPosition" Style="{StaticResource MiniToggle}" Margin="1" Height="26"
+                                                     ToolTip="{x:Static res:Strings.Watermark_PosMiddleRight}" Content="&#x25B6;" />
+                                        <RadioButton Tag="BottomLeft" GroupName="WatermarkPosition" Style="{StaticResource MiniToggle}" Margin="1" Height="26"
+                                                     ToolTip="{x:Static res:Strings.Watermark_PosBottomLeft}" Content="&#x25E3;" />
+                                        <RadioButton Tag="BottomCenter" GroupName="WatermarkPosition" Style="{StaticResource MiniToggle}" Margin="1" Height="26"
+                                                     ToolTip="{x:Static res:Strings.Watermark_PosBottomCenter}" Content="&#x25BC;" />
+                                        <RadioButton Tag="BottomRight" GroupName="WatermarkPosition" Style="{StaticResource MiniToggle}" Margin="1" Height="26"
+                                                     ToolTip="{x:Static res:Strings.Watermark_PosBottomRight}" Content="&#x25E2;" />
+                                    </UniformGrid>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="{x:Static res:Strings.Prop_Size}" VerticalAlignment="Center" Width="110" />
+                                    <Slider x:Name="WatermarkSizeSlider" Width="150" Minimum="2" Maximum="100" IsSnapToTickEnabled="True" TickFrequency="1"
+                                            VerticalAlignment="Center" ToolTip="{x:Static res:Strings.Watermark_SizeTip}" />
+                                    <TextBlock x:Name="WatermarkSizeText" Width="44" TextAlignment="Right" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="{x:Static res:Strings.Watermark_Margin}" VerticalAlignment="Center" Width="110" />
+                                    <Slider x:Name="WatermarkMarginSlider" Width="150" Minimum="0" Maximum="25" IsSnapToTickEnabled="True" TickFrequency="1"
+                                            VerticalAlignment="Center" ToolTip="{x:Static res:Strings.Watermark_MarginTip}" />
+                                    <TextBlock x:Name="WatermarkMarginText" Width="44" TextAlignment="Right" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="{x:Static res:Strings.Watermark_Opacity}" VerticalAlignment="Center" Width="110" />
+                                    <Slider x:Name="WatermarkOpacitySlider" Width="150" Minimum="5" Maximum="100" IsSnapToTickEnabled="True" TickFrequency="5"
+                                            VerticalAlignment="Center" />
+                                    <TextBlock x:Name="WatermarkOpacityText" Width="44" TextAlignment="Right" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </StackPanel>
+                            <Border Grid.Column="1" Width="240" Height="135" VerticalAlignment="Top" Margin="12,0,0,0" CornerRadius="4" ClipToBounds="True"
+                                    BorderBrush="{DynamicResource ControlBorderBrush}" BorderThickness="1" ToolTip="{x:Static res:Strings.Watermark_Preview}">
+                                <Image x:Name="WatermarkPreview" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" />
+                            </Border>
+                        </Grid>
+
+                        <CheckBox x:Name="WatermarkPatternBox" Content="{x:Static res:Strings.Watermark_Pattern}" Margin="0,8,0,2" />
+                        <TextBlock Style="{StaticResource Hint}" Text="{x:Static res:Strings.Watermark_PatternExplanation}" />
+                        <StackPanel x:Name="WatermarkPatternPanel" Margin="22,2,0,0">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="{x:Static res:Strings.Watermark_Spacing}" VerticalAlignment="Center" Width="88" />
+                                <Slider x:Name="WatermarkSpacingSlider" Width="150" Minimum="0" Maximum="300" IsSnapToTickEnabled="True" TickFrequency="10"
+                                        VerticalAlignment="Center" />
+                                <TextBlock x:Name="WatermarkSpacingText" Width="44" TextAlignment="Right" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="{x:Static res:Strings.Watermark_Angle}" VerticalAlignment="Center" Width="88" />
+                                <Slider x:Name="WatermarkAngleSlider" Width="150" Minimum="-90" Maximum="90" IsSnapToTickEnabled="True" TickFrequency="5"
+                                        VerticalAlignment="Center" />
+                                <TextBlock x:Name="WatermarkAngleText" Width="44" TextAlignment="Right" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <TextBlock Style="{StaticResource Hint}" Margin="0,10,0,0" Text="{x:Static res:Strings.Watermark_UsageExplanation}" />
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
 
             <TabItem Header="{x:Static res:Strings.Settings_Appearance}">

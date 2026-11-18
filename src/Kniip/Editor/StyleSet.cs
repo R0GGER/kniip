@@ -19,7 +19,10 @@ public enum ToolKind
     Blur,
     Crop,
     Shape,
-    Eraser
+    Eraser,
+
+    /// <summary>Geen gereedschap om mee te tekenen: de knop Watermerk voegt het ingestelde watermerk direct toe.</summary>
+    Watermark
 }
 
 /// <summary>Smart: klik haalt aaneengesloten dezelfde kleur weg. Brush: sleep om uit de vrije hand weg te poetsen.</summary>
@@ -61,7 +64,10 @@ public enum StyleProps
     ShapeKind = 32768,
     Tolerance = 65536,
     EraserMode = 131072,
-    TextOutline = 262144
+    TextOutline = 262144,
+
+    /// <summary>Tekst, kleur, grootte, dekking en patroon van een watermerk; die staan in het watermerk zelf, niet in de stijl.</summary>
+    Watermark = 524288
 }
 
 public sealed class StyleSet
@@ -140,6 +146,7 @@ public sealed class StyleSet
         ToolKind.Highlight => StyleProps.Stroke | StyleProps.Thickness | StyleProps.Straight,
         ToolKind.Blur => StyleProps.Blur,
         ToolKind.Eraser => StyleProps.EraserMode | StyleProps.Thickness | StyleProps.Tolerance,
+        ToolKind.Watermark => StyleProps.Watermark,
         _ => StyleProps.None
     };
 }

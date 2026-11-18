@@ -20,6 +20,18 @@ internal static class PhysicalWindow
     public static double Scale(Visual visual) => VisualTreeHelper.GetDpi(visual).DpiScaleX;
 
     /// <summary>
+    /// Voor schermvullende overlays met een vastgelegd scherm: met de GPU houdt de videodriver per overlay
+    /// kopieën van het beeld vast die na sluiten niet vrijkomen (honderden MB na een paar knipsels).
+    /// </summary>
+    public static void UseSoftwareRendering(Window window)
+    {
+        if (HwndSource.FromHwnd(Handle(window))?.CompositionTarget is HwndTarget target)
+        {
+            target.RenderMode = RenderMode.SoftwareOnly;
+        }
+    }
+
+    /// <summary>
     /// Twee keer plaatsen: de eerste keer kan het venster naar een scherm met andere DPI springen,
     /// waarna WPF de grootte aanpast; de tweede keer zet de juiste fysieke grootte terug.
     /// </summary>

@@ -49,6 +49,7 @@ public static class SettingsStore
                 MigrateTemplates(settings);
                 MigrateUploaders(settings);
                 CleanWorkflows(settings);
+                settings.Watermark ??= new();
                 return settings;
             }
         }
@@ -172,6 +173,7 @@ public static class SettingsStore
         MigrateTemplates(settings);
         MigrateUploaders(settings);
         CleanWorkflows(settings);
+        settings.Watermark ??= new();
         return settings;
     }
 

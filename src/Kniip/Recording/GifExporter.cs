@@ -2,22 +2,25 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Kniip.Watermark;
 
 namespace Kniip.Recording;
 
 /// <summary>Zet (een deel van) een MP4 om naar een geanimeerde GIF.</summary>
 internal static class GifExporter
 {
+    /// <param name="watermark">Komt op elk frame, op de uiteindelijke GIF-grootte; null voor geen watermerk.</param>
     public static Task ExportAsync(string source, string target, TimeSpan start, TimeSpan end, int fps, int maxWidth,
-        IProgress<double>? progress, CancellationToken cancellationToken) =>
-        Task.Run(() => Export(source, target, start, end, fps, maxWidth, progress, cancellationToken), cancellationToken);
+        IProgress<double>? progress, CancellationToken cancellationToken, WatermarkSettings? watermark = null) =>
+        Task.Run(() => Export(source, target, start, end, fps, maxWidth, progress, cancellationToken, watermark?.Clone()), cancellationToken);
 
     private static void Export(string source, string target, TimeSpan start, TimeSpan end, int fps, int maxWidth,
-        IProgress<double>? progress, CancellationToken cancellationToken)
+        IProgress<double>? progress, CancellationToken cancellationToken, WatermarkSettings? watermark)
     {
         fps = Math.Clamp(fps, 1, 50);
         using var reader = new VideoFrameReader(source);
         (int width, int height) = TargetSize(reader.Width, reader.Height, maxWidth);
+        byte[]? overlay = watermark != null ? WatermarkRenderer.RenderOverlay(width, height, watermark) : null;
         TimeSpan step = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / fps);
         if (end <= start)
         {
@@ -30,7 +33,7 @@ internal static class GifExporter
             using (var stream = new FileStream(temp, FileMode.Create, FileAccess.Write, FileShare.None, 1 << 16))
             using (var encoder = new GifEncoder(stream, width, height))
             {
-                var writer = new FrameWriter(encoder, start);
+                var writer = new FrameWriter(encoder, start, overlay);
                 VideoFrame? current = null;
                 TimeSpan nextTarget = start;
 
@@ -89,15 +92,17 @@ internal static class GifExporter
     {
         private readonly GifEncoder _encoder;
         private readonly TimeSpan _origin;
+        private readonly byte[]? _overlay;
         private VideoFrame? _source;
         private byte[]? _pending;
         private TimeSpan _pendingStart;
         private int _writtenCentiseconds;
 
-        public FrameWriter(GifEncoder encoder, TimeSpan origin)
+        public FrameWriter(GifEncoder encoder, TimeSpan origin, byte[]? overlay)
         {
             _encoder = encoder;
             _origin = origin;
+            _overlay = overlay;
         }
 
         public void Show(VideoFrame frame, TimeSpan time, int width, int height)
@@ -108,6 +113,15 @@ internal static class GifExporter
             }
 
             byte[] pixels = Scale(frame, width, height);
+            if (_overlay != null)
+            {
+                if (ReferenceEquals(pixels, frame.Pixels))
+                {
+                    pixels = (byte[])pixels.Clone();
+                }
+
+                WatermarkRenderer.Blend(pixels, _overlay);
+            }
             _source = frame;
             if (_pending != null && pixels.AsSpan().SequenceEqual(_pending))
             {

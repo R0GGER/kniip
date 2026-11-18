@@ -236,6 +236,8 @@
   <data name="Prop_TextOutline" xml:space="preserve"><value>Rand om de letters</value></data>
   <data name="Prop_TextOutlineColor" xml:space="preserve"><value>Kleur van de letterrand</value></data>
   <data name="Prop_TextOutlineWidth" xml:space="preserve"><value>Dikte van de letterrand</value></data>
+  <data name="Prop_WatermarkImageTip" xml:space="preserve"><value>Afbeelding: kies een afbeelding of logo voor dit watermerk</value></data>
+  <data name="Prop_WatermarkSettingsTip" xml:space="preserve"><value>Het watermerk instellen in Instellingen (geldt voor het volgende dat je toevoegt)</value></data>
   <data name="Prop_WindowShadow" xml:space="preserve"><value>Vensterschaduw: zachte schaduw op een transparante achtergrond</value></data>
   <data name="Prop_Shape" xml:space="preserve"><value>Vorm</value></data>
   <data name="Prop_Size" xml:space="preserve"><value>Grootte</value></data>
@@ -308,6 +310,7 @@
   <data name="Screencast_Uploaded" xml:space="preserve"><value>Geüpload: {0}</value></data>
   <data name="Screencast_UploadedCopied" xml:space="preserve"><value>Geüpload; de link staat op het klembord: {0}</value></data>
   <data name="Screencast_UploadTip" xml:space="preserve"><value>Uploaden naar Zipline en de link naar het klembord kopiëren</value></data>
+  <data name="Screencast_WatermarkTip" xml:space="preserve"><value>Het watermerk uit Instellingen op de screencast zetten bij opslaan, kopiëren of uploaden. Een MP4 wordt dan opnieuw gecodeerd, wat iets langer duurt.</value></data>
   <data name="Screencast_Width" xml:space="preserve"><value>Breedte</value></data>
   <data name="Screencast_WithoutSound" xml:space="preserve"><value>zonder geluid</value></data>
   <data name="Screencast_WithSound" xml:space="preserve"><value>met geluid</value></data>
@@ -567,6 +570,7 @@
   <data name="Tool_Undo" xml:space="preserve"><value>Ongedaan maken</value></data>
   <data name="Tool_UndoTip" xml:space="preserve"><value>Ongedaan maken (Ctrl+Z)</value></data>
   <data name="Tool_UploadTip" xml:space="preserve"><value>Uploaden en de link kopiëren (Ctrl+U)</value></data>
+  <data name="Tool_WatermarkTip" xml:space="preserve"><value>Het watermerk uit Instellingen toevoegen; daarna verplaatsen, vergroten of aanpassen</value></data>
   <data name="Tool_Zoom" xml:space="preserve"><value>Zoompercentage</value></data>
   <data name="Tool_ZoomIn" xml:space="preserve"><value>Inzoomen</value></data>
   <data name="Tool_ZoomInTip" xml:space="preserve"><value>Inzoomen (Ctrl++)</value></data>
@@ -685,6 +689,39 @@
   <data name="UploaderEditor_Username" xml:space="preserve"><value>Gebruikersnaam</value></data>
   <data name="UploaderEditor_Value" xml:space="preserve"><value>Waarde</value></data>
   <data name="Video_SaveFailed" xml:space="preserve"><value>Windows kon de video niet opslaan ({0}).</value></data>
+  <data name="Watermark_Angle" xml:space="preserve"><value>Hoek</value></data>
+  <data name="Watermark_Explanation" xml:space="preserve"><value>Een tekst of logo op knipsels en screencasts, om te laten zien waar ze vandaan komen. Voeg het toe met de knop Watermerk in de editor of het screencastvenster, of met de stap Watermerk in een workflow.</value></data>
+  <data name="Watermark_Font" xml:space="preserve"><value>Lettertype</value></data>
+  <data name="Watermark_Image" xml:space="preserve"><value>Afbeelding</value></data>
+  <data name="Watermark_ImageMissing" xml:space="preserve"><value>Deze afbeelding is niet te vinden of niet te lezen.</value></data>
+  <data name="Watermark_ImageUnreadable" xml:space="preserve"><value>Dit is geen afbeelding die kniip kan lezen.</value></data>
+  <data name="Watermark_Kind" xml:space="preserve"><value>Soort</value></data>
+  <data name="Watermark_KindImage" xml:space="preserve"><value>Afbeelding</value></data>
+  <data name="Watermark_KindText" xml:space="preserve"><value>Tekst</value></data>
+  <data name="Watermark_Margin" xml:space="preserve"><value>Marge</value></data>
+  <data name="Watermark_MarginTip" xml:space="preserve"><value>Afstand tot de rand, als percentage van de kortste zijde</value></data>
+  <data name="Watermark_NoImage" xml:space="preserve"><value>Geen afbeelding gekozen</value></data>
+  <data name="Watermark_NotSet" xml:space="preserve"><value>Er is nog geen watermerk ingesteld: de tekst is leeg of de afbeelding is niet te vinden. Nu Instellingen &gt; Watermerk openen?</value></data>
+  <data name="Watermark_Opacity" xml:space="preserve"><value>Dekking</value></data>
+  <data name="Watermark_Pattern" xml:space="preserve"><value>Herhalen als patroon</value></data>
+  <data name="Watermark_PatternExplanation" xml:space="preserve"><value>Bedekt het hele knipsel of de hele screencast met het schuine watermerk, zodat het er niet zomaar af te knippen is. Positie en marge gelden dan niet.</value></data>
+  <data name="Watermark_PosBottomCenter" xml:space="preserve"><value>Midden onder</value></data>
+  <data name="Watermark_PosBottomLeft" xml:space="preserve"><value>Linksonder</value></data>
+  <data name="Watermark_PosBottomRight" xml:space="preserve"><value>Rechtsonder</value></data>
+  <data name="Watermark_PosCenter" xml:space="preserve"><value>Midden</value></data>
+  <data name="Watermark_PosMiddleLeft" xml:space="preserve"><value>Midden links</value></data>
+  <data name="Watermark_PosMiddleRight" xml:space="preserve"><value>Midden rechts</value></data>
+  <data name="Watermark_PosTopCenter" xml:space="preserve"><value>Midden boven</value></data>
+  <data name="Watermark_PosTopLeft" xml:space="preserve"><value>Linksboven</value></data>
+  <data name="Watermark_PosTopRight" xml:space="preserve"><value>Rechtsboven</value></data>
+  <data name="Watermark_Position" xml:space="preserve"><value>Positie</value></data>
+  <data name="Watermark_Preview" xml:space="preserve"><value>Voorbeeld</value></data>
+  <data name="Watermark_SizeTip" xml:space="preserve"><value>Breedte van het watermerk, als percentage van de breedte van het knipsel of de screencast</value></data>
+  <data name="Watermark_Spacing" xml:space="preserve"><value>Afstand</value></data>
+  <data name="Watermark_Text" xml:space="preserve"><value>Tekst</value></data>
+  <data name="Watermark_TextTip" xml:space="preserve"><value>Tekst van het watermerk; Enter voor een nieuwe regel</value></data>
+  <data name="Watermark_Title" xml:space="preserve"><value>Watermerk</value></data>
+  <data name="Watermark_UsageExplanation" xml:space="preserve"><value>In de editor wordt het watermerk een object dat je nog kunt verplaatsen, vergroten en aanpassen. Zet in het screencastvenster Watermerk aan voordat je opslaat, kopieert of uploadt; een MP4 wordt dan opnieuw gecodeerd, wat iets langer duurt.</value></data>
   <data name="Window_Maximize" xml:space="preserve"><value>Maximaliseren</value></data>
   <data name="Window_Minimize" xml:space="preserve"><value>Minimaliseren</value></data>
   <data name="Window_Restore" xml:space="preserve"><value>Vorige grootte</value></data>
@@ -760,6 +797,7 @@
   <data name="Settings_WorkflowSaveHint" xml:space="preserve"><value>Slaat op in de map en met de naam van het tabblad Opslaan; is daar geen map ingesteld, dan vraagt kniip ernaar.</value></data>
   <data name="Settings_WorkflowsExplanation" xml:space="preserve"><value>Een workflow begint met een knipsel, screencast of het klembord en doet daarna de stappen op volgorde, bijvoorbeeld knippen, opslaan, uploaden en de link kopiëren. Start hem vanuit het systeemvakmenu, met zijn sneltoets of vanuit de workflowbalk.</value></data>
   <data name="Settings_WorkflowSteps" xml:space="preserve"><value>Stappen</value></data>
+  <data name="Settings_WorkflowWatermarkHint" xml:space="preserve"><value>Zet het watermerk van het tabblad Watermerk erop. Zet de stap vóór Opslaan, Kopiëren, Uploaden en Openen. Achter Bewerken opent een screencastvenster met het watermerk al aan.</value></data>
   <data name="Tray_EditWorkflows" xml:space="preserve"><value>Workflows bewerken...</value></data>
   <data name="Tray_NoWorkflows" xml:space="preserve"><value>Nog geen workflows</value></data>
   <data name="Tray_WorkflowBar" xml:space="preserve"><value>Workflowbalk tonen</value></data>
@@ -777,6 +815,7 @@ Klik hier om de link in je browser te openen.</value></data>
   <data name="Workflow_ExampleEditShare" xml:space="preserve"><value>Knippen, bewerken, delen</value></data>
   <data name="Workflow_ExampleSaveUpload" xml:space="preserve"><value>Knippen, opslaan, uploaden</value></data>
   <data name="Workflow_ExportingGif" xml:space="preserve"><value>GIF maken...</value></data>
+  <data name="Workflow_ExportingMp4" xml:space="preserve"><value>Watermerk op MP4 zetten...</value></data>
   <data name="Workflow_FailedTitle" xml:space="preserve"><value>Workflow "{0}" gestopt</value></data>
   <data name="Workflow_NoClipboardImage" xml:space="preserve"><value>Er staat geen afbeelding op het klembord.</value></data>
   <data name="Workflow_NothingAfterEdit" xml:space="preserve"><value>niets (de workflow is klaar)</value></data>
@@ -786,6 +825,10 @@ Klik hier om de link in je browser te openen.</value></data>
   <data name="Workflow_ProblemNoProgram" xml:space="preserve"><value>Kies een programma voor Openen met.</value></data>
   <data name="Workflow_ProblemNoUploader" xml:space="preserve"><value>De uploadbestemming bestaat (niet meer). Voeg er een toe in Instellingen &gt; Uploaden.</value></data>
   <data name="Workflow_ProblemOneEdit" xml:space="preserve"><value>Een workflow kan maar één stap Bewerken hebben.</value></data>
+  <data name="Workflow_ProblemOneWatermark" xml:space="preserve"><value>Een workflow kan maar één stap Watermerk hebben.</value></data>
+  <data name="Workflow_ProblemWatermarkLate" xml:space="preserve"><value>Zet Watermerk vóór Opslaan, Kopiëren, Uploaden en Openen; de stappen ervoor krijgen het watermerk niet.</value></data>
+  <data name="Workflow_ProblemWatermarkNotSet" xml:space="preserve"><value>Er is nog geen watermerk ingesteld. Stel er een in via Instellingen &gt; Watermerk.</value></data>
+  <data name="Workflow_ProblemWatermarkUnused" xml:space="preserve"><value>Watermerk heeft een stap erna nodig, zoals Opslaan, Kopiëren of Uploaden.</value></data>
   <data name="Workflow_RecordingBusy" xml:space="preserve"><value>Er loopt al een screencast.</value></data>
   <data name="Workflow_StepCaptureRegion" xml:space="preserve"><value>Rechthoek knippen</value></data>
   <data name="Workflow_StepCaptureWindow" xml:space="preserve"><value>Venster knippen</value></data>
@@ -803,6 +846,7 @@ Klik hier om de link in je browser te openen.</value></data>
   <data name="Workflow_StepSaveAs" xml:space="preserve"><value>Opslaan als...</value></data>
   <data name="Workflow_StepUpload" xml:space="preserve"><value>Uploaden</value></data>
   <data name="Workflow_StepUploadTo" xml:space="preserve"><value>Uploaden naar {0}</value></data>
+  <data name="Workflow_StepWatermark" xml:space="preserve"><value>Watermerk</value></data>
   <data name="Workflow_Stop" xml:space="preserve"><value>Stoppen</value></data>
   <data name="Workflow_StopTip" xml:space="preserve"><value>De workflow stoppen; het knipsel blijft open</value></data>
   <data name="Workflow_Untitled" xml:space="preserve"><value>Workflow</value></data>

@@ -32,6 +32,9 @@ internal sealed class WorkflowContinuation
     /// <summary>De stap na Bewerken is Opslaan; de gewone knop Opslaan zet de workflow dan ook voort.</summary>
     public bool NextIsSave { get; }
 
+    /// <summary>De workflow heeft een stap Watermerk; het screencastvenster zet het watermerk dan al aan.</summary>
+    public bool Watermark { get; init; }
+
     /// <summary>Doorgegaan of gestopt; verdere aanroepen doen niets.</summary>
     public bool IsDone => _continue == null;
 

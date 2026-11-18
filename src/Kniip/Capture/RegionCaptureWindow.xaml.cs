@@ -59,8 +59,18 @@ public partial class RegionCaptureWindow : Window
             };
         }
 
-        SourceInitialized += (_, _) => PhysicalWindow.Place(this, screen.Bounds);
+        SourceInitialized += (_, _) =>
+        {
+            PhysicalWindow.UseSoftwareRendering(this);
+            PhysicalWindow.Place(this, screen.Bounds);
+        };
         Loaded += (_, _) => ShowSelection(null);
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
+        Frozen.Source = null;
     }
 
     private bool PicksWindow => _windows != null;

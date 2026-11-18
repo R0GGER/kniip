@@ -22,7 +22,10 @@ public enum WorkflowStepKind
     Upload,
     CopyUrl,
     OpenWith,
-    OpenFolder
+    OpenFolder,
+
+    /// <summary>Het watermerk uit de instellingen op het knipsel of de screencast zetten.</summary>
+    Watermark
 }
 
 /// <summary>Eén stap in een workflow; welke velden gelden hangt af van <see cref="Kind"/>.</summary>
@@ -61,6 +64,7 @@ public sealed class WorkflowStep
         WorkflowStepKind.Upload => "\uE898",
         WorkflowStepKind.CopyUrl => "\uE71B",
         WorkflowStepKind.OpenWith => "\uE7AC",
+        WorkflowStepKind.Watermark => "\uE8EC",
         _ => "\uE838"
     };
 
@@ -77,6 +81,7 @@ public sealed class WorkflowStep
         WorkflowStepKind.Upload => Strings.Workflow_StepUpload,
         WorkflowStepKind.CopyUrl => Strings.Workflow_StepCopyUrl,
         WorkflowStepKind.OpenWith => Strings.Workflow_StepOpenWith,
+        WorkflowStepKind.Watermark => Strings.Workflow_StepWatermark,
         _ => Strings.Workflow_StepOpenFolder
     };
 

@@ -14,6 +14,7 @@ using System.Windows.Threading;
 using Kniip.Editor;
 using Kniip.Settings;
 using Kniip.Upload;
+using Kniip.Watermark;
 using Kniip.Workflows;
 using Microsoft.Win32;
 using Kniip.Resources;
@@ -113,6 +114,7 @@ public partial class ScreencastWindow : Window
         PlayerMessage.Visibility = Visibility.Collapsed;
         UpdateTrim();
         UpdateInfo();
+        UpdateWatermarkPreview();
     }
 
     private void Player_MediaFailed(object? sender, ExceptionRoutedEventArgs e)
@@ -365,6 +367,44 @@ public partial class ScreencastWindow : Window
     {
         base.OnActivated(e);
         SetFormat(Format);
+        UpdateWatermarkPreview();
+    }
+
+    // ---------- Watermerk ----------
+
+    /// <summary>Het watermerk uit de instellingen, als de knop Watermerk aan staat.</summary>
+    private WatermarkSettings? Watermark => WatermarkToggle.IsChecked == true ? _settings.Watermark : null;
+
+    private void Watermark_Click(object sender, RoutedEventArgs e)
+    {
+        if (WatermarkToggle.IsChecked == true && !WatermarkRenderer.IsUsable(_settings.Watermark))
+        {
+            WatermarkToggle.IsChecked = false;
+            if (MessageBox.Show(this, Strings.Watermark_NotSet, "kniip", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+            {
+                App.Instance.ShowWatermarkSettings();
+            }
+        }
+
+        UpdateWatermarkPreview();
+    }
+
+    /// <summary>Toont het watermerk over de video zoals het in het bestand komt; na een wijziging in de instellingen ook bijgewerkt.</summary>
+    private void UpdateWatermarkPreview()
+    {
+        int width = _loaded ? Player.NaturalVideoWidth : 0;
+        int height = _loaded ? Player.NaturalVideoHeight : 0;
+        if (Watermark is not { } watermark || width <= 0 || height <= 0 || !WatermarkRenderer.IsUsable(watermark))
+        {
+            WatermarkOverlay.Source = null;
+            WatermarkOverlay.Visibility = Visibility.Collapsed;
+            return;
+        }
+
+        // Grootte en marge zijn percentages; een kleiner voorbeeld ziet er dus hetzelfde uit.
+        double scale = Math.Min(1, 1280.0 / width);
+        WatermarkOverlay.Source = WatermarkRenderer.RenderOverlayBitmap((int)Math.Round(width * scale), (int)Math.Round(height * scale), watermark);
+        WatermarkOverlay.Visibility = Visibility.Visible;
     }
 
     private void UpdateInfo()
@@ -627,11 +667,11 @@ public partial class ScreencastWindow : Window
         {
             if (Format == ScreencastFormat.Gif)
             {
-                await GifExporter.ExportAsync(_path, target, _start, _end, GifFps, GifWidth, progress, _export.Token);
+                await GifExporter.ExportAsync(_path, target, _start, _end, GifFps, GifWidth, progress, _export.Token, Watermark);
             }
             else
             {
-                await VideoExporter.TrimMp4Async(_path, target, _start, _end, _duration, progress, _export.Token);
+                await VideoExporter.TrimMp4Async(_path, target, _start, _end, _duration, progress, _export.Token, Watermark);
             }
 
             return true;
@@ -663,6 +703,7 @@ public partial class ScreencastWindow : Window
         Mp4Toggle.IsEnabled = !busy;
         GifToggle.IsEnabled = !busy;
         GifOptions.IsEnabled = !busy;
+        WatermarkToggle.IsEnabled = !busy;
         WorkflowContinueButton.IsEnabled = !busy;
         WorkflowStopButton.IsEnabled = !busy;
         Cursor = busy ? Cursors.AppStarting : null;
@@ -678,6 +719,11 @@ public partial class ScreencastWindow : Window
         WorkflowNext.Text = string.Format(Strings.Workflow_BannerNext, workflow.RemainingSteps)
                             + (workflow.NextIsSave ? "  ·  " + Strings.Workflow_BannerSaveContinues : string.Empty);
         WorkflowBanner.Visibility = Visibility.Visible;
+        if (workflow.Watermark && WatermarkRenderer.IsUsable(_settings.Watermark))
+        {
+            WatermarkToggle.IsChecked = true;
+            UpdateWatermarkPreview();
+        }
     }
 
     private void EndWorkflow()

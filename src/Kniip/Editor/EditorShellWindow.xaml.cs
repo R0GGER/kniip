@@ -154,6 +154,7 @@ public partial class EditorShellWindow : Window
             Tabs.Items.Remove(tab);
         }
 
+        MemoryRelief.Schedule();
         _allowClose = true;
         Close();
         return true;
@@ -207,6 +208,7 @@ public partial class EditorShellWindow : Window
         var view = (EditorView)tab.Content;
         view.TryClose(confirm: false);
         Tabs.Items.Remove(tab);
+        MemoryRelief.Schedule();
         if (Tabs.Items.Count == 0)
         {
             _allowClose = true;

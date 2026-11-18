@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using System.Windows.Controls;
 using Kniip.Editor;
 using Kniip.Upload;
+using Kniip.Watermark;
 using Kniip.Workflows;
 
 namespace Kniip.Settings;
@@ -274,6 +275,9 @@ public sealed class AppSettings
     }
 
     public const int MaxCaptureDelaySeconds = 60;
+
+    /// <summary>Het watermerk voor de knop in de editor en het screencastvenster en de workflowstap Watermerk.</summary>
+    public WatermarkSettings Watermark { get; set; } = new();
 
     public StyleSet StyleFor(ToolKind tool)
     {

@@ -2,13 +2,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Kniip.Resources;
 using Kniip.Upload;
+using Kniip.Watermark;
 
 namespace Kniip.Workflows;
 
 internal static class WorkflowValidator
 {
     /// <summary>Wat er mis is met een workflow; leeg betekent dat hij kan draaien.</summary>
-    public static List<string> Problems(WorkflowDefinition workflow, IReadOnlyList<UploadDestination> uploaders)
+    /// <param name="watermark">Het ingestelde watermerk, om te melden dat de stap Watermerk niets te tekenen heeft.</param>
+    public static List<string> Problems(WorkflowDefinition workflow, IReadOnlyList<UploadDestination> uploaders, WatermarkSettings? watermark = null)
     {
         var problems = new List<string>();
         List<WorkflowStep> steps = workflow.Steps;
@@ -25,6 +27,29 @@ internal static class WorkflowValidator
         if (steps.Count(s => s.Kind == WorkflowStepKind.Edit) > 1)
         {
             problems.Add(Strings.Workflow_ProblemOneEdit);
+        }
+
+        int watermarkIndex = steps.FindIndex(s => s.Kind == WorkflowStepKind.Watermark);
+        if (watermarkIndex >= 0)
+        {
+            if (steps.Count(s => s.Kind == WorkflowStepKind.Watermark) > 1)
+            {
+                problems.Add(Strings.Workflow_ProblemOneWatermark);
+            }
+
+            if (watermark != null && !WatermarkRenderer.IsUsable(watermark))
+            {
+                problems.Add(Strings.Workflow_ProblemWatermarkNotSet);
+            }
+
+            if (steps.Take(watermarkIndex).Any(s => IsOutput(s.Kind)))
+            {
+                problems.Add(Strings.Workflow_ProblemWatermarkLate);
+            }
+            else if (!steps.Skip(watermarkIndex + 1).Any(s => s.Kind == WorkflowStepKind.Edit || IsOutput(s.Kind)))
+            {
+                problems.Add(Strings.Workflow_ProblemWatermarkUnused);
+            }
         }
 
         bool uploaded = false;
@@ -54,4 +79,8 @@ internal static class WorkflowValidator
 
         return problems.Distinct().ToList();
     }
+
+    /// <summary>Stappen die het knipsel of de screencast doorgeven; een watermerk daarna komt er niet meer op.</summary>
+    private static bool IsOutput(WorkflowStepKind kind) => kind is WorkflowStepKind.Save or WorkflowStepKind.Copy
+        or WorkflowStepKind.Upload or WorkflowStepKind.OpenWith or WorkflowStepKind.OpenFolder;
 }

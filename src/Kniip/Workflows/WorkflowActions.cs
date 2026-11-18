@@ -9,6 +9,7 @@ using Kniip.Recording;
 using Kniip.Resources;
 using Kniip.Settings;
 using Kniip.Upload;
+using Kniip.Watermark;
 
 namespace Kniip.Workflows;
 
@@ -99,10 +100,10 @@ internal static class WorkflowActions
 
     /// <summary>Een hele opname zonder inkorten als MP4 (kopie) of GIF (met de ingestelde fps en breedte) wegschrijven.</summary>
     public static async Task ExportRecordingAsync(string recording, string target, ScreencastFormat format, AppSettings settings,
-        IProgress<double>? progress = null, CancellationToken cancellationToken = default)
+        WatermarkSettings? watermark = null, IProgress<double>? progress = null, CancellationToken cancellationToken = default)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(target))!);
-        if (format == ScreencastFormat.Mp4)
+        if (format == ScreencastFormat.Mp4 && watermark == null)
         {
             await Task.Run(() => File.Copy(recording, target, overwrite: true), cancellationToken);
             return;
@@ -114,7 +115,14 @@ internal static class WorkflowActions
             duration = reader.Duration;
         }
 
-        await GifExporter.ExportAsync(recording, target, TimeSpan.Zero, duration, settings.GifFps, settings.GifMaxWidth, progress, cancellationToken);
+        if (format == ScreencastFormat.Mp4)
+        {
+            await VideoExporter.TrimMp4Async(recording, target, TimeSpan.Zero, duration, duration, progress, cancellationToken, watermark);
+            return;
+        }
+
+        await GifExporter.ExportAsync(recording, target, TimeSpan.Zero, duration, settings.GifFps, settings.GifMaxWidth, progress,
+            cancellationToken, watermark);
     }
 
     /// <summary>Nieuwe, lege map in de tijdelijke map van de screencasts.</summary>

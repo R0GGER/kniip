@@ -450,6 +450,7 @@ public partial class App : Application
         }
 
         _snipWindows.Clear();
+        MemoryRelief.Schedule();
         List<SnappedWindow> snapshot = _snipSnapshot;
         _snipSnapshot = new();
         SnipTarget target = _snipTarget;
@@ -805,6 +806,13 @@ public partial class App : Application
     {
         ShowSettings();
         _settingsWindow?.ShowWorkflowsTab();
+    }
+
+    /// <summary>Instellingen openen op het tabblad Watermerk.</summary>
+    public void ShowWatermarkSettings()
+    {
+        ShowSettings();
+        _settingsWindow?.ShowWatermarkTab();
     }
 
     public void ShowHistory(bool images)

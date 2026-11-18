@@ -31,7 +31,7 @@ public partial class SettingsWindow
 
     private static readonly WorkflowStepKind[] ActionKinds =
     {
-        WorkflowStepKind.Edit, WorkflowStepKind.Save, WorkflowStepKind.Copy, WorkflowStepKind.Upload,
+        WorkflowStepKind.Edit, WorkflowStepKind.Watermark, WorkflowStepKind.Save, WorkflowStepKind.Copy, WorkflowStepKind.Upload,
         WorkflowStepKind.CopyUrl, WorkflowStepKind.OpenWith, WorkflowStepKind.OpenFolder
     };
 
@@ -59,7 +59,7 @@ public partial class SettingsWindow
             ImageSource? icon = WorkflowBarWindow.LoadIconFile(w.IconFile);
             string summary = w.Steps.Count == 0 ? Strings.Settings_WorkflowNoSteps : w.Summary(_uploaders);
             return new WorkflowRow(w, w == _selectedWorkflow, w.Title, summary, icon == null ? w.Glyph : string.Empty, icon,
-                HotkeyText(w.Hotkey), WorkflowValidator.Problems(w, _uploaders).FirstOrDefault());
+                HotkeyText(w.Hotkey), WorkflowValidator.Problems(w, _uploaders, ReadWatermark()).FirstOrDefault());
         }).ToList();
         NoWorkflowsText.Visibility = _workflows.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         int index = _selectedWorkflow == null ? -1 : _workflows.IndexOf(_selectedWorkflow);
@@ -307,7 +307,7 @@ public partial class SettingsWindow
 
     private void ShowWorkflowProblems()
     {
-        List<string> problems = _selectedWorkflow == null ? new List<string>() : WorkflowValidator.Problems(_selectedWorkflow, _uploaders);
+        List<string> problems = _selectedWorkflow == null ? new List<string>() : WorkflowValidator.Problems(_selectedWorkflow, _uploaders, ReadWatermark());
         WorkflowProblemsText.Text = string.Join("\n", problems);
         WorkflowProblemsPanel.Visibility = problems.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
     }
@@ -324,6 +324,7 @@ public partial class SettingsWindow
             WorkflowStepKind.Edit => Strings.Settings_WorkflowEditHint,
             WorkflowStepKind.Save => Strings.Settings_WorkflowSaveHint,
             WorkflowStepKind.OpenFolder => Strings.Settings_WorkflowOpenFolderHint,
+            WorkflowStepKind.Watermark => Strings.Settings_WorkflowWatermarkHint,
             WorkflowStepKind.RecordMp4 or WorkflowStepKind.RecordGif => Strings.Settings_WorkflowRecordHint,
             _ => null
         };

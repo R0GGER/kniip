@@ -35,7 +35,11 @@ public partial class RegionSelectorWindow : Window
         _screen = screen;
         _windows = windows;
         _frozen = frozen;
-        SourceInitialized += (_, _) => PhysicalWindow.Place(this, screen.Bounds);
+        SourceInitialized += (_, _) =>
+        {
+            PhysicalWindow.UseSoftwareRendering(this);
+            PhysicalWindow.Place(this, screen.Bounds);
+        };
         Loaded += (_, _) => ShowSelection(null);
         MouseLeave += (_, _) =>
         {

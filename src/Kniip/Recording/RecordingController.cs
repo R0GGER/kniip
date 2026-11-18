@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
+using Kniip.Infrastructure;
 using Kniip.Interop;
 using Kniip.Settings;
 using Screen = System.Windows.Forms.Screen;
@@ -159,6 +160,7 @@ internal sealed class RecordingController
         }
 
         _selectors.Clear();
+        MemoryRelief.Schedule();
         List<SnappedWindow> snapshot = _snapshot;
         _snapshot = new();
         if (region == null)

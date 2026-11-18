@@ -115,6 +115,7 @@ public partial class SettingsWindow : Window
         ShowUpdateBadge();
 
         CurrentVersionText.Text = string.Format(Strings.Settings_InstalledVersion, UpdateChecker.CurrentVersion);
+        InitializeWatermark();
         LoadFrom(settings);
         SelectWorkflow(_workflows.FirstOrDefault());
 
@@ -242,6 +243,7 @@ public partial class SettingsWindow : Window
                 AppLanguage.English => "English",
                 _ => Strings.Settings_LanguageAutomatic
             });
+        LoadWatermark(settings.Watermark);
     }
 
     private void ResetDefaults_Click(object sender, RoutedEventArgs e)
@@ -1016,6 +1018,7 @@ public partial class SettingsWindow : Window
         _settings.GifFps = SelectedValue(GifFpsCombo, 10);
         _settings.GifMaxWidth = SelectedValue(GifWidthCombo, 800);
         _settings.Language = (AppLanguage)SelectedValue(LanguageCombo, (int)_settings.Language);
+        _settings.Watermark = ReadWatermark();
 
         if (_resetEditor)
         {

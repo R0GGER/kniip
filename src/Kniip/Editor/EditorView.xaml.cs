@@ -14,6 +14,7 @@ using Kniip.Editor.Emoji;
 using Kniip.Infrastructure;
 using Kniip.Settings;
 using Kniip.Upload;
+using Kniip.Watermark;
 using Kniip.Resources;
 using Kniip.Workflows;
 
@@ -54,7 +55,7 @@ public partial class EditorView : UserControl
     private static readonly string[] DefaultSplitOrder =
     {
         "SplitSpacer1", "Select", "Sep1", "Rectangle", "Ellipse", "Shape", "Line", "Arrow", "Text", "Step", "Cursor", "Emoji", "Highlight", "Blur",
-        "Eraser", "Sep2", "Crop", "Sep3", "Undo", "Redo", "Delete", "Sep4", "Clear", "SplitSpacer2", "Folders", "Print", "Settings",
+        "Eraser", "Watermark", "Sep2", "Crop", "Sep3", "Undo", "Redo", "Delete", "Sep4", "Clear", "SplitSpacer2", "Folders", "Print", "Settings",
         "New", "Screencast", "OcrSnip", "Spacer", "Save", "Upload", "Copy", "Sep5", "Spacer2", "Rulers", "ZoomOut", "Zoom", "ZoomIn"
     };
 
@@ -169,6 +170,7 @@ public partial class EditorView : UserControl
         EmojiPicker.Recent = settings.RecentEmoji;
         EmojiPicker.EmojiPicked += emoji => ChangeStyle("emoji", s => s.Emoji = emoji);
         EmojiPicker.SkinToneChanged += tone => ChangeStyle("skintone", s => s.SkinTone = tone);
+        WatermarkColorPicker.ColorChanged += c => ChangeWatermark("wmcolor", w => w.Color = c, refit: false);
 
         _undo.Changed += UpdateCommandStates;
         _hintResetTimer.Tick += (_, _) =>
@@ -1267,6 +1269,11 @@ public partial class EditorView : UserControl
 
     private static Cursor HandleCursor(Annotation item, int handle)
     {
+        if (item is WatermarkAnnotation)
+        {
+            return handle % 2 == 0 ? Cursors.SizeNWSE : Cursors.SizeNESW;
+        }
+
         if (item is not (RectAnnotation or TextAnnotation) || handle > 7)
         {
             return Cursors.SizeAll;
@@ -2157,6 +2164,143 @@ public partial class EditorView : UserControl
         UpdateHint();
     }
 
+    // ---------------------------------------------------------------- Watermerk
+
+    private void Watermark_Click(object sender, RoutedEventArgs e) => AddWatermark();
+
+    /// <summary>Voegt het watermerk uit de instellingen toe als object, zodat het nog te verplaatsen en aan te passen is.</summary>
+    private void AddWatermark()
+    {
+        CommitTextEdit();
+        CancelDrag();
+        if (WatermarkAnnotation.Create(_settings.Watermark, new Size(_doc.Width, _doc.Height)) is not { } watermark)
+        {
+            if (ShowMessage(Strings.Watermark_NotSet, MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+            {
+                App.Instance.ShowWatermarkSettings();
+            }
+
+            return;
+        }
+
+        Commit(_doc.CaptureState());
+        _doc.Items.Add(watermark);
+        SelectTool(ToolKind.Select);
+        SetSelected(watermark);
+    }
+
+    private void UpdateWatermarkGroup(WatermarkSettings? watermark)
+    {
+        SetVisible(WatermarkGroup, watermark != null);
+        if (watermark == null)
+        {
+            return;
+        }
+
+        bool text = watermark.Kind == WatermarkKind.Text;
+        SetVisible(WatermarkTextBox, text);
+        SetVisible(WatermarkColorPicker, text);
+        bool suppress = _suppressStyleEvents;
+        _suppressStyleEvents = true;
+        try
+        {
+            WatermarkTextToggle.IsChecked = text;
+            WatermarkImageToggle.IsChecked = !text;
+            if (WatermarkTextBox.Text != watermark.Text)
+            {
+                WatermarkTextBox.Text = watermark.Text;
+            }
+
+            WatermarkColorPicker.SelectedColor = watermark.Color;
+            WatermarkOpacitySlider.Value = watermark.Opacity;
+            WatermarkSizeSlider.Value = watermark.SizePercent;
+            WatermarkPatternToggle.IsChecked = watermark.Pattern;
+        }
+        finally
+        {
+            _suppressStyleEvents = suppress;
+        }
+    }
+
+    /// <summary>Past het geselecteerde watermerk aan (met undo); de instellingen blijven ongemoeid.</summary>
+    private void ChangeWatermark(string prop, Action<WatermarkSettings> apply, bool refit = true)
+    {
+        if (_suppressStyleEvents || _selected is not WatermarkAnnotation watermark)
+        {
+            return;
+        }
+
+        bool coalesce = _lastStyleTarget == _selected && _lastStyleProp == prop
+                        && DateTime.Now - _lastStyleTime < TimeSpan.FromSeconds(1.5);
+        if (!coalesce)
+        {
+            Commit(_doc.CaptureState());
+        }
+
+        _lastStyleTarget = _selected;
+        _lastStyleProp = prop;
+        _lastStyleTime = DateTime.Now;
+        apply(watermark.Watermark);
+        if (refit)
+        {
+            watermark.Refit();
+        }
+
+        SetDirty(true);
+        Surface.InvalidateVisual();
+    }
+
+    private void WatermarkKind_Click(object sender, RoutedEventArgs e)
+    {
+        if (_selected is not WatermarkAnnotation watermark)
+        {
+            return;
+        }
+
+        if (sender == WatermarkTextToggle)
+        {
+            ChangeWatermark("wmkind", w => w.Kind = WatermarkKind.Text);
+        }
+        else if (App.Instance.PickImageFile(Window.GetWindow(this)) is { } path)
+        {
+            if (WatermarkRenderer.LoadImage(path) == null)
+            {
+                ShowMessage(string.Format(Strings.Common_CannotOpenFile, System.IO.Path.GetFileName(path), Strings.Watermark_ImageUnreadable),
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                ChangeWatermark("wmkind", w =>
+                {
+                    w.Kind = WatermarkKind.Image;
+                    w.ImagePath = path;
+                });
+            }
+        }
+
+        _lastStyleTarget = null;
+        UpdateWatermarkGroup(watermark.Watermark);
+    }
+
+    private void WatermarkText_Changed(object sender, TextChangedEventArgs e) =>
+        ChangeWatermark("wmtext", w => w.Text = WatermarkTextBox.Text);
+
+    private void WatermarkOpacity_Changed(object sender, RoutedPropertyChangedEventArgs<double> e) =>
+        ChangeWatermark("wmopacity", w => w.Opacity = (int)e.NewValue, refit: false);
+
+    private void WatermarkSize_Changed(object sender, RoutedPropertyChangedEventArgs<double> e) =>
+        ChangeWatermark("wmsize", w => w.SizePercent = e.NewValue);
+
+    private void WatermarkPattern_Click(object sender, RoutedEventArgs e)
+    {
+        bool pattern = WatermarkPatternToggle.IsChecked == true;
+        ChangeWatermark("wmpattern", w => w.Pattern = pattern);
+        _lastStyleTarget = null;
+        UpdateCommandStates();
+    }
+
+    private void WatermarkSettings_Click(object sender, RoutedEventArgs e) => App.Instance.ShowWatermarkSettings();
+
     // ---------------------------------------------------------------- Eigenschappen
 
     private void UpdatePropsPanel()
@@ -2193,6 +2337,7 @@ public partial class EditorView : UserControl
         }
         SetVisible(StraightGroup, props.HasFlag(StyleProps.Straight));
         SetVisible(ShadowGroup, props.HasFlag(StyleProps.Shadow));
+        UpdateWatermarkGroup(props.HasFlag(StyleProps.Watermark) ? (_selected as WatermarkAnnotation)?.Watermark : null);
 
         NoPropsText.Text = kind switch
         {

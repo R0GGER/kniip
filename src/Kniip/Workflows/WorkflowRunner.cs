@@ -10,6 +10,7 @@ using Kniip.Editor;
 using Kniip.Resources;
 using Kniip.Settings;
 using Kniip.Upload;
+using Kniip.Watermark;
 
 namespace Kniip.Workflows;
 
@@ -30,6 +31,9 @@ internal sealed class WorkflowItem
 
     /// <summary><see cref="MediaPath"/> is al in het gekozen formaat (en ingekort); anders is het nog de ruwe opname.</summary>
     public bool MediaExported { get; set; }
+
+    /// <summary>Screencast: het watermerk dat de export erop zet; null zonder stap Watermerk.</summary>
+    public WatermarkSettings? Watermark { get; set; }
 
     /// <summary>De ruwe opname, om na afloop op te ruimen; null als het screencastvenster dat al doet.</summary>
     public string? Recording { get; set; }
@@ -65,7 +69,7 @@ internal sealed class WorkflowRunner
     public void Run(WorkflowDefinition definition)
     {
         WorkflowDefinition workflow = definition.Clone();
-        List<string> problems = WorkflowValidator.Problems(workflow, Settings.Uploaders);
+        List<string> problems = WorkflowValidator.Problems(workflow, Settings.Uploaders, Settings.Watermark);
         if (problems.Count > 0)
         {
             _app.ShowBalloon(workflow.Title, problems[0], error: true);
@@ -194,6 +198,7 @@ internal sealed class WorkflowRunner
         List<WorkflowStep> rest = workflow.Steps.Skip(index + 1).ToList();
         string remaining = rest.Count == 0 ? Strings.Workflow_NothingAfterEdit : string.Join(" › ", rest.Select(s => s.Describe(Settings.Uploaders)));
         bool nextIsSave = rest.FirstOrDefault()?.Kind == WorkflowStepKind.Save;
+        bool watermark = item.Watermark != null || rest.Any(s => s.Kind == WorkflowStepKind.Watermark);
         var continuation = new WorkflowContinuation(workflow.Title, remaining, nextIsSave,
             result =>
             {
@@ -222,7 +227,10 @@ internal sealed class WorkflowRunner
 
                 _ = ContinueAsync(workflow, item, next);
             },
-            () => Finish(item));
+            () => Finish(item))
+        {
+            Watermark = item.IsVideo && watermark
+        };
 
         if (item.IsVideo)
         {
@@ -268,9 +276,37 @@ internal sealed class WorkflowRunner
             case WorkflowStepKind.OpenFolder:
                 Process.Start(new ProcessStartInfo("explorer.exe", $"/select,\"{await FileForAsync(item)}\"") { UseShellExecute = true });
                 return true;
+            case WorkflowStepKind.Watermark:
+                ApplyWatermark(item);
+                return true;
             default:
                 return true;
         }
+    }
+
+    /// <summary>
+    /// Een knipsel krijgt het watermerk meteen; een screencast bij de export. Na Bewerken is de screencast al geëxporteerd
+    /// met het watermerk dat het screencastvenster aanzette.
+    /// </summary>
+    private void ApplyWatermark(WorkflowItem item)
+    {
+        if (!WatermarkRenderer.IsUsable(Settings.Watermark))
+        {
+            throw new InvalidOperationException(Strings.Workflow_ProblemWatermarkNotSet);
+        }
+
+        if (item.IsVideo)
+        {
+            if (!item.MediaExported)
+            {
+                item.Watermark = Settings.Watermark.Clone();
+            }
+
+            return;
+        }
+
+        item.Image = WatermarkRenderer.Apply(item.Image!, Settings.Watermark);
+        item.TempFile = null;
     }
 
     private async Task<bool> SaveAsync(WorkflowStep step, WorkflowItem item)
@@ -388,10 +424,14 @@ internal sealed class WorkflowRunner
         ScreencastFormat format = item.Format!.Value;
         string target = Path.Combine(WorkflowActions.NewTempFolder("Workflows"),
             WorkflowActions.VideoDefaultName + WorkflowActions.VideoExtension(format));
-        Task export = WorkflowActions.ExportRecordingAsync(item.MediaPath!, target, format, Settings);
+        Task export = WorkflowActions.ExportRecordingAsync(item.MediaPath!, target, format, Settings, item.Watermark);
         if (format == ScreencastFormat.Gif)
         {
             await NoticeIfSlowAsync(export, AppNameTitle, Strings.Workflow_ExportingGif);
+        }
+        else if (item.Watermark != null)
+        {
+            await NoticeIfSlowAsync(export, AppNameTitle, Strings.Workflow_ExportingMp4);
         }
 
         await export;

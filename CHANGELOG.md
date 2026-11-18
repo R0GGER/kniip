@@ -2,6 +2,24 @@
 
 All notable changes to kniip are listed in this file. The newest version is at the top.
 
+## 2.5.6 - 2026-11-17
+
+### Added
+
+- **Watermark.**\
+  The new tab **Settings > Watermark** sets up a watermark: a text (with font, bold, color and shadow) or an image such as your logo, a PNG with transparency works best. Choose one of nine positions, the size as a percentage of the width, the margin to the edge and the opacity. Tick **Repeat as a pattern** to cover the whole image with the watermark at an angle, with your own spacing and angle. A preview shows the result as you change it.
+- **Watermark in the editor.**\
+  The **Watermark** button in the toolbar puts the watermark on the snip as an object. Drag it elsewhere, resize it by its corners or rotate it like other objects; it is part of undo. While it's selected, the properties panel changes the text, color, opacity, size and pattern, or picks another image, for this snip only. If no watermark is set up yet, kniip offers to open the settings.
+- **Watermark on screencasts.**\
+  The screencast window has a **Watermark** button. When it's on, the player shows the watermark over the video and **Save**, **Copy** and **Upload** put it on the GIF or MP4. An MP4 with a watermark is encoded again, so saving takes a little longer.
+- **Watermark step in workflows.**\
+  Workflows have a new step **Watermark**, which puts the watermark from the settings on the snip or screencast. Put it before **Save**, **Copy**, **Upload** and **Open**; otherwise the workflow shows a problem. With an **Edit** step for a screencast, the screencast window opens with the watermark already turned on.
+
+### Fixed
+
+- **kniip uses much less memory.**\
+  After a few snips, kniip could hold on to hundreds of MB, and up to more than 1 GB, because the video driver kept copies of every captured screen. The screens on which you select an area for a snip or a screencast no longer use the video card, and kniip now frees the memory of a captured screen right after the snip and when you close a tab in the editor. After ten snips on three screens, kniip now uses about 175 MB instead of about 575 MB.
+
 ## 2.5.5 - 2026-11-16
 
 ### Changed

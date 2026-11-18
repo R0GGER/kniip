@@ -453,6 +453,16 @@
                               Data="M3.5,0 L4.4,2.6 L7,3.5 L4.4,4.4 L3.5,7 L2.6,4.4 L0,3.5 L2.6,2.6 Z" />
                     </Grid>
                 </RadioButton>
+                <Button local:ToolbarPanel.ItemId="Watermark" local:ToolbarPanel.Title="{x:Static res:Strings.Watermark_Title}"
+                        Style="{StaticResource FlatButton}" ToolTip="{x:Static res:Strings.Tool_WatermarkTip}" Click="Watermark_Click">
+                    <Grid Width="20" Height="20">
+                        <Path Style="{StaticResource IconPath}" Data="M2.5,3.5 H17.5 V16.5 H2.5 Z" />
+                        <Path Fill="{DynamicResource InkBrush}" Opacity="0.4"
+                              Data="M10,6 C10,6 6.8,9.6 6.8,11.8 A3.2,3.2 0 0 0 13.2,11.8 C13.2,9.6 10,6 10,6 Z" />
+                        <Path Style="{StaticResource IconPath}" StrokeThickness="1.2"
+                              Data="M10,6 C10,6 6.8,9.6 6.8,11.8 A3.2,3.2 0 0 0 13.2,11.8 C13.2,9.6 10,6 10,6 Z" />
+                    </Grid>
+                </Button>
                 <local:ToolbarSeparator local:ToolbarPanel.ItemId="Sep2" />
                 <RadioButton GroupName="Tools" Tag="Crop" local:ToolbarPanel.ItemId="Crop" local:ToolbarPanel.Title="{x:Static res:Strings.Tool_Crop}"
                              Style="{StaticResource ToolToggle}" ToolTip="{x:Static res:Strings.Tool_CropTip}" Checked="Tool_Checked">
@@ -692,6 +702,44 @@
                             <TextBlock x:Name="ToleranceText" FontSize="12" Width="24" TextAlignment="Right" VerticalAlignment="Center" Margin="6,0,0,0" />
                         </StackPanel>
                     </Border>
+                </StackPanel>
+                <StackPanel x:Name="WatermarkGroup" Style="{StaticResource PropGroup}">
+                    <ToggleButton x:Name="WatermarkTextToggle" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Watermark_KindText}"
+                                  Click="WatermarkKind_Click">
+                        <TextBlock Text="T" FontSize="13" FontWeight="SemiBold" />
+                    </ToggleButton>
+                    <ToggleButton x:Name="WatermarkImageToggle" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Prop_WatermarkImageTip}"
+                                  Click="WatermarkKind_Click">
+                        <TextBlock Text="&#xE91B;" Style="{StaticResource IconText}" FontSize="14" />
+                    </ToggleButton>
+                    <TextBox x:Name="WatermarkTextBox" Width="150" Height="30" Margin="2,0" VerticalContentAlignment="Center"
+                             ToolTip="{x:Static res:Strings.Watermark_TextTip}" TextChanged="WatermarkText_Changed" />
+                    <local:ColorPickerButton x:Name="WatermarkColorPicker" ShowAsText="True" ToolTip="{x:Static res:Strings.Prop_TextColor}" />
+                    <Border Background="{DynamicResource ControlBrush}" BorderBrush="{DynamicResource ControlBorderBrush}" BorderThickness="1" CornerRadius="4" Height="30" Margin="2,0" Padding="8,0"
+                            ToolTip="{x:Static res:Strings.Watermark_Opacity}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{x:Static res:Strings.Watermark_Opacity}" FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0" />
+                            <Slider x:Name="WatermarkOpacitySlider" Width="80" Minimum="5" Maximum="100" IsSnapToTickEnabled="True" TickFrequency="5"
+                                    VerticalAlignment="Center" ValueChanged="WatermarkOpacity_Changed" />
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{DynamicResource ControlBrush}" BorderBrush="{DynamicResource ControlBorderBrush}" BorderThickness="1" CornerRadius="4" Height="30" Margin="2,0" Padding="8,0"
+                            ToolTip="{x:Static res:Strings.Watermark_SizeTip}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{x:Static res:Strings.Prop_Size}" FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0" />
+                            <Slider x:Name="WatermarkSizeSlider" Width="80" Minimum="2" Maximum="100" IsSnapToTickEnabled="True" TickFrequency="1"
+                                    VerticalAlignment="Center" ValueChanged="WatermarkSize_Changed" />
+                        </StackPanel>
+                    </Border>
+                    <ToggleButton x:Name="WatermarkPatternToggle" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Watermark_Pattern}"
+                                  Click="WatermarkPattern_Click">
+                        <Path Data="M2,7 L7,2 M2,13 L13,2 M2,18 L18,2 M7,18 L18,7 M13,18 L18,13" Stroke="{DynamicResource InkBrush}" StrokeThickness="1.4"
+                              StrokeStartLineCap="Round" StrokeEndLineCap="Round" Width="20" Height="20" />
+                    </ToggleButton>
+                    <Button Style="{StaticResource FlatButton}" Padding="6,4" MinWidth="0" MinHeight="30" Margin="2,0"
+                            ToolTip="{x:Static res:Strings.Prop_WatermarkSettingsTip}" Click="WatermarkSettings_Click">
+                        <TextBlock Text="&#xE713;" Style="{StaticResource IconText}" FontSize="14" />
+                    </Button>
                 </StackPanel>
                 <StackPanel x:Name="StraightGroup" Style="{StaticResource PropGroup}">
                     <ToggleButton x:Name="StraightCheck" Style="{StaticResource MiniToggle}" ToolTip="{x:Static res:Strings.Prop_StraightTip}"
